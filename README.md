@@ -1,18 +1,11 @@
-Nombre del Proyecto: Sistema de recomendación de supermercado
+Nombre del Proyecto: Sistema de Vida Saludable
 
 Descripción:
-Sistema para la gestión integral de un supermercado, diseñado para optimizar la interacción entre vendedor y consumidor.
-Permite agilizar ventas, gestionar inventario y analizar datos de compras para ofrecer recomendaciones personalizadas.
 
-Para el consumidor:
+Sistema integral para la búsqueda y recomendación de alimentos y recetas, que ofrece información nutricional detallada y sugerencias personalizadas según los gustos y objetivos del usuario. Incluye funcionalidades como calendario para el registro de hábitos alimenticios, creación de dietas personalizadas o predefinidas, y seguimiento de progresos. El sistema es escalable al área fitness, permitiendo la gestión de rutinas de ejercicios y recomendaciones adaptadas al clima actual, optimizando la experiencia saludable y el bienestar integral.
 
-- Recibe notificaciones y correos sobre sus compras más recientes.
-- Obtiene anuncios y ofertas adaptadas a sus intereses y hábitos de compra.
-
-Para el vendedor:
-
-- Panel de control con estadísticas de ventas y rendimiento.
-- Recomendaciones automáticas para mejorar las ventas.
-- Gestión de inventario con alertas de stock bajo.
-
-
+Cuentas del Equipo:
+Daniel Gutiérrez: Danieliwis-Sama
+Danilo Ponce: DaniloP76253
+Paulo Silva: paulosilvaobando12-design
+Martin Droguett: Irvir
