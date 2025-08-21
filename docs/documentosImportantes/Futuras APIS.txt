@@ -1,0 +1,14 @@
+Buscar informacion de alimentos:
+1- USDA FoodData Central API (Oficial del gobierno de EE. UU.)
+URL: https://fdc.nal.usda.gov/api-guide.html
+Información nutricional oficial de miles de alimentos.
+Datos: calorías, macros, micronutrientes, descripción, categoría.
+2- Edamam Main Database API (Comercial)
+URL: https://developer.edamam.com/food-database-api
+Búsqueda de alimentos y cálculo automático de calorías y nutrientes.
+Puede reconocer ingredientes de texto libre (“2 cups of rice”).
+3- TheMealDB API (gratis y sin límite)
+URL: https://www.themealdb.com/api.php
+Recetas de todo el mundo con ingredientes, pasos e imágenes.
+Filtrado por categoría, área geográfica o ingrediente.
+Gratis y no requiere cuenta.
