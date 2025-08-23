@@ -10,6 +10,6 @@ Plan de Rotación:
 Canal de Comunicación:
   Correos Institucionales:
     mdroguett24@alumnos.utalca.cl
-    psilva24@alumnos.utalca.cl
-    dgutierrez24@alumnos.utalca.cl
+    paulosilvaobando12@gmail.com
+    dagutierrez24@alumnos.utalca.cl
     dponce24@alumnos.utalca.cl
