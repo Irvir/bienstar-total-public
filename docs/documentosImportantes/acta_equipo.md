@@ -12,4 +12,4 @@ Canal de Comunicación:
     mdroguett24@alumnos.utalca.cl
     paulosilvaobando12@gmail.com
     dagutierrez24@alumnos.utalca.cl
-    dponce24@alumnos.utalca.cl
+    daniloponcep@gmail.com
