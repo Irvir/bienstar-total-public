@@ -1,50 +1,57 @@
-# Requisitos Funcionales:
+# 📋 Requisitos del Proyecto  
 
-1-	Sistema de registro de Usuario: Como usuario quiero que pueda crearme un perfil a través de mi correo, donde guarde mi contraseña.
+## ✅ Requisitos Funcionales  
 
-2-	Poder tener múltiples dietas: Como usuario quiero tener al menos una dieta que pueda crear yo, y algunas preestablecidas.
+1. 👤 **Sistema de registro de Usuario**  
+   - Como usuario quiero poder crearme un perfil a través de mi correo y guardar mi contraseña.  
 
-3-	Poder buscar alimentos: Como usuario quisiera poder buscar alimentos y que me salga información básica acerca de estos.
+2. 🥗 **Múltiples dietas**  
+   - Como usuario quiero tener al menos una dieta propia y algunas preestablecidas.  
 
-4-	Sistema de registro de alimentos: Como usuario quisiera poder ver lo que comi durante el tiempo y que es lo que voy a comer.
+3. 🔍 **Búsqueda de alimentos**  
+   - Como usuario quisiera poder buscar alimentos y obtener información básica sobre estos.  
 
-5-	Calendario: Como usuario quisiera poder ver mi dieta semanal, principalmente: desayuno, almuerzo y cena.
+4. 📖 **Registro de alimentos**  
+   - Como usuario quisiera poder ver lo que comí y lo que voy a comer en el tiempo.  
 
-6-	Mostrar la hora faltante para la siguiente comida: Quisiera como usuario que pueda notificar o indicar antes de que tenga que comer.
+5. 📅 **Calendario de comidas**  
+   - Como usuario quisiera poder visualizar mi dieta semanal (desayuno, almuerzo y cena).  
 
-7-	Información Personal: Como usuario quisiera poder guardar y ver mis datos como mi peso, edad, altura, sexo.
+6. ⏰ **Notificación de próxima comida**  
+   - Como usuario quiero que el sistema me indique cuánto tiempo falta para la siguiente comida.  
 
-8-	Actualizar datos personales: Como usuario quisiera poder actualizar mi peso, y ver mis avances con respecto al tiempo.
+7. 🧾 **Información personal**  
+   - Como usuario quiero guardar y consultar mis datos personales (peso, edad, altura, sexo).  
 
-9-	Poder realizar CRUD de alimentos: Quisiera  poder realizar estas operaciones con mi dieta personalizable.
+8. 📈 **Actualizar datos personales**  
+   - Como usuario quiero actualizar mi peso y ver mis avances en el tiempo.  
 
-10-	Guía de creación de dieta: Como usuario quisiera que la pagina me ayude o me instruya como crear una dieta balanceada.
+9. ⚙️ **CRUD de alimentos**  
+   - Como usuario quiero poder **crear, leer, actualizar y eliminar** alimentos en mi dieta personalizable.  
 
-11-	Poder tener metas: Como usuario quisiera poder tener una meta persistente como lo es un peso ideal, y me notifique cuando lo logre.
+10. 📚 **Guía de creación de dieta**  
+    - Como usuario quiero que la página me ayude a crear una dieta balanceada.  
 
-# Requisitos no Funcionales
+11. 🎯 **Metas personales**  
+    - Como usuario quiero establecer una meta persistente (ej. peso ideal) y recibir notificación cuando la alcance.  
 
-1-	Necesita Internet para funcionar
+---
 
-2-	Pagina web amigable con el usuario y sencilla al uso
+## ⚡ Requisitos No Funcionales  
 
-3-	La base de datos contendrá el nombre – identificación – información básica de los Alimentos.
+1. 🌐 Requiere conexión a Internet para funcionar.  
+2. 🖥️ Página web amigable y sencilla de usar.  
+3. 📂 La base de datos contendrá: nombre, identificación e información básica de los alimentos.  
+4. 🔒 Las contraseñas se encriptarán.  
+5. 🛡️ La página web será segura.  
+6. ✅ La información de los alimentos provendrá de una fuente fiable.  
+7. 🖼️ Se mostrarán imágenes de los alimentos.  
+8. 🍎 Existirá información de al menos **25 alimentos**.  
+9. 🌍 Se necesitará un navegador web para acceder.  
+10. 🗂️ Los alimentos y dietas estarán clasificadas.  
+11. 📌 **Limitaciones**:  
+    - Máximo 4 dietas.  
+    - API interna para notificaciones.  
 
-4-	Las contraseñas se encriptarán.
-
-5-	La página web será segura.
-
-6-	La información de los alimentos proviene de una fuente fiable y segura.
-
-7-	Se mostrará imágenes de los alimentos.
-
-8-	Como mínimo abran información de 25 alimentos.
-
-9-	Se necesitará un navegador web.
-
-10-	Los alimentos y dietas estarán clasificadas.
-
-11- Limitaciones: 4 dietas
-API Interna: Notificacion Interna
 
 
