@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creación de Dieta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: space-around;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .contenedor {
+      width: 45%;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      margin: 5px 0;
+      background: #eaeaea;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Lista de alimentos disponibles -->
+  <div class="contenedor">
+    <h2>Alimentos disponibles</h2>
+    <ul id="listaAlimentos">
+      <li>Manzana <button onclick="agregarAlimento('Manzana')">Agregar</button></li>
+      <li>Pollo <button onclick="agregarAlimento('Pollo')">Agregar</button></li>
+      <li>Arroz <button onclick="agregarAlimento('Arroz')">Agregar</button></li>
+      <li>Lechuga <button onclick="agregarAlimento('Lechuga')">Agregar</button></li>
+      <li>Huevo <button onclick="agregarAlimento('Huevo')">Agregar</button></li>
+    </ul>
+  </div>
+
+  <!-- Lista de dieta creada -->
+  <div class="contenedor">
+    <h2>Mi dieta</h2>
+    <ul id="listaDieta">
+      <!-- Aquí se van a añadir los alimentos -->
+    </ul>
+  </div>
+
+  <script>
+    // Función que agrega un alimento a la lista de dieta
+    function agregarAlimento(nombre) {
+      // Crear un elemento <li>
+      const nuevoElemento = document.createElement("li");
+      nuevoElemento.textContent = nombre;
+
+      // Botón para eliminar en caso de que el usuario cambie de idea
+      const botonEliminar = document.createElement("button");
+      botonEliminar.textContent = "Quitar";
+      botonEliminar.style.background = "#e74c3c";
+
+      // Evento para eliminar alimento de la lista
+      botonEliminar.onclick = function() {
+        nuevoElemento.remove();
+      };
+
+      // Agregar botón dentro del <li>
+      nuevoElemento.appendChild(botonEliminar);
+
+      // Insertar el <li> dentro de la lista de dieta
+      document.getElementById("listaDieta").appendChild(nuevoElemento);
+    }
+  </script>
+
+</body>
+</html>
