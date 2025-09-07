@@ -1,0 +1,586 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+#contenedorPrincipal {
+    width: 100%;   
+    height: 100%;
+    background-color: white;
+}
+
+#encabezado {
+    background-color: #931525;
+    width: 100%;   
+    height: 8%;   
+}
+
+#pie {
+    background-color: #931525;
+    width: 100%;   
+    height: 8%;   
+}
+
+#cuerpo {
+    width: 100%;   
+    height: 84%;   
+}
+
+#contenedores {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+#secion1y2 {
+    width: 100%;
+    height: 50%;
+}
+
+#secion3-5 {
+    width: 100%;
+    height: 33.3%;
+}
+
+.logo {
+    width: 10%;
+    height: 100%;
+    float: left;
+}
+
+.login {
+    width: 14%;
+    height: 100%;
+    float: left;
+}
+
+.menúBotones {
+    width: 76%;
+    height: 100%;
+    float: left;
+}
+
+.btnMenu {
+    width: 33%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    color: white; 
+    background-color: #931525;
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+
+}
+
+.btnMenu:hover {
+    opacity: 0.8;
+}
+
+.btnMenuSelec {
+    width: 33.3%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    color: white; 
+    background-color: #6F0E1A;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4);
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.btnMenuSelec:hover {
+    opacity: 0.8;
+}
+
+.btn1 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/CrearHorarioSemanal.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 40%;
+    padding-top: 25%;
+}
+
+.btn1:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.btn2 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Dietas.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 78%;
+    padding-top: 25%;
+}
+
+.btn2:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.btn3 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Calendario.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 70%;
+    padding-top: 18%;
+}
+
+.btn3:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.btn4 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Alimentos.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 70%;
+    padding-top: 18%;
+}
+
+.btn4:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.btn5 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/TipsParaTuDieta.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 60%;
+    padding-top: 18%;
+}
+
+.btn5:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.btnLogo {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../../Imagenes/Login_Perfil/Logo.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Crear ajustes de texto */
+}
+
+.btnLogo:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.btnPerfilView {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../../Imagenes/Login_Perfil/PerfilView.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+    padding-right: 30%;
+}
+
+.btnPerfilView:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.fondoLogin {
+    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center; 
+}
+
+#contenedorLogin {
+    width: 100%;
+    height: 90%;
+    float: left;
+    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center; 
+    border-radius: 50px;  /* radios de 10px en todas las esquinas */
+}
+
+#contenedorLogin2 {
+    width: 100%;
+    height: 96%;
+    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center; 
+    border-radius: 50px;  /* radios de 10px en todas las esquinas */
+}
+
+#contenedorLoginAsist {
+    width: 33.3%;
+    height: 100%;
+    float: left;
+}
+
+#contenedorLoginAsist3 {
+    width: 80%;
+    height: 100%;
+    float: left;
+}
+
+#contenedorLoginAsist2 {
+    width: 100%;
+    height: 5%;
+}
+
+#contenedorLoginAsist4 {
+    width: 100%;
+    height: 2%;
+}
+
+#fotoLogin {
+    width: 90%;
+    height: 90%;
+}
+
+#contenedorLoginFotoAsist {
+    width: 25%;
+    height: 60%;
+    float: left;
+}
+
+#contenedorLoginFoto {
+    width: 50%;
+    height: 60%;
+    float: left;
+    background-image: url("../../Imagenes/Login_Perfil/Login.png");
+    background-size: cover;         
+    background-position: center;
+}
+
+.login-container {
+    padding-left: 15%;
+    padding-top: 10%;
+    width: 70%;      
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #931525;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.login-container button:hover {
+    opacity: 0.8;
+}
+
+.contendorLoginFotoCrearUser {
+    width: 100%;
+    height: 90%;
+    float: left;
+    background-image: url("../../Imagenes/Login_Perfil/Login.png");
+    background-size: cover;         
+    background-position: center;
+    background-color: black;
+}
+
+.contenedorLoginDatosUser {
+    width: 67%;
+    height: 100%;
+    float: left;
+    background-size: cover;         
+    background-position: center;
+    background-color: white;
+}
+
+.contendorLoginFotoCrearUserAsist {
+    width: 97%;
+    height: 10%;
+    font-size: 30px;
+    color: black;
+    font-weight: bold;
+    padding-left: 3%;
+    padding-top: 1%;
+    background-color: red;
+}
+
+.divAuxPie {
+    width: 100%;
+    height: 10%;
+
+}
+
+.divImagen {
+    width: 4%;
+    height: 86%;
+    padding-left: 84%;
+    background-size: cover;   
+    float: left;
+}
+
+.divImagen2 {
+    width: 4%;
+    height: 90%;
+    background-size: cover;   
+    float: left;
+}
+
+.instaBoton {
+    width: 65%;
+    height: 75%;
+    background-image: url("../../Imagenes/Pie_Pagina/InstaLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.instaBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.faceBoton {
+    width: 63%;
+    height: 68%;
+    background-image: url("../../Imagenes/Pie_Pagina/FaceLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.faceBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.youTubeBoton {
+    width: 80%;
+    height: 65%;
+    background-image: url("../../Imagenes/Pie_Pagina/YouTubeLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.youTubeBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.whatsBoton {
+    width: 60%;
+    height: 68%;
+    background-image: url("../../Imagenes/Pie_Pagina/WhatsLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.whatsBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.divNom, .divApe {
+    width: 95%;             /* ancho */
+    height: 10%;             /* alto */
+    background-color: rgb(223, 223, 226);
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 5%;
+    padding-top: 0.5%;
+}
+
+/* Estilo general del input */
+input[type="name"] {
+    width: 90%;             /* ancho */
+    height: 20px;             /* alto */
+    padding: 5px;            /* espacio interno */
+    font-size: 16px;          /* tamaño de letra */
+    border: 2px solid #3498db;/* color del borde */
+    border-radius: 8px;       /* bordes redondeados */
+    outline: none;            /* quita borde azul */
+    background-color: #f8f9fa;/* color de fondo */
+    color: #333;              /* color del texto */
+    transition: 0.3s;         /* animación */
+    margin-left: 15px;  /* mover a la derecha */
+    margin-top: 10px;   /* mover hacia abajo */
+}
+
+/* Hover: cuando el mouse pasa encima */
+input[type="name"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+
+input[type="textApe"] {
+    width: 90%;             /* ancho */
+    height: 20px;             /* alto */
+    padding: 5px;            /* espacio interno */
+    font-size: 16px;          /* tamaño de letra */
+    border: 2px solid #3498db;/* color del borde */
+    border-radius: 8px;       /* bordes redondeados */
+    outline: none;            /* quita borde azul */
+    background-color: #f8f9fa;/* color de fondo */
+    color: #333;              /* color del texto */
+    transition: 0.3s;         /* animación */
+    margin-left: 15px;  /* mover a la derecha */
+    margin-top: 10px;   /* mover hacia abajo */
+}
+
+/* Hover: cuando el mouse pasa encima */
+input[type="textApe"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+
+.divEdadPesoAlt {
+    width: 100%;             /* ancho */
+    height: 10%;             /* alto */
+    background-color: red;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.edadPesoAlt {
+    width: 33.3%;             /* ancho */
+    height: 100%;             /* alto */
+    background-color: brown;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 1%;
+    float: left;
+}
+
+input[type="number"] {
+    width: 90%;             /* ancho */
+    height: 20px;             /* alto */
+    padding: 5px;            /* espacio interno */
+    font-size: 16px;          /* tamaño de letra */
+    border: 2px solid #3498db;/* color del borde */
+    border-radius: 8px;       /* bordes redondeados */
+    outline: none;            /* quita borde azul */
+    background-color: #f8f9fa;/* color de fondo */
+    color: #333;              /* color del texto */
+    transition: 0.3s;         /* animación */
+    margin-left: 15px;  /* mover a la derecha */
+    margin-top: 10px;   /* mover hacia abajo */
+}
+input[type="text"] {
+    width: 90%;             /* ancho */
+    height: 20px;             /* alto */
+    padding: 5px;            /* espacio interno */
+    font-size: 16px;          /* tamaño de letra */
+    border: 2px solid #3498db;/* color del borde */
+    border-radius: 8px;       /* bordes redondeados */
+    outline: none;            /* quita borde azul */
+    background-color: #f8f9fa;/* color de fondo */
+    color: #333;              /* color del texto */
+    transition: 0.3s;         /* animación */
+    margin-left: 15px;  /* mover a la derecha */
+    margin-top: 10px;   /* mover hacia abajo */
+}
+input[type="password"] {
+    width: 90%;             /* ancho */
+    height: 20px;             /* alto */
+    padding: 5px;            /* espacio interno */
+    font-size: 16px;          /* tamaño de letra */
+    border: 2px solid #3498db;/* color del borde */
+    border-radius: 8px;       /* bordes redondeados */
+    outline: none;            /* quita borde azul */
+    background-color: #f8f9fa;/* color de fondo */
+    color: #333;              /* color del texto */
+    transition: 0.3s;         /* animación */
+    margin-left: 15px;  /* mover a la derecha */
+    margin-top: 10px;   /* mover hacia abajo */
+}
+
+/* Hover: cuando el mouse pasa encima */
+input[type="textEdad"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+#password{
+    width: 100%;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+

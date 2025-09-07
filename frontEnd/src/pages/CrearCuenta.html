@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="CrearCuenta" content="width=device-width, initial-scale=1.0">
+    <title>BienStarTotal</title>
+    <link rel="stylesheet" href="Login.css">
+</head>
+<body>
+    <div id="contenedorPrincipal">
+        <!-- ` Aun no conectare esta página porque aun necesito aprender JS bien antes de comenzar, per es util tenerla lista ` -->
+        <div id="encabezado">
+            <div class="logo">
+                <button class="btnLogo" onclick="window.location.href='index.html'"></button>
+            </div>
+            <div class="menúBotones">
+                <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
+                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+            </div>
+            <div class="login">
+                <button class="btnPerfilView">Nombre de Usuario</button>
+            </div>
+        </div>
+        <div id="cuerpo" class="fondoLogin">
+            <div id="contenedorLoginAsist3" style="padding-left: 10%;">
+                <div id="contenedorLoginAsist4">
+                
+                </div>
+                <div id="contenedorLogin2">
+                    <div style="width: 33%; height: 100%; float: left;">
+                        <div class="contendorLoginFotoCrearUserAsist">
+                            Rellene los datos solicitados:
+                        </div>
+                        <div class="contendorLoginFotoCrearUser">
+                            
+                        </div>
+                    </div>
+                    <div class="contenedorLoginDatosUser">
+                        <form id="CrearCuentaForm" >
+                            <div class="divNom">
+                                Nombre:
+                                <input type="name" id="name" placeholder="Nombre" required>
+                            </div>
+                      
+                
+                            <div class="divEdadPesoAlt">
+                                <div class="edadPesoAlt">
+                                    Edad:
+                                    <input type="number" id="age" placeholder="Escriba su edad" required>
+                                </div>
+                                <div class="edadPesoAlt">
+                                    Peso (KG):
+                                    <input type="number" id="weight" placeholder="Escriba su peso" required step="any">
+                                </div>
+                                <div class="edadPesoAlt">
+                                    Altura (CM):
+                                    <input type="number" id="height" placeholder="Escriba su altura" required step="any">
+                                </div>
+                            </div>
+                            <div class="divNom">
+                                Correo electrónico:
+                                <input type="text" id="email" placeholder="Escriba su correo electrónico" required>
+                            </div>
+                           
+                            <div class="divNom">
+                                Contraseña:
+                                <input type="password" id="password" placeholder="Contraseña" required>
+                            </div>
+                           
+                            <button type="submit">Crear Cuenta</button>
+                            <br>
+                            
+                        </form>
+                        <p id="resultado"></p>
+                        
+                       <button id="btnIniciarSesion" type="submit">Iniciar Sesion
+                       </button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pie">
+            <div class="divAuxPie">
+                
+            </div>
+            <div class="divImagen">
+                <button class="instaBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="faceBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="youTubeBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="whatsBoton"></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("btnIniciarSesion").addEventListener("click", function() {
+            window.location.href = "Login.html";
+        });
+        </script>
+        <script src="CrearCuenta.js"></script>
+    
+</body>
+</html>
