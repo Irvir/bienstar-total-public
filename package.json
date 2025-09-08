@@ -1,0 +1,28 @@
+{
+  "name": "bienstartotal-3hombresymedio",
+  "version": "1.0.0",
+  "description": "📌 **Descripción**: \r Sistema integral para la búsqueda y recomendación de alimentos y recetas, que ofrece información nutricional detallada y sugerencias personalizadas según los gustos y objetivos del usuario. Incluye funcionalidades como calendario para el registro de hábitos alimenticios, creación de dietas personalizadas o predefinidas, y seguimiento de progresos.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Irvir/BienStarTotal-3HombresYMedio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Irvir/BienStarTotal-3HombresYMedio/issues"
+  },
+  "homepage": "https://github.com/Irvir/BienStarTotal-3HombresYMedio#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.5"
+  }
+}

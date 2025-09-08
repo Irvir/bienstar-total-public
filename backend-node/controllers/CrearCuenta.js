@@ -1,5 +1,6 @@
 document.getElementById("CrearCuentaForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita el envío del formulario por defecto
+    
     const data = {
         name: document.getElementById("name").value,
         email: document.getElementById("email").value,
@@ -16,13 +17,26 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", function(e
         },
         body: JSON.stringify(data)
     })  
-    .then(response => response.json())
-    .then(result => {
-        console.log("Success:", result);
-        alert("Login successful!");
+    .then(async response => {
+        const result = await response.json();
+
+        if (!response.ok) {
+            // Errores desde el servidor (400 o 500)
+            if (result.errores) {
+                alert("Errores:\n" + result.errores.join("\n"));
+            } else {
+                alert("Error: " + (result.message || "No se pudo registrar."));
+            }
+        } else {
+            //  Registro exitoso
+            alert(result.message || "Usuario registrado exitosamente.");
+            console.log("Success:", result);
+            // Opcional: redirigir al login
+            window.location.href = "login.html";
+        }
     })
     .catch(error => {
         console.error("Error:", error);
-        alert("Login failed!");
+        alert("Error en la conexión con el servidor");
     });
 });

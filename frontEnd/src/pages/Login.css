@@ -249,7 +249,7 @@ html, body {
 }
 
 .fondoLogin {
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
+   background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center; 
 }
@@ -307,12 +307,13 @@ html, body {
 }
 
 #contenedorLoginFoto {
-    width: 50%;
-    height: 60%;
-    float: left;
+    width: 40%;
+    height: 50%;
+    margin: 0 auto; /* Centra horizontalmente */
     background-image: url("../../Imagenes/Login_Perfil/Login.png");
     background-size: cover;         
     background-position: center;
+    display: block; /* Asegura que el margin funcione */
 }
 
 .login-container {

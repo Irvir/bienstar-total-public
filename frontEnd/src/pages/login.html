@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Login.css">
 </head>
 <body>
     <div id="contenedorPrincipal">
@@ -26,20 +26,26 @@
             <div id="contenedorLoginAsist">
 
             </div>
+            
             <div id="contenedorLoginAsist">
                 <div id="contenedorLoginAsist2">
 
                 </div>
                 <div id="contenedorLogin">
                     <div id="contenedorLoginFoto">
-
+                        
                     </div>
                     <div class="login-container">
-                        <form id="loginForm">
-                            <input type="text" id="usuario" placeholder="Correo electrónico" required>
-                            <input type="password" id="contrasena" placeholder="Contraseña" required>
+                        <form id="LoginForm">
+                            <input type="text" id="email" placeholder="Correo electrónico" required>
+                            <input type="password" id="password" placeholder="Contraseña" required>
                             <button type="submit">Ingresar</button>
+                            <br>
+                            <br>
+                            <button type="button" id="BtnCrearCuenta">Crear Cuenta</button>
+
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -47,6 +53,12 @@
         <div id="pie">
             Pie de página
         </div>
+        <script>
+            document.getElementById('BtnCrearCuenta').addEventListener('click', function() {
+                window.location.href = 'crearCuenta.html';
+            });
+        </script>
+        <script src="/backend-node/controllers/Login.js"></script>
     </div>
 </body>
 </html>
