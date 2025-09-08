@@ -1,3 +1,4 @@
+``` plaintext
 bienstar-total/
 │
 ├── frontend/                  # Interfaz de usuario (React + Vite)
