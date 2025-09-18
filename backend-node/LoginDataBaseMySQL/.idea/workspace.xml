@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="30df2ff1-de9d-4aba-a7fa-6650ab3d0193" name="Changes" comment="feat(db): implementar operaciones CRUD básicas con MySQL&#10;feat(export): exportar datos de usuarios en formato JSON&#10;feat(security): encriptar datos JSON usando CryptoUtil" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Irvir&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Irvir/BienStarTotal-3HombresYMedio.git&quot;,
+    &quot;accountId&quot;: &quot;2ba98184-8822-4607-bdc9-2f0c5fcb7832&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="320wmuy8SYzJ91piW36LM8Z1r9d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Creacion--de-validaciones",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Martin/Documents/BienStarTotal-3HombresYMedio/backend-node/controllers/LoginDataBaseMySQL",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/Martin/Documents/BienStarTotal-3HombresYMedio/backEnd/LoginDataBaseMySQL/src/Main.java",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="LoginDataBaseMySQL" />
+      <option name="VM_PARAMETERS" value="--enable-native-access=ALL-UNNAMED" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="30df2ff1-de9d-4aba-a7fa-6650ab3d0193" name="Changes" comment="" />
+      <created>1756570962367</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1756570962367</updated>
+      <workItem from="1756570963503" duration="6257000" />
+      <workItem from="1756593823965" duration="3203000" />
+      <workItem from="1757207110812" duration="220000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat(db): implementar operaciones CRUD básicas con MySQL&#10;feat(export): exportar datos de usuarios en formato JSON&#10;feat(security): encriptar datos JSON usando CryptoUtil">
+      <option name="closed" value="true" />
+      <created>1756576780353</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1756576780353</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat(db): implementar operaciones CRUD básicas con MySQL&#10;feat(export): exportar datos de usuarios en formato JSON&#10;feat(security): encriptar datos JSON usando CryptoUtil" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(db): implementar operaciones CRUD básicas con MySQL&#10;feat(export): exportar datos de usuarios en formato JSON&#10;feat(security): encriptar datos JSON usando CryptoUtil" />
+  </component>
+</project>
