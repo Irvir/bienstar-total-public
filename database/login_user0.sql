@@ -31,7 +31,7 @@ CREATE TABLE `user` (
   `weight` float DEFAULT NULL,
   `age` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Martin','m@gmail.com','$2b$10$gdO5kIvomyQ1MGTpLeIxeO.9ufjCvR6i98H3Gy3CP4.gcjSmW4hv6',1,1,1);
+INSERT INTO `user` VALUES (1,'Martin','m@gmail.com','$2b$10$gdO5kIvomyQ1MGTpLeIxeO.9ufjCvR6i98H3Gy3CP4.gcjSmW4hv6',1,1,1),(2,'Pepe','pepe123@gmail.com','$2b$10$Dj9UT7oOn0HVOwr06ITgEO3hyYzpTMUp2jpQzjf/QJbvhdWO4.72C',9,1,18233),(3,'Pepe','mm1@gmail.com','$2b$10$asp0je3cuNqv1XC4XcGBYet8SbqSjGI1jnCfsfl5AWsxRYkMR4Rxq',30,30,12),(4,'Paulo','paulo1@gmail.com','$2b$10$7kMQBiptAhHVv2SPv12n6uS4o6Syd3LSbtu/AfeDNFxwbjooK5yna',172,72,21),(5,'Paulo','paulo2@gmail.com','$2b$10$7BrWPZCKZTPhqGLwHjdmUOceQFPvQZhgWTLReH6Rg57Hu86Z4RICi',172,72.1,21),(6,'Martin','m2@gmail.com','$2b$10$3iezPheE3mXYKa85zu9Ux..7CHInP6eYGN9Pkujg7VMMXNDDTl5mu',165,90.32,19),(7,'Jijija','j1@gmail.com','$2b$10$3wLwKTwgrODAQwJ7dA19F.Wdloqknh1ylxy82Ddf9QPinyWsKurpC',81,31,39),(8,'aa','m3@gmail.com','$2b$10$V4X9Ejy3om74hfvTgcmhTeh0ci8BQWoUV6K9zGZPnKELD1jR4V2Tm',150,40,31),(9,'aaa','m4@gmail.com','$2b$10$QEWQyBz7WY40VM3vHVBEW.2yDUsdi5.iZNYy8P14sRDu0.L95xm5q',180,40,31),(10,'aaaa','m5@gmail.com','$2b$10$KQGbOA74oTozyHZpFKqmM.DR7eZoRF4Va90idsUBVBUeLbBFP6zca',172,80,31),(11,'ae','m6@gmail.com','$2b$10$nkqqfQUm9qpZHcrxL8dBKOZ3D5/XcQ2LxR8B.nB4vms5f.HvcuNlu',151,60,32);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-16 23:15:53
+-- Dump completed on 2025-09-19 16:03:36
