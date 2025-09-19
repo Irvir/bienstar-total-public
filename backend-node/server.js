@@ -12,7 +12,7 @@ async function iniciarServidor() {
     const db = await mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "12345678", //clave de base de datos
+      password: "Mar.23012006t", //clave de base de datos
       database: "login"
     });
 
@@ -106,6 +106,35 @@ async function iniciarServidor() {
         user: { id: usuario.id, name: usuario.name, email: usuario.email }
       });
     });
+    app.get("/food/:id", async (req, res) => {
+      try {
+        const { id } = req.params;
+        const [rows] = await db.query(
+          "SELECT nombre, protein, total_lipid, carbohydrate, energy, total_sugars, calcium, iron, sodium, cholesterol FROM food WHERE id = ?",
+          [id]
+        );
+
+        if (rows.length > 0) {
+          res.json(rows[0]);
+        } else {
+          res.status(404).json({ error: "Alimento no encontrado" });
+        }
+      } catch (err) {
+        console.error(err); // imprime el error en la consola de Node
+        res.status(500).json({ error: "Error del servidor" });
+      }
+});
+    app.get("/test-food", async (req, res) => {
+    try {
+      const [rows] = await db.query("SELECT * FROM food LIMIT 1");
+      res.json(rows);
+    } catch (err) {
+      console.error("Error al consultar food:", err);
+      res.status(500).json({ error: "Error al consultar food" });
+    }
+});
+
+
 
     // 📌 Iniciar servidor
     app.listen(3000, () => {
