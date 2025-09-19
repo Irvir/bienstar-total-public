@@ -8,6 +8,24 @@ async function handleLogin(e) {
 
   console.log("📤 Enviando login:", { email, password });
 
+  // 🔹 Validaciones frontend antes de enviar
+  let errores = [];
+
+  if (!email) {
+    errores.push("El correo es obligatorio.");
+  }
+
+  if (!password) {
+    errores.push("La contraseña es obligatoria.");
+  } else if (password.length < 6) {
+    errores.push("La contraseña debe tener al menos 6 caracteres.");
+  }
+
+  if (errores.length > 0) {
+    alert("❌ No se puede iniciar sesión:\n- " + errores.join("\n- "));
+    return;
+  }
+
   try {
     const res = await fetch("http://localhost:3000/login", {
       method: "POST",
@@ -16,16 +34,20 @@ async function handleLogin(e) {
     });
 
     const result = await res.json();
-
     console.log("📥 Respuesta del servidor:", result);
 
     if (res.ok) {
-      alert(result.message);  // Login exitoso
+      // ✅ Login exitoso
+      alert(result.message);
       console.log("✅ Usuario:", result.user);
+      // Aquí se puede redirigir al usuario al inicio o cuenta
+      
     } else {
+      // ❌ Mostrar mensajes claros del backend
       alert("❌ Error: " + (result.message || "No se pudo iniciar sesión"));
       console.error("🚫 Login fallido:", result);
     }
+
   } catch (err) {
     console.error("💥 Error en fetch:", err);
     alert("No se pudo conectar con el servidor");

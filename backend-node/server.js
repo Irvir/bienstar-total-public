@@ -12,73 +12,102 @@ async function iniciarServidor() {
     const db = await mysql.createConnection({
       host: "localhost",
       user: "root",
-      // Contraseña de la base de datos
-      password: "Mar.23012006t",
+      password: "12345678", //clave de base de datos
       database: "login"
     });
 
     console.log("Conexión a la base de datos exitosa.");
 
-    // Ruta de prueba
+    // 📌 Ruta de prueba
     app.get("/test-db", async (req, res) => {
       const [results] = await db.query("SELECT 1 + 1 AS solution");
       res.json({ result: results[0].solution });
     });
 
-    // Validación
-    function validarRegistro(email, password) {
+    // 📌 Validaciones backend
+    function validarRegistro(email, password, height, weight, age) {
       const errores = [];
-      const regexEmail = /\S+@\S+\.\S+/;
-      if (!regexEmail.test(email)) errores.push("Correo inválido");
-      if (!password || password.length < 6) errores.push("La contraseña debe tener al menos 6 caracteres");
+
+      // Correo: letras+números, no más de 50 caracteres
+      const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
+      if (!regexEmail.test(email)) {
+        errores.push("El correo debe contener letras y números válidos.");
+      }
+      if (email.length > 50) {
+        errores.push("El correo no puede superar los 50 caracteres.");
+      }
+
+      // Contraseña: al menos 6 caracteres, letras y números
+      const regexPass = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+      if (!regexPass.test(password)) {
+        errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
+      }
+
+      // Edad, peso, altura > 0
+      if (age <= 0) errores.push("La edad debe ser mayor a 0.");
+      if (weight <= 0) errores.push("El peso debe ser mayor a 0.");
+      if (height <= 0) errores.push("La altura debe ser mayor a 0.");
+
       return errores;
     }
 
-    // Registro (simplificado)
+    // 📌 Check si correo existe
+    app.post("/checkEmail", async (req, res) => {
+      const { email } = req.body;
+      const [rows] = await db.query("SELECT id FROM user WHERE email = ?", [email]);
+      if (rows.length > 0) {
+        return res.json({ exists: true });
+      }
+      return res.json({ exists: false });
+    });
+
+    // 📌 Registro
     app.post("/registrar", async (req, res) => {
       const { name, email, password, height, weight, age } = req.body;
-      const errores = validarRegistro(email, password);
-      if (errores.length > 0) return res.status(400).json({ errores });
 
+      // Validaciones
+      const errores = validarRegistro(email, password, height, weight, age);
+      if (errores.length > 0) {
+        return res.status(400).json({ message: "Validación fallida", errores });
+      }
+
+      // Verificar si el correo ya existe
+      const [rows] = await db.query("SELECT id FROM user WHERE email = ?", [email]);
+      if (rows.length > 0) {
+        return res.status(400).json({ message: "El correo ya está registrado" });
+      }
+
+      // Guardar usuario
       const hash = await bcrypt.hash(password, 10);
       const query = "INSERT INTO user (name, email, password, height, weight, age) VALUES (?, ?, ?, ?, ?, ?)";
       await db.query(query, [name, email, hash, height, weight, age]);
+
       res.status(200).json({ message: "Usuario registrado exitosamente" });
     });
 
-    // Login
+    // 📌 Login
     app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+      const { email, password } = req.body;
 
-    console.log("📩 Email recibido:", email);
-    console.log("🔑 Password recibido:", password);
+      const [rows] = await db.query("SELECT * FROM user WHERE email = ?", [email]);
+      if (rows.length === 0) {
+        return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+      }
 
-    const [rows] = await db.query("SELECT * FROM user WHERE email = ?", [email]);
+      const usuario = rows[0];
+      const esValida = await bcrypt.compare(password, usuario.password);
 
-    if (rows.length === 0) {
-      console.log("❌ Usuario no encontrado");
-      return res.status(401).json({ message: "Correo o contraseña incorrectos" });
-    }
+      if (!esValida) {
+        return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+      }
 
-    const usuario = rows[0];
-    console.log("👤 Usuario encontrado:", usuario);
+      res.status(200).json({
+        message: "Login exitoso",
+        user: { id: usuario.id, name: usuario.name, email: usuario.email }
+      });
+    });
 
-    const esValida = await bcrypt.compare(password, usuario.password);
-    console.log("🔍 ¿Contraseña válida?", esValida);
-
-    if (!esValida) {
-      console.log("❌ Contraseña incorrecta");
-      return res.status(401).json({ message: "Correo o contraseña incorrectos" });
-    }
-
-    console.log("✅ Login exitoso");
-    res.status(200).json({
-    message: "Login exitoso",
-    user: { id: usuario.id, name: usuario.name, email: usuario.email }
-  });
-});
-
-    // Iniciar servidor
+    // 📌 Iniciar servidor
     app.listen(3000, () => {
       console.log("Servidor corriendo en http://localhost:3000");
     });
