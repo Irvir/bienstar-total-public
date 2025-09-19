@@ -78,7 +78,7 @@
     /* Ajustes de texto*/
     font-weight: bold;
     font-size: 50px;
-    padding-left: 70%;
+    padding-left: 0%;
     padding-top: 18%;
 }
 
@@ -102,7 +102,7 @@
     /* Ajustes de texto*/
     font-weight: bold;
     font-size: 50px;
-    padding-left: 70%;
+    padding-left: 0%;
     padding-top: 18%;
 }
 
@@ -125,8 +125,8 @@
     /* Ajustes de texto*/
     font-weight: bold;
     font-size: 50px;
-    padding-left: 60%;
-    padding-top: 18%;
+    padding-left: 0%;
+    padding-top: 10%;
 }
 
 .btn5:hover {

@@ -12,7 +12,8 @@ html, body {
     background-color: white;
 }
 
-#encabezado, #pie {
+#encabezado, #pie
+ {
     background-color: #931525;
     width: 100%;   
     height: 8%;   

@@ -28,6 +28,17 @@ async function iniciarServidor() {
     function validarRegistro(email, password, height, weight, age) {
       const errores = [];
 
+      // Convertir a número
+      age = Number(age);
+      weight = Number(weight);
+      height = Number(height);
+      height = Number(height);
+      if (height < 10) {
+              height = height * 100;
+      }
+
+
+
       // Correo: letras+números, no más de 50 caracteres
       const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
       if (!regexEmail.test(email)) {
@@ -44,13 +55,17 @@ async function iniciarServidor() {
       }
 
       // Edad, peso, altura > 0
-      if (age <= 0) errores.push("La edad debe ser mayor a 0.");
-      if (weight <= 0) errores.push("El peso debe ser mayor a 0.");
-      if (height <= 0) errores.push("La altura debe ser mayor a 0.");
+      if (age <= 15 || age >= 100) errores.push("La edad debe ser mayor a 15 y no puede superar los 100.");
+      if (weight <= 30 || weight >= 170) errores.push("El peso debe ser mayor a 30kg y no puede superar los 170kg.");
+      // Si viene en metros (menor que 10), convierto a cm
+      
+
+      if (height <= 80 || height >= 250) {
+        errores.push("La altura debe ser mayor a 80 cm y no puede superar los 2,50m.");
+      }
 
       return errores;
     }
-
     // 📌 Check si correo existe
     app.post("/checkEmail", async (req, res) => {
       const { email } = req.body;
@@ -81,6 +96,7 @@ async function iniciarServidor() {
       const hash = await bcrypt.hash(password, 10);
       const query = "INSERT INTO user (name, email, password, height, weight, age) VALUES (?, ?, ?, ?, ?, ?)";
       await db.query(query, [name, email, hash, height, weight, age]);
+      
 
       res.status(200).json({ message: "Usuario registrado exitosamente" });
     });
@@ -106,35 +122,6 @@ async function iniciarServidor() {
         user: { id: usuario.id, name: usuario.name, email: usuario.email }
       });
     });
-    app.get("/food/:id", async (req, res) => {
-      try {
-        const { id } = req.params;
-        const [rows] = await db.query(
-          "SELECT nombre, protein, total_lipid, carbohydrate, energy, total_sugars, calcium, iron, sodium, cholesterol FROM food WHERE id = ?",
-          [id]
-        );
-
-        if (rows.length > 0) {
-          res.json(rows[0]);
-        } else {
-          res.status(404).json({ error: "Alimento no encontrado" });
-        }
-      } catch (err) {
-        console.error(err); // imprime el error en la consola de Node
-        res.status(500).json({ error: "Error del servidor" });
-      }
-});
-    app.get("/test-food", async (req, res) => {
-    try {
-      const [rows] = await db.query("SELECT * FROM food LIMIT 1");
-      res.json(rows);
-    } catch (err) {
-      console.error("Error al consultar food:", err);
-      res.status(500).json({ error: "Error al consultar food" });
-    }
-});
-
-
 
     // 📌 Iniciar servidor
     app.listen(3000, () => {

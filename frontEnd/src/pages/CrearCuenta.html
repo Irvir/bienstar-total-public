@@ -22,7 +22,7 @@
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="login">
-                <button class="btnPerfilView">Nombre de Usuario</button>
+                 <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
             </div>
         </div>
         <div id="cuerpo" class="fondoLogin">
@@ -108,6 +108,19 @@
         });
     </script>
         <script src="/frontEnd/src/controllers/CrearCuenta.js"></script>
+    <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const usuarioGuardado = localStorage.getItem("usuario");
+
+                if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+                }
+            });
+        </script>
     
 </body>
 </html>

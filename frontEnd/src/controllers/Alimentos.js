@@ -54,3 +54,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+//Filtro
+// Selecciona el input del filtro
+const inputFiltro = document.getElementById("filtro");
+
+// Escucha cuando el usuario escribe
+inputFiltro.addEventListener("input", () => {
+    // Convierte el texto a minúsculas para hacer la búsqueda insensible a mayúsculas/minúsculas
+    const texto = inputFiltro.value.toLowerCase();
+
+    document.querySelectorAll(".grid-container .cuadro").forEach(cuadro => {
+        const nombreElem = cuadro.querySelector(".nombre");
+        if (!nombreElem) return;
+
+        const nombre = nombreElem.textContent.toLowerCase(); // nombre del alimento
+        // Si coincide con lo escrito, se muestra; si no, se oculta
+        if (nombre.includes(texto)) {
+            cuadro.style.display = "block";
+        } else {
+            cuadro.style.display = "none";
+        }
+    });
+});
