@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
+    <!-- CSS Global -->
+
+    <link rel="stylesheet" href="Base.css">
+    <!-- CSS Específico -->
     <link rel="stylesheet" href="Login.css">
 </head>
 <body>
@@ -15,22 +19,16 @@
             </div>
             <div class="menúBotones">
                 <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Aliementos</button>
+                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="login">
-                <button class="btnPerfilView">Nombre de Usuario</button>
+                <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
+
             </div>
         </div>
         <div id="cuerpo" class="fondoLogin">
             <div id="contenedorLoginAsist">
-
-            </div>
-            
-            <div id="contenedorLoginAsist">
-                <div id="contenedorLoginAsist2">
-
-                </div>
                 <div id="contenedorLogin">
                     <div id="contenedorLoginFoto">
                         
@@ -39,19 +37,33 @@
                         <form id="LoginForm">
                             <input type="text" id="email" placeholder="Correo electrónico" required>
                             <input type="password" id="password" placeholder="Contraseña" required>
+                            <br></br>
                             <button type="submit" id="botonIngresar">Ingresar</button>
                             <br>
                             <br>
-                            <button type="button" id="BtnCrearCuenta">Crear Cuenta</button>
-
+                            <button type="button" onclick="window.location.href='crearCuenta.html'" id="BtnCrearCuenta">Crear Cuenta</button>
                         </form>
-
+                        
                     </div>
                 </div>
             </div>
         </div>
         <div id="pie">
-            Pie de página
+            <div class="divAuxPie">
+                
+            </div>
+            <div class="divImagen">
+                <button class="instaBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="faceBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="youTubeBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="whatsBoton"></button>
+            </div>
         </div>
         <script>
             document.getElementById('BtnCrearCuenta').addEventListener('click', function() {
@@ -59,8 +71,22 @@
             });
         </script>
 
-        <script src="/BienStarTotal-3HombresYMedio/frontEnd/src/controllers/Login.js">
+        <script src="/frontEnd/src/controllers/Login.js">
             console.log("Cargando script de login...");</script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const usuarioGuardado = localStorage.getItem("usuario");
+
+                if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+                }
+            });
+        </script>
+
     </div>
 </body>
 </html>

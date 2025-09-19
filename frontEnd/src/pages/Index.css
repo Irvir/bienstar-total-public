@@ -1,0 +1,134 @@
+/*Division de la página en 50 50*/
+#contenedores {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+#secion1y2 {
+    width: 100%;
+    height: 50%;
+}
+
+#secion3-5 {
+    width: 100%;
+    height: 33.3%;
+}
+
+/* Los 5 botones principales del index */
+
+/* boton 1: Crear Horario Semanal */ 
+.btn1 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/CrearHorarioSemanal.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 40%;
+    padding-top: 25%;
+}
+
+.btn1:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+/* boton 2: Crear Dietas */ 
+.btn2 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Dietas.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 78%;
+    padding-top: 25%;
+}
+
+.btn2:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+/* boton 3: Calendario */ 
+.btn3 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Calendario.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 0%;
+    padding-top: 18%;
+}
+
+.btn3:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+/* boton 4: Alimentos */
+.btn4 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Alimentos.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 0%;
+    padding-top: 18%;
+}
+
+.btn4:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+/* boton 5: Tips para tu dieta */
+.btn5 {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/TipsParaTuDieta.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 0%;
+    padding-top: 10%;
+}
+
+.btn5:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}

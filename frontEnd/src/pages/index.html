@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- CSS Global -->
+
+    <link rel="stylesheet" href="Base.css">
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="Index.css">
 </head>
 <body>
     <div id="contenedorPrincipal">
@@ -15,12 +19,13 @@
                 <button class="btnLogo" onclick="window.location.href='index.html'"></button>
             </div>
             <div class="menúBotones">
-                <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Aliementos</button>
+                <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
+                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="login">
-                <button class="btnPerfilView">Nombre de Usuario</button>
+                <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
+
             </div>
         </div>
         <div id="cuerpo">
@@ -37,7 +42,7 @@
                     <button class="btn3" onclick="window.location.href='calendario.html'">Calendario</button>
                 </div>
                 <div id="secion3-5">
-                    <button class="btn4" onclick="window.location.href='alimentos.html'">Aliementos</button>
+                    <button class="btn4" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 </div>
                 <div id="secion3-5">
                     <button class="btn5" onclick="window.location.href='tipsParaTuDieta.html'">Tips para tu dieta</button>
@@ -45,8 +50,36 @@
             </div>
         </div>
         <div id="pie">
-            Pie de página
+            <div class="divAuxPie">
+                
+            </div>
+            <div class="divImagen">
+                <button class="instaBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="faceBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="youTubeBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="whatsBoton"></button>
+            </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioGuardado = localStorage.getItem("usuario");
+
+            if (usuarioGuardado) {
+            const usuario = JSON.parse(usuarioGuardado);
+            const nameUserSpan = document.querySelector(".nameUser");
+            if (nameUserSpan) {
+                nameUserSpan.textContent = usuario.name;
+            }
+            }
+        });
+    </script>
+
 </body>
 </html>
