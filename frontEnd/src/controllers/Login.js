@@ -40,7 +40,11 @@ async function handleLogin(e) {
       // ✅ Login exitoso
       alert(result.message);
       console.log("✅ Usuario:", result.user);
-      // Aquí se puede redirigir al usuario al inicio o cuenta
+      // Guardar usuario en localStorage
+      localStorage.setItem("usuario", JSON.stringify(result.user));
+
+      // Redirigir a inicio
+      window.location.href = "index.html";
       
     } else {
       // ❌ Mostrar mensajes claros del backend

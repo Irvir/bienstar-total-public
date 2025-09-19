@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="CrearCuenta" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
-    <link rel="stylesheet" href="Login.css">
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="Base.css">
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="CrearCuenta.css">
 </head>
 <body>
     <div id="contenedorPrincipal">
-        <!-- ` Aun no conectare esta página porque aun necesito aprender JS bien antes de comenzar, per es util tenerla lista ` -->
+
         <div id="encabezado">
             <div class="logo">
                 <button class="btnLogo" onclick="window.location.href='index.html'"></button>
@@ -19,7 +22,7 @@
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="login">
-                <button class="btnPerfilView">Nombre de Usuario</button>
+                 <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
             </div>
         </div>
         <div id="cuerpo" class="fondoLogin">
@@ -104,7 +107,20 @@
             window.location.href = "Login.html";
         });
     </script>
-        <script src="/BienStarTotal-3HombresYMedio/frontEnd/src/controllers/CrearCuenta.js"></script>
+        <script src="/frontEnd/src/controllers/CrearCuenta.js"></script>
+    <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const usuarioGuardado = localStorage.getItem("usuario");
+
+                if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+                }
+            });
+        </script>
     
 </body>
 </html>

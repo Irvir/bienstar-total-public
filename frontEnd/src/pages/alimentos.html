@@ -6,7 +6,7 @@
     <title>BienStarTotal</title>
     <!-- CSS Global -->
 
-    <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="Alimentos.css">
 </head>
@@ -20,62 +20,978 @@
             </div>
             <div class="menúBotones">
                 <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                <button class="btnMenuSelec">Aliementos</button>
-                <button class="btnMenu">Dietas</button>
+                <button class="btnMenuSelec">Alimentos</button>
+                <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="login">
-                <button class="btnPerfilView">Nombre de Usuario</button>
+                <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
             </div>
         </div>
         <div id="cuerpo">
             <div id="contenedorFiltro">
-                <div class="input-con-lupa">
-                     <input type="text" id="filtro" placeholder="Buscar alimento...">
-                     <img src="/frontEnd/Imagenes/Alimentos/Lupepng.png" id="lupe">
-                </div>
+                    <div id="lupe">
+
+                    </div>
+                    <div style="float: left; width: 95%; height: 100%; ">
+                        <input type="text" id="filtro" placeholder="Buscar alimento...">
+                    </div>
+                
             </div>
             <div id="contenedorAlimentos">
                 <div class="grid-container">
                     <div class="cuadro">
-                        <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgBanana">
-                        <br>
-                        <p id="textTittleFood">
-                            Banana
-                        </p>
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="32" id="textTittleFood">MANZANA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
                     </div>
                     <div class="cuadro">
-                        <img src="/frontEnd/Imagenes/Alimentos/Salmon.jpg" id="imgSalmon">
-                        <br>
-                        <p id="textTittleFood">
-                            Salmon
-                        </p>
+                       <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="32" id="textTittleFood">GUINEO</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
                     </div>
-                    <div class="cuadro">Contenido 3</div>
-                    <div class="cuadro">Contenido 4</div>
-                    <div class="cuadro">Contenido 5</div>
-                    <div class="cuadro">Contenido 6</div>
-                    <div class="cuadro">Contenido 7</div>
-                    <div class="cuadro">Contenido 8</div>
-                    <div class="cuadro">Contenido 9</div>
-                    <div class="cuadro">Contenido 10</div>
-                    <div class="cuadro">Contenido 11</div>
-                    <div class="cuadro">Contenido 12</div>
-                   <div class="cuadro">Contenido 8</div>
-                    <div class="cuadro">Contenido 9</div>
-                    <div class="cuadro">Contenido 10</div>
-                    <div class="cuadro">Contenido 11</div>
-                  
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="14" id="textTittleFood">POROTOS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                       <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="21" id="textTittleFood">POROTOS NEGROS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="25" id="textTittleFood">BROCOLI</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="42" id="textTittleFood">ARROZ INTEGRAL</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="22" id="textTittleFood">ZANAHORIA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="2" id="textTittleFood">PECHUGA DE POLLO </p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="13" id="textTittleFood">GARBANZOS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="48" id="textTittleFood">MAÍZ</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="50" id="textTittleFood">CUSCÚS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="30" id="textTittleFood">ENSALADA DE PEPINO HECHA CON PEPINO Y VINAGRE</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="6" id="textTittleFood">HUEVOS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="29" id="textTittleFood">AJO</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="37" id="textTittleFood">UVAS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="15" id="textTittleFood">GUISANTES</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="10" id="textTittleFood">FILETES DE MERLUZA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="19" id="textTittleFood">HUMMUS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="38" id="textTittleFood">KIWI</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="4" id="textTittleFood">CARNE DE RES MAGRA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="41" id="textTittleFood">LIMÓN</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="12" id="textTittleFood">LENTEJAS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="26" id="textTittleFood">LECHUGA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="39" id="textTittleFood">MANGO</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="43" id="textTittleFood">AVENA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="28" id="textTittleFood">CEBOLLA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="34" id="textTittleFood">NARANJA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="35" id="textTittleFood">PERA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="27" id="textTittleFood">PIMIENTOS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="40" id="textTittleFood">PIÑA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="11" id="textTittleFood">YOGUR NATURAL</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="5" id="textTittleFood">CERDO</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="46" id="textTittleFood">HAMBURGUESA DE PAPA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="17" id="textTittleFood">QUINOA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="8" id="textTittleFood">SALMÓN</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="9" id="textTittleFood">SARDINAS</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="24" id="textTittleFood">ESPINACA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="36" id="textTittleFood">FRESA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="47" id="textTittleFood">BATATA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="20" id="textTittleFood">TEMPE</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="18" id="textTittleFood">PROTEÍNA DE SOJA TEXTURIZADA</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="16" id="textTittleFood">TOFU</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="23" id="textTittleFood">TOMATE</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="7" id="textTittleFood">ATÚN</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="3" id="textTittleFood">PAVO</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="44" id="textTittleFood">PAN DE TRIGO ENTERO</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="51" id="textTittleFood">HARINA DE TRIGO INTEGRAL</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="45" id="textTittleFood">PASTA DE TRIGO INTEGRAL</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="49" id="textTittleFood">TORTILLAS DE TRIGO INTEGRAL</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                         <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-alimento-id="31" id="textTittleFood">CALABACÍN</p>
+                            <div class="infoNutricional" >
+                                <p>Proteína: <span class="protein"></span> G</p>
+                                <p>Lipidos Totales <span class="total_lipid"></span></p>
+                                <p>Carbohidratos: <span class="carbohydrate"></span> G</p>
+                                <p>Energia: <span class="energy"></span> G</p>
+                                <p>Azucares Totales: <span class="total_sugars"></span> G</p>
+                                <p>Calcio: <span class="calcium"></span> G</p>
+                                <p>Hierro: <span class="iron"></span> G</p>
+                                <p>Sodio: <span class="sodium"></span> MG</p>
+                                <p>Colesterol: <span class="cholesterol"></span> KCAL</p>
+                            </div>
+                        </button>
+                    </div>
 
                 </div>
+                
 
                 
 
             </div>
             <div id="pie">
-            Pie de página
+            <div class="divAuxPie">
+                
+            </div>
+            <div class="divImagen">
+                <button class="instaBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="faceBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="youTubeBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="whatsBoton"></button>
+            </div>
         </div>
         </div>
         
     </div>
+        <!-- Modal -->
+    <div id="modalAlimento" class="modal">
+    <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImg" src="" alt="Alimento">
+            <h2 id="modalNombre"></h2> <!-- Nombre del alimento -->
+            <p id="modalInfo"></p>       <!-- Descripción del alimento -->
+        </div>
+    </div>
+    <script src="../controllers/Alimentos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioGuardado = localStorage.getItem("usuario");
+
+            if (usuarioGuardado) {
+            const usuario = JSON.parse(usuarioGuardado);
+            const nameUserSpan = document.querySelector(".nameUser");
+            if (nameUserSpan) {
+                nameUserSpan.textContent = usuario.name;
+            }
+            }
+        });
+    </script>
+
 </body>
 </html>

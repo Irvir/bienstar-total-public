@@ -63,9 +63,30 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
     const result = await response.json();
 
-    if (response.ok) {
-      console.log("✅ Registro exitoso:", result);
-      alert(result.message);
+ 
+      if (response.ok) {
+        console.log("✅ Registro exitoso:", result);
+        alert(result.message);
+
+      // 🔹 Auto-login directo
+      const loginRes = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email, password: data.password })
+      });
+
+      const loginResult = await loginRes.json();
+
+      if (loginRes.ok) {
+        localStorage.setItem("usuario", JSON.stringify(loginResult.user));
+        window.location.href = "index.html"; // Ir directo al inicio con sesión iniciada
+      } else {
+        // Si falla autologin, redirige a login manual
+        window.location.href = "login.html";
+      }
+    }
+
+      
     } else {
       console.error("🚫 Error en registro:", result);
 
