@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
+    <!-- CSS Global -->
+
+    <link rel="stylesheet" href="Base.css">
+    <!-- CSS Específico -->
     <link rel="stylesheet" href="Login.css">
 </head>
 <body>
@@ -24,13 +28,6 @@
         </div>
         <div id="cuerpo" class="fondoLogin">
             <div id="contenedorLoginAsist">
-
-            </div>
-            
-            <div id="contenedorLoginAsist">
-                <div id="contenedorLoginAsist2">
-
-                </div>
                 <div id="contenedorLogin">
                     <div id="contenedorLoginFoto">
                         
@@ -39,19 +36,33 @@
                         <form id="LoginForm">
                             <input type="text" id="email" placeholder="Correo electrónico" required>
                             <input type="password" id="password" placeholder="Contraseña" required>
+                            <br></br>
                             <button type="submit" id="botonIngresar">Ingresar</button>
                             <br>
                             <br>
-                            <button type="button" id="BtnCrearCuenta">Crear Cuenta</button>
-
+                            <button type="button" onclick="window.location.href='crearCuenta.html'" id="BtnCrearCuenta">Crear Cuenta</button>
                         </form>
-
+                        
                     </div>
                 </div>
             </div>
         </div>
         <div id="pie">
-            Pie de página
+            <div class="divAuxPie">
+                
+            </div>
+            <div class="divImagen">
+                <button class="instaBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="faceBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="youTubeBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="whatsBoton"></button>
+            </div>
         </div>
         <script>
             document.getElementById('BtnCrearCuenta').addEventListener('click', function() {

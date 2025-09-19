@@ -6,7 +6,7 @@
     <title>BienStarTotal</title>
     <!-- CSS Global -->
 
-    <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="Alimentos.css">
 </head>
@@ -21,50 +21,118 @@
             <div class="menúBotones">
                 <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
                 <button class="btnMenuSelec">Aliementos</button>
-                <button class="btnMenu">Dietas</button>
+                <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="login">
-                <button class="btnPerfilView">Nombre de Usuario</button>
+                <button class="btnPerfilView" onclick="window.location.href='login.html'">Nombre de Usuario</button>
             </div>
         </div>
         <div id="cuerpo">
             <div id="contenedorFiltro">
-                <div class="input-con-lupa">
-                     <input type="text" id="filtro" placeholder="Buscar alimento...">
-                     <img src="/frontEnd/Imagenes/Alimentos/Lupepng.png" id="lupe">
-                </div>
+                    <div id="lupe">
+
+                    </div>
+                    <div style="float: left; width: 95%; height: 100%; ">
+                        <input type="text" id="filtro" placeholder="Buscar alimento...">
+                    </div>
+                
             </div>
             <div id="contenedorAlimentos">
                 <div class="grid-container">
                     <div class="cuadro">
-                        <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgBanana">
-                        <br>
-                        <p id="textTittleFood">
-                            Banana
-                        </p>
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Banana.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-info="La banana es rica en potasio y vitaminas." id="textTittleFood">
+                                Banana
+                            </p>
+                        </button>
                     </div>
                     <div class="cuadro">
-                        <img src="/frontEnd/Imagenes/Alimentos/Salmon.jpg" id="imgSalmon">
-                        <br>
-                        <p id="textTittleFood">
-                            Salmon
-                        </p>
+                        <button class="botonAlimento">
+                            <img src="/frontEnd/Imagenes/Alimentos/Salmon.jpg" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-info="El salmón contiene omega 3 y proteínas esenciales." id="textTittleFood">
+                                Salmón
+                            </p>
+                        </button>
                     </div>
-                    <div class="cuadro">Contenido 3</div>
-                    <div class="cuadro">Contenido 4</div>
-                    <div class="cuadro">Contenido 5</div>
-                    <div class="cuadro">Contenido 6</div>
-                    <div class="cuadro">Contenido 7</div>
-                    <div class="cuadro">Contenido 8</div>
-                    <div class="cuadro">Contenido 9</div>
-                    <div class="cuadro">Contenido 10</div>
-                    <div class="cuadro">Contenido 11</div>
-                    <div class="cuadro">Contenido 12</div>
-                   <div class="cuadro">Contenido 8</div>
-                    <div class="cuadro">Contenido 9</div>
-                    <div class="cuadro">Contenido 10</div>
-                    <div class="cuadro">Contenido 11</div>
-                  
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            <img src="/Ubicacion de la imagen" id="imgAlimento">
+                            <br>
+                            <p class="nombre" data-info="Infromacion del alimento" id="textTittleFood">
+                                Nombre del alimento en está parte
+                            </p>
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 4
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 5
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 6
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 7
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 8
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 9
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 10
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 11
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 12
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 13
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 14
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 15
+                        </button>
+                    </div>
+                    <div class="cuadro">
+                        <button class="botonAlimento">
+                            Contenido 16
+                        </button>
+                    </div>
+
+                
 
                 </div>
 
@@ -72,10 +140,34 @@
 
             </div>
             <div id="pie">
-            Pie de página
+            <div class="divAuxPie">
+                
+            </div>
+            <div class="divImagen">
+                <button class="instaBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="faceBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="youTubeBoton"></button>
+            </div>
+            <div class="divImagen2">
+                <button class="whatsBoton"></button>
+            </div>
         </div>
         </div>
         
     </div>
+        <!-- Modal -->
+    <div id="modalAlimento" class="modal">
+    <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImg" src="" alt="Alimento">
+            <h2 id="modalNombre"></h2> <!-- Nombre del alimento -->
+            <p id="modalInfo"></p>       <!-- Descripción del alimento -->
+        </div>
+    </div>
+    <script src="../controllers/Alimentos.js"></script>
 </body>
 </html>

@@ -1,0 +1,195 @@
+/*Todo lo realcionado a las bases de la página*/
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor de la página, esta dividido en 3*/
+#contenedorPrincipal {
+    width: 100%;   
+    height: 100%;
+    background-color: white;
+}
+
+#encabezado, #pie {
+    background-color: #931525;
+    width: 100%;   
+    height: 8%;   
+}
+
+#cuerpo {
+    width: 100%;   
+    height: 84%;   
+}
+
+/* Botones menú principal */
+
+/* Boton seleccionado */
+.btnMenuSelec {
+    width: 33.3%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    color: white; 
+    background-color: #6F0E1A;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4);
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.btnMenuSelec:hover {
+    opacity: 0.8;
+}
+
+/* Boton Logo */
+.logo {
+    width: 10%;
+    height: 100%;
+    float: left;
+}
+
+.btnLogo {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../../Imagenes/Login_Perfil/Logo.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    /*box-shadow: 2px 4px 8px rgba(0,0,0,0.4);  sombra para que resalte */
+    /* Crear ajustes de texto */
+}
+
+.btnLogo:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+/* Botones centro del menú */
+
+.menúBotones {
+    width: 76%;
+    height: 100%;
+    float: left;
+}
+
+.btnMenu {
+    width: 33%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    color: white; 
+    background-color: #931525;
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Boton de login */
+
+.login {
+    width: 14%;
+    height: 100%;
+    float: left;
+}
+
+.btnPerfilView {
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../../Imagenes/Login_Perfil/PerfilView.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    /*box-shadow: 2px 4px 8px rgba(0,0,0,0.4);  sombra para que resalte */
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+    padding-right: 30%;
+}
+
+/* pie de página */
+
+.divAuxPie {
+    width: 100%;
+    height: 10%;
+
+}
+
+.divImagen {
+    width: 4%;
+    height: 86%;
+    padding-left: 84%;
+    background-size: cover;   
+    float: left;
+}
+
+.divImagen2 {
+    width: 4%;
+    height: 90%;
+    background-size: cover;   
+    float: left;
+}
+
+.instaBoton {
+    width: 65%;
+    height: 75%;
+    background-image: url("../../Imagenes/Pie_Pagina/InstaLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.instaBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.faceBoton {
+    width: 63%;
+    height: 68%;
+    background-image: url("../../Imagenes/Pie_Pagina/FaceLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.faceBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.youTubeBoton {
+    width: 80%;
+    height: 65%;
+    background-image: url("../../Imagenes/Pie_Pagina/YouTubeLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.youTubeBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
+
+.whatsBoton {
+    width: 60%;
+    height: 68%;
+    background-image: url("../../Imagenes/Pie_Pagina/WhatsLogo.png");
+    background-size: cover;           
+    background-position: center; 
+    border: none;
+    outline: none;
+}
+
+.whatsBoton:hover {
+    opacity: 0.8;                     /* efecto al pasar el mouse */
+}
