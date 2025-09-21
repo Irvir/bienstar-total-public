@@ -45,7 +45,7 @@ html, body {
 }
 
 #contenedorAlimentos {
-    padding-bottom: 38%; /* espacio suficiente para que no se tape */ /* Con ajustar este % se baja tambien el div del pie de página, si se agregan más alimentos se debe aumentar el % */
+    padding-bottom: 70%; /* espacio suficiente para que no se tape */ /* Con ajustar este % se baja tambien el div del pie de página, si se agregan más alimentos se debe aumentar el % */
 }
 
 .grid-container {
@@ -56,6 +56,8 @@ html, body {
        /* espacio entre cuadros */
     gap: 5%;                          
     padding: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 
@@ -63,13 +65,14 @@ html, body {
     background-color: white;
     border-radius: 10px;
     text-align: center;
-    height: 200px;
+    width: 100%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(4, 4, 4, 4);
     cursor: pointer;             /* se vea clickeable */
     transition: transform 0.2s;
 }

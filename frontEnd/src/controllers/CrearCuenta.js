@@ -63,10 +63,9 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
     const result = await response.json();
 
- 
-      if (response.ok) {
-        console.log("✅ Registro exitoso:", result);
-        alert(result.message);
+    if (response.ok) {
+      console.log("✅ Registro exitoso:", result);
+      alert(result.message);
 
       // 🔹 Auto-login directo
       const loginRes = await fetch("http://localhost:3000/login", {
@@ -84,9 +83,6 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
         // Si falla autologin, redirige a login manual
         window.location.href = "login.html";
       }
-    }
-
-      
     } else {
       console.error("🚫 Error en registro:", result);
 
@@ -96,10 +92,11 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       } else {
         alert("❌ Error: " + (result.message || "No se pudo registrar"));
       }
-    };
+    }
 
   } catch (error) {
     console.error("💥 Error en la conexión:", error);
     alert("Error en la conexión con el servidor");
   }
 });
+
