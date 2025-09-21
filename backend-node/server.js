@@ -122,6 +122,24 @@ async function iniciarServidor() {
         user: { id: usuario.id, name: usuario.name, email: usuario.email }
       });
     });
+    // 📌 Obtener datos nutricionale
+    // 📌 Ruta para obtener info de alimentos por ID
+      app.get("/food/:id", async (req, res) => {
+        try {
+          const { id } = req.params;
+          const [rows] = await db.query("SELECT * FROM food WHERE id = ?", [id]);
+
+          if (rows.length === 0) {
+            return res.status(404).json({ message: "Alimento no encontrado" });
+          }
+
+          res.json(rows[0]);
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ message: "Error en el servidor" });
+        }
+});
+
 
     // 📌 Iniciar servidor
     app.listen(3000, () => {
