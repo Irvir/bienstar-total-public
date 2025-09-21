@@ -26,8 +26,53 @@
 
             </div>
             <div class="login">
-                <button class="btnPerfilView" onclick="window.location.href='login.html'">Nombre de Usuario</button>
+                <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
+                <button class="btnPerfilView" onclick="window.location.href='login.html'">
+                    <span class="nameUser">Nombre de Usuario</span>
+                </button>
+                <!-- Imagen Foto User -->
+                <div id="contenedorLoginFotoUser" class="fotoUsuario">
+                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario">
+                    <!-- Menú desplegable -->
+                    <div id="menuDesplegable" class="menuDesplegable">
+                        <button class="opcionMenu" onclick="window.location.href='Login.html'">Ver Perfil</button>
+                        <!-- Cerrar sesion-->
+            
+                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
+                        <script>
+                            // Selecciona la imagen y el menú desplegable
+                            const fotoUsuario = document.getElementById("fotoUsuario");
+                            const menuDesplegable = document.getElementById("menuDesplegable");
+
+                            // Agrega un evento de clic a la imagen
+                            fotoUsuario.addEventListener("click", () => {
+                                // Alterna la visibilidad del menú
+                                if (menuDesplegable.style.display === "block") {
+                                    menuDesplegable.style.display = "none";
+                                } else {
+                                    menuDesplegable.style.display = "block";
+                                }
+                            });
+
+                            // Cierra el menú si se hace clic fuera de él
+                            document.addEventListener("click", (event) => {
+                                if (!menuDesplegable.contains(event.target) && event.target !== fotoUsuario) {
+                                    menuDesplegable.style.display = "none";
+                                }
+                            });
+                            // Maneja el cierre de sesión
+                            const logoutButton = document.getElementById("logoutButton");
+                            logoutButton.addEventListener("click", () => {
+                                // Limpia el almacenamiento local y redirige al usuario a la página de inicio de sesión
+                                localStorage.removeItem("usuario");
+                                window.location.href = "login.html"; // Redirige a la página de inicio de sesión
+                            });
+
+                        </script>
+                    </div>
+                </div>
             </div>
+           
         </div>
         <div id="cuerpo">
             

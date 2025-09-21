@@ -12,7 +12,7 @@ async function iniciarServidor() {
     const db = await mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "1237654", //clave de base de datos
+      password: "Mar.23012006t", //clave de base de datos
       database: "login"
     });
 
@@ -127,7 +127,7 @@ async function iniciarServidor() {
       app.get("/food/:id", async (req, res) => {
         try {
           const { id } = req.params;
-          const [rows] = await db.query("SELECT * FROM food WHERE id = ?", [id]);
+          const [rows] = await db.query("SELECT * FROM food` WHERE id = ?", [id]);
 
           if (rows.length === 0) {
             return res.status(404).json({ message: "Alimento no encontrado" });

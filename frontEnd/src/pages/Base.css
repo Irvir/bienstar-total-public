@@ -120,14 +120,14 @@ html, body {
 }
 
 .btnPerfilView {
-    width: 100%;                     /* ancho del botón */
+    width: 50%;                     /* ancho del botón */
     height: 100%;                     /* alto del botón */
     border: none;                     /* sin borde */
     color: white;                     /* color del texto */
     font-size: 18px;                  /* tamaño de la fuente */
     font-weight: bold;
     cursor: pointer;
-    background-image: url("../../Imagenes/Login_Perfil/PerfilView.png");  /* aquí tu imagen */
+    background-color: #931525;
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center;      /* centra la imagen */
     /*box-shadow: 2px 4px 8px rgba(0,0,0,0.4);  sombra para que resalte */
@@ -136,7 +136,60 @@ html, body {
     font-size: 20px;
     padding-right: 30%;
 }
+#fotoUsuario {
+    width: 100%;
+    /* Ajusta al ancho del contenedor */
+    height: auto;
+    /* Mantiene la proporción de la imagen */
+    border-radius: 50%;
+    /* Opcional: para hacerla circular */
+}
+.fotoUsuario {
+    position: absolute;
+    /* Cambia la posición a absoluta */
+    top: -0px;
+    /* Ajusta la distancia desde la parte superior */
+    right: 10px;
+    /* Ajusta la distancia desde la derecha */
+    width: 90px;
+    /* Tamaño de la imagen */
+    height: 90px;
+    /* Tamaño de la imagen */
+    border-radius: 50%;
+    /* Opcional: para hacerla circular */
+}
+/* Contenedor del menú desplegable */
+.menuDesplegable {
+    display: none;
+    /* Oculto por defecto */
+    position: absolute;
+    top: 110%;
+    /* Ajusta la posición debajo de la imagen */
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    /* Asegura que esté por encima de otros elementos */
+    width: 150px;
+}
 
+/* Opciones del menú */
+.opcionMenu {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.opcionMenu:hover {
+    background-color: #f0f0f0;
+}
 /* pie de página */
 
 .divAuxPie {
