@@ -14,9 +14,16 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
   let errores = [];
 
   // Email
-  const emailRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
+  const emailRegex = /^[a-zA-Z\d._-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+  const localPart = data.email.split("@")[0];
+  const letras = (localPart.match(/[a-zA-Z]/g) || []).length;
+  const numeros = (localPart.match(/\d/g) || []).length;
+
+  if (letras < 4 || numeros < 1) {
+    errores.push("El correo debe tener al menos 4 letras y 1 número antes del @.");
+  }
   if (!emailRegex.test(data.email)) {
-    errores.push("El correo debe contener letras y números válidos.");
+    errores.push("El correo debe tener un formato válido.");
   }
   if (data.email.length > 50) {
     errores.push("El correo no puede superar los 50 caracteres.");
