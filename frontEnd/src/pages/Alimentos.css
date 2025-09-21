@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
 }
+
 #contenedorPrincipal {
     width: 100%;
     min-height: 100vh; /* altura mínima para cubrir toda la pantalla */
@@ -12,6 +13,7 @@ html, body {
     padding-bottom: 0%;
     background-color: white;
 }
+
 #contenedorFiltro {
     width: 100%;
     height: 6.5%;
@@ -43,7 +45,7 @@ html, body {
 }
 
 #contenedorAlimentos {
-    padding-bottom: 250px; /* espacio suficiente para que no se tape */
+    padding-bottom: 38%; /* espacio suficiente para que no se tape */ /* Con ajustar este % se baja tambien el div del pie de página, si se agregan más alimentos se debe aumentar el % */
 }
 
 .grid-container {

@@ -25,14 +25,11 @@
 
             </div>
             <div class="login">
-                 <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
+                <button class="btnPerfilView" onclick="window.location.href='login.html'"><span class="nameUser">Nombre de Usuario</span></button>
             </div>
         </div>
         <div id="cuerpo" class="fondoLogin">
-            <div id="contenedorLoginAsist3" style="padding-left: 10%;">
-                <div id="contenedorLoginAsist4">
-                
-                </div>
+            <div id="contenedorLoginAsist3">
                 <div id="contenedorLogin2">
                     <div style="width: 33%; height: 100%; float: left;">
                         <div class="contendorLoginFotoCrearUserAsist">
@@ -48,8 +45,7 @@
                                 Nombre:
                                 <input type="name" id="name" placeholder="Nombre" required>
                             </div>
-                      
-                
+                            <!-- en esta parte debería estar el apellido, al parecer l quitaron, debo preguntar -->
                             <div class="divEdadPesoAlt">
                                 <div class="edadPesoAlt">
                                     Edad:
@@ -64,24 +60,27 @@
                                     <input type="number" id="height" placeholder="Escriba su altura" required step="any">
                                 </div>
                             </div>
-                            <div class="divNom">
+                            <div class="divCorreo">
                                 Correo electrónico:
                                 <input type="text" id="email" placeholder="Escriba su correo electrónico" required>
                             </div>
-                           
-                            <div class="divNom">
+                            
+                            <div class="divCorreo">
                                 Contraseña:
                                 <input type="password" id="password" placeholder="Contraseña" required>
                             </div>
-                           
-                            <button type="submit">Crear Cuenta</button>
+                            <br>
+                            <button type="submit" class="buttonCrearIniciarSesion">
+                                Crear Cuenta
+                            </button>
                             <br>
                             
                         </form>
                         <p id="resultado"></p>
                         
-                       <button id="btnIniciarSesion" type="submit">Iniciar Sesion
-                       </button>
+                        <button class="buttonCrearIniciarSesion" id="btnIniciarSesion" type="submit" onclick="window.location.href='login.html'" >
+                            Iniciar Sesion
+                        </button>
                         
                     </div>
                 </div>
