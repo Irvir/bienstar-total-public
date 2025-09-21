@@ -77,6 +77,27 @@ html, body {
     width: 76%;
     height: 100%;
     float: left;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+
+}
+#btnNotification{
+    width: 25%;                     /* ancho del botón */
+    height: 75%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("../assets/Notificacion.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+
+    font-weight: bold;
+    font-size: 50px;
+    padding-left: 0%;
+    padding-top: 0%;
 }
 
 .btnMenu {

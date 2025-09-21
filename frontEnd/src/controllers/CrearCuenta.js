@@ -96,7 +96,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       } else {
         alert("❌ Error: " + (result.message || "No se pudo registrar"));
       }
-    }
+    };
 
   } catch (error) {
     console.error("💥 Error en la conexión:", error);
