@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="CrearCuenta" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
     <!-- CSS Global -->
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
-    <link rel="stylesheet" href="CrearCuenta.css">
+    <link rel="stylesheet" href="Perfil.css">
 </head>
 <body>
     <div id="contenedorPrincipal">
@@ -75,64 +75,75 @@
                 </div>
             </div>
         </div>
-        <div id="cuerpo" class="fondoLogin">
-            <div id="contenedorLoginAsist3">
-                <div id="contenedorLogin2">
-                    <div style="width: 33%; height: 100%; float: left;">
-                        <div class="contendorLoginFotoCrearUserAsist" style="font-family: Arial, Helvetica, sans-serif;">
-                            Rellene los datos solicitados:
+
+
+        <div id="cuerpo">
+            <div id="divMenuLateral">
+                <button class="botonesPerfilSelec">PERFIL</button>
+                <button class="botonesPerfil">MI DIETA</button>
+                <button class="botonesPerfil">CALENDARIO</button>
+            </div>
+            
+            <div id="divInfoUser">
+                <div id="contenedorInfoSesion">
+                    <div id="contenedorInfo">
+                        <div id="tituloInfo">
+                            Información de usuario:
                         </div>
-                        <div class="contendorLoginFotoCrearUser">
-                            
+                        <div style="width: 100%; height: 80%;">
+                            <div style= "width: 100%; height: 10%;">
+                                <div class="info">
+                                        Nombre:
+                                </div>
+                                <div class="cuadroTexto">
+                                        Nombre del usuario aquí
+                                </div>
+                            </div>
+                            <div style="width: 100%; height: 10%;">
+                                <div class="info">
+                                        Edad:
+                                </div>
+                                <div class="edadPesoAlt">
+                                        Edad del usuario aquí
+                                </div>
+                            </div>
+                            <div style="width: 100%; height: 10%;">
+                                <div class="info">
+                                        Peso:
+                                </div>
+                                <div class="edadPesoAlt">
+                                        Peso del usuario aquí
+                                </div>
+                            </div>
+                            <div style="width: 100%; height: 10%;">
+                                <div class="info">
+                                        Altura:
+                                </div>
+                                <div class="edadPesoAlt">
+                                        Altura del usuario aquí
+                                </div>
+                            </div>
+                            <div style="width: 100%; height: 10%;">
+                                <div class="info">
+                                        Correo:
+                                </div>
+                                <div class="cuadroTexto">
+                                        Correo del usuario aquí (censurado) 
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="contenedorLoginDatosUser">
-                        <form id="CrearCuentaForm" >
-                            <div class="divNom">
-                                Nombre:
-                                <input type="name" id="name" placeholder="Nombre" required>
-                            </div>
-                            <!-- en esta parte debería estar el apellido, al parecer l quitaron, debo preguntar -->
-                            <div class="divEdadPesoAlt">
-                                <div class="edadPesoAlt">
-                                    Edad:
-                                    <input type="number" id="age" placeholder="Escriba su edad" required>
-                                </div>
-                                <div class="edadPesoAlt">
-                                    Peso (KG):
-                                    <input type="number" id="weight" placeholder="Escriba su peso" required step="any">
-                                </div>
-                                <div class="edadPesoAlt">
-                                    Altura (CM):
-                                    <input type="number" id="height" placeholder="Escriba su altura" required step="any">
-                                </div>
-                            </div>
-                            <div class="divCorreo">
-                                Correo electrónico:
-                                <input type="text" id="email" placeholder="Escriba su correo electrónico" required>
-                            </div>
+                    <div id="contenedorCerrarSesion">
+                        <div id="imagenUser">
                             
-                            <div class="divCorreo">
-                                Contraseña:
-                                <input type="password" id="password" placeholder="Contraseña" required>
-                            </div>
-                            
-                            <br>
-                            <button type="submit" class="buttonCrearIniciarSesion">
-                                Crear Cuenta
-                            </button>
-                            <br>
-                            
-                        </form>
-                        <p id="resultado"></p>
-                        
-                        <button class="buttonCrearIniciarSesion" id="btnIniciarSesion" type="submit" onclick="window.location.href='login.html'" >
-                            Iniciar Sesion
-                        </button>
-                        
+                        </div>
+                        <button id="cerrarSesion">CERRAR SESIÓN</button>
                     </div>
                 </div>
             </div>
+            
+
+
         </div>
         <div id="pie">
             <div class="divAuxPie">
@@ -152,26 +163,5 @@
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById("btnIniciarSesion").addEventListener("click", function() {
-            window.location.href = "Login.html";
-        });
-    </script>
-        <script src="/frontEnd/src/controllers/CrearCuenta.js"></script>
-    <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const usuarioGuardado = localStorage.getItem("usuario");
-
-                if (usuarioGuardado) {
-                const usuario = JSON.parse(usuarioGuardado);
-                const nameUserSpan = document.querySelector(".nameUser");
-                if (nameUserSpan) {
-                    nameUserSpan.textContent = usuario.name;
-                }
-                }
-            });
-        </script>
-    
 </body>
 </html>
-

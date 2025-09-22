@@ -73,26 +73,22 @@ html, body {
 /* Botones centro del menú */
 
 .menúBotones {
-    width: 76%;
+    width: 70%;
     height: 100%;
     float: left;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    
-
 }
+
 #btnNotification{
-    width: 25%;                     /* ancho del botón */
-    height: 75%;                     /* alto del botón */
+    width: 100%;                     /* ancho del botón */
+    height: 70%;                     /* alto del botón */
     border: none;                     /* sin borde */
-    color: white;                     /* color del texto */
     font-weight: bold;
     cursor: pointer;
-    background-image: url("../assets/Notificacion.png");  /* aquí tu imagen */
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center;      /* centra la imagen */
-
     font-weight: bold;
     font-size: 50px;
     padding-left: 0%;
@@ -100,7 +96,19 @@ html, body {
 }
 
 .btnMenu {
-    width: 33%;
+    width: 40%;
+    height: 100%;
+    border: none;
+    cursor: pointer;
+    color: white; 
+    background-color: #931525;
+    /* Ajustes de texto*/
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.btnMenuNoti {
+    width: 5%;
     height: 100%;
     border: none;
     cursor: pointer;
@@ -114,50 +122,31 @@ html, body {
 /* Boton de login */
 
 .login {
-    width: 14%;
+    width: 20%;
     height: 100%;
     float: left;
 }
 
 .btnPerfilView {
-    width: 50%;                     /* ancho del botón */
+    width: 100%;                     /* ancho del botón */
     height: 100%;                     /* alto del botón */
     border: none;                     /* sin borde */
     color: white;                     /* color del texto */
-    font-size: 18px;                  /* tamaño de la fuente */
+    font-size: 20px;                  /* tamaño de la fuente */
     font-weight: bold;
     cursor: pointer;
     background-color: #931525;
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center;      /* centra la imagen */
     /*box-shadow: 2px 4px 8px rgba(0,0,0,0.4);  sombra para que resalte */
-    /* Ajustes de texto*/
-    font-weight: bold;
-    font-size: 20px;
-    padding-right: 30%;
 }
+
 #fotoUsuario {
-    width: 100%;
-    /* Ajusta al ancho del contenedor */
-    height: auto;
-    /* Mantiene la proporción de la imagen */
-    border-radius: 50%;
-    /* Opcional: para hacerla circular */
+    width: 80px;
+    margin-top: 15%;
+    margin-left: 20%;
 }
-.fotoUsuario {
-    position: absolute;
-    /* Cambia la posición a absoluta */
-    top: -0px;
-    /* Ajusta la distancia desde la parte superior */
-    right: 10px;
-    /* Ajusta la distancia desde la derecha */
-    width: 90px;
-    /* Tamaño de la imagen */
-    height: 90px;
-    /* Tamaño de la imagen */
-    border-radius: 50%;
-    /* Opcional: para hacerla circular */
-}
+
 /* Contenedor del menú desplegable */
 .menuDesplegable {
     display: none;

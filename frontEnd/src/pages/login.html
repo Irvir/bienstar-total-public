@@ -12,7 +12,8 @@
 </head>
 <body>
     <div id="contenedorPrincipal">
-        <!-- ` Aun no conectare esta página porque aun necesito aprender JS bien antes de comenzar, per es util tenerla lista ` -->
+
+    
         <div id="encabezado">
             <div class="logo">
                 <button class="btnLogo" onclick="window.location.href='index.html'"></button>
@@ -21,51 +22,55 @@
                 <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
                 <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenu" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
+                <button class="btnMenuNoti" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
+
             </div>
             <div class="login">
                 <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
-                <button class="btnPerfilView" onclick="window.location.href='login.html'">
-                    <span class="nameUser">Nombre de Usuario</span>
-                </button>
+                <div style="float: left; height: 100%; width: 75%;">
+                    <button class="btnPerfilView" onclick="window.location.href='login.html'">
+                            <span class="nameUser">Nombre de Usuario</span>
+                    </button>
+                </div>
+                <div style="float: left; width: 10%; height: 100%;"><img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario">
+                </div>
                 <!-- Imagen Foto User -->
-                <div id="contenedorLoginFotoUser" class="fotoUsuario">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario">
+                <div id="contenedorLoginFotoUser">
                     <!-- Menú desplegable -->
                     <div id="menuDesplegable" class="menuDesplegable">
                         <button class="opcionMenu" onclick="window.location.href='Login.html'">Ver Perfil</button>
-                        <button class="opcionMenu" onclick="window.location.href='index.html'">Ajustes</button>
                         <!-- Cerrar sesion-->
-
+            
                         <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
                         <script>
                             // Selecciona la imagen y el menú desplegable
-                                const fotoUsuario = document.getElementById("fotoUsuario");
-                                const menuDesplegable = document.getElementById("menuDesplegable");
+                            const fotoUsuario = document.getElementById("fotoUsuario");
+                            const menuDesplegable = document.getElementById("menuDesplegable");
 
-                                // Agrega un evento de clic a la imagen
-                                fotoUsuario.addEventListener("click", () => {
-                                    // Alterna la visibilidad del menú
-                                    if (menuDesplegable.style.display === "block") {
-                                        menuDesplegable.style.display = "none";
-                                    } else {
-                                        menuDesplegable.style.display = "block";
-                                    }
-                                });
+                            // Agrega un evento de clic a la imagen
+                            fotoUsuario.addEventListener("click", () => {
+                                // Alterna la visibilidad del menú
+                                if (menuDesplegable.style.display === "block") {
+                                    menuDesplegable.style.display = "none";
+                                } else {
+                                    menuDesplegable.style.display = "block";
+                                }
+                            });
 
-                                // Cierra el menú si se hace clic fuera de él
-                                document.addEventListener("click", (event) => {
-                                    if (!menuDesplegable.contains(event.target) && event.target !== fotoUsuario) {
-                                        menuDesplegable.style.display = "none";
-                                    }
-                                });
-                                // Maneja el cierre de sesión
-                                const logoutButton = document.getElementById("logoutButton");
-                                logoutButton.addEventListener("click", () => {
-                                    // Limpia el almacenamiento local y redirige al usuario a la página de inicio de sesión
-                                    localStorage.removeItem("usuario");
-                                    window.location.href = "login.html"; // Redirige a la página de inicio de sesión
-                                });
+                            // Cierra el menú si se hace clic fuera de él
+                            document.addEventListener("click", (event) => {
+                                if (!menuDesplegable.contains(event.target) && event.target !== fotoUsuario) {
+                                    menuDesplegable.style.display = "none";
+                                }
+                            });
+                            // Maneja el cierre de sesión
+                            const logoutButton = document.getElementById("logoutButton");
+                            logoutButton.addEventListener("click", () => {
+                                // Limpia el almacenamiento local y redirige al usuario a la página de inicio de sesión
+                                localStorage.removeItem("usuario");
+                                window.location.href = "login.html"; // Redirige a la página de inicio de sesión
+                            });
+
                         </script>
                     </div>
                 </div>

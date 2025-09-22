@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
     <!-- CSS Global -->
-
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="Index.css">
@@ -22,17 +21,20 @@
                 <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
                 <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenu" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
+                <button class="btnMenuNoti" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
 
             </div>
             <div class="login">
                 <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
-                <button class="btnPerfilView" onclick="window.location.href='login.html'">
-                    <span class="nameUser">Nombre de Usuario</span>
-                </button>
+                <div style="float: left; height: 100%; width: 75%;">
+                    <button class="btnPerfilView" onclick="window.location.href='login.html'">
+                            <span class="nameUser">Nombre de Usuario</span>
+                    </button>
+                </div>
+                <div style="float: left; width: 10%; height: 100%;" onclick="window.location.href='login.html'"><img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario">
+                </div>
                 <!-- Imagen Foto User -->
-                <div id="contenedorLoginFotoUser" class="fotoUsuario">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario">
+                <div id="contenedorLoginFotoUser">
                     <!-- Menú desplegable -->
                     <div id="menuDesplegable" class="menuDesplegable">
                         <button class="opcionMenu" onclick="window.location.href='Login.html'">Ver Perfil</button>

@@ -133,12 +133,12 @@ html, body {
     font-size: 24px;
     font-weight: bold;
     margin: 10px 0 5px 0;
-    color: #333;
+    color: black;
 }
 
 #modalInfo {
     font-size: 18px;
-    color: #555;
+    color: black;
 }
 
 .modal-content {
