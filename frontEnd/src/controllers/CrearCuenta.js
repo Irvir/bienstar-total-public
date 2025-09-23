@@ -1,5 +1,6 @@
 document.getElementById("CrearCuentaForm").addEventListener("submit", async function(event) {
-  event.preventDefault(); // Evita el envío del formulario por defecto
+  // Evita el envío del formulario por defecto
+  event.preventDefault(); 
 
   const data = {
     name: document.getElementById("name").value.trim(),
@@ -10,9 +11,15 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     age: parseInt(document.getElementById("age").value.trim())
   };
 
-  // 🔹 Validaciones frontend
+
+
+  //  Validaciones frontend
   let errores = [];
 
+  // Nombre sin números
+  if (/[0-9]/.test(data.name)) {
+    errores.push("El nombre no puede tener números.");
+  }
   // Email
   const emailRegex = /^[a-zA-Z\d._-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
   const localPart = data.email.split("@")[0];
@@ -47,7 +54,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
   }
 
   try {
-    // 🔹 Verificar si el correo ya existe antes de crear la cuenta
+    // Verificar si el correo ya existe antes de crear la cuenta
     const checkEmail = await fetch("http://localhost:3000/checkEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,7 +68,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       return;
     }
 
-    // 🔹 Si pasa validaciones y el correo no está usado, registrar
+    //  Si pasa validaciones y el correo no está usado, registrar
     const response = await fetch("http://localhost:3000/registrar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -74,7 +81,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       console.log("✅ Registro exitoso:", result);
       alert(result.message);
 
-      // 🔹 Auto-login directo
+      //  Auto-login directo
       const loginRes = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -93,7 +100,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     } else {
       console.error("🚫 Error en registro:", result);
 
-      // 👉 Mostrar mensajes específicos del backend
+      //  Mostrar mensajes específicos del backend
       if (result.errores && Array.isArray(result.errores)) {
         alert("❌ No se pudo registrar:\n- " + result.errores.join("\n- "));
       } else {
