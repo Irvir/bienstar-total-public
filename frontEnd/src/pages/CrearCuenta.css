@@ -2,19 +2,22 @@
     background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center; 
+   
 }
 
 #contenedorLoginAsist3 {
-    width: 80%;
+    width: 50%;
     height: 96%;
     float: left;
+    margin-top: 0%;
+    margin-left: 20%;
 }
 
 #contenedorLogin2 {
-    width: 100%;
+    width: 80%;
     height: 100%;
     margin-top: 1%;
-    margin-left: 10%;
+    margin-left: 20%;
     background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");  /* aquí tu imagen */
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center; 
@@ -22,19 +25,21 @@
 }
 
 .contendorLoginFotoCrearUserAsist {
-    width: 97%;
+    width: 100%;
     height: 8%;
-    font-size: 30px;
+    font-size: 28px;
     color: black;
     font-weight: bold;
-    padding-left: 8%;
-    padding-top: 6%;
+    padding-left: 10%;
+    padding-top: 9%;
 }
 
 .contendorLoginFotoCrearUser {
     width: 100%;
-    height: 80%;
+    height: 45%;
     float: left;
+    margin-top: 40%;
+    margin-left: 15%;
     background-image: url("../../Imagenes/Login_Perfil/Login.png");
     background-size: cover;         
     background-position: center;
@@ -42,7 +47,8 @@
 
 .contenedorLoginDatosUser {
     width: 67%;
-    height: 100%;
+    height: 10%;
+    padding-top: 40px;
     float: left;
     background-size: cover;         
     background-position: center;
@@ -50,7 +56,7 @@
 }
 
 .divNom, .divApe {
-    width: 95%;             /* ancho */
+    width: 34.3%;             /* ancho */
     height: 10%;             /* alto */
     color: black;
     font-weight: bold;
@@ -60,9 +66,19 @@
     font-family: 'Arial', sans-serif;
 
 }
+.divNom,
+.divApe,
+.divCorreo,
+.divEdadPesoAlt {
+    /* ...otros estilos... */
+    
+    margin-left:85px;
 
+    
+    /* agrega espacio arriba de cada campo */
+}
 .divCorreo {
-    width: 95%;             /* ancho */
+    width: 63%;             /* ancho */
     height: 10%;             /* alto */
     color: black;
     font-weight: bold;
@@ -83,7 +99,7 @@
 }
 
 .edadPesoAlt {
-    width: 33.3%;             /* ancho */
+    width: 36.3%;             /* ancho */
     height: 100%;             /* alto */
     color: black;
     font-weight: bold;
@@ -103,7 +119,7 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    margin-left: 25%;
+    margin-right: 10%;
 }
 
 /* Estilo para los cuadros de texto */
