@@ -28,55 +28,75 @@
             <div class="login">
                 <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
                 <div style="float: left; height: 100%; width: 75%;">
-                    <button class="btnPerfilView" onclick="window.location.href='login.html'">
-                            <span class="nameUser">Nombre de Usuario</span>
+                    <button class="btnPerfilView" id="btnPerfilView">
+                        <span class="nameUser">Nombre de Usuario</span>
                     </button>
                 </div>
-                <div style="float: left; width: 10%; height: 100%;" onclick="window.location.href='login.html'"><img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario">
-                </div>
-                <!-- Imagen Foto User -->
                 <div id="contenedorLoginFotoUser">
                     <!-- Menú desplegable -->
                     <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='Login.html'">Ver Perfil</button>
+                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
                         <!-- Cerrar sesion-->
-            
                         <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
-                        <script>
-                            // Selecciona la imagen y el menú desplegable
-                            const fotoUsuario = document.getElementById("fotoUsuario");
-                            const menuDesplegable = document.getElementById("menuDesplegable");
-
-                            // Agrega un evento de clic a la imagen
-                            fotoUsuario.addEventListener("click", () => {
-                                // Alterna la visibilidad del menú
-                                if (menuDesplegable.style.display === "block") {
-                                    menuDesplegable.style.display = "none";
-                                } else {
-                                    menuDesplegable.style.display = "block";
-                                }
-                            });
-
-                            // Cierra el menú si se hace clic fuera de él
-                            document.addEventListener("click", (event) => {
-                                if (!menuDesplegable.contains(event.target) && event.target !== fotoUsuario) {
-                                    menuDesplegable.style.display = "none";
-                                }
-                            });
-                            // Maneja el cierre de sesión
-                            const logoutButton = document.getElementById("logoutButton");
-                            logoutButton.addEventListener("click", () => {
-                                // Limpia el almacenamiento local y redirige al usuario a la página de inicio de sesión
-                                localStorage.removeItem("usuario");
-                                window.location.href = "login.html"; // Redirige a la página de inicio de sesión
-                            });
-
-                        </script>
                     </div>
                 </div>
+                <!-- Imagen Foto User -->
+                <div style="float: left; width: 10%; height: 100%;">
+                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                        style="cursor:pointer;">
+                        <script>
+                            document.getElementById("fotoUsuario").addEventListener("click", function () {
+                                window.location.href = "login.html";
+                            });
+                        </script>
+                </div>
+                <!--Script Abrir Menú emergente en base a tocar btnPerfilVew-->
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const btnPerfilView = document.getElementById("btnPerfilView");
+                        const menuDesplegable = document.getElementById("menuDesplegable");
+                        const logoutButton = document.getElementById("logoutButton");
+                        //Estilo del menu desplegable
+                        menuDesplegable.style.position = "absolute";
+                        menuDesplegable.style.top = "8%";
+                        menuDesplegable.style.right = "8%";
+                        menuDesplegable.style.display = "none";
+                        menuDesplegable.style.width = "10%"; // Ajusta según el ancho deseado
+
+                        // Función para alternar la visibilidad del menú desplegable
+                        function toggleMenu() {
+                            if (menuDesplegable.style.display === "block") {
+                                menuDesplegable.style.display = "none";
+                            } else {
+                                menuDesplegable.style.display = "block";
+                            }
+                        }
+
+                        // Evento para mostrar/ocultar el menú al hacer clic en el botón o la imagen
+                        btnPerfilView.addEventListener("click", toggleMenu);
+
+                        // Evento para cerrar sesión
+                        logoutButton.addEventListener("click", () => {
+                            // Limpiar el almacenamiento local y redirigir a la página de inicio de sesión
+                            localStorage.removeItem("usuario");
+                            window.location.href = "Login.html";
+                        });
+
+                        // Cerrar el menú si se hace clic fuera de él
+                        document.addEventListener("click", (event) => {
+                            if (!btnPerfilView.contains(event.target) && !menuDesplegable.contains(event.target) && !fotoUsuario.contains(event.target)) {
+                                menuDesplegable.style.display = "none";
+                            }
+                        });
+                    });
+                </script>
+            
+            
             </div>
+                      
         </div>
         <div id="cuerpo">
+            <button type="button" onclick="window.location.href='CrearDieta.html'" id="BtnCrearCuenta">Crear Cuenta</button>
             
         </div>
         <div id="pie">

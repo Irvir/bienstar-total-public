@@ -50,8 +50,9 @@ input[type="text"] {
     background-color: #f8f9fa;/* color de fondo */
     color: #333;              /* color del texto */
     transition: 0.3s;         /* animación */
-    margin-top: 5%;
+    margin-top: 0%;
     margin-left: 5%;
+    text-align: center;
 }
 
 input[type="password"] {
@@ -66,9 +67,12 @@ input[type="password"] {
     border-radius: 8px;       /* bordes redondeados */
     outline: none;            /* quita borde azul */
     background-color: #f8f9fa;/* color de fondo */
+    /* Centro del texto*/
+    text-align: center;
+   
     color: #333;              /* color del texto */
     transition: 0.3s;         /* animación */
-    margin-top: 5%;
+    margin-top: 0%;
     margin-left: 5%;
 }
 
