@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
@@ -12,7 +13,7 @@ async function iniciarServidor() {
     const db = await mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "1237654", //clave de base de datos
+      password: "Mar.23012006t", //clave de base de datos
       database: "login"
     });
 
@@ -144,8 +145,41 @@ async function iniciarServidor() {
         } catch (err) {
           console.error(err);
           res.status(500).json({ message: "Error en el servidor" });
-        }
-});
+        } 
+      });
+    // 📌 Endpoint para búsqueda de alimentos por nombre (para el filtro)
+    // 📌 Endpoint para búsqueda de alimentos
+    app.get("/food-search", async (req, res) => {
+      const q = req.query.q || '';
+      if (!q.trim()) return res.json([]);
+      try {
+        const [rows] = await db.query(
+          `SELECT 
+        id,
+        nombre AS name,
+        energy AS calories,
+        protein,
+        total_lipid,
+        carbohydrate,
+        energy,
+        total_sugars,
+        calcium,
+        iron,
+        sodium,
+        cholesterol
+      FROM food
+      WHERE nombre LIKE ? COLLATE utf8mb4_general_ci
+      LIMIT 20`,
+          [`%${q}%`] // 🔥 Asegura búsqueda parcial en cualquier parte
+        );
+        res.json(rows);
+      } catch (err) {
+        console.error(err);
+        res.status(500).json([]);
+      }
+    });
+
+
 
 
     // 📌 Iniciar servidor

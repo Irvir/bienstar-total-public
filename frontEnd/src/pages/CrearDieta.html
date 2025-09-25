@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BienStarTotal</title>
-    <!-- CSS Global -->
-    <link rel="stylesheet" href="Base.css">
-    <!-- CSS Específico -->
-    <link rel="stylesheet" href="Index.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BienStarTotal</title>
+<!-- CSS Global -->
+
+<link rel="stylesheet" href="Base.css">
+<!-- CSS Específico -->
+<link rel="stylesheet" href="CrearDieta.css">
 </head>
+
 <body>
     <div id="contenedorPrincipal">
 
-    
+
         <div id="encabezado">
             <div class="logo">
                 <button class="btnLogo" onclick="window.location.href='index.html'"></button>
@@ -21,7 +24,8 @@
                 <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
                 <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenuNoti" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
+                <button class="btnMenuNoti"><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png"
+                        id="btnNotification"> </button>
 
             </div>
             <div class="login">
@@ -39,18 +43,17 @@
                         <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
                     </div>
                 </div>
-            <!-- Imagen Foto User -->
+                <!-- Imagen Foto User -->
                 <div style="float: left; width: 10%; height: 100%;">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario" style="cursor:pointer;">
-                    <!--Al tocar fotoUsuario Mandarlo a login.html-->
+                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                        style="cursor:pointer;">
                     <script>
-                        document.getElementById("fotoUsuario").addEventListener("click", function() {
+                        document.getElementById("fotoUsuario").addEventListener("click", function () {
                             window.location.href = "login.html";
                         });
                     </script>
-
                 </div>
-               <!--Script Abrir Menú emergente en base a tocar btnPerfilVew-->
+                <!--Script Abrir Menú emergente en base a tocar btnPerfilVew-->
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
                         const btnPerfilView = document.getElementById("btnPerfilView");
@@ -59,8 +62,8 @@
                         //Estilo del menu desplegable
                         menuDesplegable.style.position = "absolute";
                         menuDesplegable.style.top = "8%";
-                        menuDesplegable.style.right = "8%"; 
-                        menuDesplegable.style.display = "none"; 
+                        menuDesplegable.style.right = "8%";
+                        menuDesplegable.style.display = "none";
                         menuDesplegable.style.width = "10%"; // Ajusta según el ancho deseado
 
                         // Función para alternar la visibilidad del menú desplegable
@@ -90,35 +93,85 @@
                         });
                     });
                 </script>
-                
-            
+
+
             </div>
         </div>
-        
+
+
         <div id="cuerpo">
-            <div id="contenedores">  <!-- ` parte del menu izquierdo: sección Dietas y crear horario semanal ` --> 
-                <div id="secion1y2">
-                    <button class="btn1">Crear horario semanal</button>
+            <div id="contenedorFiltro">
+                <div id="lupe">
+            
                 </div>
-                <div id="secion1y2">
-                    <button class="btn2" onclick="window.location.href='dietas.html'">Dietas</button>
-                </div>
-            </div>
-            <div id="contenedores"> <!-- ` parte del menu derecha: sección calendario, aliementos y tips para tu dieta ` --> 
-                <div id="secion3-5">
-                    <button class="btn3" onclick="window.location.href='calendario.html'">Calendario</button>
-                </div>
-                <div id="secion3-5">
-                    <button class="btn4" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                </div>
-                <div id="secion3-5">
-                    <button class="btn5" onclick="window.location.href='tipsParaTuDieta.html'">Tips para tu dieta</button>
+                <div style="float: left; width: 95%; height: 100%; ">
+                    <input type="text" id="filtro" placeholder="Buscar alimento...">
                 </div>
             </div>
+            <br>
+
+            <div id="resultadosFiltro" class="resultadosFiltro"></div>
+                
+            </div>
+
+
+
         </div>
+        <script>
+        // Función para buscar alimentos en la base de datos
+        async function buscarAlimentos(query) {
+            if (!query) return [];
+            try {
+                const res = await fetch('http://localhost:3000/food-search?q=' + encodeURIComponent(query));
+                if (!res.ok) return [];
+                return await res.json();
+            } catch (e) {
+                return [];
+            }
+        }
+
+        // Renderizar resultados en tarjetas
+        function renderResultados(alimentos) {
+            const cont = document.getElementById('resultadosFiltro');
+            cont.innerHTML = '';
+            if (!alimentos.length) {
+                cont.innerHTML = '<div style="color:#931525; padding:10px;">No se encontraron alimentos.</div>';
+                return;
+            }
+            alimentos.forEach(alimento => {
+                const card = document.createElement('div');
+                card.className = 'alimento-card';
+                card.innerHTML = `
+                    <strong>${alimento.name || alimento.nombre}</strong><br>
+                    Calorías: ${alimento.calories ?? alimento.energy ?? '-'}<br>
+                    Proteínas: ${alimento.protein ?? '-'}g<br>
+                    Grasas: ${alimento.total_lipid ?? '-'}g<br>
+                    Carbohidratos: ${alimento.carbohydrate ?? '-'}g<br>
+                    Azúcares: ${alimento.total_sugars ?? '-'}g<br>
+                    Calcio: ${alimento.calcium ?? '-'}mg<br>
+                    Hierro: ${alimento.iron ?? '-'}mg<br>
+                    Sodio: ${alimento.sodium ?? '-'}mg<br>
+                    Colesterol: ${alimento.cholesterol ?? '-'}mg
+                `;
+                cont.appendChild(card);
+            });
+        }
+
+        // Evento input para el filtro
+        document.getElementById('filtro').addEventListener('input', async function() {
+            const query = this.value.trim();
+            if (!query) {
+                renderResultados([]);
+                return;
+            }
+            const resultados = await buscarAlimentos(query);
+            renderResultados(resultados);
+        });
+        </script>
+</html>
         <div id="pie">
             <div class="divAuxPie">
-                
+
             </div>
             <div class="divImagen">
                 <button class="instaBoton"></button>
@@ -134,19 +187,6 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const usuarioGuardado = localStorage.getItem("usuario");
-
-            if (usuarioGuardado) {
-            const usuario = JSON.parse(usuarioGuardado);
-            const nameUserSpan = document.querySelector(".nameUser");
-            if (nameUserSpan) {
-                nameUserSpan.textContent = usuario.name;
-            }
-            }
-        });
-    </script>
-
 </body>
+
 </html>
