@@ -1,0 +1,106 @@
+/* -------- TABLA DE DIETAS -------- */
+
+/* Fondo de la página (opcional, si quieres imagen de fondo) */
+/*
+body {
+    background-image: url('/frontEnd/Imagenes/fondo-dieta.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+}
+*/
+
+.tabla-dieta {
+    width: 99vw;
+    /* Usa casi todo el ancho de la ventana */
+    margin: 40px auto 0 auto;
+    display: flex;
+    flex-direction: row;
+    min-height: 60vh;
+    /* Ocupa la mayor parte de la altura visible */
+    max-height: none;
+    /* Sin límite de alto */
+}
+
+.columna-horario {
+    width: 7vw;
+    /* Ajusta para que sea proporcional al nuevo ancho */
+    min-width: 70px;
+    border: 1px solid #999;
+    display: flex;
+    flex-direction: column;
+}
+
+.columna {
+    width: 13vw;
+    /* Ajusta para que las columnas sean más anchas */
+    min-width: 120px;
+    border: 1px solid #999;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Títulos de columnas */
+.titulo {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #999;
+}
+
+/* Celdas de contenido */
+.celda {
+    flex: 1;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Colores para cada día - títulos y celdas */
+.lunes .titulo,
+.lunes .celda {
+    background-color: #fff9c4;
+}
+
+.martes .titulo,
+.martes .celda {
+    background-color: #ffcdd2;
+}
+
+.miércoles .titulo,
+.miércoles .celda {
+    background-color: #c8e6c9;
+}
+
+.jueves .titulo,
+.jueves .celda {
+    background-color: #bbdefb;
+}
+
+.viernes .titulo,
+.viernes .celda {
+    background-color: #ffe0b2;
+}
+
+.sábado .titulo,
+.sábado .celda {
+    background-color: #e1bee7;
+}
+
+.domingo .titulo,
+.domingo .celda {
+    background-color: #d7ccc8;
+}
+
+/* Opcional: mejora visual para títulos y celdas */
+.titulo,
+.celda {
+    border-radius: 0;
+}
+#pie {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+}

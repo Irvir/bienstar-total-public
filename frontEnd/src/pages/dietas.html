@@ -1,121 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
     <!-- CSS Global -->
-
     <link rel="stylesheet" href="Base.css">
-    <!-- CSS Específico -->
+    <!-- CSS Específico para esta página -->
     <link rel="stylesheet" href="Dietas.css">
 </head>
+
 <body>
     <div id="contenedorPrincipal">
 
-    
+        <!-- ================= ENCABEZADO ================= -->
         <div id="encabezado">
+            <!-- Logo principal -->
             <div class="logo">
                 <button class="btnLogo" onclick="window.location.href='index.html'"></button>
             </div>
+            <!-- Menú de navegación principal -->
             <div class="menúBotones">
                 <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
                 <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenuNoti" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
-
+                <button class="btnMenuNoti">
+                    <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                </button>
             </div>
+            <!-- Área de usuario/login -->
             <div class="login">
-                <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
+                <!-- Botón de perfil de usuario -->
                 <div style="float: left; height: 100%; width: 75%;">
                     <button class="btnPerfilView" id="btnPerfilView">
                         <span class="nameUser">Nombre de Usuario</span>
                     </button>
                 </div>
+                <!-- Menú desplegable de usuario -->
                 <div id="contenedorLoginFotoUser">
-                    <!-- Menú desplegable -->
                     <div id="menuDesplegable" class="menuDesplegable">
                         <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <!-- Cerrar sesion-->
                         <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
                     </div>
                 </div>
-                <!-- Imagen Foto User -->
+                <!-- Imagen de usuario -->
                 <div style="float: left; width: 10%; height: 100%;">
                     <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
                         style="cursor:pointer;">
-                        <script>
-                            document.getElementById("fotoUsuario").addEventListener("click", function () {
-                                window.location.href = "login.html";
-                            });
-                        </script>
                 </div>
-                <!--Script Abrir Menú emergente en base a tocar btnPerfilVew-->
-                <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        const btnPerfilView = document.getElementById("btnPerfilView");
-                        const menuDesplegable = document.getElementById("menuDesplegable");
-                        const logoutButton = document.getElementById("logoutButton");
-                        //Estilo del menu desplegable
-                        menuDesplegable.style.position = "absolute";
-                        menuDesplegable.style.top = "8%";
-                        menuDesplegable.style.right = "8%";
-                        menuDesplegable.style.display = "none";
-                        menuDesplegable.style.width = "10%"; // Ajusta según el ancho deseado
-
-                        // Función para alternar la visibilidad del menú desplegable
-                        function toggleMenu() {
-                            if (menuDesplegable.style.display === "block") {
-                                menuDesplegable.style.display = "none";
-                            } else {
-                                menuDesplegable.style.display = "block";
-                            }
-                        }
-
-                        // Evento para mostrar/ocultar el menú al hacer clic en el botón o la imagen
-                        btnPerfilView.addEventListener("click", toggleMenu);
-
-                        // Evento para cerrar sesión
-                        logoutButton.addEventListener("click", () => {
-                            // Limpiar el almacenamiento local y redirigir a la página de inicio de sesión
-                            localStorage.removeItem("usuario");
-                            window.location.href = "Login.html";
-                        });
-
-                        // Cerrar el menú si se hace clic fuera de él
-                        document.addEventListener("click", (event) => {
-                            if (!btnPerfilView.contains(event.target) && !menuDesplegable.contains(event.target) && !fotoUsuario.contains(event.target)) {
-                                menuDesplegable.style.display = "none";
-                            }
-                        });
-                    });
-                </script>
-            
-            
             </div>
-                      
         </div>
+        <!-- =============== FIN ENCABEZADO =============== -->
+
+        <!-- =================== CUERPO =================== -->
         <div id="cuerpo">
-            <button type="button" onclick="window.location.href='CrearDieta.html'" id="BtnCrearCuenta">Crear Cuenta</button>
-            
+            <!-- TABLA DE DIETA: muestra los días y comidas -->
+            <div class="tabla-dieta">
+                <!-- Columna de horarios -->
+                <div class="columna-horario">
+                    <div class="titulo">Días</div>
+                    <div class="celda">Horario</div>
+                </div>
+                <!-- Columna de cada día de la semana -->
+                <div class="columna lunes">
+                    <div class="titulo">Lunes</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+                <div class="columna martes">
+                    <div class="titulo">Martes</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+                <div class="columna miércoles">
+                    <div class="titulo">Miércoles</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+                <div class="columna jueves">
+                    <div class="titulo">Jueves</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+                <div class="columna viernes">
+                    <div class="titulo">Viernes</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+                <div class="columna sábado">
+                    <div class="titulo">Sábado</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+                <div class="columna domingo">
+                    <div class="titulo">Domingo</div>
+                    <div class="celda">
+                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
+                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
+                        <p><strong>Cena:</strong><br>- Alimento n</p>
+                    </div>
+                </div>
+            </div>
         </div>
+        <!-- ================= FIN CUERPO ================= -->
+
+        <!-- ================== PIE DE PÁGINA ================== -->
         <div id="pie">
-            <div class="divAuxPie">
-                
-            </div>
-            <div class="divImagen">
-                <button class="instaBoton"></button>
-            </div>
-            <div class="divImagen2">
-                <button class="faceBoton"></button>
-            </div>
-            <div class="divImagen2">
-                <button class="youTubeBoton"></button>
-            </div>
-            <div class="divImagen2">
-                <button class="whatsBoton"></button>
-            </div>
+            <div class="divAuxPie"></div>
+            <div class="divImagen"><button class="instaBoton"></button></div>
+            <div class="divImagen2"><button class="faceBoton"></button></div>
+            <div class="divImagen2"><button class="youTubeBoton"></button></div>
+            <div class="divImagen2"><button class="whatsBoton"></button></div>
         </div>
+        <!-- =============== FIN PIE DE PÁGINA =============== -->
     </div>
+
+    <!-- ========== SCRIPT: MENÚ USUARIO ========== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Elementos del menú de usuario
+            const btnPerfilView = document.getElementById("btnPerfilView");
+            const menuDesplegable = document.getElementById("menuDesplegable");
+            const logoutButton = document.getElementById("logoutButton");
+            const fotoUsuario = document.getElementById("fotoUsuario");
+
+            // Posicionamiento y estilos iniciales del menú
+            menuDesplegable.style.position = "absolute";
+            menuDesplegable.style.top = "8%";
+            menuDesplegable.style.right = "8%";
+            menuDesplegable.style.display = "none";
+            menuDesplegable.style.width = "10%";
+
+            // Función para mostrar/ocultar el menú
+            function toggleMenu() {
+                menuDesplegable.style.display =
+                    menuDesplegable.style.display === "block" ? "none" : "block";
+            }
+
+            // Mostrar menú al hacer click en el perfil
+            btnPerfilView.addEventListener("click", toggleMenu);
+
+            // Cerrar sesión
+            logoutButton.addEventListener("click", () => {
+                localStorage.removeItem("usuario");
+                window.location.href = "Login.html";
+            });
+
+            // Ocultar menú si se hace click fuera
+            document.addEventListener("click", (event) => {
+                if (!btnPerfilView.contains(event.target) &&
+                    !menuDesplegable.contains(event.target) &&
+                    !fotoUsuario.contains(event.target)) {
+                    menuDesplegable.style.display = "none";
+                }
+            });
+
+            // Ir a login al hacer click en la foto de usuario
+            fotoUsuario.addEventListener("click", () => {
+                window.location.href = "login.html";
+            });
+        });
+    </script>
+    <!-- ========== FIN SCRIPT MENÚ USUARIO ========== -->
 </body>
+
 </html>
