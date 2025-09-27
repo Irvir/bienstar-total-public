@@ -1,15 +1,4 @@
-/* -------- TABLA DE DIETAS -------- */
 
-/* Fondo de la página (opcional, si quieres imagen de fondo) */
-/*
-body {
-    background-image: url('/frontEnd/Imagenes/fondo-dieta.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center center;
-}
-*/
 
 .tabla-dieta {
     width: 99vw;
@@ -103,4 +92,20 @@ body {
     bottom: 0;
     width: 100%;
     z-index: 100;
+}
+#BtnCrearCuenta {
+    display: block;
+    /* Se centra con margin auto */
+    margin: 20px auto;
+    /* Espacio arriba/abajo, centrado horizontal */
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.columna-horario {
+    border: 1px solid #941424;
+}
+
+.columna {
+    border: 1px solid #941424;
 }
