@@ -1,21 +1,18 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BienStarTotal</title>
-<!-- CSS Global -->
-
-<link rel="stylesheet" href="Base.css">
-<!-- CSS Específico -->
-<link rel="stylesheet" href="CrearDieta.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BienStarTotal</title>
+    <link rel="stylesheet" href="Base.css">
+    <link rel="stylesheet" href="CrearDieta.css">
 </head>
 
 <body>
     <div id="contenedorPrincipal">
-
-
+        <!-- Encabezado -->
         <div id="encabezado">
             <div class="logo">
                 <button class="btnLogo" onclick="window.location.href='index.html'"></button>
@@ -24,182 +21,93 @@
                 <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
                 <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                 <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenuNoti"><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png"
-                        id="btnNotification"> </button>
-
+                <button class="btnMenuNoti">
+                    <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                </button>
             </div>
             <div class="login">
-                <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
                 <div style="float: left; height: 100%; width: 75%;">
                     <button class="btnPerfilView" id="btnPerfilView">
                         <span class="nameUser">Nombre de Usuario</span>
                     </button>
                 </div>
                 <div id="contenedorLoginFotoUser">
-                    <!-- Menú desplegable -->
                     <div id="menuDesplegable" class="menuDesplegable">
                         <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <!-- Cerrar sesion-->
                         <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
                     </div>
                 </div>
-                <!-- Imagen Foto User -->
                 <div style="float: left; width: 10%; height: 100%;">
                     <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
                         style="cursor:pointer;">
-                    <script>
-                        document.getElementById("fotoUsuario").addEventListener("click", function () {
-                            window.location.href = "login.html";
-                        });
-                    </script>
                 </div>
-                <!--Script Abrir Menú emergente en base a tocar btnPerfilVew-->
-                <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        const btnPerfilView = document.getElementById("btnPerfilView");
-                        const menuDesplegable = document.getElementById("menuDesplegable");
-                        const logoutButton = document.getElementById("logoutButton");
-                        //Estilo del menu desplegable
-                        menuDesplegable.style.position = "absolute";
-                        menuDesplegable.style.top = "8%";
-                        menuDesplegable.style.right = "8%";
-                        menuDesplegable.style.display = "none";
-                        menuDesplegable.style.width = "10%"; // Ajusta según el ancho deseado
-
-                        // Función para alternar la visibilidad del menú desplegable
-                        function toggleMenu() {
-                            if (menuDesplegable.style.display === "block") {
-                                menuDesplegable.style.display = "none";
-                            } else {
-                                menuDesplegable.style.display = "block";
-                            }
-                        }
-
-                        // Evento para mostrar/ocultar el menú al hacer clic en el botón o la imagen
-                        btnPerfilView.addEventListener("click", toggleMenu);
-
-                        // Evento para cerrar sesión
-                        logoutButton.addEventListener("click", () => {
-                            // Limpiar el almacenamiento local y redirigir a la página de inicio de sesión
-                            localStorage.removeItem("usuario");
-                            window.location.href = "Login.html";
-                        });
-
-                        // Cerrar el menú si se hace clic fuera de él
-                        document.addEventListener("click", (event) => {
-                            if (!btnPerfilView.contains(event.target) && !menuDesplegable.contains(event.target) && !fotoUsuario.contains(event.target)) {
-                                menuDesplegable.style.display = "none";
-                            }
-                        });
-                    });
-                </script>
-
-
             </div>
         </div>
 
-
+        <!-- Cuerpo -->
         <div id="cuerpo">
+            <!-- Filtro -->
             <div id="contenedorFiltro">
-                <div id="lupe">
-            
-                </div>
                 <div style="float: left; width: 95%; height: 100%; ">
                     <input type="text" id="filtro" placeholder="Buscar alimento...">
                 </div>
             </div>
             <br>
-
             <div id="resultadosFiltro" class="resultadosFiltro"></div>
-                
+
+            <!-- Crear dieta -->
+            <div id="crearDieta">
+                <h2>Crear Dieta</h2>
+                <div id="seleccionDiaComida">
+                    <label for="dia">Día:</label>
+                    <select id="dia">
+                        <option value="1">Lunes</option>
+                        <option value="2">Martes</option>
+                        <option value="3">Miércoles</option>
+                        <option value="4">Jueves</option>
+                        <option value="5">Viernes</option>
+                        <option value="6">Sábado</option>
+                        <option value="7">Domingo</option>
+                    </select>
+
+                    <label for="tipoComida">Tipo de comida:</label>
+                    <select id="tipoComida">
+                        <option value="breakfast">Desayuno</option>
+                        <option value="lunch">Almuerzo</option>
+                        <option value="dinner">Cena</option>
+                        <option value="snack">Snack</option>
+                        <option value="snack2">Snack 2</option>
+                    </select>
+                </div>
+
+                <div id="alimentosSeleccionados">
+                    <h3>Alimentos seleccionados</h3>
+                    <p id="infoSeleccion">
+                        Día: <span id="infoDia"></span>, Tipo de comida: <span id="infoTipoComida"></span>
+                    </p>
+                    <ul id="listaAlimentos"></ul>
+                </div>
+
+                <div id="botones">
+                    <button id="btnGuardarDieta">Guardar Dieta</button>
+                    <button id="btnBorrarDieta">Borrar Todo</button>
+                    <button id="btnSalir">Salir</button>
+                </div>
             </div>
-
-
-
         </div>
-        <script>
-        // Función para buscar alimentos en la base de datos
-        async function buscarAlimentos(query) {
-            if (!query) return [];
-            try {
-                const res = await fetch('http://localhost:3000/food-search?q=' + encodeURIComponent(query));
-                if (!res.ok) return [];
-                return await res.json();
-            } catch (e) {
-                return [];
-            }
-        }
 
-        // Renderizar resultados en tarjetas
-        function renderResultados(alimentos) {
-            const cont = document.getElementById('resultadosFiltro');
-            cont.innerHTML = '';
-            if (!alimentos.length) {
-                cont.innerHTML = '<div style="color:#931525; padding:10px;">No se encontraron alimentos.</div>';
-                return;
-            }
-            alimentos.forEach(alimento => {
-                const card = document.createElement('div');
-                card.className = 'alimento-card';
-                card.innerHTML = `
-                    <strong>${alimento.name || alimento.nombre}</strong><br>
-                    Calorías: ${alimento.calories ?? alimento.energy ?? '-'}<br>
-                    Proteínas: ${alimento.protein ?? '-'}g<br>
-                    Grasas: ${alimento.total_lipid ?? '-'}g<br>
-                    Carbohidratos: ${alimento.carbohydrate ?? '-'}g<br>
-                    Azúcares: ${alimento.total_sugars ?? '-'}g<br>
-                    Calcio: ${alimento.calcium ?? '-'}mg<br>
-                    Hierro: ${alimento.iron ?? '-'}mg<br>
-                    Sodio: ${alimento.sodium ?? '-'}mg<br>
-                    Colesterol: ${alimento.cholesterol ?? '-'}mg
-                `;
-                cont.appendChild(card);
-            });
-        }
-
-        // Evento input para el filtro
-        document.getElementById('filtro').addEventListener('input', async function() {
-            const query = this.value.trim();
-            if (!query) {
-                renderResultados([]);
-                return;
-            }
-            const resultados = await buscarAlimentos(query);
-            renderResultados(resultados);
-        });
-        </script>
-</html>
+        <!-- Pie -->
         <div id="pie">
-            <div class="divAuxPie">
-
-            </div>
-            <div class="divImagen">
-                <button class="instaBoton"></button>
-            </div>
-            <div class="divImagen2">
-                <button class="faceBoton"></button>
-            </div>
-            <div class="divImagen2">
-                <button class="youTubeBoton"></button>
-            </div>
-            <div class="divImagen2">
-                <button class="whatsBoton"></button>
-            </div>
+            <div class="divAuxPie"></div>
+            <div class="divImagen"><button class="instaBoton"></button></div>
+            <div class="divImagen2"><button class="faceBoton"></button></div>
+            <div class="divImagen2"><button class="youTubeBoton"></button></div>
+            <div class="divImagen2"><button class="whatsBoton"></button></div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const usuarioGuardado = localStorage.getItem("usuario");
 
-            if (usuarioGuardado) {
-                const usuario = JSON.parse(usuarioGuardado);
-                const nameUserSpan = document.querySelector(".nameUser");
-                if (nameUserSpan) {
-                    nameUserSpan.textContent = usuario.name;
-                }
-            }
-        });
-    </script>
+    <!-- Enlazamos el JS externo -->
+    <script src="/frontEnd/src/controllers/CrearDieta.js"></script>
 </body>
 
 </html>

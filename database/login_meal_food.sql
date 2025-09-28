@@ -16,36 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `meal_food`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `meal_food`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `height` float DEFAULT NULL,
-  `weight` float DEFAULT NULL,
-  `age` int DEFAULT NULL,
-  `id_diet` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  KEY `id_diet` (`id_diet`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_diet`) REFERENCES `diet` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `meal_food` (
+  `id_meal` int NOT NULL,
+  `id_food` int NOT NULL,
+  `quantity` float DEFAULT '1',
+  PRIMARY KEY (`id_meal`,`id_food`),
+  KEY `id_food` (`id_food`),
+  CONSTRAINT `meal_food_ibfk_1` FOREIGN KEY (`id_meal`) REFERENCES `meal` (`id`),
+  CONSTRAINT `meal_food_ibfk_2` FOREIGN KEY (`id_food`) REFERENCES `food` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `meal_food`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'aaaaa','mmmm12@gmail.com','$2b$10$sXD3r964wrCtMqc0lfi1DeJD7FtImdAuih2gjGKppifOP.oFALz2a',187,87,32,NULL),(8,'Martin','example12@gmail.com','$2b$10$v9Y/6Q2K.Ab9b1uUXj86w.3HwzISqE.FBBWCa/goLWKVp2Uj6xXZ.',147,47,47,1);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `meal_food` WRITE;
+/*!40000 ALTER TABLE `meal_food` DISABLE KEYS */;
+INSERT INTO `meal_food` VALUES (1,1,1),(1,3,1),(1,32,1),(1,34,1),(2,2,1),(3,8,1),(4,31,1),(6,42,1),(7,3,1),(8,32,1);
+/*!40000 ALTER TABLE `meal_food` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
