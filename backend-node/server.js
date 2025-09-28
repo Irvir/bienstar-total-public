@@ -1,4 +1,3 @@
-
 const express = require("express");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
@@ -79,28 +78,50 @@ async function iniciarServidor() {
 
     // 📌 Registro
     app.post("/registrar", async (req, res) => {
-      const { name, email, password, height, weight, age } = req.body;
-
-      // Validaciones
-      const errores = validarRegistro(email, password, height, weight, age);
-      if (errores.length > 0) {
-        return res.status(400).json({ message: "Validación fallida", errores });
+      try {
+        const { name, email, password, height, weight, age } = req.body;
+    
+        // Validaciones
+        const errores = validarRegistro(email, password, height, weight, age);
+        if (errores.length > 0) {
+          return res.status(400).json({ message: "Validación fallida", errores });
+        }
+    
+        // Verificar si el correo ya existe
+        const [rows] = await db.query("SELECT id FROM user WHERE email = ?", [email]);
+        if (rows.length > 0) {
+          return res.status(400).json({ message: "El correo ya está registrado" });
+        }
+    
+        // Verificar si la tabla diet está vacía
+        const [dietRows] = await db.query("SELECT id FROM diet LIMIT 1");
+        if (dietRows.length === 0) {
+          // Si está vacía, insertar un registro predeterminado
+          await db.query("INSERT INTO diet (id, name) VALUES (?, ?)", [1, "Dieta predeterminada"]);
+        }
+    
+        // Verificar nuevamente si el registro en diet existe
+        const [dietCheck] = await db.query("SELECT id FROM diet WHERE id = ?", [1]);
+        if (dietCheck.length === 0) {
+          return res.status(500).json({ message: "Error al insertar la dieta predeterminada" });
+        }
+    
+        // Guardar usuario
+        const hash = await bcrypt.hash(password, 10);
+        const query = `
+          INSERT INTO user (name, email, password, height, weight, age, id_diet) 
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+        await db.query(query, [name, email, hash, height, weight, age, 1]);
+    
+        res.status(200).json({ message: "Usuario registrado exitosamente" });
+    
+      } catch (err) {
+        console.error("❌ Error en /registrar:", err);
+        res.status(500).json({ message: "Error en el servidor", error: err.message });
       }
-
-      // Verificar si el correo ya existe
-      const [rows] = await db.query("SELECT id FROM user WHERE email = ?", [email]);
-      if (rows.length > 0) {
-        return res.status(400).json({ message: "El correo ya está registrado" });
-      }
-
-      // Guardar usuario
-      const hash = await bcrypt.hash(password, 10);
-      const query = "INSERT INTO user (name, email, password, height, weight, age) VALUES (?, ?, ?, ?, ?, ?)";
-      await db.query(query, [name, email, hash, height, weight, age]);
-      
-
-      res.status(200).json({ message: "Usuario registrado exitosamente" });
     });
+    
 
     // 📌 Login
     app.post("/login", async (req, res) => {
@@ -126,10 +147,19 @@ async function iniciarServidor() {
           email: usuario.email,
           height: usuario.height,
           weight: usuario.weight,
-          age: usuario.age
+          age: usuario.age,
+          id_diet: usuario.id_diet // 👈 incluirlo
         }
       });
+      
     });
+    app.use((req, res, next) => {
+      // Recuperar usuario guardado en localStorage no es posible desde backend
+      // pero para pruebas, puedes forzar un usuario fijo:
+      req.user = { id_diet: 1 };
+      next();
+    });
+    
     // 📌 Obtener datos nutricionale
     // 📌 Ruta para obtener info de alimentos por ID
       app.get("/food/:id", async (req, res) => {
@@ -178,6 +208,29 @@ async function iniciarServidor() {
         res.status(500).json([]);
       }
     });
+    app.get("/get-diet", async (req, res) => {
+      try {
+        if (!req.user || !req.user.id_diet) {
+          return res.status(401).json({ message: "Usuario no autenticado o sin dieta asociada" });
+        }
+    
+        const [diet] = await db.query(`
+          SELECT d.id AS id_diet, dy.number_day AS dia, m.type AS tipo_comida, f.nombre AS alimento
+          FROM diet d
+          JOIN day dy ON d.id = dy.id_diet
+          JOIN meal m ON dy.id = m.id_day
+          JOIN meal_food mf ON m.id = mf.id_meal
+          JOIN food f ON mf.id_food = f.id
+          WHERE d.id = ?;
+        `, [req.user.id_diet]);
+    
+        res.json(diet);
+      } catch (err) {
+        console.error("Error al obtener la dieta:", err);
+        res.status(500).json({ message: "Error al obtener la dieta." });
+      }
+    });
+    
 
 
 
@@ -185,9 +238,9 @@ async function iniciarServidor() {
     // 📌 Iniciar servidor
     app.listen(3000, () => {
       console.log("Servidor corriendo en http://localhost:3000");
-    });
+}   });
 
-  } catch (error) {
+iniciarServidor();{
     console.error("Error al iniciar el servidor:", error);
   }
 }
