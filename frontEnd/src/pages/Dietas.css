@@ -9,39 +9,25 @@
     min-height: 60vh;
     /* Ocupa la mayor parte de la altura visible */
     max-height: none;
-  
-   
+    /* Sin límite de alto */
 }
-#cuerpo{
-    font-family: Arial, Helvetica, sans-serif;
-}
+
 .columna-horario {
     width: 7vw;
+    /* Ajusta para que sea proporcional al nuevo ancho */
     min-width: 70px;
-    border: 3px solid #941424;
-    /* Borde más grueso */
-    border-radius: 12px;
-    /* Bordes redondeados */
+    border: 1px solid #999;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    /* Para que el contenido no se salga del borde redondeado */
-    margin: 5px;
-    /* Espacio entre columnas */
 }
 
 .columna {
     width: 13vw;
+    /* Ajusta para que las columnas sean más anchas */
     min-width: 120px;
-    border: 3px solid #941424;
-    /* Borde más grueso */
-    border-radius: 12px;
-    /* Bordes redondeados */
+    border: 1px solid #999;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    margin: 5px;
-    /* Espacio entre columnas */
 }
 
 /* Títulos de columnas */
@@ -49,9 +35,7 @@
     padding: 10px;
     text-align: center;
     font-weight: bold;
-    border-bottom: 2px solid #941424;
-    /* Borde más notorio */
-    background-color: #fdfdfd;
+    border-bottom: 1px solid #999;
 }
 
 /* Celdas de contenido */
@@ -59,14 +43,8 @@
     flex: 1;
     padding: 10px;
     text-align: left;
-    background-color: #fff;
 }
 
-/* Opcional: sombra ligera para resaltar las columnas */
-.columna,
-.columna-horario {
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
-}
 /* Colores para cada día - títulos y celdas */
 .lunes .titulo,
 .lunes .celda {

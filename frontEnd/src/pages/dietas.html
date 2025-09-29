@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,35 +17,32 @@
         <!-- ================= ENCABEZADO ================= -->
         <!-- Encabezado -->
         <div id="encabezado">
-            <!-- Logo principal -->
-            <div class="logo">
-                <button class="btnLogo" onclick="window.location.href='index.html'"></button>
-            </div>
-            <!-- Menú de navegación principal -->
-            <div class="menúBotones">
-                <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenuNoti">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
-                </button>
-            </div>
-            <!-- Área de usuario/login -->
-            <div class="login">
-                <div style="float: left; height: 100%; width: 75%;">
-                    <button class="btnPerfilView" id="btnPerfilView">
-                        <span class="nameUser">Nombre de Usuario</span>
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+                <div class="menúBotones">
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                    <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuNoti">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
-                <div id="contenedorLoginFotoUser">
-                    <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
+                <div class="login">
+                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
                     </div>
-                </div>
-                <div style="float: left; width: 10%; height: 100%;">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                        style="cursor:pointer;">
+        
+                    <!-- Imagen Usuario -->
+                    <div style="float: left; width: 10%; height: 100%;">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;" onclick="window.location.href='login.html'">
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,11 +126,7 @@
                     <div class="celda"></div>
                 </div>
             </div>
-<<<<<<< HEAD
         
-=======
-
->>>>>>> be0f7a881d099f4b1d4da98db2f71d00bc5066e9
             <button type="button" onclick="window.location.href='CrearDieta.html'" id="BtnCrearCuenta">
                 Ver dietas
             </button>
@@ -153,8 +145,66 @@
         <!-- =============== FIN PIE DE PÁGINA =============== -->
     </div>
 
-    <!-- Archivo JS separado -->
-    <script src="/frontEnd/src/controllers/Dietas.js"></script>
+    <!-- ========== SCRIPT: MENÚ USUARIO ========== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Elementos del menú de usuario
+            const btnPerfilView = document.getElementById("btnPerfilView");
+            const menuDesplegable = document.getElementById("menuDesplegable");
+            const logoutButton = document.getElementById("logoutButton");
+            const fotoUsuario = document.getElementById("fotoUsuario");
+
+            // Posicionamiento y estilos iniciales del menú
+            menuDesplegable.style.position = "absolute";
+            menuDesplegable.style.top = "8%";
+            menuDesplegable.style.right = "8%";
+            menuDesplegable.style.display = "none";
+            menuDesplegable.style.width = "10%";
+
+            // Función para mostrar/ocultar el menú
+            function toggleMenu() {
+                menuDesplegable.style.display =
+                    menuDesplegable.style.display === "block" ? "none" : "block";
+            }
+
+            // Mostrar menú al hacer click en el perfil
+            btnPerfilView.addEventListener("click", toggleMenu);
+
+            // Cerrar sesión
+            logoutButton.addEventListener("click", () => {
+                localStorage.removeItem("usuario");
+                window.location.href = "Login.html";
+            });
+
+            // Ocultar menú si se hace click fuera
+            document.addEventListener("click", (event) => {
+                if (!btnPerfilView.contains(event.target) &&
+                    !menuDesplegable.contains(event.target) &&
+                    !fotoUsuario.contains(event.target)) {
+                    menuDesplegable.style.display = "none";
+                }
+            });
+
+            // Ir a login al hacer click en la foto de usuario
+            fotoUsuario.addEventListener("click", () => {
+                window.location.href = "login.html";
+            });
+        });
+    </script>
+    <!-- ========== FIN SCRIPT MENÚ USUARIO ========== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioGuardado = localStorage.getItem("usuario");
+
+            if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

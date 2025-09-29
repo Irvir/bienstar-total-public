@@ -91,6 +91,10 @@
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+#cuerpo {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .alimento-card strong {
     font-size: 18px;
     color: #931525;
