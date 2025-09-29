@@ -103,7 +103,7 @@
 /* Estilo para los cuadros de texto */
 input[type="number"] {
     width: 90%;             /* ancho */
-    height: 20px;             /* alto */
+    height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
     border: 2px solid #3498db;/* color del borde */
@@ -124,7 +124,7 @@ input[type="number"]:hover {
 
 input[type="name"] {
     width: 90%;             /* ancho */
-    height: 20px;             /* alto */
+    height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
     border: 2px solid #3498db;/* color del borde */
@@ -145,7 +145,7 @@ input[type="name"]:hover {
 
 input[type="text"] {
     width: 90%;             /* ancho */
-    height: 20px;             /* alto */
+    height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
     border: 2px solid #3498db;/* color del borde */
@@ -166,7 +166,7 @@ input[type="text"]:hover {
 
 input[type="password"] {
     width: 90%;             /* ancho */
-    height: 20px;             /* alto */
+    height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
     border: 2px solid #3498db;/* color del borde */
