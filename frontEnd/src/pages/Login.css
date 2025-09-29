@@ -1,94 +1,158 @@
+/* Fondo principal ocupa toda la pantalla sin scroll */
 .fondoLogin {
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center; 
+    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    /* usa la altura exacta de la ventana */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* evita que se genere scroll */
+    padding: 0;
+    /* quita márgenes extra */
+    margin: 0;
 }
 
+/* Contenedor centrado */
 #contenedorLoginAsist {
-    margin-left: 33.3%;
-    width: 33.3%;
-    height: 100%;
-    float: left;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    /* no fijo al 100% */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Caja del login */
 #contenedorLogin {
     width: 100%;
-    height: 90%;
-    float: left;
-    margin-top: 5%;
-    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center; 
-    border-radius: 50px;  /* radios de 10px en todas las esquinas */
+    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Imagen superior */
 #contenedorLoginFoto {
-    width: 50%;
-    height: 60%;
-    margin-left: 25%;
+    width: 60%;
+    margin: 0 auto 20px auto;
+    aspect-ratio: 1 / 1;
     background-image: url("../../Imagenes/Login_Perfil/Login.png");
-    background-size: cover;         
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
 }
 
-.login-container {
-    width: 100%;
-    height: 40%; 
-}
-
-input[type="text"] {
-    width: 90%;
-    padding: 1%;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #3498db;/* color del borde */
-    border-radius: 8px;       /* bordes redondeados */
-    outline: none;            /* quita borde azul */
-    background-color: #f8f9fa;/* color de fondo */
-    color: #333;              /* color del texto */
-    transition: 0.3s;         /* animación */
-    margin-top: 0%;
-    margin-left: 5%;
-    text-align: center;
-}
-
+/* Inputs */
+input[type="text"],
 input[type="password"] {
     width: 90%;
-    padding: 1%;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #3498db;/* color del borde */
-    border-radius: 8px;       /* bordes redondeados */
-    outline: none;            /* quita borde azul */
-    background-color: #f8f9fa;/* color de fondo */
-    /* Centro del texto*/
+    padding: 10px;
+    margin: 8px auto;
+    display: block;
+    font-size: 16px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    color: #333;
     text-align: center;
-   
-    color: #333;              /* color del texto */
-    transition: 0.3s;         /* animación */
-    margin-top: 0%;
-    margin-left: 5%;
+    transition: 0.3s;
 }
 
-/* Botones de inicio de sesión */
-
+/* Botones */
 .login-container button {
-    width: 50%;
-    padding: 10px;
-    background-color: #931525;
-    color: white;
+    width: 80%;
+    padding: 12px;
+    color: #fff;
+    background: linear-gradient(135deg, #931525, #ff416c);
     border: none;
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    margin-left: 25%;
+    margin: /*10px*/ auto;   /* no me gusta como queda esa separación */
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    
 }
 
+.btnCrearCuenta {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
 
+.login-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 768px) {
+    #contenedorLoginAsist {
+        max-width: 90%;
+    }
+
+    #contenedorLoginFoto {
+        width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    #contenedorLoginAsist {
+        max-width: 100%;
+    }
+
+    #contenedorLogin {
+        border-radius: 15px;
+        padding: 15px;
+    }
+
+    #contenedorLoginFoto {
+        width: 40%;
+    }
+
+    .login-container button {
+        width: 100%;
+    }
+}
+
+/* Animación de carga */
+#loading-animation {
+  display: none; /* Oculto al inicio */
+  margin-top: 10px;
+  text-align: center;
+}
+
+#loading-animation span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
+  background-color: #931525;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+
+#loading-animation span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+#loading-animation span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

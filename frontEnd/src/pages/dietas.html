@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -15,129 +15,132 @@
     <div id="contenedorPrincipal">
 
         <!-- ================= ENCABEZADO ================= -->
+        <!-- Encabezado -->
         <div id="encabezado">
-            <!-- Logo principal -->
-            <div class="logo">
-                <button class="btnLogo" onclick="window.location.href='index.html'"></button>
-            </div>
-            <!-- Menú de navegación principal -->
-            <div class="menúBotones">
-                <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenuNoti">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
-                </button>
-            </div>
-            <!-- Área de usuario/login -->
-            <div class="login">
-                <!-- Botón de perfil de usuario -->
-                <div style="float: left; height: 100%; width: 75%;">
-                    <button class="btnPerfilView" id="btnPerfilView">
-                        <span class="nameUser">Nombre de Usuario</span>
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+                <div class="menúBotones">
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                    <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuNoti">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
-                <!-- Menú desplegable de usuario -->
-                <div id="contenedorLoginFotoUser">
-                    <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
+                <div class="login">
+                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
                     </div>
-                </div>
-                <!-- Imagen de usuario -->
-                <div style="float: left; width: 10%; height: 100%;">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                        style="cursor:pointer;">
+        
+                    <!-- Imagen Usuario -->
+                    <div style="float: left; width: 10%; height: 100%;">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;" onclick="window.location.href='login.html'">
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const btnPerfilView = document.getElementById("btnPerfilView");
+                const menuDesplegable = document.getElementById("menuDesplegable");
+                const logoutButton = document.getElementById("logoutButton");
+                const fotoUsuario = document.getElementById("fotoUsuario");
+
+                // Estilo inicial del menú desplegable
+                menuDesplegable.style.position = "absolute";
+                menuDesplegable.style.top = "8%";
+                menuDesplegable.style.right = "8%";
+                menuDesplegable.style.display = "none";
+                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
+
+                // Alternar visibilidad del menú
+                function toggleMenu() {
+                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
+                }
+
+                btnPerfilView.addEventListener("click", toggleMenu);
+
+                // Cerrar sesión
+                logoutButton.addEventListener("click", () => {
+                    localStorage.removeItem("usuario");
+                    window.location.href = "login.html";
+                });
+
+                // Click en la foto de usuario
+                fotoUsuario.addEventListener("click", () => {
+                    window.location.href = "login.html";
+                });
+
+                // Cerrar menú al hacer clic fuera
+                document.addEventListener("click", (event) => {
+                    if (!btnPerfilView.contains(event.target) &&
+                        !menuDesplegable.contains(event.target) &&
+                        !fotoUsuario.contains(event.target)) {
+                        menuDesplegable.style.display = "none";
+                    }
+                });
+            });
+        </script>
         <!-- =============== FIN ENCABEZADO =============== -->
 
-        <!-- =================== CUERPO =================== -->
         <div id="cuerpo">
-    
-            <!-- TABLA DE DIETA: muestra los días y comidas -->
             <div class="tabla-dieta">
-                <!-- Columna de horarios -->
                 <div class="columna-horario">
                     <div class="titulo">Días</div>
                     <div class="celda">Horario</div>
                 </div>
-                
-                <!-- Columna de cada día de la semana -->
-                <div class="columna lunes">
+                <div class="columna lunes" data-dia="1">
                     <div class="titulo">Lunes</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                    </div>
+                    <div class="celda"></div>
                 </div>
-                <div class="columna martes">
+                <div class="columna martes" data-dia="2">
                     <div class="titulo">Martes</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                    </div>
+                    <div class="celda"></div>
                 </div>
-                <div class="columna miércoles">
+                <div class="columna miércoles" data-dia="3">
                     <div class="titulo">Miércoles</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                    </div>
+                    <div class="celda"></div>
                 </div>
-                <div class="columna jueves">
+                <div class="columna jueves" data-dia="4">
                     <div class="titulo">Jueves</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                    </div>
+                    <div class="celda"></div>
                 </div>
-                <div class="columna viernes">
+                <div class="columna viernes" data-dia="5">
                     <div class="titulo">Viernes</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                    </div>
+                    <div class="celda"></div>
                 </div>
-                <div class="columna sábado">
+                <div class="columna sábado" data-dia="6">
                     <div class="titulo">Sábado</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                    </div>
+                    <div class="celda"></div>
                 </div>
-                <div class="columna domingo">
+                <div class="columna domingo" data-dia="7">
                     <div class="titulo">Domingo</div>
-                    <div class="celda">
-                        <p><strong>Desayuno:</strong><br>- Alimento 1</p>
-                        <p><strong>Almuerzo:</strong><br>- Alimento n</p>
-                        <p><strong>Cena:</strong><br>- Alimento n</p>
-                        
-                    </div>
+                    <div class="celda"></div>
                 </div>
             </div>
-              <!-- Botón para crear cuenta -->
+        
             <button type="button" onclick="window.location.href='CrearDieta.html'" id="BtnCrearCuenta">
                 Ver dietas
             </button>
         </div>
-        
         <!-- ================= FIN CUERPO ================= -->
 
         <!-- ================== PIE DE PÁGINA ================== -->
         <div id="pie">
-            <div class="divAuxPie"></div>
-            <div class="divImagen"><button class="instaBoton"></button></div>
-            <div class="divImagen2"><button class="faceBoton"></button></div>
-            <div class="divImagen2"><button class="youTubeBoton"></button></div>
-            <div class="divImagen2"><button class="whatsBoton"></button></div>
+            <div class="footer-inner">
+                <button class="instaBoton"></button>
+                <button class="faceBoton"></button>
+                <button class="youTubeBoton"></button>
+                <button class="whatsBoton"></button>
+            </div>
         </div>
         <!-- =============== FIN PIE DE PÁGINA =============== -->
     </div>
@@ -189,6 +192,19 @@
         });
     </script>
     <!-- ========== FIN SCRIPT MENÚ USUARIO ========== -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioGuardado = localStorage.getItem("usuario");
+
+            if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

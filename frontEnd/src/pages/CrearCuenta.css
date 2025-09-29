@@ -1,102 +1,96 @@
 .fondoLogin {
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center; 
+    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    /* ocupa toda la pantalla */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* quita scroll */
 }
 
+/* Contenedor principal del formulario */
 #contenedorLoginAsist3 {
     width: 80%;
-    height: 96%;
-    float: left;
+    max-width: 1200px;
+    min-height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(255, 255, 255, 0.85);
+    /* fondo semi-transparente */
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Contenedor de la parte izquierda (foto o instrucciones) */
 #contenedorLogin2 {
     width: 100%;
-    height: 100%;
-    margin-top: 1%;
-    margin-left: 10%;
-    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center; 
-    border-radius: 50px;  /* radios de 10px en todas las esquinas */
+    min-width: 250px;
+    background-image: url("/frontEnd/Imagenes/Login_Perfil/FondoSesion.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    background-color: red;
 }
 
 .contendorLoginFotoCrearUserAsist {
-    width: 97%;
-    height: 8%;
-    font-size: 30px;
-    color: black;
+    width: 100%;
+    font-size: clamp(18px, 2.5vw, 30px);
     font-weight: bold;
-    padding-left: 8%;
-    padding-top: 6%;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .contendorLoginFotoCrearUser {
     width: 100%;
-    height: 80%;
-    float: left;
+    height: 300px;
     background-image: url("../../Imagenes/Login_Perfil/Login.png");
-    background-size: cover;         
+    background-size: cover;
     background-position: center;
+    border-radius: 20px;
+    float: left;
 }
 
+/* Contenedor de la parte derecha (formulario) */
 .contenedorLoginDatosUser {
     width: 67%;
-    height: 100%;
+    min-width: 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     float: left;
-    background-size: cover;         
-    background-position: center;
-    
 }
 
-.divNom, .divApe {
-    width: 95%;             /* ancho */
-    height: 10%;             /* alto */
-    color: black;
-    font-weight: bold;
-    font-size: 20px;
-    padding-left: 5%;
-    padding-top: 0.5%;
-    font-family: 'Arial', sans-serif;
-
-}
-
-.divCorreo {
-    width: 95%;             /* ancho */
-    height: 10%;             /* alto */
-    color: black;
-    font-weight: bold;
-    font-size: 20px;
-    padding-left: 5%;
-    padding-top: 0.5%;
-    font-family: 'Arial', sans-serif;
-
-}
-
+/* Labels y div de inputs */
+.divNom,
+.divCorreo,
 .divEdadPesoAlt {
-    width: 100%;             /* ancho */
-    height: 10%;             /* alto */
-    color: black;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: clamp(16px, 1.5vw, 20px);
     font-weight: bold;
-    font-size: 20px;
-    font-family: 'Arial', sans-serif;
+    color: black;
 }
 
 .edadPesoAlt {
-    width: 33.3%;             /* ancho */
-    height: 100%;             /* alto */
-    color: black;
-    font-weight: bold;
-    padding-left: 5%;
-    padding-top: 0.5%;
-    /*float: left;*/
+    flex: 1;
+    min-width: 80px;
 }
 
 /* Estilo para los botones */
 .buttonCrearIniciarSesion {
     width: 50%;
     padding: 10px;
-    background-color: #931525;
+    background: linear-gradient(135deg, #931525, #ff416c);
     color: white;
     border: none;
     border-radius: 10px;

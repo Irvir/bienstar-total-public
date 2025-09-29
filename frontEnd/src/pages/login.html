@@ -1,154 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
     <!-- CSS Global -->
-
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="Login.css">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuario = localStorage.getItem("usuario");
+            if (usuario) {
+                // Si ya hay sesión, redirigir automáticamente al perfil
+                window.location.href = "perfil.html";
+            }
+        });
+    </script>
 </head>
+
 <body>
     <div id="contenedorPrincipal">
-
-    
+        <!-- Encabezado -->
         <div id="encabezado">
-            <div class="logo">
-                <button class="btnLogo" onclick="window.location.href='index.html'"></button>
-            </div>
-            <div class="menúBotones">
-                <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
-                <button class="btnMenuNoti" ><img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"> </button>
-
-            </div>
-            <div class="login">
-                <!-- Aquí se mostrará el nombre del usuario una vez que inicie sesión -->
-                <div style="float: left; height: 100%; width: 75%;">
-                    <button class="btnPerfilView" id="btnPerfilView">
-                        <span class="nameUser">Nombre de Usuario</span>
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+                <div class="menúBotones">
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuNoti">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
-                <div id="contenedorLoginFotoUser">
-                    <!-- Menú desplegable -->
-                    <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <!-- Cerrar sesion-->
-                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
+                <div class="login">
+                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
+                    </div>
+        
+                    <!-- Imagen Usuario -->
+                    <div style="float: left; width: 10%; height: 100%;">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;" onclick="window.location.href='login.html'">
                     </div>
                 </div>
-                <!-- Imagen Foto User -->
-                <div style="float: left; width: 10%; height: 100%;">
-                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                        style="cursor:pointer;">
-                </div>
-                <!--Script Abrir Menú emergente en base a tocar btnPerfilVew-->
-                <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        const btnPerfilView = document.getElementById("btnPerfilView");
-                        const menuDesplegable = document.getElementById("menuDesplegable");
-                        const logoutButton = document.getElementById("logoutButton");
-                        //Estilo del menu desplegable
-                        menuDesplegable.style.position = "absolute";
-                        menuDesplegable.style.top = "8%";
-                        menuDesplegable.style.right = "8%";
-                        menuDesplegable.style.display = "none";
-                        menuDesplegable.style.width = "10%"; // Ajusta según el ancho deseado
-
-                        // Función para alternar la visibilidad del menú desplegable
-                        function toggleMenu() {
-                            if (menuDesplegable.style.display === "block") {
-                                menuDesplegable.style.display = "none";
-                            } else {
-                                menuDesplegable.style.display = "block";
-                            }
-                        }
-
-                        // Evento para mostrar/ocultar el menú al hacer clic en el botón o la imagen
-                        btnPerfilView.addEventListener("click", toggleMenu);
-
-                        // Evento para cerrar sesión
-                        logoutButton.addEventListener("click", () => {
-                            // Limpiar el almacenamiento local y redirigir a la página de inicio de sesión
-                            localStorage.removeItem("usuario");
-                            window.location.href = "Login.html";
-                        });
-
-                        // Cerrar el menú si se hace clic fuera de él
-                        document.addEventListener("click", (event) => {
-                            if (!btnPerfilView.contains(event.target) && !menuDesplegable.contains(event.target) && !fotoUsuario.contains(event.target)) {
-                                menuDesplegable.style.display = "none";
-                            }
-                        });
-                    });
-                </script>
-            
-            
             </div>
         </div>
+
+        <!-- CUERPO -->
         <div id="cuerpo" class="fondoLogin">
             <div id="contenedorLoginAsist">
                 <div id="contenedorLogin">
-                    <div id="contenedorLoginFoto">
-                        
-                    </div>
+                    <div id="contenedorLoginFoto"></div>
+
                     <div class="login-container">
                         <form id="LoginForm">
                             <input type="text" id="email" placeholder="Correo electrónico" required>
                             <input type="password" id="password" placeholder="Contraseña" required>
-                            <br></br>
+                            <br><br>
                             <button type="submit" id="botonIngresar">Ingresar</button>
-                            <br>
-                            <br>
-                            <button type="button" onclick="window.location.href='crearCuenta.html'" id="BtnCrearCuenta">Crear Cuenta</button>
+
+                            <!-- Animación de carga -->
+                            <div id="loading-animation">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                            <br><br>
+                            <button type="button" onclick="window.location.href='crearCuenta.html'"
+                                id="BtnCrearCuenta">Crear Cuenta</button>
                         </form>
-                        
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- PIE DE PÁGINA -->
         <div id="pie">
-            <div class="divAuxPie">
-                
-            </div>
-            <div class="divImagen">
+            <div class="footer-inner">
                 <button class="instaBoton"></button>
-            </div>
-            <div class="divImagen2">
                 <button class="faceBoton"></button>
-            </div>
-            <div class="divImagen2">
                 <button class="youTubeBoton"></button>
-            </div>
-            <div class="divImagen2">
                 <button class="whatsBoton"></button>
             </div>
         </div>
+
         <script>
-            document.getElementById('BtnCrearCuenta').addEventListener('click', function() {
+            document.getElementById('BtnCrearCuenta').addEventListener('click', () => {
                 window.location.href = 'crearCuenta.html';
             });
-        </script>
 
-        <script src="/frontEnd/src/controllers/Login.js">
-            console.log("Cargando script de login...");</script>
-        <script>
+            // Menú desplegable
             document.addEventListener("DOMContentLoaded", () => {
-                const usuarioGuardado = localStorage.getItem("usuario");
+                const btnPerfilView = document.getElementById("btnPerfilView");
+                const menuDesplegable = document.getElementById("menuDesplegable");
+                const logoutButton = document.getElementById("logoutButton");
+                const fotoUsuario = document.getElementById("fotoUsuario");
 
-                if (usuarioGuardado) {
-                const usuario = JSON.parse(usuarioGuardado);
-                const nameUserSpan = document.querySelector(".nameUser");
-                if (nameUserSpan) {
-                    nameUserSpan.textContent = usuario.name;
-                }
-                }
+                menuDesplegable.style.position = "absolute";
+                menuDesplegable.style.top = "8%";
+                menuDesplegable.style.right = "8%";
+                menuDesplegable.style.display = "none";
+                menuDesplegable.style.width = "10%";
+
+                btnPerfilView.addEventListener("click", () => {
+                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
+                });
+
+                logoutButton.addEventListener("click", () => {
+                    localStorage.removeItem("usuario");
+                    window.location.href = "login.html";
+                });
+
+                fotoUsuario.addEventListener("click", () => {
+                    window.location.href = "login.html";
+                });
+
+                document.addEventListener("click", (event) => {
+                    if (!btnPerfilView.contains(event.target) &&
+                        !menuDesplegable.contains(event.target) &&
+                        !fotoUsuario.contains(event.target)) {
+                        menuDesplegable.style.display = "none";
+                    }
+                });
             });
         </script>
+
+        <!-- Cargar tu Login.js real que maneja el login y animación -->
+        <script src="/frontEnd/src/controllers/Login.js"></script>
 
     </div>
 </body>
+
 </html>
