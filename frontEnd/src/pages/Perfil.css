@@ -1,33 +1,35 @@
+/* Contenedor principal del cuerpo */
+#cuerpo {
+    display: flex;
+    flex-wrap: nowrap;
+    /* que no baje contenido */
+    width: 100%;
+    height: 100vh;
+    /* ocupar toda la pantalla */
+    overflow: hidden;
+    /* evita scroll */
+    margin: 0;
+    padding: 0;
+}
+
+/* Menú lateral */
 #divMenuLateral {
-    width: 15%;
-    height: 100%;
+    flex: 0 0 12%;
+    min-width: 120px;
     background-color: #3f1e22;
-    float: left;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-#contenedorInfoSesion {
-    width: 90%; 
-    height: 90%; 
-    margin-top: 2.5%; 
-    margin-left: 5%;
-    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center; 
-    border-radius: 50px;  /* radios de 10px en todas las esquinas */
-}
-
-#divInfoUser {
-    width: 85%;
-    height: 100%;
-    float: left;
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center; 
-}
-
+/* Botones menú lateral */
 .botonesPerfil {
     width: 100%;
-    height: 6%;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
     background-color: #EC221F;
     color: white;
     border: none;
@@ -37,41 +39,16 @@
     font-size: 20px;
 }
 
-.spNombre, .spAge, .spWeight, .spHeight, .spEmail {
-    margin-top: 2%;
-    display: inline-block
-    min-width: 120px;
-    padding: 6px 16px;
-    margin-left: 12px;
-    border: 2px solid #931525;
-    background: #fff;
-    color: #111;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: 500;
-    box-shadow: 0 2px 8px rgba(147,21,37,0.07);
-    transition: box-shadow 0.2s;
-}
-
-.spNombre span, .spAge span, .spWeight span, .spHeight span, .spEmail span {
-    color: #111;
-}
-
-.datoUsuarioRow {
-    width: 100%;
-    height: 10%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
 .botonesPerfil:hover {
     opacity: 0.8;
 }
 
 .botonesPerfilSelec {
     width: 100%;
-    height: 6%;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
     background-color: #B20C05;
     color: white;
     border: none;
@@ -81,79 +58,136 @@
     font-size: 20px;
 }
 
+/* Contenedor info usuario */
+#divInfoUser {
+    flex: 3 1 400px;
+    /* crece, se encoge, mínimo 400px */
+    padding: 20px;
+    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");
+    background-size: cover;
+    background-position: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Contenedor de info sesión más grande */
+#contenedorInfoSesion {
+    width: 100%;
+    max-width: 900px;
+    /* antes 700px, ahora más ancho */
+    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 50px;
+    padding: 30px;
+    /* más espacio interno */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 95%;
+    /* antes 90%, ahora un poco más alto */
+    min-height: 400px;
+    /* asegura que no se vea demasiado pequeño en pantallas grandes */
+}
+
+/* Ajuste interno de info usuario */
 #contenedorInfo {
-    width: 70%;
-    height: 100%;
-    float: left;
-    
+    flex: 2.5;
+    /* más espacio para los datos */
 }
 
 #tituloInfo {
-    width: 100%;
-    height: 15%;
-    font-size: 30px;
+    font-size: 2rem;
     font-weight: bold;
-    margin-left: 8%;
-    margin-top: 1%;
+    margin-bottom: 15px;
+}
+
+.datoUsuarioRow {
+    display: flex;
+    margin-bottom: 15px;
+    /* más separación entre filas */
+    align-items: center;
 }
 
 .info {
-    width: 10%;             /* ancho */
-    height: 6%;             /* alto */
-    color: black;
     font-weight: bold;
-    font-size: 20px;
-    padding-left: 8%;
-    padding-top: 0.5%;
-    font-family: 'Arial', sans-serif;
-    float: left;
+    width: 100px;
 }
 
-.cuadroTexto {
-    width: 30%;
-    height: 50%;
-    margin-top: 0.5%;
-    border: 2px solid black;
-    background-color: white;
-    float: left;
-    padding-left: 2%;
+.spNombre, .spAge, .spWeight, .spHeight, .spEmail {
+    padding: 6px 12px;
+    margin-left: 10px;
+    border: 2px solid #931525;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 16px;
+    flex: 1;
+    padding: 8px 16px;
+    font-size: 18px;
 }
 
-.edadPesoAlt {
-    width: 15%;
-    height: 50%;
-    margin-top: 0.5%;
-    border: 2px solid black;
-    background-color: white;
-    float: left;
-    padding-left: 2%;
-}
-
+/* Contenedor cerrar sesión */
 #contenedorCerrarSesion {
-    width: 30%;
-    height: 100%;
-    float: left;
+    flex: 1 1 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
 }
 
 #imagenUser {
-    margin-top: 6%;
     width: 100%;
-    height: 60%;
+    padding-top: 100%;
+    /* cuadrado responsivo */
     background-image: url("../../Imagenes/Login_Perfil/Login.png");
-    background-size: cover;         
+    background-size: cover;
     background-position: center;
+    border-radius: 50%;
 }
 
+/* Botón cerrar sesión estilizado */
 #cerrarSesion {
     width: 90%;
-    height: 6%;
-    background-color: #931525;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+    padding: 12px;
+    font-size: 18px;
     font-weight: bold;
-    font-size: 20px;
-    margin-top: 10%;
-    margin-left: 5%;
+    color: #fff;
+    background: linear-gradient(135deg, #931525, #ff416c);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#cerrarSesion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Media queries para pantallas pequeñas */
+@media (max-width: 768px) {
+    #cuerpo {
+        flex-direction: column;
+    }
+
+    #divMenuLateral,
+    #divInfoUser {
+        width: 100%;
+        flex: none;
+    }
+
+    #contenedorInfoSesion {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #contenedorInfo,
+    #contenedorCerrarSesion {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }

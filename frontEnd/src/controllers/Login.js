@@ -1,28 +1,28 @@
-document.getElementById("LoginForm").addEventListener("submit", handleLogin);
+const loginForm = document.getElementById("LoginForm");
+const loadingAnimation = document.getElementById("loading-animation");
+
+loginForm.addEventListener("submit", handleLogin);
 
 async function handleLogin(e) {
   e.preventDefault();
+
+  // 🔹 Mostrar animación al enviar
+  loadingAnimation.style.display = "block";
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
   console.log("📤 Enviando login:", { email, password });
 
-  // 🔹 Validaciones frontend antes de enviar
+  // 🔹 Validaciones frontend
   let errores = [];
-
-  if (!email) {
-    errores.push("El correo es obligatorio.");
-  }
-
-  if (!password) {
-    errores.push("La contraseña es obligatoria.");
-  } else if (password.length < 6) {
-    errores.push("La contraseña debe tener al menos 6 caracteres.");
-  }
+  if (!email) errores.push("El correo es obligatorio.");
+  if (!password) errores.push("La contraseña es obligatoria.");
+  else if (password.length < 6) errores.push("La contraseña debe tener al menos 6 caracteres.");
 
   if (errores.length > 0) {
     alert("❌ No se puede iniciar sesión:\n- " + errores.join("\n- "));
+    loadingAnimation.style.display = "none"; // ❌ Ocultar animación si hay error frontend
     return;
   }
 
@@ -39,15 +39,10 @@ async function handleLogin(e) {
     if (res.ok) {
       // ✅ Login exitoso
       alert(result.message);
-      console.log("✅ Usuario:", result.user);
-      // Guardar usuario en localStorage
       localStorage.setItem("usuario", JSON.stringify(result.user));
-
-      // Redirigir a inicio
       window.location.href = "index.html";
-      
     } else {
-      // ❌ Mostrar mensajes claros del backend
+      // ❌ Login fallido
       alert("❌ Error: " + (result.message || "No se pudo iniciar sesión"));
       console.error("🚫 Login fallido:", result);
     }
@@ -55,5 +50,9 @@ async function handleLogin(e) {
   } catch (err) {
     console.error("💥 Error en fetch:", err);
     alert("No se pudo conectar con el servidor");
+  } finally {
+    // 🔹 Ocultar animación siempre al terminar el proceso
+    loadingAnimation.style.display = "none";
   }
 }
+
