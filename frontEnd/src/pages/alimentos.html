@@ -14,6 +14,7 @@
     <div id="contenedorPrincipal">
 
     
+        <!-- Encabezado -->
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
@@ -23,27 +24,23 @@
                 </div>
                 <div class="menúBotones">
                     <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                    <button class="btnMenuSelec" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                    <button class="btnMenuSelec">Alimentos</button>
                     <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
                     <button class="btnMenuNoti">
                         <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
                 <div class="login">
-                    <div style="float: left; height: 100%; width: 75%;">
+                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
                         <button class="btnPerfilView" id="btnPerfilView">
                             <span class="nameUser">Nombre de Usuario</span>
                         </button>
                     </div>
-                    <!-- Menú desplegable -->
-                    <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
-                    </div>
+        
                     <!-- Imagen Usuario -->
                     <div style="float: left; width: 10%; height: 100%;">
                         <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                            style="cursor:pointer;">
+                            style="cursor:pointer;" onclick="window.location.href='login.html'">
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@
                     </a>
                 </div>
                 <div class="menúBotones">
-                    <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
                     <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                     <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
                     <button class="btnMenuNoti">
@@ -28,12 +28,17 @@
                     </button>
                 </div>
                 <div class="login">
-                    <div style="float: left; height: 100%; width: 75%;">
+                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
                         <button class="btnPerfilView" id="btnPerfilView">
                             <span class="nameUser">Nombre de Usuario</span>
                         </button>
                     </div>
-                    
+        
+                    <!-- Imagen Usuario -->
+                    <div style="float: left; width: 10%; height: 100%;">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;" onclick="window.location.href='login.html'">
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,11 +46,16 @@
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const btnPerfilView = document.getElementById("btnPerfilView");
-      
+                const menuDesplegable = document.getElementById("menuDesplegable");
                 const logoutButton = document.getElementById("logoutButton");
                 const fotoUsuario = document.getElementById("fotoUsuario");
 
-               
+                // Estilo inicial del menú desplegable
+                menuDesplegable.style.position = "absolute";
+                menuDesplegable.style.top = "8%";
+                menuDesplegable.style.right = "8%";
+                menuDesplegable.style.display = "none";
+                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
 
                 // Alternar visibilidad del menú
                 function toggleMenu() {
