@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -11,8 +12,7 @@
 
 <body>
     <div id="contenedorPrincipal">
-
-
+        <!-- Encabezado -->
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
@@ -45,118 +45,76 @@
                             style="cursor:pointer;">
                     </div>
                 </div>
+                <div style="float: left; width: 10%; height: 100%;">
+                    <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                        style="cursor:pointer;">
+                </div>
             </div>
         </div>
-        
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const btnPerfilView = document.getElementById("btnPerfilView");
-                const menuDesplegable = document.getElementById("menuDesplegable");
-                const logoutButton = document.getElementById("logoutButton");
-                const fotoUsuario = document.getElementById("fotoUsuario");
 
-                // Estilo inicial del menú desplegable
-                menuDesplegable.style.position = "absolute";
-                menuDesplegable.style.top = "8%";
-                menuDesplegable.style.right = "8%";
-                menuDesplegable.style.display = "none";
-                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
+        <!-- Cuerpo -->
+        <div id="cuerpo">
+            <!-- Filtro -->
+            <div id="contenedorFiltro">
+                <div style="float: left; width: 95%; height: 100%; ">
+                    <input type="text" id="filtro" placeholder="Buscar alimento...">
+                </div>
+            </div>
+            <br>
+            <div id="resultadosFiltro" class="resultadosFiltro"></div>
 
-                // Alternar visibilidad del menú
-                function toggleMenu() {
-                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
-                }
+            <!-- Crear dieta -->
+            <div id="crearDieta">
+                <h2>Crear Dieta</h2>
+                <div id="seleccionDiaComida">
+                    <label for="dia">Día:</label>
+                    <select id="dia">
+                        <option value="1">Lunes</option>
+                        <option value="2">Martes</option>
+                        <option value="3">Miércoles</option>
+                        <option value="4">Jueves</option>
+                        <option value="5">Viernes</option>
+                        <option value="6">Sábado</option>
+                        <option value="7">Domingo</option>
+                    </select>
 
-                btnPerfilView.addEventListener("click", toggleMenu);
+                    <label for="tipoComida">Tipo de comida:</label>
+                    <select id="tipoComida">
+                        <option value="breakfast">Desayuno</option>
+                        <option value="lunch">Almuerzo</option>
+                        <option value="dinner">Cena</option>
+                        <option value="snack">Snack</option>
+                        <option value="snack2">Snack 2</option>
+                    </select>
+                </div>
 
-                // Cerrar sesión
-                logoutButton.addEventListener("click", () => {
-                    localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
-                });
+                <div id="alimentosSeleccionados">
+                    <h3>Alimentos seleccionados</h3>
+                    <p id="infoSeleccion">
+                        Día: <span id="infoDia"></span>, Tipo de comida: <span id="infoTipoComida"></span>
+                    </p>
+                    <ul id="listaAlimentos"></ul>
+                </div>
 
-                // Click en la foto de usuario
-                fotoUsuario.addEventListener("click", () => {
-                    window.location.href = "login.html";
-                });
+                <div id="botones">
+                    <button id="btnGuardarDieta">Guardar Dieta</button>
+                    <button id="btnBorrarDieta">Borrar Todo</button>
+                    <button id="btnSalir">Salir</button>
+                </div>
+            </div>
+        </div>
 
-                // Cerrar menú al hacer clic fuera
-                document.addEventListener("click", (event) => {
-                    if (!btnPerfilView.contains(event.target) &&
-                        !menuDesplegable.contains(event.target) &&
-                        !fotoUsuario.contains(event.target)) {
-                        menuDesplegable.style.display = "none";
-                    }
-                });
-            });
-        </script>
-
-
-<div id="cuerpo">
-    <!-- Filtro -->
-    <div id="contenedorFiltroYForm">
-<!-- Izquierda: Filtro -->
-<div id="filtroContainer">
-<input type="text" id="filtro" placeholder="Buscar alimento...">
-<div id="resultadosFiltro" class="resultadosFiltro"></div>
-
-</div>
-
-<!-- Derecha: Selección de dieta y botones -->
-<div id="formContainer">
-<div id="crearDieta">
-    <h2>Crear Dieta</h2>
-    <div id="seleccionDiaComida">
-        <label for="dia">Día:</label>
-        <select id="dia">
-            <option value="1">Lunes</option>
-            <option value="2">Martes</option>
-            <option value="3">Miércoles</option>
-            <option value="4">Jueves</option>
-            <option value="5">Viernes</option>
-            <option value="6">Sábado</option>
-            <option value="7">Domingo</option>
-        </select>
-
-        <label for="tipoComida">Tipo de comida:</label>
-        <select id="tipoComida">
-            <option value="breakfast">Desayuno</option>
-            <option value="lunch">Almuerzo</option>
-            <option value="dinner">Cena</option>
-            <option value="snack">Snack</option>
-            <option value="snack2">Snack 2</option>
-        </select>
-    </div>
-</div>
-
-<div id="alimentosSeleccionados">
-    <h3>Alimentos seleccionados</h3>
-    <p id="infoSeleccion">
-        Día: <span id="infoDia"></span>, Tipo de comida: <span id="infoTipoComida"></span>
-    </p>
-    <ul id="listaAlimentos"></ul>
-</div>
-
-<div id="botones">
-    <button id="btnGuardarDieta">Guardar Dieta</button>
-    <button id="btnBorrarDieta">Borrar Todo</button>
-    <button id="btnSalir">Salir</button>
-</div>
-</div>
-</div>
-
-
-</div>
-</html>
+        <!-- Pie -->
         <div id="pie">
-            <div class="footer-inner">
-                <button class="instaBoton"></button>
-                <button class="faceBoton"></button>
-                <button class="youTubeBoton"></button>
-                <button class="whatsBoton"></button>
-            </div>
+            <div class="divAuxPie"></div>
+            <div class="divImagen"><button class="instaBoton"></button></div>
+            <div class="divImagen2"><button class="faceBoton"></button></div>
+            <div class="divImagen2"><button class="youTubeBoton"></button></div>
+            <div class="divImagen2"><button class="whatsBoton"></button></div>
         </div>
     </div>
+
+    <!-- Enlazamos el JS externo -->
     <script src="/frontEnd/src/controllers/CrearDieta.js"></script>
 </body>
 
