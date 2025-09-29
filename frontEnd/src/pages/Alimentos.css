@@ -54,12 +54,17 @@
 
 /* Grid de alimentos */
 .grid-container {
+    z-index: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    /* columnas adaptables */
     gap: 1rem;
-    /* espacio más compacto entre cuadros */
     padding: 10px;
+    margin: 3vw auto 2vw auto;
+    width: 100%;
+    background: #fbeaea;
+    border: 4px solid #b30000;
+    border-radius: 2vw;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
 }
 
 /* Cada cuadro de alimento */

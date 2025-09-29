@@ -12,7 +12,7 @@ app.use(express.json());
 const DB_CONFIG = {
   host: "localhost",
   user: "root",
-  password: "Mar.23012006t",
+  password: "12345678",
   database: "login"
 };
 
