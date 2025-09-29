@@ -13,7 +13,7 @@ async function iniciarServidor() {
     const db = await mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "1237654", //clave de base de datos
+      password: "Mar.23012006t", //clave de base de datos
       database: "login"
     });
 

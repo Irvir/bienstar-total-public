@@ -133,7 +133,7 @@
     background-color: rgba(0, 0, 0, 0.7); /* fondo gris oscuro semitransparente */
     padding-top: 4vw;
     padding-left: 38%;
-    display: flex;            /* habilita flexbox */
+  
     justify-content: center;  /* centra horizontalmente */
     align-items: center;      /* centra verticalmente */
     
@@ -149,6 +149,7 @@
     max-width: 500px;
     text-align: center;
     display: flex;
+        /* habilita flexbox */
     flex-direction: column;
     align-items: center;
     overflow: hidden;

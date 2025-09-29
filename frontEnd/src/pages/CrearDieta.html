@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
     <link rel="stylesheet" href="Base.css">
+    <link rel="stylesheet" href="CrearDieta.css">
 </head>
 
 <body>
@@ -91,75 +92,61 @@
         </script>
 
 
-        <div id="cuerpo">
-            <div id="contenedorFiltro">
-                <div id="lupe">
-            
-                </div>
-                <div style="float: left; width: 95%; height: 100%; ">
-                    <input type="text" id="filtro" placeholder="Buscar alimento...">
-                </div>
-            </div>
-            <br>
+<div id="cuerpo">
+    <!-- Filtro -->
+    <div id="contenedorFiltroYForm">
+<!-- Izquierda: Filtro -->
+<div id="filtroContainer">
+<input type="text" id="filtro" placeholder="Buscar alimento...">
+<div id="resultadosFiltro" class="resultadosFiltro"></div>
 
-            <div id="resultadosFiltro" class="resultadosFiltro"></div>
-                
-            </div>
+</div>
+
+<!-- Derecha: Selección de dieta y botones -->
+<div id="formContainer">
+<div id="crearDieta">
+    <h2>Crear Dieta</h2>
+    <div id="seleccionDiaComida">
+        <label for="dia">Día:</label>
+        <select id="dia">
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miércoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+            <option value="7">Domingo</option>
+        </select>
+
+        <label for="tipoComida">Tipo de comida:</label>
+        <select id="tipoComida">
+            <option value="breakfast">Desayuno</option>
+            <option value="lunch">Almuerzo</option>
+            <option value="dinner">Cena</option>
+            <option value="snack">Snack</option>
+            <option value="snack2">Snack 2</option>
+        </select>
+    </div>
+</div>
+
+<div id="alimentosSeleccionados">
+    <h3>Alimentos seleccionados</h3>
+    <p id="infoSeleccion">
+        Día: <span id="infoDia"></span>, Tipo de comida: <span id="infoTipoComida"></span>
+    </p>
+    <ul id="listaAlimentos"></ul>
+</div>
+
+<div id="botones">
+    <button id="btnGuardarDieta">Guardar Dieta</button>
+    <button id="btnBorrarDieta">Borrar Todo</button>
+    <button id="btnSalir">Salir</button>
+</div>
+</div>
+</div>
 
 
-
-        </div>
-        <script>
-        // Función para buscar alimentos en la base de datos
-        async function buscarAlimentos(query) {
-            if (!query) return [];
-            try {
-                const res = await fetch('http://localhost:3000/food-search?q=' + encodeURIComponent(query));
-                if (!res.ok) return [];
-                return await res.json();
-            } catch (e) {
-                return [];
-            }
-        }
-
-        // Renderizar resultados en tarjetas
-        function renderResultados(alimentos) {
-            const cont = document.getElementById('resultadosFiltro');
-            cont.innerHTML = '';
-            if (!alimentos.length) {
-                cont.innerHTML = '<div style="color:#931525; padding:10px;">No se encontraron alimentos.</div>';
-                return;
-            }
-            alimentos.forEach(alimento => {
-                const card = document.createElement('div');
-                card.className = 'alimento-card';
-                card.innerHTML = `
-                    <strong>${alimento.name || alimento.nombre}</strong><br>
-                    Calorías: ${alimento.calories ?? alimento.energy ?? '-'}<br>
-                    Proteínas: ${alimento.protein ?? '-'}g<br>
-                    Grasas: ${alimento.total_lipid ?? '-'}g<br>
-                    Carbohidratos: ${alimento.carbohydrate ?? '-'}g<br>
-                    Azúcares: ${alimento.total_sugars ?? '-'}g<br>
-                    Calcio: ${alimento.calcium ?? '-'}mg<br>
-                    Hierro: ${alimento.iron ?? '-'}mg<br>
-                    Sodio: ${alimento.sodium ?? '-'}mg<br>
-                    Colesterol: ${alimento.cholesterol ?? '-'}mg
-                `;
-                cont.appendChild(card);
-            });
-        }
-
-        // Evento input para el filtro
-        document.getElementById('filtro').addEventListener('input', async function() {
-            const query = this.value.trim();
-            if (!query) {
-                renderResultados([]);
-                return;
-            }
-            const resultados = await buscarAlimentos(query);
-            renderResultados(resultados);
-        });
-        </script>
+</div>
 </html>
         <div id="pie">
             <div class="footer-inner">
@@ -170,6 +157,7 @@
             </div>
         </div>
     </div>
+    <script src="/frontEnd/src/controllers/CrearDieta.js"></script>
 </body>
 
 </html>

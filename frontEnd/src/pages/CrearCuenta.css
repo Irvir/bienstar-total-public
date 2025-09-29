@@ -90,7 +90,7 @@
 .buttonCrearIniciarSesion {
     width: 50%;
     padding: 10px;
-    background-color: #931525;
+    background: linear-gradient(135deg, #931525, #ff416c);
     color: white;
     border: none;
     border-radius: 10px;
