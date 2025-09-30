@@ -1,14 +1,13 @@
-
 try {
     const usuario = localStorage.getItem("usuario");
     if (!usuario) {
-        window.location.href = "Login.html";
+        window.location.href = "login.html";
         // Detener ejecución del resto del script
         throw new Error("No hay sesión iniciada");
     }
 } catch (e) {
     // Si localStorage falla, también redirige
-    window.location.href = "Login.html";
+    window.location.href = "login.html";
     throw e;
 }
 
@@ -35,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     logoutButton.addEventListener("click", () => {
         localStorage.removeItem("usuario");
-        window.location.href = "Login.html";
+        window.location.href = "login.html";
     });
 
     document.addEventListener("click", (event) => {

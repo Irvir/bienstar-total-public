@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="/frontEnd/src/controllers/Error404.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -176,9 +177,8 @@
             <script>
                 /*Script Cerrar sesión y mandar al login con cerrarSesion*/
                 document.getElementById("cerrarSesion").addEventListener("click", () => {
-                    // Limpiar el almacenamiento local y redirigir a la página de inicio de sesión
                     localStorage.removeItem("usuario");
-                    window.location.href = "Login.html";
+                    window.location.href = "login.html";
                 });
 
             </script>

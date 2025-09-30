@@ -2,11 +2,11 @@
 try {
     const usuario = localStorage.getItem("usuario");
     if (!usuario) {
-        window.location.href = "Login.html";
+        window.location.href = "login.html";
         throw new Error("No hay sesión iniciada");
     }
 } catch (e) {
-    window.location.href = "Login.html";
+    window.location.href = "login.html";
     throw e;
 }
 const alimentosSeleccionados = [];
