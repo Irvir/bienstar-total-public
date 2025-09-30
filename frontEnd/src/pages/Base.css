@@ -1,170 +1,216 @@
-/*Todo lo realcionado a las bases de la página*/
-html, body {
+/* --------------- RESET Y VARIABLES --------------- */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+:root {
+    --primary: #931525;
+    --primary-dark: #6F0E1A;
+    --white: #ffffff;
+    --max-w: 1200px;
+    --gap: 1rem;
+}
+
+/* Contenedor principal */
+#contenedorPrincipal {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+/* Encabezado */
+#encabezado {
+    background-color: var(--primary);
+    width: 100%;
+    padding: 0.5rem 0;
+    /* no se cambia el alto */
+    color: var(--white);
+}
+
+.header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 2rem;
+    /* más espacio lateral para que se vea extendido */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    /* separación entre logo, menú y login */
+    flex-wrap: wrap;
+    /* para móviles */
+}
+
+/* Logo */
+.logo {
+    flex: 0 0 auto;
+}
+
+.logoImg {
+    height: clamp(40px, 8vw, 80px);
+    /* mantiene el alto original, responsive */
+    width: auto;
+}
+
+/* Menú central */
+.menúBotones {
+    flex: 2;
+    /* ocupa más espacio horizontal */
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    /* separación entre botones */
+    flex-wrap: wrap;
+    /* se ajusta en pantallas pequeñas */
+}
+
+/* Botones del menú */
+.btnMenuSelec,
+.btnMenu,
+.btnMenuNoti {
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    background-color: var(--primary);
+    font-weight: bold;
+    font-size: clamp(14px, 1.5vw, 18px);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+.btnMenuSelec {
+    background-color: var(--primary-dark);
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btnMenuNoti {
+    flex: 0 0 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+}
+
+#btnNotification {
+    height: clamp(20px, 3vw, 32px);
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Login */
+.login {
+    flex: 0 0 auto;
+}
+
+.btnPerfilView {
+    border: none;
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    font-size: clamp(14px, 1.5vw, 18px);
+    font-weight: bold;
+    padding: 0.25rem;
+}
+
+#fotoUsuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Cuerpo */
+#cuerpo {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* Contenedor de la página, esta dividido en 3*/
-#contenedorPrincipal {
-    width: 100%;   
-    height: 100%;
-    background-color: white;
+@media (max-width: 768px) {
+    #cuerpo {
+        padding: 0;
+    }
 }
 
-#encabezado, #pie{
-    background-color: #931525;
-    width: 100%;   
-    height: 8%;   
+/* Pie */
+#pie {
+    background-color: var(--primary);
+    width: 100%;
+    padding: 1rem;
+    color: var(--white);
 }
 
-
-#cuerpo {
-    width: 100%;   
-    height: 84%;   
-}
-
-/* Botones menú principal */
-
-/* Boton seleccionado */
-.btnMenuSelec {
-    width: 33.3%;
-    height: 100%;
-    border: none;
-    cursor: pointer;
-    color: white; 
-    background-color: #6F0E1A;
-    box-shadow: 2px 4px 8px rgba(0,0,0,0.4);
-    /* Ajustes de texto*/
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.btnMenuSelec:hover {
-    opacity: 0.8;
-}
-
-/* Boton Logo */
-.logo {
-    width: 10%;
-    height: 100%;
-    float: left;
-}
-
-.btnLogo {
-    width: 100%;                     /* ancho del botón */
-    height: 100%;                     /* alto del botón */
-    border: none;                     /* sin borde */
-    color: white;                     /* color del texto */
-    font-size: 18px;                  /* tamaño de la fuente */
-    font-weight: bold;
-    cursor: pointer;
-    background-image: url("../../Imagenes/Login_Perfil/Logo.png");  /* aquí tu imagen */
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center;      /* centra la imagen */
-    /*box-shadow: 2px 4px 8px rgba(0,0,0,0.4);  sombra para que resalte */
-    /* Crear ajustes de texto */
-}
-
-.btnLogo:hover {
-    opacity: 0.8;                     /* efecto al pasar el mouse */
-}
-
-/* Botones centro del menú */
-
-.menúBotones {
-    width: 70%;
-    height: 100%;
-    float: left;
+.footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-#btnNotification{
-    width: 100%;                     /* ancho del botón */
-    height: 70%;                     /* alto del botón */
-    border: none;                     /* sin borde */
-    font-weight: bold;
-    cursor: pointer;
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center;      /* centra la imagen */
-    font-weight: bold;
-    font-size: 50px;
-    padding-left: 0%;
-    padding-top: 0%;
-}
-
-.btnMenu {
-    width: 40%;
-    height: 100%;
+.footer-inner button {
     border: none;
+    outline: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: clamp(28px, 5vw, 40px);
+    height: clamp(28px, 5vw, 40px);
     cursor: pointer;
-    color: white; 
+}
+
+.instaBoton {
+    background-image: url("../../Imagenes/Pie_Pagina/InstaLogo.png");
     background-color: #931525;
-    /* Ajustes de texto*/
-    font-weight: bold;
-    font-size: 20px;
 }
 
-.btnMenuNoti {
-    width: 5%;
-    height: 100%;
-    border: none;
-    cursor: pointer;
-    color: white; 
+.faceBoton {
+    background-image: url("../../Imagenes/Pie_Pagina/FaceLogo.png");
     background-color: #931525;
-    /* Ajustes de texto*/
-    font-weight: bold;
-    font-size: 20px;
 }
 
-/* Boton de login */
-
-.login {
-    width: 20%;
-    height: 100%;
-    float: left;
-}
-
-.btnPerfilView {
-    width: 100%;                     /* ancho del botón */
-    height: 100%;                     /* alto del botón */
-    border: none;                     /* sin borde */
-    color: white;                     /* color del texto */
-    font-size: 20px;                  /* tamaño de la fuente */
-    font-weight: bold;
-    cursor: pointer;
+.youTubeBoton {
+    background-image: url("../../Imagenes/Pie_Pagina/YouTubeLogo.png");
     background-color: #931525;
-    background-size: cover;           /* ajusta la imagen al tamaño del botón */
-    background-position: center;      /* centra la imagen */
-    /*box-shadow: 2px 4px 8px rgba(0,0,0,0.4);  sombra para que resalte */
 }
 
-#fotoUsuario {
-    width: 200%;
-    margin-top: 0%;
-    margin-left: 20%;
+.whatsBoton {
+    background-image: url("../../Imagenes/Pie_Pagina/WhatsLogo.png");
+    background-color: #931525;
 }
 
-/* Contenedor del menú desplegable */
+/* Menú desplegable */
 .menuDesplegable {
     display: none;
-    /* Oculto por defecto */
     position: absolute;
-    top: 110%;
-    /* Ajusta la posición debajo de la imagen */
-    right: 0;
+    top: calc(100% + 0.4rem);
+    right: 1rem;
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
     z-index: 1000;
-    /* Asegura que esté por encima de otros elementos */
-    width: 150px;
+    width: 180px;
 }
 
-/* Opciones del menú */
 .opcionMenu {
     display: block;
     width: 100%;
@@ -177,83 +223,34 @@ html, body {
 }
 
 .opcionMenu:hover {
-    background-color: #f0f0f0;
-}
-/* pie de página */
-
-.divAuxPie {
-    width: 100%;
-    height: 10%;
-
+    background-color: #f3f3f3;
 }
 
-.divImagen {
-    width: 4%;
-    height: 86%;
-    padding-left: 84%;
-    background-size: cover;   
-    float: left;
+/* Responsive */
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .menúBotones {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .login {
+        order: 2;
+    }
+
+    #cuerpo {
+        padding: 0.8rem;
+    }
 }
 
-.divImagen2 {
-    width: 4%;
-    height: 90%;
-    background-size: cover;   
-    float: left;
-}
-
-.instaBoton {
-    width: 65%;
-    height: 75%;
-    background-image: url("../../Imagenes/Pie_Pagina/InstaLogo.png");
-    background-size: cover;           
-    background-position: center; 
-    border: none;
-    outline: none;
-}
-
-.instaBoton:hover {
-    opacity: 0.8;                     /* efecto al pasar el mouse */
-}
-
-.faceBoton {
-    width: 63%;
-    height: 68%;
-    background-image: url("../../Imagenes/Pie_Pagina/FaceLogo.png");
-    background-size: cover;           
-    background-position: center; 
-    border: none;
-    outline: none;
-}
-
-.faceBoton:hover {
-    opacity: 0.8;                     /* efecto al pasar el mouse */
-}
-
-.youTubeBoton {
-    width: 80%;
-    height: 65%;
-    background-image: url("../../Imagenes/Pie_Pagina/YouTubeLogo.png");
-    background-size: cover;           
-    background-position: center; 
-    border: none;
-    outline: none;
-}
-
-.youTubeBoton:hover {
-    opacity: 0.8;                     /* efecto al pasar el mouse */
-}
-
-.whatsBoton {
-    width: 60%;
-    height: 68%;
-    background-image: url("../../Imagenes/Pie_Pagina/WhatsLogo.png");
-    background-size: cover;           
-    background-position: center; 
-    border: none;
-    outline: none;
-}
-
-.whatsBoton:hover {
-    opacity: 0.8;                     /* efecto al pasar el mouse */
+@media (max-width: 480px) {
+    .footer-inner {
+        flex-direction: column;
+        align-items: center;
+    }
 }
