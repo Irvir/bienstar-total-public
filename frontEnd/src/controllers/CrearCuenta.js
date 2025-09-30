@@ -16,12 +16,10 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
   //  Validaciones frontend
   let errores = [];
 
-  // Nombre sin números y máximo 50 caracteres
-  if (/[0-9]/.test(data.name)) {
-    errores.push("El nombre no puede tener números.");
-  }
-  if (data.name.length > 50) {
-    errores.push("El nombre no puede superar los 50 caracteres.");
+  // Nombre sin números
+  const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$/;
+  if (!data.name || typeof data.name !== 'string' || !nameRegex.test(data.name)) {
+    errores.push("El nombre debe tener solo letras y espacios, entre 2 y 40 caracteres.");
   }
   // Email
   const emailRegex = /^[a-zA-Z\d._-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
@@ -66,7 +64,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
     const checkResult = await checkEmail.json();
 
-    if (!checkEmail.ok || checkResult.exists) {
+    if (!checkEmail.ok ||checkResult.exists) {
       alert("❌ El correo ya está registrado. Usa otro.");
       return;
     }
