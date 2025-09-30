@@ -16,9 +16,12 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
   //  Validaciones frontend
   let errores = [];
 
-  // Nombre sin números
+  // Nombre sin números y máximo 50 caracteres
   if (/[0-9]/.test(data.name)) {
     errores.push("El nombre no puede tener números.");
+  }
+  if (data.name.length > 50) {
+    errores.push("El nombre no puede superar los 50 caracteres.");
   }
   // Email
   const emailRegex = /^[a-zA-Z\d._-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
@@ -42,11 +45,11 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
   }
 
-  // Edad, peso, altura
-  if (data.age <= 0) errores.push("La edad debe ser mayor a 0.");
-  if (data.weight <= 0) errores.push("El peso debe ser mayor a 0.");
-  if (data.height <= 0) errores.push("La altura debe ser mayor a 0.");
-
+  // Edad, peso, altura con rangos realistas
+  if (data.age <= 0 || data.age > 120) errores.push("La edad debe ser mayor a 0 y menor o igual a 120.");
+  if (data.weight <= 20 || data.weight > 300) errores.push("El peso debe estar entre 21 y 300 kg.");
+  if (data.height <= 80 || data.height > 250) errores.push("La altura debe estar entre 81 y 250 cm.");
+  
   // Si hay errores en frontend, mostrar y cancelar envío
   if (errores.length > 0) {
     alert("❌ No se puede registrar:\n- " + errores.join("\n- "));

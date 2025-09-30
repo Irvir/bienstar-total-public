@@ -1,4 +1,14 @@
-
+// Redirigir si no hay sesión iniciada
+try {
+    const usuario = localStorage.getItem("usuario");
+    if (!usuario) {
+        window.location.href = "Login.html";
+        throw new Error("No hay sesión iniciada");
+    }
+} catch (e) {
+    window.location.href = "Login.html";
+    throw e;
+}
 const alimentosSeleccionados = [];
 
 // ================== INFO SELECCIÓN ==================
@@ -22,7 +32,6 @@ async function buscarAlimentos(query) {
         return [];
     }
 }
-
 function renderResultados(alimentos) {
     const cont = document.getElementById('resultadosFiltro');
     cont.innerHTML = '';
