@@ -23,12 +23,12 @@ function actualizarInfoSeleccion() {
 
 // ================== BUSCAR ALIMENTOS ==================
 async function buscarAlimentos(query) {
-    if (!query) return [];
     try {
         const res = await fetch('http://localhost:3000/food-search?q=' + encodeURIComponent(query));
         if (!res.ok) return [];
         return await res.json();
     } catch (e) {
+        console.error("Error al buscar alimentos:", e);
         return [];
     }
 }
@@ -42,7 +42,7 @@ function renderResultados(alimentos) {
         card.innerHTML = `
     <div class="alimento-info">
         <strong>${alimento.name}</strong><br>
-        Calorías: ${alimento.energy ?? '-'}<br>
+        Calorías: ${alimento.calories ?? '-'}<br>
         <b>Proteínas:</b> ${alimento.protein ?? '-'} g<br>
         <b>Carbohidratos:</b> ${alimento.carbohydrate ?? '-'} g<br>
         <b>Grasas:</b> ${alimento.total_lipid ?? '-'} g
@@ -78,6 +78,7 @@ function renderResultados(alimentos) {
 
     <div class="botonesAccionVertical">
         <button class="btnAgregar" data-id="${alimento.id}" data-name="${alimento.name}">Agregar</button>
+        <button class="btnEliminar" data-id="${alimento.id}">Eliminar</button>
     </div>
 `;
         cont.appendChild(card);
@@ -95,6 +96,22 @@ function renderResultados(alimentos) {
             agregarAlimento(id, name, dia, tipoComida);
         });
     });
+    
+
+
+document.querySelectorAll('.btnEliminar').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const card = this.closest('.alimento-card');
+        const dia = card.querySelector('.selectDia').value;
+        const tipoComida = card.querySelector('.selectComida').value;
+        const id = this.getAttribute('data-id');
+
+        const idNum = parseInt(id);
+        const diaNum = parseInt(dia);
+        eliminarAlimento(idNum, diaNum, tipoComida);
+
+    });
+});
 }
 // ================== RENDER DIETA ==================
 function renderDietaDelDia() {
@@ -169,33 +186,52 @@ async function guardarDieta() {
     }
 }
 
-function borrarDieta() {
-    alimentosSeleccionados.length = 0;
-    document.getElementById('listaAlimentos').innerHTML = '';
+async function eliminarAlimento(id, dia, tipoComida) {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const id_diet = usuario?.id_diet ?? 1;
+    console.log("Eliminar:", { id_diet, id, dia, tipoComida });
+
+    try {
+        const res = await fetch("http://localhost:3000/delete-diet-item", {
+            method: "POST", // ✅ CAMBIADO de DELETE a POST
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_diet, id_food: id, dia, tipoComida })
+        });
+
+        if (res.ok) {
+            alert("Alimento eliminado de la dieta.");
+            renderDietaDelDia();
+        } else {
+            const error = await res.json();
+            alert("Error: " + (error.error || "No se pudo eliminar"));
+        }
+    } catch (e) {
+        console.error("Error al eliminar:", e);
+    }
 }
 
 // ================== EVENTOS ==================
-document.addEventListener("DOMContentLoaded", () => {
-    /*
-    document.getElementById('btnGuardarDieta').addEventListener('click', guardarDieta);
-    document.getElementById('btnBorrarDieta').addEventListener('click', borrarDieta);
-    */
-   
+document.addEventListener("DOMContentLoaded", async () => {
+
+
+    
+    
+    const alimentos = await buscarAlimentos(""); // ✅ ahora sí puedes usar await
+    console.log("Alimentos al cargar:", alimentos); // <-- ¿llega algo?
+
+    renderResultados(alimentos);
+
+    document.getElementById('filtro').addEventListener('input', async function () {
+        const query = this.value.trim();
+        const alimentos = await buscarAlimentos(query);
+        renderResultados(alimentos);
+    });
 
     document.getElementById('btnSalir').addEventListener('click', () => {
         window.location.href = 'dietas.html';
     });
-    document.getElementById('filtro').addEventListener('input', async function () {
-        const query = this.value.trim();
-        if (!query) {
-            document.getElementById('resultadosFiltro').innerHTML = '';
-            return;
-        }
-        const alimentos = await buscarAlimentos(query);
-        renderResultados(alimentos);
-    });
+
     document.getElementById('dia').addEventListener('change', actualizarInfoSeleccion);
     document.getElementById('tipoComida').addEventListener('change', actualizarInfoSeleccion);
     actualizarInfoSeleccion();
 });
-

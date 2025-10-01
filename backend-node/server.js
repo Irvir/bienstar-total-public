@@ -151,33 +151,54 @@ app.get("/food/:id", async (req, res) => {
 app.get("/food-search", async (req, res) => {
   try {
     const q = (req.query.q || "").trim();
-    if (!q) return res.json([]); // vacio -> lista vacía
+    let rows;
 
-    const [rows] = await pool.query(
-      `SELECT 
-         id,
-         nombre AS name,
-         energy AS calories,
-         protein,
-         total_lipid,
-         carbohydrate,
-         total_sugars,
-         calcium,
-         iron,
-         sodium,
-         cholesterol
-       FROM food
-       WHERE nombre LIKE ? COLLATE utf8mb4_general_ci
-       LIMIT 50`,
-      [`%${q}%`]
-    );
+    if (q) {
+      // Buscar por coincidencia
+      [rows] = await pool.query(
+        `SELECT 
+           id,
+           nombre AS name,
+           energy AS calories,
+           protein,
+           total_lipid,
+           carbohydrate,
+           total_sugars,
+           calcium,
+           iron,
+           sodium,
+           cholesterol
+         FROM food
+         WHERE nombre LIKE ? COLLATE utf8mb4_general_ci
+         LIMIT 50`,
+        [`%${q}%`]
+      );
+    } else {
+      // Mostrar todos los alimentos
+      [rows] = await pool.query(
+        `SELECT 
+           id,
+           nombre AS name,
+           energy AS calories,
+           protein,
+           total_lipid,
+           carbohydrate,
+           total_sugars,
+           calcium,
+           iron,
+           sodium,
+           cholesterol
+         FROM food
+         LIMIT 50`
+      );
+    }
+
     res.json(rows);
   } catch (err) {
     console.error("/food-search error:", err);
     res.status(500).json([]);
   }
 });
-
 // Obtener dieta (GET /get-diet?id_diet=1)
 app.get("/get-diet", async (req, res) => {
   try {
@@ -207,8 +228,7 @@ app.get("/get-diet", async (req, res) => {
   }
 });
 
-// Guardar dieta (POST /save-diet) -> body: { id_diet: number, meals: [{ id, dia, tipoComida }] }
-// server.js (parte del backend)
+
 // Guardar dieta (POST /save-diet)
 app.post("/save-diet", async (req, res) => {
   const { id_diet, meals } = req.body;
@@ -278,8 +298,53 @@ app.post("/save-diet", async (req, res) => {
     res.status(500).json({ error: "Error al guardar dieta" });
   }
 });
+app.post("/delete-diet-item", async (req, res) => {
+  try {
+    const { id_diet, id_food, dia, tipoComida } = req.body;
 
+    const idDietNum = Number(id_diet);
+    const idFoodNum = Number(id_food);
+    const diaNum = Number(dia);
 
+    const [dayRows] = await pool.query(
+      "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
+      [idDietNum, diaNum]
+    );
+    if (dayRows.length === 0) {
+      return res.status(404).json({ error: "Día no encontrado en la dieta" });
+    }
+
+    const id_day = dayRows[0].id;
+
+    const [mealRows] = await pool.query(
+      "SELECT id FROM meal WHERE id_day = ? AND type = ?",
+      [id_day, tipoComida]
+    );
+    if (mealRows.length === 0) {
+      return res.status(404).json({ error: "Comida no encontrada en ese día" });
+    }
+
+    const id_meal = mealRows[0].id;
+
+    const [checkRows] = await pool.query(
+      "SELECT * FROM meal_food WHERE id_meal = ? AND id_food = ?",
+      [id_meal, idFoodNum]
+    );
+    if (checkRows.length === 0) {
+      return res.status(404).json({ error: "El alimento no está registrado en esa comida" });
+    }
+
+    const [result] = await pool.query(
+      "DELETE FROM meal_food WHERE id_meal = ? AND id_food = ?",
+      [id_meal, idFoodNum]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error al eliminar alimento:", err);
+    res.status(500).json({ error: "Error interno" });
+  }
+});
 // Puerto
 const PORT = 3000;
 app.listen(PORT, () => {

@@ -93,17 +93,38 @@ document.addEventListener("DOMContentLoaded", async () => {
           
         };
 
+        const tiposComida = ["breakfast", "lunch", "dinner", "snack1", "snack2"];
+
         Object.keys(dietaAgrupada).forEach(dia => {
             const columna = document.querySelector(`.columna[data-dia="${dia}"] .celda`);
             if (!columna) return;
 
             columna.innerHTML = "";
-            Object.keys(dietaAgrupada[dia]).forEach(tipoComida => {
-                const alimentos = dietaAgrupada[dia][tipoComida].join(", ");
-                const tipoTraducido = traducciones[tipoComida] || tipoComida; // usa traducción si existe
-                const p = document.createElement("p");
-                p.innerHTML = `<strong>${tipoTraducido}:</strong> ${alimentos}`;
-                columna.appendChild(p);
+
+            tiposComida.forEach(tipoComida => {
+                const tipoTraducido = traducciones[tipoComida] || tipoComida;
+                const alimentos = dietaAgrupada[dia][tipoComida] || [];
+
+                const bloque = document.createElement("div");
+                bloque.innerHTML = `<strong>${tipoTraducido}:</strong>`;
+
+                if (alimentos.length > 0) {
+                    const lista = document.createElement("ul");
+                    lista.style.margin = "4px 0 12px -20px"; // sangría visual
+                    alimentos.forEach(alimento => {
+                        const item = document.createElement("li");
+                        item.textContent = alimento;
+                        lista.appendChild(item);
+                    });
+                    bloque.appendChild(lista);
+                } else {
+                    const vacio = document.createElement("p");
+                    vacio.textContent = "";
+                    vacio.style.marginLeft = "16px";
+                    bloque.appendChild(vacio);
+                }
+
+                columna.appendChild(bloque);
             });
         });
     } catch (err) {
