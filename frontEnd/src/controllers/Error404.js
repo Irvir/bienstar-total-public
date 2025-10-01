@@ -1,4 +1,4 @@
-// Error404.js
+/*// Error404.js
 const rutasValidas = [
     "index.html",
     "perfil.html",
@@ -35,3 +35,4 @@ else {
 
 
 
+*/

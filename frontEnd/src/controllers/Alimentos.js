@@ -81,3 +81,15 @@ if (inputFiltro) {
   });
 }
 
+//Cargar Nombre Usuario
+document.addEventListener("DOMContentLoaded", () => {
+  const usuarioGuardado = localStorage.getItem("usuario");
+
+  if (usuarioGuardado) {
+    const usuario = JSON.parse(usuarioGuardado);
+    const nameUserSpan = document.querySelector(".nameUser");
+    if (nameUserSpan) {
+      nameUserSpan.textContent = usuario.name;
+    }
+  }
+});

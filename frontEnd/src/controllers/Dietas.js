@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ================== CARGAR DIETA ==================
+// ================== CARGAR DIETA ==================
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         const res = await fetch("http://localhost:3000/get-diet");
@@ -82,6 +83,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             dietaAgrupada[dia][tipo_comida].push(alimento);
         });
 
+        // Diccionario de traducción inglés -> español
+        const traducciones = {
+            breakfast: "Desayuno",
+            lunch: "Almuerzo",
+            dinner: "Cena",
+            snack1: "Colación 1",
+            snack2: "Colación 2"
+          
+        };
+
         Object.keys(dietaAgrupada).forEach(dia => {
             const columna = document.querySelector(`.columna[data-dia="${dia}"] .celda`);
             if (!columna) return;
@@ -89,8 +100,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             columna.innerHTML = "";
             Object.keys(dietaAgrupada[dia]).forEach(tipoComida => {
                 const alimentos = dietaAgrupada[dia][tipoComida].join(", ");
+                const tipoTraducido = traducciones[tipoComida] || tipoComida; // usa traducción si existe
                 const p = document.createElement("p");
-                p.innerHTML = `<strong>${tipoComida}:</strong> ${alimentos}`;
+                p.innerHTML = `<strong>${tipoTraducido}:</strong> ${alimentos}`;
                 columna.appendChild(p);
             });
         });
@@ -98,4 +110,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al cargar la dieta:", err);
     }
 });
-

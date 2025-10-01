@@ -86,6 +86,9 @@
 .celda {
     border-radius: 0;
 }
+#cuerpo{
+    font-family: 'Montserrat', sans-serif;
+}
 #pie {
     position: fixed;
     left: 0;
