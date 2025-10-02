@@ -304,7 +304,7 @@ async function eliminarAlimento(id, dia, tipoComida) {
 
         if (res.ok) {
             alert("Alimento eliminado de la dieta.");
-            renderDietaDelDia();
+            await cargarDietaDelDia(dia);   
         } else {
             const error = await res.json();
             alert("Error: " + (error.error || "No se pudo eliminar"));

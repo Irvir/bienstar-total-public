@@ -1,4 +1,3 @@
-/*// Error404.js
 const rutasValidas = [
     "index.html",
     "perfil.html",
@@ -14,25 +13,15 @@ const rutasValidas = [
     "base.html"
 ];
 
-// Obtener último segmento
-let rutaActual = window.location.pathname.split("/").pop() || "index.html";
+// Obtener último segmento sin extensión
+let rutaActual = window.location.pathname.split("/").pop().split("?")[0].split("#")[0];
 
-// Quitar query y hash
-rutaActual = rutaActual.split("?")[0].split("#")[0];
-
-if (!rutasValidas.includes(rutaActual)) {
-    if (rutaActual !== "error404.html") {
-        window.location.href = "/frontEnd/src/pages/error404.html";
-    }
+// Si no tiene extensión, agregarla
+if (!rutaActual.includes(".html")) {
+    rutaActual += ".html";
 }
-    if (rutaActual !== mapaCanonico[rutaLower]) {
-        window.location.replace(mapaCanonico[rutaLower]);
-    }
-else {
+
+// Redirigir si no es válida
+if (!rutasValidas.includes(rutaActual)) {
     window.location.href = "/frontEnd/src/pages/error404.html";
 }
-
-
-
-
-*/
