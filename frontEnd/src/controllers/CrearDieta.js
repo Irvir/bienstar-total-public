@@ -1,3 +1,13 @@
+const traducciones = {
+    breakfast: "Desayuno",
+    lunch: "Almuerzo",
+    dinner: "Cena",
+    snack: "Snack",
+    snack2: "Snack 2"
+};
+
+let diaSeleccionado = null;
+let dietaAgrupada = {};
 // Redirigir si no hay sesión iniciada
 try {
     const usuario = localStorage.getItem("usuario");
@@ -13,14 +23,19 @@ const alimentosSeleccionados = [];
 
 // ================== INFO SELECCIÓN ==================
 function actualizarInfoSeleccion() {
-    const dia = document.getElementById('dia').value;
-    const tipoComida = document.getElementById('tipoComida').value;
-    document.getElementById('infoDia').textContent =
-        document.getElementById('dia').options[dia - 1].text;
-    document.getElementById('infoTipoComida').textContent =
-        document.getElementById('tipoComida').options[document.getElementById('tipoComida').selectedIndex].text;
-}
+    const diaSelect = document.getElementById('dia');
+    const tipoComidaSelect = document.getElementById('tipoComida');
 
+    if (!diaSelect || !tipoComidaSelect) return; // ✅ evita el error si no existen
+
+    const dia = diaSelect.value;
+    const tipoComida = tipoComidaSelect.value;
+
+    document.getElementById('infoDia').textContent =
+        diaSelect.options[dia - 1]?.text || `Día ${dia}`;
+    document.getElementById('infoTipoComida').textContent =
+        tipoComidaSelect.options[tipoComidaSelect.selectedIndex]?.text || tipoComida;
+}
 // ================== BUSCAR ALIMENTOS ==================
 async function buscarAlimentos(query) {
     try {
@@ -35,7 +50,8 @@ async function buscarAlimentos(query) {
 function renderResultados(alimentos) {
     const cont = document.getElementById('resultadosFiltro');
     cont.innerHTML = ''; // Limpiar resultados anteriores
-
+    const encabezado = document.getElementById('diaSeleccionadoTexto');
+  
     alimentos.forEach(alimento => {
         const card = document.createElement('div');
         card.className = 'alimento-card';
@@ -86,6 +102,7 @@ function renderResultados(alimentos) {
 
     // Asignar eventos a los botones recién creados
     document.querySelectorAll('.btnAgregar').forEach(btn => {
+
         btn.addEventListener('click', function () {
             const card = this.closest('.alimento-card');
             const dia = card.querySelector('.selectDia').value;
@@ -96,7 +113,16 @@ function renderResultados(alimentos) {
             agregarAlimento(id, name, dia, tipoComida);
         });
     });
-    
+    document.querySelectorAll('.selectDia').forEach(select => {
+        select.addEventListener('change', async function () {
+            const dia = parseInt(this.value);
+            await cargarDietaDelDia(dia);
+        });
+    });
+
+
+
+ 
 
 
 document.querySelectorAll('.btnEliminar').forEach(btn => {
@@ -113,22 +139,50 @@ document.querySelectorAll('.btnEliminar').forEach(btn => {
     });
 });
 }
+
 // ================== RENDER DIETA ==================
 function renderDietaDelDia() {
-    if (!diaSeleccionado || !dietaAgrupada[diaSeleccionado]) return;
+    const resumen = document.getElementById("resumenDieta");
+    resumen.innerHTML = "";
 
-    const columna = document.querySelector(`.columna[data-dia="${diaSeleccionado}"] .celda`);
-    if (!columna) return;
+    if (!diaSeleccionado || !dietaAgrupada[diaSeleccionado]) {
+        resumen.textContent = "No hay alimentos para este día.";
+        return;
+    }
 
-    columna.innerHTML = "";
-    Object.keys(dietaAgrupada[diaSeleccionado]).forEach(tipoComida => {
-        const alimentos = dietaAgrupada[diaSeleccionado][tipoComida].join(", ");
+    const ordenComidas = ["breakfast", "lunch", "dinner", "snack", "snack2"];
+
+    ordenComidas.forEach(tipoComida => {
         const tipoTraducido = traducciones[tipoComida] || tipoComida;
-        const p = document.createElement("p");
-        p.innerHTML = `<strong>${tipoTraducido}:</strong> ${alimentos}`;
-        columna.appendChild(p);
+        const alimentos = dietaAgrupada[diaSeleccionado][tipoComida] || [];
+
+        // Título
+        const titulo = document.createElement("h4");
+        titulo.textContent = tipoTraducido;
+        resumen.appendChild(titulo);
+
+        // Lista UL sin viñetas
+        const lista = document.createElement("ul");
+        lista.classList.add("lista-comida");
+
+        if (alimentos.length > 0) {
+            alimentos.forEach(alimento => {
+                const li = document.createElement("li");
+                li.textContent = alimento;
+                lista.appendChild(li);
+            });
+        } else {
+            const li = document.createElement("li");
+            li.textContent = "(sin alimentos)";
+            lista.appendChild(li);
+        }
+
+        resumen.appendChild(lista);
     });
 }
+
+
+
 
 // ================== SELECCIÓN DE ALIMENTO ==================
 async function agregarAlimento(id, name, dia, tipoComida) {
@@ -147,8 +201,11 @@ async function agregarAlimento(id, name, dia, tipoComida) {
 
         if (res.ok) {
             alert(`${name} agregado a tu dieta (Día ${dia}, ${tipoComida})`);
-            // Opcional: refrescar la dieta en pantalla
-            // renderDietaDelDia();
+
+            // ✅ Solo refresca si el alimento fue agregado al día actualmente seleccionado
+            if (parseInt(dia) === diaSeleccionado) {
+                await cargarDietaDelDia(diaSeleccionado);
+            }
         } else {
             alert("Error al guardar el alimento en la dieta");
         }
@@ -157,7 +214,54 @@ async function agregarAlimento(id, name, dia, tipoComida) {
         alert("Error de conexión con el servidor.");
     }
 }
+async function cargarDietaDelDia(dia) {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const id_diet = usuario?.id_diet ?? 1;
 
+    try {
+        const res = await fetch(`http://localhost:3000/get-diet?id_diet=${id_diet}`);
+        if (!res.ok) throw new Error("No se pudo cargar la dieta");
+
+        const dieta = await res.json();
+        dietaAgrupada = {};
+
+        dieta.forEach(({ dia: diaItem, tipo_comida, alimento }) => {
+            if (!dietaAgrupada[diaItem]) dietaAgrupada[diaItem] = {};
+            if (!dietaAgrupada[diaItem][tipo_comida]) dietaAgrupada[diaItem][tipo_comida] = [];
+            dietaAgrupada[diaItem][tipo_comida].push(alimento);
+        });
+
+        diaSeleccionado = dia;
+        actualizarEncabezadoDia(dia);
+        renderDietaDelDia();
+    } catch (err) {
+        console.error("Error al cargar dieta del día:", err);
+    }
+}
+function nombreDiaSemana(dia) {
+    switch (parseInt(dia)) {
+        case "1":
+        case 1: return "Lunes";
+        case "2":
+        case 2: return "Martes";
+        case "3":
+        case 3: return "Miércoles";
+        case "4":
+        case 4: return "Jueves";
+        case "5":
+        case 5: return "Viernes";
+        case "6":
+        case 6: return "Sábado";
+        case "7":
+        case 7: return "Domingo";
+        default: return `Día ${dia}`;
+    }
+}
+
+function actualizarEncabezadoDia(dia) {
+    const nombreDia = nombreDiaSemana(dia);
+    document.getElementById("diaSeleccionadoTexto").textContent = nombreDia;
+}
 
 // ================== GUARDAR Y BORRAR ==================
 async function guardarDieta() {
@@ -210,17 +314,26 @@ async function eliminarAlimento(id, dia, tipoComida) {
     }
 }
 
+
+
 // ================== EVENTOS ==================
 document.addEventListener("DOMContentLoaded", async () => {
+    // ✅ Actualiza encabezado visual
+    actualizarInfoSeleccion();
 
+    // ✅ Tomar el valor actual del select
+    const diaInicial = document.getElementById("dia")?.value || 1;
 
-    
-    
-    const alimentos = await buscarAlimentos(""); // ✅ ahora sí puedes usar await
-    console.log("Alimentos al cargar:", alimentos); // <-- ¿llega algo?
+    // ✅ Cargar dieta del día inicial
+    await cargarDietaDelDia(diaInicial);
+
+    // ✅ Buscar alimentos iniciales
+    const alimentos = await buscarAlimentos("");
+    console.log("Alimentos al cargar:", alimentos);
 
     renderResultados(alimentos);
 
+    // Eventos
     document.getElementById('filtro').addEventListener('input', async function () {
         const query = this.value.trim();
         const alimentos = await buscarAlimentos(query);
@@ -231,7 +344,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = 'dietas.html';
     });
 
-    document.getElementById('dia').addEventListener('change', actualizarInfoSeleccion);
+    document.getElementById('dia').addEventListener('change', async function () {
+        const nuevoDia = this.value;
+        actualizarInfoSeleccion();
+        await cargarDietaDelDia(nuevoDia);
+    });
+
+
     document.getElementById('tipoComida').addEventListener('change', actualizarInfoSeleccion);
+
     actualizarInfoSeleccion();
 });
+

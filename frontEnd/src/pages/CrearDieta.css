@@ -183,25 +183,28 @@ alimento-info,
 #filtroContainer {
     flex: 1;
     /* 50% ancho */
-    max-width: 100%;
+    max-width: 50%;
     border-color: #000;
     padding-top: 1%;
+    height: 100%;
 }
 
 /* Derecha: formulario y selección */
 #formContainer {
     flex: 1;
-    /* 50% ancho */
-    max-width: 50%;
-    padding-left: 20%;
-
-
+    max-width: 30%;
+    margin-left: auto;
+    /* ✅ empuja hacia la derecha */
+    margin-right: 10%;
+    /* ✅ espacio con el borde derecho */
 }
 
 /* Ajustes adicionales para que no se rompa en pantallas pequeñas */
 @media (max-width: 800px) {
     #contenedorFiltroYForm {
         flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
     }
 
     #filtroContainer,
@@ -306,4 +309,18 @@ footer {
 .btnAgregar:hover,
 .btnEliminar:hover {
     transform: scale(1.05);
+}
+.lista-comida {
+    list-style: none;
+    /* ❌ quita los puntos */
+    padding-left: 0;
+    /* quita indentación izquierda */
+    padding-right: 20px;
+    /* ✅ espacio a la derecha */
+    margin: 0;
+    /* opcional: elimina margen extra */
+}
+.lista-comida li {
+    padding: 3px 0;
+    /* un poco de espacio entre items */
 }
