@@ -12,7 +12,7 @@ app.use(express.json());
 const DB_CONFIG = {
   host: "localhost",
   user: "root",
-  password: "Mar.23012006t",
+  password: "12345678",
   database: "login"
 };
 
@@ -85,15 +85,18 @@ app.post("/registrar", async (req, res) => {
     const [rows] = await pool.query("SELECT id FROM user WHERE email = ?", [email]);
     if (rows.length) return res.status(400).json({ message: "El correo ya está registrado" });
 
-    // aseguramos que exista una dieta por defecto con id=1 (si tu flujo lo requiere)
-    const [dietRows] = await pool.query("SELECT id FROM diet LIMIT 1");
-    if (dietRows.length === 0) {
-      await pool.query("INSERT INTO diet (name) VALUES (?)", ["Dieta predeterminada"]);
-    }
-    // hash y almacenar
+    // Crear una dieta personal para el usuario
+    const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
+      `Dieta de ${name || email}`
+    ]);
+    const newDietId = dietInsert.insertId;
+
+    // hash y almacenar con id_diet propio
     const hash = await bcrypt.hash(password, 10);
-    await pool.query("INSERT INTO user (name, email, password, height, weight, age, id_diet) VALUES (?,?,?,?,?,?,?)",
-      [name, email, hash, height, weight, age, 1]);
+    await pool.query(
+      "INSERT INTO user (name, email, password, height, weight, age, id_diet) VALUES (?,?,?,?,?,?,?)",
+      [name, email, hash, height, weight, age, newDietId]
+    );
 
     res.json({ message: "Usuario registrado exitosamente" });
   } catch (err) {
@@ -115,6 +118,16 @@ app.post("/login", async (req, res) => {
     const ok = await bcrypt.compare(password, usuario.password);
     if (!ok) return res.status(401).json({ message: "Correo o contraseña incorrectos" });
 
+    // Asegurar dieta personal si no tiene o si apunta a una dieta compartida
+    if (!usuario.id_diet || usuario.id_diet === 1) {
+      const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
+        `Dieta de ${usuario.name || usuario.email}`
+      ]);
+      const newDietId = dietInsert.insertId;
+      await pool.query("UPDATE user SET id_diet = ? WHERE id = ?", [newDietId, usuario.id]);
+      usuario.id_diet = newDietId;
+    }
+
     // Devolver usuario (sin password)
     res.json({
       message: "Login exitoso",
@@ -131,6 +144,34 @@ app.post("/login", async (req, res) => {
   } catch (err) {
     console.error("/login error:", err);
     res.status(500).json({ error: "Error servidor login" });
+  }
+});
+
+// Asegurar dieta personal para un usuario (POST { user_id? , email? })
+app.post("/ensure-diet", async (req, res) => {
+  try {
+    const { user_id, email } = req.body || {};
+    if (!user_id && !email) return res.status(400).json({ message: "Falta user_id o email" });
+
+    const where = user_id ? ["id = ?", user_id] : ["email = ?", email];
+    const [uRows] = await pool.query(`SELECT id, name, email, id_diet FROM user WHERE ${where[0]} LIMIT 1`, [where[1]]);
+    if (uRows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    const u = uRows[0];
+    let id_diet = u.id_diet;
+
+    if (!id_diet || id_diet === 1) {
+      const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
+        `Dieta de ${u.name || u.email}`
+      ]);
+      id_diet = dietInsert.insertId;
+      await pool.query("UPDATE user SET id_diet = ? WHERE id = ?", [id_diet, u.id]);
+    }
+
+    res.json({ id_diet });
+  } catch (err) {
+    console.error("/ensure-diet error:", err);
+    res.status(500).json({ message: "Error servidor" });
   }
 });
 
@@ -296,6 +337,54 @@ app.post("/save-diet", async (req, res) => {
   } catch (error) {
     console.error("Error al guardar dieta:", error);
     res.status(500).json({ error: "Error al guardar dieta" });
+  }
+});
+
+// Borrar todas las comidas de un día específico de la dieta
+// (POST { id_diet, dia })
+app.post("/clear-day", async (req, res) => {
+  try {
+    const { id_diet, dia } = req.body || {};
+    const idDietNum = Number(id_diet);
+    const diaNum = Number(dia);
+    if (!idDietNum || !diaNum) return res.status(400).json({ message: "Faltan parámetros" });
+
+    // Encontrar el día
+    const [dayRows] = await pool.query(
+      "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
+      [idDietNum, diaNum]
+    );
+    if (dayRows.length === 0) {
+      return res.json({ success: true, message: "No había registros para ese día" });
+    }
+
+    const id_day = dayRows[0].id;
+
+    // Obtener meals del día
+    const [mealRows] = await pool.query(
+      "SELECT id FROM meal WHERE id_day = ?",
+      [id_day]
+    );
+
+    if (mealRows.length > 0) {
+      const mealIds = mealRows.map(r => r.id);
+      // Borrar de meal_food
+      await pool.query(
+        `DELETE FROM meal_food WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`,
+        mealIds
+      );
+      // Borrar meals
+      await pool.query("DELETE FROM meal WHERE id_day = ?", [id_day]);
+    }
+
+    // (Opcional) Mantener el registro del día para conservar estructura
+    // Si quieres borrar también el día, descomenta:
+    // await pool.query("DELETE FROM day WHERE id = ?", [id_day]);
+
+    res.json({ success: true, message: "Día limpiado" });
+  } catch (err) {
+    console.error("/clear-day error:", err);
+    res.status(500).json({ message: "Error interno" });
   }
 });
 app.post("/delete-diet-item", async (req, res) => {

@@ -22,7 +22,8 @@ async function handleLogin(e) {
   }
 
   if (errores.length > 0) {
-    alert("❌ No se puede iniciar sesión:\n- " + errores.join("\n- "));
+    if (window.notify) window.notify("❌ No se puede iniciar sesión:\n- " + errores.join("\n- "), { type: 'warning' });
+    else alert("❌ No se puede iniciar sesión:\n- " + errores.join("\n- "));
     return;
   }
 
@@ -38,7 +39,8 @@ async function handleLogin(e) {
 
     if (res.ok) {
       // ✅ Login exitoso
-      alert(result.message);
+      if (window.notify) window.notify(result.message || 'Inicio de sesión correcto', { type: 'success' });
+      else alert(result.message || 'Inicio de sesión correcto');
       console.log("✅ Usuario:", result.user);
       // Guardar usuario en localStorage
       localStorage.setItem("usuario", JSON.stringify(result.user));
@@ -48,12 +50,14 @@ async function handleLogin(e) {
       
     } else {
       // ❌ Mostrar mensajes claros del backend
-      alert("❌ Error: " + (result.message || "No se pudo iniciar sesión"));
+      if (window.notify) window.notify("❌ Error: " + (result.message || "No se pudo iniciar sesión"), { type: 'error' });
+      else alert("❌ Error: " + (result.message || "No se pudo iniciar sesión"));
       console.error("🚫 Login fallido:", result);
     }
 
   } catch (err) {
     console.error("💥 Error en fetch:", err);
-    alert("No se pudo conectar con el servidor");
+    if (window.notify) window.notify("No se pudo conectar con el servidor", { type: 'error' });
+    else alert("No se pudo conectar con el servidor");
   }
 }

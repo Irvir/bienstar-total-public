@@ -59,24 +59,17 @@ function renderResultados(alimentos) {
     <div class="alimento-info">
         <strong>${alimento.name}</strong><br>
         Calorías: ${alimento.calories ?? '-'}<br>
-        <b>Proteínas:</b> ${alimento.protein ?? '-'} g<br>
-        <b>Carbohidratos:</b> ${alimento.carbohydrate ?? '-'} g<br>
-        <b>Grasas:</b> ${alimento.total_lipid ?? '-'} g
-    </div>
-
-    <div class="grupoSelector">
-        <div class="etiqueta">DÍA</div>
-        <div class="selector">
-            <select class="selectDia">
-                <option value="1">Lunes</option>
-                <option value="2">Martes</option>
-                <option value="3">Miércoles</option>
-                <option value="4">Jueves</option>
-                <option value="5">Viernes</option>
-                <option value="6">Sábado</option>
-                <option value="7">Domingo</option>
-            </select>
+        <div class="nutri-grid">
+            <div><b>Proteínas:</b> ${alimento.protein ?? '-'} g</div>
+            <div><b>Carbohidratos:</b> ${alimento.carbohydrate ?? '-'} g</div>
+            <div><b>Grasas:</b> ${alimento.total_lipid ?? '-'} g</div>
+            <div><b>Azúcares:</b> ${alimento.total_sugars ?? '-'} g</div>
+            <div><b>Calcio:</b> ${alimento.calcium ?? '-'} mg</div>
+            <div><b>Hierro:</b> ${alimento.iron ?? '-'} mg</div>
+            <div><b>Sodio:</b> ${alimento.sodium ?? '-'} mg</div>
+            <div><b>Colesterol:</b> ${alimento.cholesterol ?? '-'} mg</div>
         </div>
+        <button class="btnToggleDetalles" aria-expanded="false">Ver más</button>
     </div>
 
     <div class="grupoSelector">
@@ -105,7 +98,7 @@ function renderResultados(alimentos) {
 
         btn.addEventListener('click', function () {
             const card = this.closest('.alimento-card');
-            const dia = card.querySelector('.selectDia').value;
+            const dia = document.getElementById('dia')?.value || diaSeleccionado || 1;
             const tipoComida = card.querySelector('.selectComida').value;
             const id = this.getAttribute('data-id');
             const name = this.getAttribute('data-name');
@@ -113,14 +106,25 @@ function renderResultados(alimentos) {
             agregarAlimento(id, name, dia, tipoComida);
         });
     });
-    document.querySelectorAll('.selectDia').forEach(select => {
-        select.addEventListener('change', async function () {
-            const dia = parseInt(this.value);
-            await cargarDietaDelDia(dia);
-        });
+
+    // Toggle de detalles en pantallas pequeñas
+    const wide = window.innerWidth >= 1024;
+    document.querySelectorAll('.alimento-card').forEach(card => {
+        const grid = card.querySelector('.nutri-grid');
+        const toggle = card.querySelector('.btnToggleDetalles');
+        if (!grid || !toggle) return;
+        if (wide) {
+            toggle.style.display = 'none';
+        } else {
+            // Modo compacto: mostrar solo la mitad de items por defecto
+            grid.classList.add('compact');
+            toggle.addEventListener('click', () => {
+                const isShowingAll = grid.classList.toggle('show-all');
+                toggle.textContent = isShowingAll ? 'Ver menos' : 'Ver más';
+                toggle.setAttribute('aria-expanded', String(isShowingAll));
+            });
+        }
     });
-
-
 
  
 
@@ -128,7 +132,7 @@ function renderResultados(alimentos) {
 document.querySelectorAll('.btnEliminar').forEach(btn => {
     btn.addEventListener('click', function () {
         const card = this.closest('.alimento-card');
-        const dia = card.querySelector('.selectDia').value;
+        const dia = document.getElementById('dia')?.value || diaSeleccionado || 1;
         const tipoComida = card.querySelector('.selectComida').value;
         const id = this.getAttribute('data-id');
 
@@ -200,18 +204,22 @@ async function agregarAlimento(id, name, dia, tipoComida) {
         });
 
         if (res.ok) {
-            alert(`${name} agregado a tu dieta (Día ${dia}, ${tipoComida})`);
+            if (window.notify) {
+                window.notify(`${name} agregado a tu dieta (Día ${dia}, ${tipoComida})`, { type: 'success' });
+            } else { alert(`${name} agregado a tu dieta (Día ${dia}, ${tipoComida})`); }
 
             // ✅ Solo refresca si el alimento fue agregado al día actualmente seleccionado
             if (parseInt(dia) === diaSeleccionado) {
                 await cargarDietaDelDia(diaSeleccionado);
             }
         } else {
-            alert("Error al guardar el alimento en la dieta");
+            if (window.notify) window.notify("Error al guardar el alimento en la dieta", { type: 'error' });
+            else alert("Error al guardar el alimento en la dieta");
         }
     } catch (e) {
         console.error("Error conexión:", e);
-        alert("Error de conexión con el servidor.");
+    if (window.notify) window.notify("Error de conexión con el servidor.", { type: 'error' });
+    else alert("Error de conexión con el servidor.");
     }
 }
 async function cargarDietaDelDia(dia) {
@@ -266,7 +274,8 @@ function actualizarEncabezadoDia(dia) {
 // ================== GUARDAR Y BORRAR ==================
 async function guardarDieta() {
     if (alimentosSeleccionados.length === 0) {
-        alert('No hay alimentos seleccionados.');
+        if (window.notify) window.notify('No hay alimentos seleccionados.', { type: 'warning' });
+        else alert('No hay alimentos seleccionados.');
         return;
     }
     const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -279,14 +288,17 @@ async function guardarDieta() {
             body: JSON.stringify({ id_diet, meals: alimentosSeleccionados })
         });
         if (res.ok) {
-            alert('Dieta guardada exitosamente.');
+            if (window.notify) window.notify('Dieta guardada exitosamente.', { type: 'success' });
+            else alert('Dieta guardada exitosamente.');
             alimentosSeleccionados.length = 0;
             document.getElementById('listaAlimentos').innerHTML = '';
         } else {
-            alert('Error al guardar la dieta.');
+            if (window.notify) window.notify('Error al guardar la dieta.', { type: 'error' });
+            else alert('Error al guardar la dieta.');
         }
     } catch (e) {
-        alert('Error de conexión.');
+    if (window.notify) window.notify('Error de conexión.', { type: 'error' });
+    else alert('Error de conexión.');
     }
 }
 
@@ -297,20 +309,22 @@ async function eliminarAlimento(id, dia, tipoComida) {
 
     try {
         const res = await fetch("http://localhost:3000/delete-diet-item", {
-            method: "POST", // ✅ CAMBIADO de DELETE a POST
+            method: "POST", // CAMBIADO de DELETE a POST
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id_diet, id_food: id, dia, tipoComida })
         });
 
         if (res.ok) {
-            alert("Alimento eliminado de la dieta.");
+            if (window.notify) window.notify("Alimento eliminado de la dieta.", { type: 'success' });
+            else alert("Alimento eliminado de la dieta.");
             await cargarDietaDelDia(dia);   
         } else {
             const error = await res.json();
-            alert("Error: " + (error.error || "No se pudo eliminar"));
+            if (window.notify) window.notify("Error: " + (error.error || "No se pudo eliminar"), { type: 'error' });
+            else alert("Error: " + (error.error || "No se pudo eliminar"));
         }
     } catch (e) {
-        console.error("Error al eliminar:", e);
+    console.error("Error al eliminar:", e);
     }
 }
 
@@ -323,6 +337,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ✅ Tomar el valor actual del select
     const diaInicial = document.getElementById("dia")?.value || 1;
+
+    // ✅ Asegurar que este usuario tenga su propia dieta en backend
+    try {
+        const rawUser = localStorage.getItem("usuario");
+        if (rawUser) {
+            const u = JSON.parse(rawUser);
+            const resp = await fetch("http://localhost:3000/ensure-diet", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: u.id })
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                // Actualizar id_diet en localStorage si cambió
+                if (data?.id_diet && data.id_diet !== u.id_diet) {
+                    u.id_diet = data.id_diet;
+                    localStorage.setItem("usuario", JSON.stringify(u));
+                }
+            }
+        }
+    } catch (e) {
+        console.warn("No se pudo asegurar dieta del usuario:", e);
+    }
 
     // ✅ Cargar dieta del día inicial
     await cargarDietaDelDia(diaInicial);
@@ -351,8 +388,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
 
-    document.getElementById('tipoComida').addEventListener('change', actualizarInfoSeleccion);
+    const tipoComidaGlobal = document.getElementById('tipoComida');
+    if (tipoComidaGlobal) {
+        tipoComidaGlobal.addEventListener('change', actualizarInfoSeleccion);
+    }
 
     actualizarInfoSeleccion();
+
+    // ✅ Borrar todo el día seleccionado (btn id: btnBorrarDieta)
+    const btnBorrarDieta = document.getElementById('btnBorrarDieta') || document.getElementById('btnBorrarTodo');
+    if (btnBorrarDieta) {
+        btnBorrarDieta.addEventListener('click', async () => {
+            const rawUser = localStorage.getItem("usuario");
+            const u = rawUser ? JSON.parse(rawUser) : null;
+            const id_diet = u?.id_diet ?? 1;
+            const diaActual = document.getElementById('dia')?.value || diaSeleccionado || 1;
+            try {
+                const resp = await fetch('http://localhost:3000/clear-day', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_diet, dia: Number(diaActual) })
+                });
+                if (resp.ok) {
+                    await cargarDietaDelDia(diaActual);
+                    if (window.notify) window.notify('Se borraron todas las comidas del día seleccionado.', { type: 'success' });
+                    else alert('Se borraron todas las comidas del día seleccionado.');
+                } else {
+                    if (window.notify) window.notify('No se pudo borrar el día.', { type: 'error' });
+                    else alert('No se pudo borrar el día.');
+                }
+            } catch (e) {
+                console.error(e);
+                if (window.notify) window.notify('Error de conexión al borrar el día.', { type: 'error' });
+                else alert('Error de conexión al borrar el día.');
+            }
+        });
+    }
+    // Selector de día ya está en el HTML junto a los botones (no reubicar)
 });
 

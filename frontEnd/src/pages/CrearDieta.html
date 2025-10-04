@@ -26,9 +26,9 @@
                     </a>
                 </div>
                 <div class="menúBotones">
-                    <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
                     <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
                     <button class="btnMenuNoti">
                         <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
@@ -55,34 +55,44 @@
 
         <!-- CUERPO -->
         <div id="cuerpo">
-            <div id="contenedorFiltroYForm">
+            <!-- Izquierda: Crear Dieta -->
+            <div id="formContainer">
+                <div id="crearDieta">
+                    <h2 id="diaSeleccionado">Dieta del Día <span id="diaSeleccionadoTexto">–</span></h2>
+                    <div id="resumenDieta"></div>
+                    <div class="barraDivisora"></div>
 
-                <!-- Izquierda: Filtro -->
-                <div id="filtroContainer">
-                    <div id="contenedorFiltro">
-                        <div id="lupe"></div>
-                        <div style="flex:1">
-                            <input type="text" id="filtro" placeholder="Buscar alimento...">
+
+                    <div id="botones">
+                        <div class="grupoSelector" style="margin-right:12px;">
+                            <div class="etiqueta">DÍA</div>
+                            <div class="selector">
+                                <select id="dia" class="selectDia">
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miércoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                    <option value="7">Domingo</option>
+                                </select>
+                            </div>
                         </div>
-                        <div id="resultadosFiltro" class="resultadosFiltro"></div>
+                        <button id="btnBorrarDieta">Borrar Todo</button>
+                        <button id="btnSalir">Salir</button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Derecha: Crear Dieta -->
-                <div id="formContainer">
-                    <div id="crearDieta">
-                        <h2 id="diaSeleccionado">Dieta del Día <span id="diaSeleccionadoTexto">–</span></h2>
-                        <div id="resumenDieta"></div>
-                        <div class="barraDivisora"></div>
-
-
-                        <div id="botones">
-                            <button id="btnBorrarDieta">Borrar Todo</button>
-                            <button id="btnSalir">Salir</button>
-                        </div>
+            <!-- Derecha: Filtro -->
+            <div id="filtroContainer">
+                <div id="contenedorFiltro">
+                    <div id="lupe"></div>
+                    <div style="flex:1">
+                        <input type="text" id="filtro" placeholder="Buscar alimento...">
                     </div>
                 </div>
-
+                <div id="resultadosFiltro" class="resultadosFiltro"></div>
             </div>
         </div>
 
@@ -108,8 +118,17 @@
                     nameUserSpan.textContent = usuario.name;
                 }
             }
+
+            // Al clickar el icono de usuario, ir a esta pestaña (CrearDieta)
+            const fotoUsuario = document.getElementById("fotoUsuario");
+            if (fotoUsuario) {
+                fotoUsuario.addEventListener('click', () => {
+                    window.location.href = 'CrearDieta.html';
+                });
+            }
         });
     </script>
+    <script src="/frontEnd/src/controllers/notify.js"></script>
     <script src="/frontEnd/src/controllers/CrearDieta.js"></script>
 </body>
 

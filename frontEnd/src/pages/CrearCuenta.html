@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="CrearCuenta.css">
+    <script defer src="/frontEnd/src/controllers/notify.js"></script>
+    <style>
+        .field-error{ color:#b91c1c; font-size:12px; margin-top:4px; min-height:14px; }
+        .input-invalid{ border-color:#ef4444 !important; outline-color:#ef4444 !important; }
+        .form-error{ color:#b91c1c; margin:8px 0; font-size:13px; white-space:pre-line; }
+    </style>
   
 </head>
 <body>
@@ -109,11 +115,13 @@
                     </div>
                     <div class="contenedorLoginDatosUser">
                         <form id="CrearCuentaForm" >
+                            <div id="formError" class="form-error"></div>
                             <div class="divNom">
                                 Nombre:
                                 <br>
 
                                 <input type="name" id="name" placeholder="Nombre" required>
+                                <div class="field-error" id="err-name"></div>
                             </div>
                             <!-- en esta parte debería estar el apellido, al parecer l quitaron, debo preguntar -->
                             <div class="divEdadPesoAlt">
@@ -121,28 +129,29 @@
                                     Edad:
                                     <br>
                                     <input type="number" id="age" placeholder="Escriba su edad" required>
+                                    <div class="field-error" id="err-age"></div>
                                 </div>
                                 <div class="edadPesoAlt">
 
                                     Peso (KG):
                                 <br>
-
                                     <input type="number" id="weight" placeholder="Escriba su peso" required step="any">
+                                    <div class="field-error" id="err-weight"></div>
                                 </div>
                                 <div class="edadPesoAlt">
                                     Altura (CM):
                                 <br>
 
-
                                     <input type="number" id="height" placeholder="Escriba su altura" required step="any">
+                                    <div class="field-error" id="err-height"></div>
                                 </div>
                             </div>
                             <div class="divCorreo">
 
                                 Correo electrónico:
                                 <br>
-
                                 <input type="text" id="email" placeholder="Escriba su correo electrónico" required>
+                                <div class="field-error" id="err-email"></div>
                             </div>
                             
                             <div class="divCorreo">
@@ -150,6 +159,7 @@
                                 <br>
 
                                 <input type="password" id="password" placeholder="Contraseña" required>
+                                <div class="field-error" id="err-password"></div>
                             </div>
                             
                             <br>

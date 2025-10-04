@@ -19,25 +19,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutButton = document.getElementById("logoutButton");
     const fotoUsuario = document.getElementById("fotoUsuario");
 
-    menuDesplegable.style.position = "absolute";
-    menuDesplegable.style.top = "8%";
-    menuDesplegable.style.right = "8%";
-    menuDesplegable.style.display = "none";
-    menuDesplegable.style.width = "10%";
+    if (menuDesplegable) {
+        menuDesplegable.style.position = "absolute";
+        menuDesplegable.style.top = "8%";
+        menuDesplegable.style.right = "8%";
+        menuDesplegable.style.display = "none";
+        menuDesplegable.style.width = "10%";
+    }
 
     function toggleMenu() {
+        if (!menuDesplegable) return;
         menuDesplegable.style.display =
             menuDesplegable.style.display === "block" ? "none" : "block";
     }
 
-    btnPerfilView.addEventListener("click", toggleMenu);
+    btnPerfilView && btnPerfilView.addEventListener("click", toggleMenu);
 
-    logoutButton.addEventListener("click", () => {
+    logoutButton && logoutButton.addEventListener("click", () => {
         localStorage.removeItem("usuario");
         window.location.href = "login.html";
     });
 
     document.addEventListener("click", (event) => {
+        if (!btnPerfilView || !menuDesplegable || !fotoUsuario) return;
         if (!btnPerfilView.contains(event.target) &&
             !menuDesplegable.contains(event.target) &&
             !fotoUsuario.contains(event.target)) {
@@ -45,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    fotoUsuario.addEventListener("click", () => {
+    fotoUsuario && fotoUsuario.addEventListener("click", () => {
         window.location.href = "login.html";
     });
 
@@ -61,10 +65,37 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ================== CARGAR DIETA ==================
-// ================== CARGAR DIETA ==================
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const res = await fetch("http://localhost:3000/get-diet");
+        // Asegurar que tenemos id_diet del usuario
+        const rawUser = localStorage.getItem("usuario");
+        if (!rawUser) {
+            console.error("No hay usuario en sesión");
+            return;
+        }
+        const user = JSON.parse(rawUser);
+
+        // Intentar asegurar dieta en backend si no está o es inválida
+        if (!user.id_diet || user.id_diet === 1) {
+            try {
+                const ensure = await fetch("http://localhost:3000/ensure-diet", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: user.id })
+                });
+                if (ensure.ok) {
+                    const data = await ensure.json();
+                    if (data?.id_diet) {
+                        user.id_diet = data.id_diet;
+                        localStorage.setItem("usuario", JSON.stringify(user));
+                    }
+                }
+            } catch (e) {
+                console.warn("No se pudo asegurar dieta personal:", e);
+            }
+        }
+
+        const res = await fetch(`http://localhost:3000/get-diet?id_diet=${user.id_diet}`);
         if (!res.ok) {
             console.error("Error al obtener la dieta:", res.statusText);
             return;
@@ -83,17 +114,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             dietaAgrupada[dia][tipo_comida].push(alimento);
         });
 
-        // Diccionario de traducción inglés -> español
+        // Diccionario de traducción inglés -> español (claves reales en DB: snack, snack2)
         const traducciones = {
             breakfast: "Desayuno",
             lunch: "Almuerzo",
             dinner: "Cena",
-            snack1: "Colación 1",
-            snack2: "Colación 2"
-          
+            snack: "Snack",
+            snack2: "Snack 2"
         };
 
-        const tiposComida = ["breakfast", "lunch", "dinner", "snack1", "snack2"];
+        const tiposComida = ["breakfast", "lunch", "dinner", "snack", "snack2"];
 
         Object.keys(dietaAgrupada).forEach(dia => {
             const columna = document.querySelector(`.columna[data-dia="${dia}"] .celda`);

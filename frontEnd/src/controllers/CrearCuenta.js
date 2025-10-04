@@ -1,3 +1,81 @@
+// ===== Inline validation helpers =====
+function setFieldError(id, msg){
+  const input = document.getElementById(id);
+  const err = document.getElementById(`err-${id}`);
+  if (err) err.textContent = msg || '';
+  if (input){
+    if (msg) input.classList.add('input-invalid');
+    else input.classList.remove('input-invalid');
+  }
+}
+
+function validateNameField(){
+  const val = (document.getElementById('name')?.value || '').trim();
+  const re = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$/;
+  if (!re.test(val)) { setFieldError('name','El nombre debe tener solo letras y espacios (2 a 40).'); return false; }
+  setFieldError('name',''); return true;
+}
+
+function validateEmailField(){
+  const val = (document.getElementById('email')?.value || '').trim();
+  const emailRegex = /^[a-zA-Z\d._-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+  const localPart = val.split('@')[0] || '';
+  const letras = (localPart.match(/[a-zA-Z]/g) || []).length;
+  const numeros = (localPart.match(/\d/g) || []).length;
+  if (letras < 4 || numeros < 1) { setFieldError('email','Mínimo 4 letras y 1 número antes del @.'); return false; }
+  if (!emailRegex.test(val)) { setFieldError('email','Formato de correo no válido.'); return false; }
+  if (val.length > 50) { setFieldError('email','El correo no puede superar 50 caracteres.'); return false; }
+  setFieldError('email',''); return true;
+}
+
+function validatePasswordField(){
+  const val = (document.getElementById('password')?.value || '').trim();
+  const passRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+  if (!passRegex.test(val)) { setFieldError('password','Mínimo 6 caracteres con letras y números.'); return false; }
+  setFieldError('password',''); return true;
+}
+
+function validateAgeField(){
+  const raw = document.getElementById('age')?.value?.trim();
+  const val = parseInt(raw || '');
+  if (isNaN(val) || val <= 0 || val > 120) { setFieldError('age','Edad entre 1 y 120.'); return false; }
+  setFieldError('age',''); return true;
+}
+
+function validateWeightField(){
+  const raw = document.getElementById('weight')?.value?.trim();
+  const val = parseFloat(raw || '');
+  if (isNaN(val) || val <= 20 || val > 300) { setFieldError('weight','Peso entre 21 y 300 kg.'); return false; }
+  setFieldError('weight',''); return true;
+}
+
+function validateHeightField(){
+  const raw = document.getElementById('height')?.value?.trim();
+  const val = parseFloat(raw || '');
+  if (isNaN(val) || val <= 80 || val > 250) { setFieldError('height','Altura entre 81 y 250 cm.'); return false; }
+  setFieldError('height',''); return true;
+}
+
+const validators = {
+  name: validateNameField,
+  email: validateEmailField,
+  password: validatePasswordField,
+  age: validateAgeField,
+  weight: validateWeightField,
+  height: validateHeightField,
+};
+
+['name','email','password','age','weight','height'].forEach(id => {
+  const input = document.getElementById(id);
+  if (!input) return;
+  input.addEventListener('blur', () => validators[id]());
+  input.addEventListener('input', () => { if (input.classList.contains('input-invalid')) validators[id](); });
+});
+
+function validateAll(){
+  return ['name','email','password','age','weight','height'].map(id => validators[id]()).every(Boolean);
+}
+
 document.getElementById("CrearCuentaForm").addEventListener("submit", async function(event) {
   // Evita el envío del formulario por defecto
   event.preventDefault(); 
@@ -10,49 +88,15 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     height: parseFloat(document.getElementById("height").value.trim()),
     age: parseInt(document.getElementById("age").value.trim())
   };
+  //  Validaciones frontend (per-field)
+  const isValid = validateAll();
 
+  // Per-field validators already set errors; no need to push messages here
 
-
-  //  Validaciones frontend
-  let errores = [];
-
-  // Nombre sin números
-  const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,40}$/;
-  if (!data.name || typeof data.name !== 'string' || !nameRegex.test(data.name)) {
-    errores.push("El nombre debe tener solo letras y espacios, entre 2 y 40 caracteres.");
-  }
-  // Email
-  const emailRegex = /^[a-zA-Z\d._-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
-  const localPart = data.email.split("@")[0];
-  const letras = (localPart.match(/[a-zA-Z]/g) || []).length;
-  const numeros = (localPart.match(/\d/g) || []).length;
-
-  if (letras < 4 || numeros < 1) {
-    errores.push("El correo debe tener al menos 4 letras y 1 número antes del @.");
-  }
-  if (!emailRegex.test(data.email)) {
-    errores.push("El correo debe tener un formato válido.");
-  }
-  if (data.email.length > 50) {
-    errores.push("El correo no puede superar los 50 caracteres.");
-  }
-
-  // Contraseña
-  const passRegex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
-  if (!passRegex.test(data.password)) {
-    errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
-  }
-
-  // Edad, peso, altura con rangos realistas
-  if (data.age <= 0 || data.age > 120) errores.push("La edad debe ser mayor a 0 y menor o igual a 120.");
-  if (data.weight <= 20 || data.weight > 300) errores.push("El peso debe estar entre 21 y 300 kg.");
-  if (data.height <= 80 || data.height > 250) errores.push("La altura debe estar entre 81 y 250 cm.");
+  // Age/weight/height/email/name/password handled by respective validators
   
   // Si hay errores en frontend, mostrar y cancelar envío
-  if (errores.length > 0) {
-    alert("❌ No se puede registrar:\n- " + errores.join("\n- "));
-    return;
-  }
+  if (!isValid) return;
 
   try {
     // Verificar si el correo ya existe antes de crear la cuenta
@@ -64,8 +108,8 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
     const checkResult = await checkEmail.json();
 
-    if (!checkEmail.ok ||checkResult.exists) {
-      alert("❌ El correo ya está registrado. Usa otro.");
+    if (!checkEmail.ok || checkResult.exists) {
+      setFieldError('email','Este correo ya está registrado. Usa otro.');
       return;
     }
 
@@ -80,7 +124,8 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
     if (response.ok) {
       console.log("✅ Registro exitoso:", result);
-      alert(result.message);
+      if (window.notify) window.notify(result.message || 'Registro exitoso', { type: 'success' });
+      else alert(result.message || 'Registro exitoso');
 
       //  Auto-login directo
       const loginRes = await fetch("http://localhost:3000/login", {
@@ -103,15 +148,16 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
       //  Mostrar mensajes específicos del backend
       if (result.errores && Array.isArray(result.errores)) {
-        alert("❌ No se pudo registrar:\n- " + result.errores.join("\n- "));
+        if (window.notify) window.notify("❌ No se pudo registrar:\n- " + result.errores.join("\n- "), { type: 'error' });
       } else {
-        alert("❌ Error: " + (result.message || "No se pudo registrar"));
+        if (window.notify) window.notify("❌ Error: " + (result.message || "No se pudo registrar"), { type: 'error' });
       }
     }
 
   } catch (error) {
     console.error("💥 Error en la conexión:", error);
-    alert("Error en la conexión con el servidor");
+    if (window.notify) window.notify("Error en la conexión con el servidor", { type: 'error' });
+    else alert("Error en la conexión con el servidor");
   }
 });
 
