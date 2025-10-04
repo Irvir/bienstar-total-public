@@ -221,6 +221,27 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPage = window.location.pathname.split("/").pop(); // obtiene "dietas.html", "alimentos.html", etc.
+
+            const btnInicio = document.querySelector("button[onclick*='index.html']");
+            const btnAlimentos = document.querySelector("button[onclick*='alimentos.html']");
+            const btnDietas = document.querySelector("button[onclick*='dietas.html']");
+
+            // Primero quitar clase "btnMenuSelec" de todos
+            [btnInicio, btnAlimentos, btnDietas].forEach(btn => {
+                btn.classList.remove("btnMenuSelec");
+                btn.classList.add("btnMenu"); // asegúrate que todos tengan la clase normal
+            });
+
+            // Agregar clase de activo según página
+            if (currentPage === "index.html") btnInicio.classList.add("btnMenuSelec");
+            else if (currentPage === "alimentos.html") btnAlimentos.classList.add("btnMenuSelec");
+            else if (currentPage === "dietas.html") btnDietas.classList.add("btnMenuSelec");
+        });
+    </script>
+        
 </body>
 
 </html>

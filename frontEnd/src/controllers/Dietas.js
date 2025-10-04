@@ -61,73 +61,81 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ================== CARGAR DIETA ==================
-// ================== CARGAR DIETA ==================
+
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const res = await fetch("http://localhost:3000/get-diet");
-        if (!res.ok) {
-            console.error("Error al obtener la dieta:", res.statusText);
-            return;
-        }
-
-        const dieta = await res.json();
-        const dietaAgrupada = {};
-
-        dieta.forEach(({ dia, tipo_comida, alimento }) => {
-            if (!dietaAgrupada[dia]) {
-                dietaAgrupada[dia] = {};
-            }
-            if (!dietaAgrupada[dia][tipo_comida]) {
-                dietaAgrupada[dia][tipo_comida] = [];
-            }
-            dietaAgrupada[dia][tipo_comida].push(alimento);
-        });
-
-        // Diccionario de traducción inglés -> español
-        const traducciones = {
-            breakfast: "Desayuno",
-            lunch: "Almuerzo",
-            dinner: "Cena",
-            snack1: "Colación 1",
-            snack2: "Colación 2"
-          
-        };
-
-        const tiposComida = ["breakfast", "lunch", "dinner", "snack1", "snack2"];
-
-        Object.keys(dietaAgrupada).forEach(dia => {
-            const columna = document.querySelector(`.columna[data-dia="${dia}"] .celda`);
-            if (!columna) return;
-
-            columna.innerHTML = "";
-
-            tiposComida.forEach(tipoComida => {
-                const tipoTraducido = traducciones[tipoComida] || tipoComida;
-                const alimentos = dietaAgrupada[dia][tipoComida] || [];
-
-                const bloque = document.createElement("div");
-                bloque.innerHTML = `<strong>${tipoTraducido}:</strong>`;
-
-                if (alimentos.length > 0) {
-                    const lista = document.createElement("ul");
-                    lista.style.margin = "4px 0 12px -20px"; // sangría visual
-                    alimentos.forEach(alimento => {
-                        const item = document.createElement("li");
-                        item.textContent = alimento;
-                        lista.appendChild(item);
-                    });
-                    bloque.appendChild(lista);
-                } else {
-                    const vacio = document.createElement("p");
-                    vacio.textContent = "";
-                    vacio.style.marginLeft = "16px";
-                    bloque.appendChild(vacio);
-                }
-
-                columna.appendChild(bloque);
+      // 1️⃣ Obtener usuario del localStorage
+      const usuarioGuardado = localStorage.getItem("usuario");
+      if (!usuarioGuardado) {
+        console.error("No hay usuario en sesión");
+        window.location.href = "login.html";
+        return;
+      }
+  
+      const usuario = JSON.parse(usuarioGuardado);
+  
+      // 2️⃣ Llamar al backend enviando el id_user
+      const res = await fetch(`http://localhost:3000/get-diet?id_user=${usuario.id}`);
+      if (!res.ok) {
+        console.error("Error al obtener la dieta:", res.statusText);
+        return;
+      }
+      console.log("Respuesta del servidor:", res);
+      console.log("Dieta obtenida:", await res.clone().json());
+      // 3️⃣ Continuar con el mismo procesamiento que ya tenías
+      const dieta = await res.json();
+      const dietaAgrupada = {};
+  
+      dieta.forEach(({ dia, tipo_comida, alimento }) => {
+        if (!dietaAgrupada[dia]) dietaAgrupada[dia] = {};
+        if (!dietaAgrupada[dia][tipo_comida]) dietaAgrupada[dia][tipo_comida] = [];
+        dietaAgrupada[dia][tipo_comida].push(alimento);
+      });
+  
+      const traducciones = {
+        breakfast: "Desayuno",
+        lunch: "Almuerzo",
+        dinner: "Cena",
+        snack1: "Colación 1",
+        snack2: "Colación 2",
+      };
+  
+      const tiposComida = ["breakfast", "lunch", "dinner", "snack1", "snack2"];
+  
+      Object.keys(dietaAgrupada).forEach((dia) => {
+        const columna = document.querySelector(`.columna[data-dia="${dia}"] .celda`);
+        if (!columna) return;
+  
+        columna.innerHTML = "";
+  
+        tiposComida.forEach((tipoComida) => {
+          const tipoTraducido = traducciones[tipoComida] || tipoComida;
+          const alimentos = dietaAgrupada[dia][tipoComida] || [];
+  
+          const bloque = document.createElement("div");
+          bloque.innerHTML = `<strong>${tipoTraducido}:</strong>`;
+  
+          if (alimentos.length > 0) {
+            const lista = document.createElement("ul");
+            lista.style.margin = "4px 0 12px -20px";
+            alimentos.forEach((alimento) => {
+              const item = document.createElement("li");
+              item.textContent = alimento;
+              lista.appendChild(item);
             });
+            bloque.appendChild(lista);
+          } else {
+            const vacio = document.createElement("p");
+            vacio.textContent = "";
+            vacio.style.marginLeft = "16px";
+            bloque.appendChild(vacio);
+          }
+  
+          columna.appendChild(bloque);
         });
+      });
     } catch (err) {
-        console.error("Error al cargar la dieta:", err);
+      console.error("Error al cargar la dieta:", err);
     }
-});
+  });
+  

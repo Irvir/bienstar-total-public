@@ -78,29 +78,41 @@ app.post("/checkEmail", async (req, res) => {
 app.post("/registrar", async (req, res) => {
   try {
     const { name, email, password, height, weight, age } = req.body;
+
+    // Validación
     const errores = validarRegistro(email, password, height, weight, age);
-    if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
+    if (errores.length)
+      return res.status(400).json({ message: "Validación fallida", errores });
 
-    // verificar existencia
+    // Verificar existencia de email
     const [rows] = await pool.query("SELECT id FROM user WHERE email = ?", [email]);
-    if (rows.length) return res.status(400).json({ message: "El correo ya está registrado" });
+    if (rows.length)
+      return res.status(400).json({ message: "El correo ya está registrado" });
 
-    // aseguramos que exista una dieta por defecto con id=1 (si tu flujo lo requiere)
-    const [dietRows] = await pool.query("SELECT id FROM diet LIMIT 1");
-    if (dietRows.length === 0) {
-      await pool.query("INSERT INTO diet (name) VALUES (?)", ["Dieta predeterminada"]);
-    }
-    // hash y almacenar
+    // Crear una dieta personalizada para este usuario
+    const nombreDieta = `Dieta de ${email}`;
+    const [dietResult] = await pool.query(
+      "INSERT INTO diet (name) VALUES (?)",
+      [nombreDieta]
+    );
+
+    // Obtener el id de la dieta recién creada
+    const id_diet = dietResult.insertId;
+
+    // Hash y almacenar usuario
     const hash = await bcrypt.hash(password, 10);
-    await pool.query("INSERT INTO user (name, email, password, height, weight, age, id_diet) VALUES (?,?,?,?,?,?,?)",
-      [name, email, hash, height, weight, age, 1]);
+    await pool.query(
+      "INSERT INTO user (name, email, password, height, weight, age, id_diet) VALUES (?,?,?,?,?,?,?)",
+      [name, email, hash, height, weight, age, id_diet]
+    );
 
-    res.json({ message: "Usuario registrado exitosamente" });
+    res.json({ message: "Usuario registrado exitosamente con dieta propia" });
   } catch (err) {
     console.error("/registrar error:", err);
-    res.status(500).json({ error: "Error servidor registro" });
+    res.status(500).json({ error: "Error en el servidor durante el registro" });
   }
 });
+
 
 // Login (POST {email,password})
 app.post("/login", async (req, res) => {
@@ -202,9 +214,24 @@ app.get("/food-search", async (req, res) => {
 // Obtener dieta (GET /get-diet?id_diet=1)
 app.get("/get-diet", async (req, res) => {
   try {
-    const id_diet = parseInt(req.query.id_diet || "1", 10); // por defecto 1
-    if (!id_diet) return res.status(400).json({ message: "Falta id_diet" });
+    const id_user = parseInt(req.query.id_user, 10);
+    console.log("id_user recibido:", id_user);
+    if (!id_user) return res.status(400).json({ message: "Falta id_user" });
 
+    // Buscar dieta del usuario
+    const [userRows] = await pool.query(
+      `SELECT id_diet FROM user WHERE id = ?`,
+      [id_user]
+    );
+
+    if (userRows.length === 0)
+      return res.status(404).json({ message: "Usuario no encontrado" });
+
+    const id_diet = userRows[0].id_diet;
+    if (!id_diet)
+      return res.status(404).json({ message: "El usuario no tiene dieta asignada" });
+
+    // Obtener dieta
     const [rows] = await pool.query(
       `
       SELECT d.number_day AS dia,
@@ -215,18 +242,18 @@ app.get("/get-diet", async (req, res) => {
       JOIN meal_food mf ON mf.id_meal = m.id
       JOIN food f ON f.id = mf.id_food
       WHERE d.id_diet = ?
-      ORDER BY d.number_day, FIELD(m.type,'breakfast','lunch','dinner','snack','snack2')
+      ORDER BY d.number_day, FIELD(m.type,'breakfast','lunch','dinner','snack1','snack2')
       `,
       [id_diet]
     );
 
-    // devuelve [{dia, tipo_comida, alimento}, ...]
     res.json(rows);
   } catch (err) {
     console.error("/get-diet error:", err);
     res.status(500).json({ message: "Error al obtener dieta" });
   }
 });
+
 
 
 // Guardar dieta (POST /save-diet)

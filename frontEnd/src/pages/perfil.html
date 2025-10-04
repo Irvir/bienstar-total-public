@@ -93,7 +93,7 @@
         <div id="cuerpo">
             <div id="divMenuLateral">
                 <button class="botonesPerfilSelec">PERFIL</button>
-                <button class="botonesPerfil">MI DIETA</button>
+                <button class="botonesPerfil" id="btnDieta" >MI DIETA</button>
                 <button class="botonesPerfil">CALENDARIO</button>
             </div>
             
@@ -179,6 +179,13 @@
                 document.getElementById("cerrarSesion").addEventListener("click", () => {
                     localStorage.removeItem("usuario");
                     window.location.href = "login.html";
+                });
+                //Si esta registrado y le da a mi dieta lo manda a dietas.html
+                document.getElementById("btnDieta").style.cursor = "pointer";
+                
+
+                document.getElementById("btnDieta").addEventListener("click", () => {
+                    window.location.href = "dietas.html";
                 });
 
             </script>

@@ -67,7 +67,7 @@ function renderResultados(alimentos) {
     <div class="grupoSelector">
         <div class="etiqueta">DÍA</div>
         <div class="selector">
-            <select class="selectDia">
+            <select class="selectDia" id="dia">
                 <option value="1">Lunes</option>
                 <option value="2">Martes</option>
                 <option value="3">Miércoles</option>
@@ -216,10 +216,11 @@ async function agregarAlimento(id, name, dia, tipoComida) {
 }
 async function cargarDietaDelDia(dia) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
+    console.log(usuario);
     const id_diet = usuario?.id_diet ?? 1;
-
+    console.log(dia);
     try {
-        const res = await fetch(`http://localhost:3000/get-diet?id_diet=${id_diet}`);
+        const res = await fetch(`http://localhost:3000/get-diet?id_user=${usuario.id}`);
         if (!res.ok) throw new Error("No se pudo cargar la dieta");
 
         const dieta = await res.json();
@@ -318,20 +319,20 @@ async function eliminarAlimento(id, dia, tipoComida) {
 
 // ================== EVENTOS ==================
 document.addEventListener("DOMContentLoaded", async () => {
-    // ✅ Actualiza encabezado visual
-    actualizarInfoSeleccion();
-
-    // ✅ Tomar el valor actual del select
-    const diaInicial = document.getElementById("dia")?.value || 1;
-
-    // ✅ Cargar dieta del día inicial
-    await cargarDietaDelDia(diaInicial);
+    // Esperar a que el DOM esté listo
+    await new Promise(resolve => setTimeout(resolve, 0));
 
     // ✅ Buscar alimentos iniciales
     const alimentos = await buscarAlimentos("");
-    console.log("Alimentos al cargar:", alimentos);
-
     renderResultados(alimentos);
+
+    // ✅ Tomar el valor actual del select principal (fuera de las tarjetas)
+    const diaSelect = document.getElementById("dia");
+    console.log(diaSelect);
+    const diaInicial = diaSelect ? parseInt(diaSelect.value) : 1;
+    console.log(diaInicial);
+    await cargarDietaDelDia(diaInicial);
+    actualizarInfoSeleccion();
 
     // Eventos
     document.getElementById('filtro').addEventListener('input', async function () {
@@ -344,15 +345,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = 'dietas.html';
     });
 
-    document.getElementById('dia').addEventListener('change', async function () {
-        const nuevoDia = this.value;
+    diaSelect?.addEventListener('change', async function () {
+        const nuevoDia = parseInt(this.value);
         actualizarInfoSeleccion();
         await cargarDietaDelDia(nuevoDia);
     });
 
-
-    document.getElementById('tipoComida').addEventListener('change', actualizarInfoSeleccion);
-
-    actualizarInfoSeleccion();
+    document.getElementById('tipoComida')?.addEventListener('change', actualizarInfoSeleccion);
 });
-
