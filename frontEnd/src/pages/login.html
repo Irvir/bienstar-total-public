@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<script src="/frontEnd/src/controllers/Error404.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,6 @@
         });
     </script>
 </head>
-
 <body>
     <div id="contenedorPrincipal">
         <!-- Encabezado -->
@@ -76,7 +75,7 @@
                             </div>
 
                             <br><br>
-                            <button type="button" onclick="window.location.href='crearCuenta.html'"
+                            <button type="button" onclick="window.location.href='CrearCuenta.html'"
                                 id="BtnCrearCuenta">Crear Cuenta</button>
                         </form>
                     </div>
@@ -96,7 +95,7 @@
 
         <script>
             document.getElementById('BtnCrearCuenta').addEventListener('click', () => {
-                window.location.href = 'crearCuenta.html';
+                window.location.href = 'CrearCuenta.html';
             });
 
             // Menú desplegable

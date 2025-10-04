@@ -1,22 +1,27 @@
-// Error404.js
 const rutasValidas = [
     "index.html",
     "perfil.html",
     "dietas.html",
     "alimentos.html",
     "calendario.html",
-    "tipsParaTuDieta.html"
+    "tipsParaTuDieta.html",
+    "login.html",
+    "CrearCuenta.html",
+    "CrearDieta.html",
+    "error404.html",
+    "Pruebas.html",
+    "base.html"
 ];
 
-let rutaActual = window.location.pathname.split("/").pop();
+// Obtener último segmento sin extensión
+let rutaActual = window.location.pathname.split("/").pop().split("?")[0].split("#")[0];
 
-if (rutaActual === "") rutaActual = "index.html";
-
-if (!rutasValidas.includes(rutaActual)) {
-    // Ruta relativa correcta desde HTML principal
-    window.location.href = "pages/error404.html";
+// Si no tiene extensión, agregarla
+if (!rutaActual.includes(".html")) {
+    rutaActual += ".html";
 }
 
-
-
-
+// Redirigir si no es válida
+if (!rutasValidas.includes(rutaActual)) {
+    window.location.href = "/frontEnd/src/pages/error404.html";
+}

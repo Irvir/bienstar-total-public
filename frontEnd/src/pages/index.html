@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="/frontEnd/src/controllers/Error404.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- CSS Global -->
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
@@ -50,33 +55,44 @@
                 const logoutButton = document.getElementById("logoutButton");
                 const fotoUsuario = document.getElementById("fotoUsuario");
 
-                // Estilo inicial del menú desplegable
-                menuDesplegable.style.position = "absolute";
-                menuDesplegable.style.top = "8%";
-                menuDesplegable.style.right = "8%";
-                menuDesplegable.style.display = "none";
-                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
+                function initMenuStyles() {
+                    if (!menuDesplegable) return;
+                    menuDesplegable.style.position = "absolute";
+                    menuDesplegable.style.top = "8%";
+                    menuDesplegable.style.right = "8%";
+                    menuDesplegable.style.display = "none";
+                    menuDesplegable.style.width = "10%";
+                }
+                initMenuStyles();
 
                 // Alternar visibilidad del menú
                 function toggleMenu() {
+                    if (!menuDesplegable) return;
                     menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
                 }
 
-                btnPerfilView.addEventListener("click", toggleMenu);
+                if (btnPerfilView) {
+                    btnPerfilView.addEventListener("click", toggleMenu);
+                }
 
-                // Cerrar sesión
-                logoutButton.addEventListener("click", () => {
-                    localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
-                });
+                if (logoutButton) {
+                    // Cerrar sesión
+                    logoutButton.addEventListener("click", () => {
+                        localStorage.removeItem("usuario");
+                        window.location.href = "login.html";
+                    });
+                }
 
-                // Click en la foto de usuario
-                fotoUsuario.addEventListener("click", () => {
-                    window.location.href = "login.html";
-                });
+                if (fotoUsuario) {
+                    // Click en la foto de usuario
+                    fotoUsuario.addEventListener("click", () => {
+                        window.location.href = "login.html";
+                    });
+                }
 
                 // Cerrar menú al hacer clic fuera
                 document.addEventListener("click", (event) => {
+                    if (!menuDesplegable || !btnPerfilView || !fotoUsuario) return;
                     if (!btnPerfilView.contains(event.target) &&
                         !menuDesplegable.contains(event.target) &&
                         !fotoUsuario.contains(event.target)) {
@@ -89,7 +105,7 @@
         
         <div id="cuerpo">
             <div class="contenedorIzq"> <!-- parte izquierda -->
-                <button class="btn1" onclick="window.location.href='crearDieta.html'">Crear horario semanal</button>
+                <button class="btn1" onclick="window.location.href='CrearDieta.html'">Crear horario semanal</button>
                 <button class="btn2" onclick="window.location.href='dietas.html'">Dietas</button>
             </div>
             <div class="contenedorDer"> <!-- parte derecha -->

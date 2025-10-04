@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="/frontEnd/src/controllers/Error404.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="CrearCuenta" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- CSS Global -->
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="CrearCuenta.css">
+  
 </head>
 <body>
     <div id="contenedorPrincipal">
@@ -105,30 +111,44 @@
                         <form id="CrearCuentaForm" >
                             <div class="divNom">
                                 Nombre:
+                                <br>
+
                                 <input type="name" id="name" placeholder="Nombre" required>
                             </div>
                             <!-- en esta parte debería estar el apellido, al parecer l quitaron, debo preguntar -->
                             <div class="divEdadPesoAlt">
                                 <div class="edadPesoAlt">
                                     Edad:
+                                    <br>
                                     <input type="number" id="age" placeholder="Escriba su edad" required>
                                 </div>
                                 <div class="edadPesoAlt">
+
                                     Peso (KG):
+                                <br>
+
                                     <input type="number" id="weight" placeholder="Escriba su peso" required step="any">
                                 </div>
                                 <div class="edadPesoAlt">
                                     Altura (CM):
+                                <br>
+
+
                                     <input type="number" id="height" placeholder="Escriba su altura" required step="any">
                                 </div>
                             </div>
                             <div class="divCorreo">
+
                                 Correo electrónico:
+                                <br>
+
                                 <input type="text" id="email" placeholder="Escriba su correo electrónico" required>
                             </div>
                             
                             <div class="divCorreo">
                                 Contraseña:
+                                <br>
+
                                 <input type="password" id="password" placeholder="Contraseña" required>
                             </div>
                             
@@ -160,7 +180,7 @@
     </div>
     <script>
         document.getElementById("btnIniciarSesion").addEventListener("click", function() {
-            window.location.href = "Login.html";
+            window.location.href = "login.html";
         });
     </script>
         <script src="/frontEnd/src/controllers/CrearCuenta.js"></script>

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<script src="/frontEnd/src/controllers/Error404.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- CSS Global -->
     <link rel="stylesheet" href="Base.css">
     <!-- CSS Específico para esta página -->
@@ -12,6 +16,18 @@
 </head>
 
 <body><script src="/frontEnd/src/controllers/Dietas.js"></script>
+<script>
+// Guard de sesión (antes de mostrar la página)
+(function(){
+  try {
+    if (!localStorage.getItem('usuario')) {
+      window.location.href = 'login.html';
+    }
+  } catch(e) {
+    window.location.href = 'login.html';
+  }
+})();
+</script>
     <div id="contenedorPrincipal">
 
         <!-- ================= ENCABEZADO ================= -->
@@ -71,7 +87,7 @@
                 // Cerrar sesión
                 logoutButton.addEventListener("click", () => {
                     localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
+                    window.location.href = "login.html"; <!-- was Login.html -->
                 });
 
                 // Click en la foto de usuario
@@ -173,7 +189,7 @@
             // Cerrar sesión
             logoutButton.addEventListener("click", () => {
                 localStorage.removeItem("usuario");
-                window.location.href = "Login.html";
+                window.location.href = "login.html";
             });
 
             // Ocultar menú si se hace click fuera

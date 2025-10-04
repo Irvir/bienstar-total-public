@@ -30,19 +30,20 @@
 #contenedorLogin2 {
     width: 100%;
     min-width: 250px;
-    background-image: url("/frontEnd/Imagenes/Login_Perfil/FondoSesion.png");
     background-size: cover;
     background-position: center;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 20px;
-    background-color: red;
+    background-color: white;
+    
 }
 
 .contendorLoginFotoCrearUserAsist {
     width: 100%;
     font-size: clamp(18px, 2.5vw, 30px);
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     color: black;
     text-align: center;
@@ -52,7 +53,7 @@
 .contendorLoginFotoCrearUser {
     width: 100%;
     height: 300px;
-    background-image: url("../../Imagenes/Login_Perfil/Login.png");
+    background-image: url("../../Imagenes/Login_Perfil/Login2.png");
     background-size: cover;
     background-position: center;
     border-radius: 20px;
@@ -97,16 +98,16 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    margin-left: 25%;
+    margin-left: 2%;
 }
 
 /* Estilo para los cuadros de texto */
 input[type="number"] {
-    width: 90%;             /* ancho */
+    width: 50%;             /* ancho */
     height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #3498db;/* color del borde */
+    border: 2px solid #931525;/* color del borde */
     border-radius: 8px;       /* bordes redondeados */
     outline: none;            /* quita borde azul */
     background-color: #f8f9fa;/* color de fondo */
@@ -114,6 +115,7 @@ input[type="number"] {
     transition: 0.3s;         /* animación */
     margin-left: 15px;  /* mover a la derecha */
     margin-top: 10px;   /* mover hacia abajo */
+    font-family: 'Inter', sans-serif;
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -123,11 +125,12 @@ input[type="number"]:hover {
 }
 
 input[type="name"] {
-    width: 90%;             /* ancho */
-    height: 30px;             /* alto */
+    font-family: 'Inter', sans-serif;
+    width: 50%;             /* ancho */
+    height: 50;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #3498db;/* color del borde */
+    border: 2px solid #931525;/* color del borde */
     border-radius: 8px;       /* bordes redondeados */
     outline: none;            /* quita borde azul */
     background-color: #f8f9fa;/* color de fondo */
@@ -135,6 +138,7 @@ input[type="name"] {
     transition: 0.3s;         /* animación */
     margin-left: 15px;  /* mover a la derecha */
     margin-top: 10px;   /* mover hacia abajo */
+
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -144,11 +148,12 @@ input[type="name"]:hover {
 }
 
 input[type="text"] {
-    width: 90%;             /* ancho */
+    font-family: 'Inter', sans-serif;
+    width: 50%;             /* ancho */
     height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #3498db;/* color del borde */
+    border: 2px solid #931525;/* color del borde */
     border-radius: 8px;       /* bordes redondeados */
     outline: none;            /* quita borde azul */
     background-color: #f8f9fa;/* color de fondo */
@@ -165,11 +170,12 @@ input[type="text"]:hover {
 }
 
 input[type="password"] {
-    width: 90%;             /* ancho */
+    font-family: 'Inter', sans-serif;
+    width: 50%;             /* ancho */
     height: 30px;             /* alto */
     padding: 5px;            /* espacio interno */
     font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #3498db;/* color del borde */
+    border: 2px solid #931525;/* color del borde */
     border-radius: 8px;       /* bordes redondeados */
     outline: none;            /* quita borde azul */
     background-color: #f8f9fa;/* color de fondo */
