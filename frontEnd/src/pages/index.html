@@ -15,34 +15,42 @@
     <link rel="stylesheet" href="Index.css">
 </head>
 <body>
+ 
+    <script src="/frontEnd/src/controllers/loader.js"></script>
     <div id="contenedorPrincipal">
         <!-- Encabezado -->
         <div id="encabezado">
             <div class="header-inner">
+                <!-- Logo principal -->
                 <div class="logo">
                     <a href="index.html">
                         <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
                     </a>
                 </div>
+                <!-- Menú de navegación superior -->
                 <div class="menúBotones">
                     <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
-                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
+                    <!-- Botón de notificaciones  -->
                     <button class="btnMenuNoti">
-                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification"
+                            onclick="alert('No tienes notificaciones nuevas.')">
                     </button>
                 </div>
                 <div class="login">
-                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
-                        <button class="btnPerfilView" id="btnPerfilView" >
+                    <!-- Botón para ver el perfil -->
+                    <div style="float: left; height: 100%; width: 75%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
+                        <button class="btnPerfilView" id="btnPerfilView">
                             <span class="nameUser">Nombre de Usuario</span>
                         </button>
                     </div>
-                    
-                    <!-- Imagen Usuario -->
-                    <div style="float: left; width: 10%; height: 100%;">
+                    <!-- Imagen de usuario  -->
+                    <div style="float: left; width: 10%; height: 100%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
                         <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                            style="cursor:pointer;" onclick="window.location.href='login.html'">
+                            style="cursor:pointer;">
                     </div>
                 </div>
             </div>
@@ -83,13 +91,6 @@
                     });
                 }
 
-                if (fotoUsuario) {
-                    // Click en la foto de usuario
-                    fotoUsuario.addEventListener("click", () => {
-                        window.location.href = "login.html";
-                    });
-                }
-
                 // Cerrar menú al hacer clic fuera
                 document.addEventListener("click", (event) => {
                     if (!menuDesplegable || !btnPerfilView || !fotoUsuario) return;
@@ -100,18 +101,18 @@
                     }
                 });
             });
+
         </script>
 
-        
         <div id="cuerpo">
             <div class="contenedorIzq"> <!-- parte izquierda -->
-                <button class="btn1" onclick="window.location.href='CrearDieta.html'">Crear horario semanal</button>
-                <button class="btn2" onclick="window.location.href='dietas.html'">Dietas</button>
+                <button class="btn1" onclick="showLoaderAndRedirect('CrearDieta.html')">Crear horario semanal</button>
+                <button class="btn2" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
             </div>
             <div class="contenedorDer"> <!-- parte derecha -->
-                <button class="btn3" onclick="window.location.href='calendario.html'">Calendario</button>
-                <button class="btn4" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                <button class="btn5" onclick="window.location.href='tipsParaTuDieta.html'">Tips para tu dieta</button>
+                <button class="btn3" onclick="showLoaderAndRedirect('calendario.html')">Calendario</button>
+                <button class="btn4" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                <button class="btn5" onclick="showLoaderAndRedirect('tipsParaTuDieta.html')">Tips para tu dieta</button>
             </div>
         </div>
         <div id="pie">
@@ -128,14 +129,18 @@
             const usuarioGuardado = localStorage.getItem("usuario");
 
             if (usuarioGuardado) {
-            const usuario = JSON.parse(usuarioGuardado);
-            const nameUserSpan = document.querySelector(".nameUser");
-            if (nameUserSpan) {
-                nameUserSpan.textContent = usuario.name;
-            }
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
             }
         });
     </script>
-
+    <div id="loader">
+        <span class="loader-text">Cargando</span>
+        <div class="loader-dots"></div>
+    </div>
+  
 </body>
 </html>
