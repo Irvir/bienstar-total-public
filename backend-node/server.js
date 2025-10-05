@@ -8,13 +8,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- Ajusta estos datos si es necesario ---
+// --- Confif FreeDataBase ---
 const DB_CONFIG = {
-  host: "localhost",
-  user: "root",
-  password: "Mar.23012006t",
-  database: "login"
+  host: "sql10.freesqldatabase.com",
+  user: "sql10801474",
+  password: "gfkLZVNqE6",
+  database: "sql10801474",
+  port: 3306
 };
+
 
 // Pool de conexiones
 const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
@@ -435,7 +437,7 @@ app.post("/delete-diet-item", async (req, res) => {
   }
 });
 // Puerto
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en puerto ${PORT}`);
 });
