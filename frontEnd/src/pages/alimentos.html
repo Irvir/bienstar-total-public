@@ -16,7 +16,7 @@
 </head>
 <body>
     <div id="contenedorPrincipal">
-
+        <script src="/frontEnd/src/controllers/loader.js"></script>
     
         <!-- Encabezado -->
         <div id="encabezado">
@@ -27,24 +27,26 @@
                     </a>
                 </div>
                 <div class="menúBotones">
-                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                    <button class="btnMenuSelec">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('index.html')">Inicio</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                    <button class="btnMenuSelec" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
                     <button class="btnMenuNoti">
                         <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
                 <div class="login">
-                    <div style="float: left; height: 100%; width: 75%;" onclick="window.location.href='login.html'">
+                    <!-- Botón para ver el perfil -->
+                    <div style="float: left; height: 100%; width: 75%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
                         <button class="btnPerfilView" id="btnPerfilView">
                             <span class="nameUser">Nombre de Usuario</span>
                         </button>
                     </div>
-        
-                    <!-- Imagen Usuario -->
-                    <div style="float: left; width: 10%; height: 100%;">
+                    <!-- Imagen de usuario  -->
+                    <div style="float: left; width: 10%; height: 100%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
                         <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                            style="cursor:pointer;" onclick="window.location.href='login.html'">
+                            style="cursor:pointer;">
                     </div>
                 </div>
             </div>
@@ -996,6 +998,31 @@
             <p id="modalInfo"></p>       <!-- Descripción del alimento -->
         </div>
     </div>
+    <div id="loader">
+        <span class="loader-text">Cargando</span>
+        <div class="loader-dots"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPage = window.location.pathname.split("/").pop(); // obtiene "dietas.html", "alimentos.html", etc.
+
+            const btnInicio = document.querySelector("button[onclick*='index.html']");
+            const btnAlimentos = document.querySelector("button[onclick*='alimentos.html']");
+            const btnDietas = document.querySelector("button[onclick*='dietas.html']");
+
+            // Primero quitar clase "btnMenuSelec" de todos
+            [btnInicio, btnAlimentos, btnDietas].forEach(btn => {
+                btn.classList.remove("btnMenuSelec");
+                btn.classList.add("btnMenu"); // asegúrate que todos tengan la clase normal
+            });
+
+            // Agregar clase de activo según página
+            if (currentPage === "index.html") btnInicio.classList.add("btnMenuSelec");
+            else if (currentPage === "alimentos.html") btnAlimentos.classList.add("btnMenuSelec");
+            else if (currentPage === "dietas.html") btnDietas.classList.add("btnMenuSelec");
+        });
+    </script>
+
     <script src="/frontEnd/src/controllers/Alimentos.js"></script>
 
 </body>

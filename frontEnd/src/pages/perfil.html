@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="Perfil.css">
 </head>
 <body>
-    <div id="contenedorPrincipal">
+    <script src="/frontEnd/src/controllers/loader.js"></script>
 
+    <div id="contenedorPrincipal">
     
         <!-- Encabezado -->
         <div id="encabezado">
@@ -23,9 +24,10 @@
                     </a>
                 </div>
                 <div class="menúBotones">
-                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
-                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('index.html')">Inicio</button>
+
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
                     <button class="btnMenuNoti">
                         <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
@@ -46,49 +48,8 @@
             </div>
         </div>
         
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const btnPerfilView = document.getElementById("btnPerfilView");
-                const menuDesplegable = document.getElementById("menuDesplegable");
-                const logoutButton = document.getElementById("logoutButton");
-                const fotoUsuario = document.getElementById("fotoUsuario");
-
-                // Estilo inicial del menú desplegable
-                menuDesplegable.style.position = "absolute";
-                menuDesplegable.style.top = "8%";
-                menuDesplegable.style.right = "8%";
-                menuDesplegable.style.display = "none";
-                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
-
-                // Alternar visibilidad del menú
-                function toggleMenu() {
-                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
-                }
-
-                btnPerfilView.addEventListener("click", toggleMenu);
-
-                // Cerrar sesión
-                logoutButton.addEventListener("click", () => {
-                    localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
-                });
-
-                // Click en la foto de usuario
-                fotoUsuario.addEventListener("click", () => {
-                    window.location.href = "login.html";
-                });
-
-                // Cerrar menú al hacer clic fuera
-                document.addEventListener("click", (event) => {
-                    if (!btnPerfilView.contains(event.target) &&
-                        !menuDesplegable.contains(event.target) &&
-                        !fotoUsuario.contains(event.target)) {
-                        menuDesplegable.style.display = "none";
-                    }
-                });
-            });
-        </script>
-
+       
+       
 
         <div id="cuerpo">
             <div id="divMenuLateral">
@@ -185,7 +146,8 @@
                 
 
                 document.getElementById("btnDieta").addEventListener("click", () => {
-                    window.location.href = "dietas.html";
+                    onclick = "showLoaderAndRedirect('dietas.html')";
+                    showLoaderAndRedirect('dietas.html');
                 });
 
             </script>
@@ -203,5 +165,40 @@
             </div>
         </div>
     </div>
+    <div id="loader">
+        <span class="loader-text">Cargando</span>
+        <div class="loader-dots"></div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPage = window.location.pathname.split("/").pop();
+
+            const btnInicio = document.querySelector("button[onclick*='index.html']");
+            const btnAlimentos = document.querySelector("button[onclick*='alimentos.html']");
+            const btnDietas = document.querySelector("button[onclick*='dietas.html']");
+            const btnPerfilView = document.getElementById("btnPerfilView");
+
+            // Resetear estilos del menú principal
+            [btnInicio, btnAlimentos, btnDietas].forEach(btn => {
+                if (btn) {
+                    btn.classList.remove("btnMenuSelec");
+                    btn.classList.add("btnMenu");
+                }
+            });
+
+            // Asignar color activo según la página actual
+            if (currentPage === "index.html") {
+                btnInicio.classList.add("btnMenuSelec");
+            } else if (currentPage === "alimentos.html") {
+                btnAlimentos.classList.add("btnMenuSelec");
+            } else if (currentPage === "dietas.html") {
+                btnDietas.classList.add("btnMenuSelec");
+            } else if (currentPage === "perfil.html" && btnPerfilView) {
+                btnPerfilView.classList.add("btnPerfilViewSelec");
+            }
+        });
+    </script>
+
+        
 </body>
 </html>

@@ -56,53 +56,7 @@
             </div>
         </div>
         
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const btnPerfilView = document.getElementById("btnPerfilView");
-                const menuDesplegable = document.getElementById("menuDesplegable");
-                const logoutButton = document.getElementById("logoutButton");
-                const fotoUsuario = document.getElementById("fotoUsuario");
-
-                function initMenuStyles() {
-                    if (!menuDesplegable) return;
-                    menuDesplegable.style.position = "absolute";
-                    menuDesplegable.style.top = "8%";
-                    menuDesplegable.style.right = "8%";
-                    menuDesplegable.style.display = "none";
-                    menuDesplegable.style.width = "10%";
-                }
-                initMenuStyles();
-
-                // Alternar visibilidad del menú
-                function toggleMenu() {
-                    if (!menuDesplegable) return;
-                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
-                }
-
-                if (btnPerfilView) {
-                    btnPerfilView.addEventListener("click", toggleMenu);
-                }
-
-                if (logoutButton) {
-                    // Cerrar sesión
-                    logoutButton.addEventListener("click", () => {
-                        localStorage.removeItem("usuario");
-                        window.location.href = "login.html";
-                    });
-                }
-
-                // Cerrar menú al hacer clic fuera
-                document.addEventListener("click", (event) => {
-                    if (!menuDesplegable || !btnPerfilView || !fotoUsuario) return;
-                    if (!btnPerfilView.contains(event.target) &&
-                        !menuDesplegable.contains(event.target) &&
-                        !fotoUsuario.contains(event.target)) {
-                        menuDesplegable.style.display = "none";
-                    }
-                });
-            });
-
-        </script>
+        
 
         <div id="cuerpo">
             <div class="contenedorIzq"> <!-- parte izquierda -->
@@ -135,6 +89,26 @@
                     nameUserSpan.textContent = usuario.name;
                 }
             }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentPage = window.location.pathname.split("/").pop(); // obtiene "dietas.html", "alimentos.html", etc.
+
+            const btnInicio = document.querySelector("button[onclick*='index.html']");
+            const btnAlimentos = document.querySelector("button[onclick*='alimentos.html']");
+            const btnDietas = document.querySelector("button[onclick*='dietas.html']");
+
+            // Primero quitar clase "btnMenuSelec" de todos
+            [btnInicio, btnAlimentos, btnDietas].forEach(btn => {
+                btn.classList.remove("btnMenuSelec");
+                btn.classList.add("btnMenu"); // asegúrate que todos tengan la clase normal
+            });
+
+            // Agregar clase de activo según página
+            if (currentPage === "index.html") btnInicio.classList.add("btnMenuSelec");
+            else if (currentPage === "alimentos.html") btnAlimentos.classList.add("btnMenuSelec");
+            else if (currentPage === "dietas.html") btnDietas.classList.add("btnMenuSelec");
         });
     </script>
     <div id="loader">

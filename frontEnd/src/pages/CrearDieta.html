@@ -26,9 +26,9 @@
                     </a>
                 </div>
                 <div class="menúBotones">
-                    <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
                     <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
                     <button class="btnMenuNoti">
                         <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
@@ -55,34 +55,44 @@
 
         <!-- CUERPO -->
         <div id="cuerpo">
-            <div id="contenedorFiltroYForm">
+            <!-- Izquierda: Crear Dieta -->
+            <div id="formContainer">
+                <div id="crearDieta">
+                    <h2 id="diaSeleccionado">Dieta del Día <span id="diaSeleccionadoTexto">–</span></h2>
+                    <div id="resumenDieta"></div>
+                    <div class="barraDivisora"></div>
 
-                <!-- Izquierda: Filtro -->
-                <div id="filtroContainer">
-                    <div id="contenedorFiltro">
-                        <div id="lupe"></div>
-                        <div style="flex:1">
-                            <input type="text" id="filtro" placeholder="Buscar alimento...">
+
+                    <div id="botones">
+                        <div class="grupoSelector" style="margin-right:12px;">
+                            <div class="etiqueta">DÍA</div>
+                            <div class="selector">
+                                <select id="dia" class="selectDia">
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miércoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                    <option value="7">Domingo</option>
+                                </select>
+                            </div>
                         </div>
-                        <div id="resultadosFiltro" class="resultadosFiltro"></div>
+                        <button id="btnBorrarDieta">Borrar Todo</button>
+                        <button id="btnSalir">Salir</button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Derecha: Crear Dieta -->
-                <div id="formContainer">
-                    <div id="crearDieta">
-                        <h2 id="diaSeleccionado">Dieta del Día <span id="diaSeleccionadoTexto">–</span></h2>
-                        <div id="resumenDieta"></div>
-                        <div class="barraDivisora"></div>
-
-
-                        <div id="botones">
-                            <button id="btnBorrarDieta">Borrar Todo</button>
-                            <button id="btnSalir">Salir</button>
-                        </div>
+            <!-- Derecha: Filtro -->
+            <div id="filtroContainer">
+                <div id="contenedorFiltro">
+                    <div id="lupe"></div>
+                    <div style="flex:1">
+                        <input type="text" id="filtro" placeholder="Buscar alimento...">
                     </div>
                 </div>
-
+                <div id="resultadosFiltro" class="resultadosFiltro"></div>
             </div>
         </div>
 
@@ -98,6 +108,18 @@
 
     </div>
     <script>
+        // Guard de sesión (antes de mostrar la página)
+        (function(){
+          try {
+            if (!localStorage.getItem('usuario')) {
+              window.location.href = 'login.html';
+            }
+          } catch(e) {
+            window.location.href = 'login.html';
+          }
+        })();
+        </script>
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             const usuarioGuardado = localStorage.getItem("usuario");
 
@@ -108,75 +130,17 @@
                     nameUserSpan.textContent = usuario.name;
                 }
             }
+
+            // Al clickar el icono de usuario, ir a esta pestaña (CrearDieta)
+            const fotoUsuario = document.getElementById("fotoUsuario");
+            if (fotoUsuario) {
+                fotoUsuario.addEventListener('click', () => {
+                    window.location.href = 'perfil.html';
+                });
+            }
         });
     </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                // Elementos del menú de usuario
-                const btnPerfilView = document.getElementById("btnPerfilView");
-                const menuDesplegable = document.getElementById("menuDesplegable");
-                const logoutButton = document.getElementById("logoutButton");
-                const fotoUsuario = document.getElementById("fotoUsuario");
-
-                // Posicionamiento y estilos iniciales del menú
-                menuDesplegable.style.position = "absolute";
-                menuDesplegable.style.top = "8%";
-                menuDesplegable.style.right = "8%";
-                menuDesplegable.style.display = "none";
-                menuDesplegable.style.width = "10%";
-
-                // Función para mostrar/ocultar el menú
-                function toggleMenu() {
-                    menuDesplegable.style.display =
-                        menuDesplegable.style.display === "block" ? "none" : "block";
-                }
-
-                // Mostrar menú al hacer click en el perfil
-                btnPerfilView.addEventListener("click", toggleMenu);
-
-                // Cerrar sesión
-                logoutButton.addEventListener("click", () => {
-                    localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
-                });
-
-                // Ocultar menú si se hace click fuera
-                document.addEventListener("click", (event) => {
-                    if (!btnPerfilView.contains(event.target) &&
-                        !menuDesplegable.contains(event.target) &&
-                        !fotoUsuario.contains(event.target)) {
-                        menuDesplegable.style.display = "none";
-                    }
-                });
-
-                // Ir a login al hacer click en la foto de usuario
-                fotoUsuario.addEventListener("click", () => {
-                    window.location.href = "login.html";
-                });
-            });
-        </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const currentPage = window.location.pathname.split("/").pop(); // obtiene "dietas.html", "alimentos.html", etc.
-
-            const btnInicio = document.querySelector("button[onclick*='index.html']");
-            const btnAlimentos = document.querySelector("button[onclick*='alimentos.html']");
-            const btnDietas = document.querySelector("button[onclick*='dietas.html']");
-
-            // Primero quitar clase "btnMenuSelec" de todos
-            [btnInicio, btnAlimentos, btnDietas].forEach(btn => {
-                btn.classList.remove("btnMenuSelec");
-                btn.classList.add("btnMenu"); // asegúrate que todos tengan la clase normal
-            });
-
-            // Agregar clase de activo según página
-            if (currentPage === "index.html") btnInicio.classList.add("btnMenuSelec");
-            else if (currentPage === "alimentos.html") btnAlimentos.classList.add("btnMenuSelec");
-            else if (currentPage === "dietas.html") btnDietas.classList.add("btnMenuSelec");
-            else if (currentPage === "CrearDieta.html") btnDietas.classList.add("btnMenuSelec");
-        });
-    </script>
-        
+    <script src="/frontEnd/src/controllers/notify.js"></script>
     <script src="/frontEnd/src/controllers/CrearDieta.js"></script>
 </body>
 
