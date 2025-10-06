@@ -189,6 +189,7 @@ function renderDietaDelDia() {
 
 
 // ================== SELECCIÓN DE ALIMENTO ==================
+
 async function agregarAlimento(id, name, dia, tipoComida) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const id_diet = usuario?.id_diet ?? 1;
@@ -208,20 +209,19 @@ async function agregarAlimento(id, name, dia, tipoComida) {
                 window.notify(`${name} agregado a tu dieta (Día ${dia}, ${tipoComida})`, { type: 'success' });
             } else { alert(`${name} agregado a tu dieta (Día ${dia}, ${tipoComida})`); }
 
-            // ✅ Solo refresca si el alimento fue agregado al día actualmente seleccionado
-            if (parseInt(dia) === diaSeleccionado) {
-                await cargarDietaDelDia(diaSeleccionado);
-            }
+            // Refresca la dieta del día actualmente seleccionado SIEMPRE
+            await cargarDietaDelDia(diaSeleccionado);
         } else {
             if (window.notify) window.notify("Error al guardar el alimento en la dieta", { type: 'error' });
             else alert("Error al guardar el alimento en la dieta");
         }
     } catch (e) {
         console.error("Error conexión:", e);
-    if (window.notify) window.notify("Error de conexión con el servidor.", { type: 'error' });
-    else alert("Error de conexión con el servidor.");
+        if (window.notify) window.notify("Error de conexión con el servidor.", { type: 'error' });
+        else alert("Error de conexión con el servidor.");
     }
 }
+
 async function cargarDietaDelDia(dia) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const id_diet = usuario?.id_diet ?? 1;
