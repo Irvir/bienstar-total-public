@@ -5,8 +5,15 @@ Sistema integral para la búsqueda y recomendación de alimentos y recetas, que 
 ---
 
 ## 👥 Cuentas del Equipo  
+- 🛠️👑 **Martin Droguett** → `Irvir` → Líder Técnico → Backend → Frontend 
+- 📝 **Paulo Silva** → `paulosilvaobando12-design`→ QA & Testing → Líder Técnico → Backend 
+- 🎨 **Daniel Gutiérrez** → `Danieliwis-Sama` → Frontend → QA & Testing → Líder Técnico 
+- ⚙️ **Danilo Ponce** → `DaniloP76253` → Backend → Frontend → QA & Testing
 
-🛠️👑 **Martin Droguett** → `Irvir` *(Líder Técnico)*  
-🎨 **Daniel Gutiérrez** → `Danieliwis-Sama` *(Frontend)*  
-⚙️ **Danilo Ponce** → `DaniloP76253` *(Backend)*  
-📝🔍 **Paulo Silva** → `paulosilvaobando12-design` *(QA & Documentación)*  
+---
+## 🎨 Paleta de colores 
+- **HEX:#931525**
+- **RGBA:(147, 21, 37)**
+- **HSL:(352, 75, 33)**
+  
+  **<img width="337" height="165" alt="image" src="https://github.com/user-attachments/assets/e84cca6c-a8ab-4a79-a7c6-2a0256e02141" />**
