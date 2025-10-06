@@ -6,7 +6,7 @@ Sistema integral para la búsqueda y recomendación de alimentos y recetas, que 
 
 ## 👥 Cuentas del Equipo  
 
-🛠️👑 **Martin Droguett** → `Irvir` *(Líder Técnico)*  
-🎨 **Daniel Gutiérrez** → `Danieliwis-Sama` *(Frontend)*  
-⚙️ **Danilo Ponce** → `DaniloP76253` *(Backend)*  
-📝🔍 **Paulo Silva** → `paulosilvaobando12-design` *(QA & Documentación)*  
+🛠️👑 **Martin Droguett** → `Irvir` *(Líder Técnico)* -> *(Backend)*
+🎨 **Daniel Gutiérrez** → `Danieliwis-Sama` *(Frontend)* -> *(QA & Documentación)*  
+⚙️ **Danilo Ponce** → `DaniloP76253` *(Backend)* -> *(Frontend)*   
+📝🔍 **Paulo Silva** → `paulosilvaobando12-design` *(QA & Documentación)* -> *(Líder Técnico)*
