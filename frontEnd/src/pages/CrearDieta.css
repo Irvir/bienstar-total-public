@@ -1,3 +1,11 @@
+#contenedorPrincipal {
+    background-image: url("/frontEnd/Imagenes/Login_Perfil/fondoLogin.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0;
+}
+
 #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
@@ -33,18 +41,21 @@ main {
     font-size: 16px;
     width: 90%;
 }
+
 footer {
     background: #333;
     color: white;
     text-align: center;
     padding: 15px;
 }
+
 #filtroContainer {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-left:1%;
 }
+
 #resultadosFiltro,
 .resultadosFiltro {
     width: 100%;
@@ -55,6 +66,23 @@ footer {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Borrar scroll */
+#resultadosFiltro {
+    background: transparent;
+    border: none;
+    margin-top: 1vh;
+    padding: 0;
+    max-height: 80vh;
+    overflow-y: auto; /* mantiene el scroll si hay muchos resultados */
+    
+    /* Oculta la barra de scroll */
+    scrollbar-width: none; /* Firefox */
+}
+#resultadosFiltro::-webkit-scrollbar {
+    display: none; /* Chrome, Edge, Safari */
+}
+
 
 #crearDieta {
     font-family: Arial, Helvetica, sans-serif;
@@ -69,6 +97,9 @@ footer {
     border-color: #931525;
     border-style: solid;
     border-width: 3px;
+    /*background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");
+    background-size: cover;
+    background-position: center;*/
 }
 
 #alimentosSeleccionados {
@@ -83,17 +114,17 @@ footer {
     margin-left: auto;
 }
 
-
-
 #botones {
     padding-top: 5%;
     padding-left: 10%;
 }
+
 #diaSeleccionado{
     font-family: 'Inter', sans-serif;
     color: #931525;
     
 }
+
 #btnGuardarDieta,
 #btnBorrarDieta,
 #btnSalir{
@@ -115,6 +146,7 @@ footer {
     border: none;
     height: 20%;
 }
+
 #btnAgregar {
     font-family: 'Inter', sans-serif;
         background: linear-gradient(135deg, #931525, #ff416c);
@@ -132,8 +164,6 @@ footer {
         height: 20%;
 }
 
-
-
 .alimento-card {
     font-family: Calibri, sans-serif;
     border: 2px solid #000;
@@ -144,7 +174,6 @@ footer {
     background: #fff;
     width: 50%;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
-
     display: flex;
     gap: 20px;
     padding: 20px;
@@ -209,12 +238,13 @@ footer {
 }
 
 #resultadosFiltro {
-    margin-top: 2px;
+    margin-top: 1vh;
     padding: 0;
-    max-height: 650px;
+    max-height: 80vh;
     /* ajusta según necesites */
     overflow-y: auto;
     /* scroll si hay muchos resultados */
+
 }
 
 /* En Base.css o CrearDieta.css */
@@ -357,6 +387,7 @@ body {
 #formContainer {
     flex: 0 0 30%;
     min-width: 280px;
+    margin-left: 5vw;
 }
 
 #filtroContainer {
@@ -407,3 +438,4 @@ body {
         width: 100%;
     }
 }
+
