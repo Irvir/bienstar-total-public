@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="Alimentos.css">
 </head>
 <body>
+    <script src="/frontEnd/src/controllers/loader.js"></script>
     <div id="contenedorPrincipal">
-        <script src="/frontEnd/src/controllers/loader.js"></script>
     
         <!-- Encabezado -->
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
-                    <a href="index.html">
+                    <a onclick="showLoaderAndRedirect('index.html')">
                         <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
                     </a>
                 </div>

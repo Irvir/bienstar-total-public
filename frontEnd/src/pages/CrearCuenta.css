@@ -3,40 +3,43 @@
     background-size: cover;
     background-position: center;
     width: 100%;
-    height: 100vh;
-    /* ocupa toda la pantalla */
+    min-height: 80vh;
+    /* que se estire pero no corte */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    /* quita scroll */
+    /* aquí sí, para que no meta scroll */
+    
 }
 
 /* Contenedor principal del formulario */
 #contenedorLoginAsist3 {
     width: 80%;
-    max-width: 1200px;
+    max-width: 120vh;
     min-height: 80vh;
     display: flex;
     flex-wrap: wrap;
-    background-color: rgba(255, 255, 255, 0.85);
+
     /* fondo semi-transparente */
     border-radius: 50px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
 }
 
 /* Contenedor de la parte izquierda (foto o instrucciones) */
 #contenedorLogin2 {
     width: 100%;
-    min-width: 250px;
+    min-width: 250;
+    background-image: url("/frontEnd/Imagenes/Login_Perfil/FondoSesion.png");
     background-size: cover;
     background-position: center;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 20px;
-    background-color: white;
+    /* 🔹 separa de arriba y abajo */
+    margin-top: 2vh;
+    margin-bottom: 2vh;
     
 }
 
@@ -64,7 +67,7 @@
 .contenedorLoginDatosUser {
     width: 67%;
     min-width: 300px;
-    padding: 20px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -76,7 +79,7 @@
 .divCorreo,
 .divEdadPesoAlt {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 4px;
     font-size: clamp(16px, 1.5vw, 20px);
     font-weight: bold;
     color: black;
@@ -103,18 +106,30 @@
 
 /* Estilo para los cuadros de texto */
 input[type="number"] {
-    width: 50%;             /* ancho */
-    height: 30px;             /* alto */
-    padding: 5px;            /* espacio interno */
-    font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #931525;/* color del borde */
-    border-radius: 8px;       /* bordes redondeados */
-    outline: none;            /* quita borde azul */
-    background-color: #f8f9fa;/* color de fondo */
-    color: #333;              /* color del texto */
-    transition: 0.3s;         /* animación */
-    margin-left: 15px;  /* mover a la derecha */
-    margin-top: 10px;   /* mover hacia abajo */
+    width: 50%;
+    /* ancho */
+    height: 30px;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
     font-family: 'Inter', sans-serif;
 }
 
@@ -126,18 +141,30 @@ input[type="number"]:hover {
 
 input[type="name"] {
     font-family: 'Inter', sans-serif;
-    width: 50%;             /* ancho */
-    height: 50;             /* alto */
-    padding: 5px;            /* espacio interno */
-    font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #931525;/* color del borde */
-    border-radius: 8px;       /* bordes redondeados */
-    outline: none;            /* quita borde azul */
-    background-color: #f8f9fa;/* color de fondo */
-    color: #333;              /* color del texto */
-    transition: 0.3s;         /* animación */
-    margin-left: 15px;  /* mover a la derecha */
-    margin-top: 10px;   /* mover hacia abajo */
+    width: 50%;
+    /* ancho */
+    height: 50;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
 
 }
 
@@ -149,18 +176,30 @@ input[type="name"]:hover {
 
 input[type="text"] {
     font-family: 'Inter', sans-serif;
-    width: 50%;             /* ancho */
-    height: 30px;             /* alto */
-    padding: 5px;            /* espacio interno */
-    font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #931525;/* color del borde */
-    border-radius: 8px;       /* bordes redondeados */
-    outline: none;            /* quita borde azul */
-    background-color: #f8f9fa;/* color de fondo */
-    color: #333;              /* color del texto */
-    transition: 0.3s;         /* animación */
-    margin-left: 15px;  /* mover a la derecha */
-    margin-top: 10px;   /* mover hacia abajo */
+    width: 50%;
+    /* ancho */
+    height: 30px;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -171,18 +210,30 @@ input[type="text"]:hover {
 
 input[type="password"] {
     font-family: 'Inter', sans-serif;
-    width: 50%;             /* ancho */
-    height: 30px;             /* alto */
-    padding: 5px;            /* espacio interno */
-    font-size: 16px;          /* tamaño de letra */
-    border: 2px solid #931525;/* color del borde */
-    border-radius: 8px;       /* bordes redondeados */
-    outline: none;            /* quita borde azul */
-    background-color: #f8f9fa;/* color de fondo */
-    color: #333;              /* color del texto */
-    transition: 0.3s;         /* animación */
-    margin-left: 15px;  /* mover a la derecha */
-    margin-top: 10px;   /* mover hacia abajo */
+    width: 50%;
+    /* ancho */
+    height: 30px;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
 }
 
 /* Hover: cuando el mouse pasa encima */

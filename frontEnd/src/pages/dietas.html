@@ -38,7 +38,7 @@
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
-                    <a href="index.html">
+                    <a onclick="showLoaderAndRedirect('index.html')">
                         <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
                     </a>
                 </div>
@@ -149,7 +149,7 @@
                 </div>
             </div>
         
-            <button type="button" onclick="window.location.href='CrearDieta.html'" id="BtnCrearCuenta">
+            <button type="button" onclick="showLoaderAndRedirect('CrearDieta.html')" id="BtnCrearCuenta">
                 Editar Dieta
             </button>
         </div>
@@ -203,6 +203,8 @@
             else if (currentPage === "dietas.html") btnDietas.classList.add("btnMenuSelec");
         });
     </script>
+    
+    <!-- Pantalla de carga -->
     <div id="loader">
         <span class="loader-text">Cargando</span>
         <div class="loader-dots"></div>

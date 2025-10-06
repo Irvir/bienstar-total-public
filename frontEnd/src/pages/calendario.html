@@ -12,42 +12,40 @@
     <link rel="stylesheet" href="Calendario.css">
 </head>
 <body>
+    <script src="/frontEnd/src/controllers/loader.js"></script>
     <div id="contenedorPrincipal">
+        <!-- Encabezado -->
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
-                    <a href="index.html">
+                    <a onclick="showLoaderAndRedirect('index.html')">
                         <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
                     </a>
                 </div>
                 <div class="menúBotones">
-                    <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
-                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('index.html')">Inicio</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
                     <button class="btnMenuNoti">
                         <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
                 <div class="login">
-                    <div style="float: left; height: 100%; width: 75%;">
+                    <div style="float: left; height: 100%; width: 75%;" onclick="showLoaderAndRedirect('login.html')">
                         <button class="btnPerfilView" id="btnPerfilView">
                             <span class="nameUser">Nombre de Usuario</span>
                         </button>
                     </div>
-                    <!-- Menú desplegable -->
-                    <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
-                    </div>
+    
                     <!-- Imagen Usuario -->
                     <div style="float: left; width: 10%; height: 100%;">
                         <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                            style="cursor:pointer;">
+                            style="cursor:pointer;" onclick="showLoaderAndRedirect('login.html')">
                     </div>
                 </div>
             </div>
         </div>
-        
+    
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const btnPerfilView = document.getElementById("btnPerfilView");
@@ -115,5 +113,9 @@
             }
         });
     </script>
+    <div id="loader">
+        <span class="loader-text">Cargando</span>
+        <div class="loader-dots"></div>
+    </div>
 </body>
 </html>

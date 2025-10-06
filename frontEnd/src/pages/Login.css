@@ -11,7 +11,7 @@
     align-items: center;
     overflow: hidden;
     /* evita que se genere scroll */
-    padding: 0;
+    padding: 0; 
     /* quita márgenes extra */
     margin: 0;
 }
@@ -43,7 +43,7 @@
     width: 60%;
     margin: 0 auto 20px auto;
     aspect-ratio: 1 / 1;
-    background-image: url("../../Imagenes/Login_Perfil/Login.png");
+    background-image: url("../../Imagenes/Login_Perfil/Login2.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -57,12 +57,22 @@ input[type="password"] {
     margin: 8px auto;
     display: block;
     font-size: 16px;
-    border: 2px solid #3498db;
+    border: 2px solid #931525;
     border-radius: 8px;
     background-color: #f8f9fa;
     color: #333;
     text-align: center;
     transition: 0.3s;
+}
+
+/* Efecto al enfocar el input */
+input:focus {
+    outline: none;
+    /* quita el borde negro */
+    border: 2px solid #3498db;
+    /* borde verde personalizado */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+    /* efecto glow opcional */
 }
 
 /* Botones */

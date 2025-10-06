@@ -19,7 +19,7 @@
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
-                    <a href="index.html">
+                    <a onclick="showLoaderAndRedirect('index.html')">
                         <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
                     </a>
                 </div>
@@ -42,7 +42,7 @@
                     <!-- Imagen Usuario -->
                     <div style="float: left; width: 10%; height: 100%;">
                         <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                            style="cursor:pointer;" onclick="window.location.href='login.html'">
+                            style="cursor:pointer;" onclick="showLoaderAndRedirect('login.html')">
                     </div>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                 /*Script Cerrar sesión y mandar al login con cerrarSesion*/
                 document.getElementById("cerrarSesion").addEventListener("click", () => {
                     localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
+                    showLoaderAndRedirect("login.html");
                 });
                 //Si esta registrado y le da a mi dieta lo manda a dietas.html
                 document.getElementById("btnDieta").style.cursor = "pointer";

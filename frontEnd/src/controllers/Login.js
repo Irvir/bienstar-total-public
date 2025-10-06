@@ -35,7 +35,7 @@ document.getElementById("LoginForm").addEventListener("submit", async function(e
 
           // Redirigir al index después de 1.5 segundos
           setTimeout(() => {
-              window.location.href = "index.html";
+              showLoaderAndRedirect("index.html");
           }, 1500);
 
       } else {
