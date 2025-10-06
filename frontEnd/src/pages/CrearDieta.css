@@ -334,3 +334,76 @@ footer {
     cursor: pointer;
     font-family: 'Inter', sans-serif;
 }
+
+/* --- Ajustes mínimos para hacerlo responsive y sin scroll horizontal --- */
+
+/* Elimina scroll horizontal */
+html,
+body {
+    overflow-x: hidden;
+}
+
+/* Asegura que el cuerpo se adapte correctamente */
+#cuerpo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Mantén las proporciones originales */
+#formContainer {
+    flex: 0 0 30%;
+    min-width: 280px;
+}
+
+#filtroContainer {
+    flex: 1;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tarjetas adaptables */
+.alimento-card {
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+
+/* Pie al final, no fijo */
+#pie {
+    width: 100%;
+    margin-top: auto;
+    background-color: #931525;
+    text-align: center;
+    padding: 15px 0;
+}
+
+/* Ajuste solo cuando la pantalla sea más pequeña */
+@media (max-width: 800px) {
+    #cuerpo {
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px;
+        align-items: center;
+    }
+
+    #formContainer,
+    #filtroContainer {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .alimento-card {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: left;
+    }
+
+    .alimento-info,
+    .alimento-botones {
+        width: 100%;
+    }
+}
