@@ -10,11 +10,10 @@ app.use(express.json());
 
 // --- Confif FreeDataBase ---
 const DB_CONFIG = {
-  host: "sql10.freesqldatabase.com",
-  user: "sql10801474",
-  password: "gfkLZVNqE6",
-  database: "sql10801474",
-  port: 3306
+  host: "localhost",
+  user: "root",
+  password: "Mar.23012006t",
+  database: "login"
 };
 
 
@@ -437,7 +436,7 @@ app.post("/delete-diet-item", async (req, res) => {
   }
 });
 // Puerto
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
