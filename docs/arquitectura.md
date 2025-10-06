@@ -9,9 +9,9 @@ bienstar-total/
 │   │   ├── pages/             # Vistas principales (Inicio, Recetas, Perfil)
 │   │   ├── main.jsx           # Punto de entrada
 │   │   └── index.css          # Estilos globales
+|   |   |── controllers/       # Lógica de negocio (recetas, usuarios, dietas)
 │
-├── backend-node/             # API REST con Node.js + Express
-│   ├── controllers/          # Lógica de negocio (recetas, usuarios, dietas)
+├── backend-node/             # API REST con Node.js + Express 
 │   ├── routes/               # Endpoints (GET, POST, PUT, DELETE)
 │   ├── index.js              # Punto de entrada del servidor Express
 │   └── package.json          # Dependencias del backend
