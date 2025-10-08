@@ -1,0 +1,176 @@
+/* Scoped Alimentos styles to avoid interference with other pages */
+.alimentos-page #loader {
+    display: none; /* default hidden, controlled inline */
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(219, 219, 219, 0.6);
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.alimentos-page .loader-text {
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 2px;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alimentos-page .loader-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.alimentos-page .loader-dots img { width: 35px; height: 35px; }
+
+/* Base container */
+.alimentos-page html,
+.alimentos-page body { height: 100%; margin: 0; }
+
+.alimentos-page #contenedorPrincipal {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ----------------- Filtro ----------------- */
+.alimentos-page #contenedorFiltro {
+    width: 90%;
+    max-width: 1200px;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    gap: 0.75rem;
+    border-radius: 20px;
+    background-color: lightgray;
+    box-sizing: border-box;
+}
+
+.alimentos-page #lupe {
+    width: 6%;
+    min-width: 36px;
+    height: 40px;
+    background-image: url('/Imagenes/Alimentos/Lupepng.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.alimentos-page #filtro {
+    flex: 1;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+/* Ensure the content starts below the header and filter */
+.alimentos-page #contenedorAlimentos { width: 95%; max-width: 1400px; margin: 1rem auto; clear: both; box-sizing: border-box; }
+
+/* Grid of food cards - centered and responsive */
+.alimentos-page .grid-container {
+    z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    padding: 18px;
+    margin: 1.5rem auto;
+    width: 100%;
+    background: #fbeaea;
+    border: 4px solid #b30000;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    box-sizing: border-box;
+}
+
+.alimentos-page .cuadro {
+    background-color: #FCF7F8;
+    border: 3px solid #FF0000;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.18s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+    padding: 12px;
+}
+
+.alimentos-page .botonAlimento {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.alimentos-page .botonAlimento:hover, .alimentos-page .cuadro:hover { transform: translateY(-6px); }
+
+.alimentos-page #imgAlimento {
+    width: 85%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.alimentos-page #textTittleFood {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: black;
+}
+
+.alimentos-page .infoNutricional { text-align: left; margin-top: 10px; display: none; font-size: 14px; }
+
+/* Modal */
+.alimentos-page .modal { display: flex; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.7); padding-top: 4vw; justify-content: center; align-items: center; overflow: auto; }
+.alimentos-page .modal-content { max-height: 100%; background: white; padding: 20px; border-radius: 10px; width: 90%; max-width: 520px; text-align: center; display: flex; flex-direction: column; align-items: center; border: 5px solid #b30000; }
+.alimentos-page .modal-content img { width: 200px; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+.alimentos-page #modalNombre { font-size: 22px; font-weight: bold; margin-bottom: 10px; color: black; }
+.alimentos-page #modalInfo { font-size: 13px; text-align: center; width: 100%; }
+.alimentos-page .close { color: #b30000; align-self: flex-end; font-size: 40px; font-weight: bold; cursor: pointer; }
+.alimentos-page .close:hover { color: black; }
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+    .alimentos-page #contenedorFiltro { width: 95%; flex-direction: column; gap: 0.5rem; }
+    .alimentos-page #lupe { width: 12%; }
+}
+
+@media (max-width: 768px) {
+    .alimentos-page .grid-container { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; }
+    .alimentos-page #imgAlimento { max-height: 120px; }
+    .alimentos-page #textTittleFood { font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+    .alimentos-page .grid-container { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; }
+    .alimentos-page #imgAlimento { max-height: 100px; }
+    .alimentos-page #textTittleFood { font-size: 12px; }
+}
+

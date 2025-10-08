@@ -1,0 +1,65 @@
+/* Scoped 404 styles: only apply when .error404-page is present */
+.error404-page * {
+    box-sizing: border-box;
+}
+
+.error404-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    text-align: center;
+}
+
+.error404-page .container {
+    max-width: 500px;
+    padding: 20px;
+}
+
+.error404-page h1 {
+    font-size: 8rem;
+    margin-bottom: 0.5rem;
+}
+
+.error404-page h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.error404-page p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.error404-page .btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #ff7e5f;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.error404-page .btn:hover {
+    background-color: #ffe6d5;
+    color: #ff4b2b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .error404-page h1 {
+        font-size: 5rem;
+    }
+
+    .error404-page h2 {
+        font-size: 1.5rem;
+    }
+
+    .error404-page p {
+        font-size: 1rem;
+    }
+}

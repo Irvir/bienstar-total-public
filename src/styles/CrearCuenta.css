@@ -1,0 +1,265 @@
+.crear-cuenta-page .fondoLogin {
+    background-image: url("/Imagenes/Login_Perfil/fondoLogin.png");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    min-height: 80vh;
+    /* que se estire pero no corte */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* aquí sí, para que no meta scroll */
+
+}
+
+#crear-cuenta-page #contenedorLoginAsist3 {
+    width: 80%;
+    max-width: 120vh;
+    min-height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+
+    /* fondo semi-transparente */
+    border-radius: 50px;
+    overflow: hidden;
+
+}
+
+.crear-cuenta-page #contenedorLogin2 {
+    width: 100%;
+    min-width: 250px;
+    /* agrega px */
+    background-image: url("/Imagenes/Login_Perfil/FondoSesion.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    z-index: 10;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.crear-cuenta-page .contendorLoginFotoCrearUserAsist {
+    width: 100%;
+    font-size: clamp(18px, 2.5vw, 30px);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.crear-cuenta-page .contendorLoginFotoCrearUser {
+    width: 100%;
+    height: 300px;
+    background-image: url("/Imagenes/Login_Perfil/Login2.png");
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    float: left;
+}
+
+/* Contenedor de la parte derecha (formulario) */
+.crear-cuenta-page .contenedorLoginDatosUser {
+    width: 67%;
+    min-width: 300px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    float: left;
+}
+
+/* Labels y div de inputs */
+.crear-cuenta-page .divNom,
+.crear-cuenta-page .divCorreo,
+.crear-cuenta-page .divEdadPesoAlt {
+    width: 100%;
+    margin-bottom: 4px;
+    font-size: clamp(16px, 1.5vw, 20px);
+    font-weight: bold;
+    color: black;
+}
+
+.crear-cuenta-page .edadPesoAlt {
+    flex: 1;
+    min-width: 80px;
+}
+
+/* Estilo para los botones */
+.crear-cuenta-page .buttonCrearIniciarSesion {
+    width: 50%;
+    padding: 10px;
+    background: linear-gradient(135deg, #931525, #ff416c);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 2%;
+}
+
+/* Estilo para los cuadros de texto */
+.crear-cuenta-page input[type="number"] {
+    width: 50%;
+    /* ancho */
+    height: 30px;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+}
+
+/* Hover: cuando el mouse pasa encima */
+.crear-cuenta-page input[type="number"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+
+.crear-cuenta-page input[type="name"] {
+    font-family: 'Inter', sans-serif;
+    width: 50%;
+    /* ancho */
+    height: 50;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
+    text-align: center;
+
+}
+
+/* Hover: cuando el mouse pasa encima */
+.crear-cuenta-page input[type="name"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+
+.crear-cuenta-page input[type="text"] {
+    font-family: 'Inter', sans-serif;
+    width: 50%;
+    /* ancho */
+    height: 30px;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
+    text-align: center;
+}
+
+/* Hover: cuando el mouse pasa encima */
+.crear-cuenta-page input[type="text"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+
+.crear-cuenta-page input[type="password"] {
+    font-family: 'Inter', sans-serif;
+    width: 50%;
+    /* ancho */
+    height: 30px;
+    /* alto */
+    padding: 5px;
+    /* espacio interno */
+    font-size: 16px;
+    /* tamaño de letra */
+    border: 2px solid #931525;
+    /* color del borde */
+    border-radius: 8px;
+    /* bordes redondeados */
+    outline: none;
+    /* quita borde azul */
+    background-color: #f8f9fa;
+    /* color de fondo */
+    color: #333;
+    /* color del texto */
+    transition: 0.3s;
+    /* animación */
+    margin-left: 15px;
+    /* mover a la derecha */
+    margin-top: 10px;
+    /* mover hacia abajo */
+}
+
+/* Hover: cuando el mouse pasa encima */
+.crear-cuenta-page input[type="password"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+.crear-cuenta-page input[type="email"] {
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    width: 50%;
+    height: 30px;
+    padding: 5px;
+    font-size: 16px;
+    border: 2px solid #931525;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f8f9fa;
+    color: #333;
+    transition: 0.3s;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.crear-cuenta-page input[type="email"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}

@@ -1,19 +1,16 @@
-## 🌿 Proyecto BienStarTotal
-📌 **Descripción**: 
-Sistema integral para la búsqueda y recomendación de alimentos y recetas, que ofrece información nutricional detallada y sugerencias personalizadas según los gustos y objetivos del usuario. Incluye funcionalidades como calendario para el registro de hábitos alimenticios, creación de dietas personalizadas o predefinidas, y seguimiento de progresos.
+# React + Vite
 
----
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 👥 Cuentas del Equipo  
-- 🛠️👑 **Martin Droguett** → `Irvir` → Líder Técnico → Backend → Frontend 
-- 📝 **Paulo Silva** → `paulosilvaobando12-design`→ QA & Testing → Líder Técnico → Backend 
-- 🎨 **Daniel Gutiérrez** → `Danieliwis-Sama` → Frontend → QA & Testing → Líder Técnico 
-- ⚙️ **Danilo Ponce** → `DaniloP76253` → Backend → Frontend → QA & Testing
+Currently, two official plugins are available:
 
----
-## 🎨 Paleta de colores 
-- **HEX:#931525**
-- **RGBA:(147, 21, 37)**
-- **HSL:(352, 75, 33)**
-  
-  **<img width="337" height="165" alt="image" src="https://github.com/user-attachments/assets/e84cca6c-a8ab-4a79-a7c6-2a0256e02141" />**
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
