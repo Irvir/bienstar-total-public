@@ -1,29 +1,20 @@
 ``` plaintext
 bienstar-total/
 │
-├── frontend/                  # Interfaz de usuario (React + Vite)
-│   ├── public/                # Archivos estáticos (favicon, manifest, etc.)
-│   ├── src/
-│   │   ├── assets/            # Imágenes, íconos, fuentes
-│   │   ├── components/        # Componentes reutilizables (Navbar, Card, etc.)
-│   │   ├── pages/             # Vistas principales (Inicio, Recetas, Perfil)
-│   │   ├── main.jsx           # Punto de entrada
-│   │   └── index.css          # Estilos globales
-|   |   |── controllers/       # Lógica de negocio (recetas, usuarios, dietas)
-│
-├── backend-node/             # API REST con Node.js + Express 
-│   ├── routes/               # Endpoints (GET, POST, PUT, DELETE)
-│   ├── index.js              # Punto de entrada del servidor Express
-│   └── package.json          # Dependencias del backend
-│
-├── database/                 # Scripts y exportaciones de MySQL
-│   ├── schema.sql            # Estructura de tablas
-│   ├── seed.sql              # Datos iniciales (usuarios, alimentos)
-│   └── export/               # Backups o exportaciones manuales
-│
-├── docs/                     # Documentación del proyecto
-│   ├── arquitectura.md       # Explicación técnica del sistema
-│   ├── endpoints.md          # Lista de rutas y métodos
-│   └── requerimientos.md     # Funcionalidades y objetivos
-│
-└── README.md                 # Descripción general del proyecto
+|--public/
+    |-assets
+    |-Imagenes/
+      |-Imagenes_de_carga/
+      |-LoginPerfil/
+      |-Alimentos/
+  |-Vite.svg
+|-src/
+  -components/ #Archivos .jsx
+  -controllers/  #Archivos .js
+  -pages/ #Archivos.html
+  -styles/ # Archivos.css
+  -App.jsx
+  -Index.js
+  -main.jsx
+  -package.json
+  -server.js
