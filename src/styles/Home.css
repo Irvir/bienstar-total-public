@@ -129,30 +129,38 @@ body {
 
 /* Fondos de los botones */
 .btn1 {
-    background-image: url("/assets/CrearHorarioSemanal.png");
-    font-size: 3vw;
+    background-image: url("/public/Imagenes/Home/Crear_Horario.png");
+    background-size: 100% 100% !important;
+        background-repeat: no-repeat;
+        background-position: center;
 }
 
 .btn2 {
-    background-image: url("/assets/Dietas.png");
+    background-image: url("/public/Imagenes/Home/Dietas.png");
     font-size: 3vw;
 }
 
 .btn3 {
-    background-image: url("/assets/Calendario.png");
+    background-image: url("/public/Imagenes/Home/Calendario.png");
     font-size: 3vw;
 }
 
 .btn4 {
-    background-image: url("/assets/Alimentos.png");
-    font-size: 3vw;
+    background-image: url("/public/Imagenes/Home/Alimentos.png");
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
 }
+    /* 🔹 Ajusta este valor según lo que necesites */
 
 .btn5 {
-    background-image: url("/assets/TipsParaTuDieta.png");
-    font-size: 3vw;
+    background-image: url("/public/Imagenes/Home/Tips_Dieta.png");
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
 }
-
 .contenedorIzq button:hover,
 .contenedorDer button:hover {
     opacity: 0.8;

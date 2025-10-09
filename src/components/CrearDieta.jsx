@@ -104,12 +104,14 @@ function CrearDieta() {
             });
 
             if (res.ok) {
-                alert(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`);
+                notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
+
                 await cargarDietaDelDia(diaSeleccionado);
-            } else alert("Error al guardar alimento");
+            } else
+                notify(result.message || "Error al guardar alimento", { type: "error" }); 
         } catch (e) {
             console.error(e);
-            alert("Error de conexión");
+            notify("Error de conexión", { type: "error" });
         }
     }
     
@@ -124,9 +126,10 @@ function CrearDieta() {
             });
 
             if (res.ok) {
-                alert("Alimento eliminado");
+                notify("Alimento eliminado", { type: "success" });
                 await cargarDietaDelDia(diaSeleccionado);
-            } else alert("Error al eliminar alimento");
+            } else
+                notify("Error al eliminar alimento", { type: "error" });
         } catch (e) {
             console.error(e);
         }

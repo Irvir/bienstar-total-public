@@ -40,11 +40,11 @@ export function Home() {
 
                 <div id="cuerpo">
                     <div className="botonera">
-                        <button className="btn1" onClick={() => showLoaderAndRedirect('CrearDieta.html')}>Crear horario semanal</button>
-                        <button className="btn2" onClick={() => showLoaderAndRedirect('dietas.html')}>Dietas</button>
-                        <button className="btn3" onClick={() => showLoaderAndRedirect('calendario.html')}>Calendario</button>
-                        <button className="btn4" onClick={() => showLoaderAndRedirect('alimentos.html')}>Alimentos</button>
-                        <button className="btn5" onClick={() => showLoaderAndRedirect('tipsParaTuDieta.html')}>Tips para tu dieta</button>
+                        <button className="btn1" onClick={() => showLoaderAndRedirect('CrearDieta.html')}></button>
+                        <button className="btn2" onClick={() => showLoaderAndRedirect('dietas.html')}></button>
+                        <button className="btn3" onClick={() => showLoaderAndRedirect('calendario.html')}></button>
+                        <button className="btn4" onClick={() => showLoaderAndRedirect('alimentos.html')}></button>
+                        <button className="btn5" onClick={() => showLoaderAndRedirect('tipsParaTuDieta.html')}></button>
                     </div>
                 </div>
 

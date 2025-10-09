@@ -35,7 +35,8 @@ body {
 
 /* Encabezado */
 #encabezado {
-    background-color: var(--primary);
+    background-color: #931525;
+    
     width: 100%;
     padding: 0.5rem 0;
     /* no se cambia el alto */
@@ -44,6 +45,9 @@ body {
     position: relative;
     z-index: 20;
     border-radius: 0px 0px 50px 50px;
+}
+#contenedorEncabezado{
+    background-color: #FCF7F8;
 }
 
 .header-inner {
@@ -271,4 +275,38 @@ body {
         flex-direction: column;
         align-items: center;
     }
+}
+@keyframes bell-wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    15% {
+        transform: rotate(-16deg);
+    }
+
+    30% {
+        transform: rotate(12deg);
+    }
+
+    45% {
+        transform: rotate(-8deg);
+    }
+
+    60% {
+        transform: rotate(5deg);
+    }
+
+    75% {
+        transform: rotate(-2deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.bell-hint {
+    animation: bell-wiggle 700ms ease-in-out;
+    filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
 }
