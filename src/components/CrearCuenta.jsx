@@ -172,4 +172,5 @@ const CrearCuenta = () => {
     );
 };
 
-export default withAuth(CrearCuenta,false);
+// Página pública: accesible sin sesión. Si ya estás logueado, redirige a /perfil.
+export default withAuth(CrearCuenta, { requireAuth: false, redirectIfLoggedIn: true });

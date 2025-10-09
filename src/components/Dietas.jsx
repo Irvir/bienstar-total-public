@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Dietas.css";
 import withAuth from "../components/withAuth";
 
@@ -6,14 +6,18 @@ import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 
 const Dietas = () => {
+    // Estructura en memoria de la dieta agrupada por día y tipo de comida
+    // Ej: { 1: { Desayuno:["Platano"], lunch:[...], ... }, 2: {...}, ... }
+    const [dietByDay, setDietByDay] = useState({});
+
     // ======= Redirección si no hay usuario =======
     useEffect(() => {
         try {
             if (!localStorage.getItem("usuario")) {
-                window.location.href = "login.html";
+                window.location.href = "/login";
             }
         } catch (e) {
-            window.location.href = "login.html";
+            window.location.href = "/login";
         }
     }, []);
 
@@ -93,6 +97,53 @@ const Dietas = () => {
         else if (currentPage === "dietas.html") btnDietas?.classList.add("btnMenuSelec");
     }, []);
 
+    // ======= Cargar dieta desde backend =======
+    // Cambio clave: Ahora se traen los  datos guardados por el CRUD de "Crear Dieta".
+    // Ahora llamamos a GET /get-diet?id_diet=<id> y agrupamos el resultado para mostrarlo.
+    useEffect(() => {
+        async function loadDiet() {
+            try {
+                const rawUser = localStorage.getItem("usuario");
+                if (!rawUser) return;
+                const user = JSON.parse(rawUser);
+
+                // Asegurar id_diet válido opcionalmente (se puede omitir si ya existe)
+                if (!user.id_diet || user.id_diet === 1) {
+                    try {
+                        const ensure = await fetch("http://localhost:3001/ensure-diet", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ user_id: user.id })
+                        });
+                        if (ensure.ok) {
+                            const data = await ensure.json();
+                            if (data?.id_diet) {
+                                user.id_diet = data.id_diet;
+                                localStorage.setItem("usuario", JSON.stringify(user));
+                            }
+                        }
+                    } catch { /* no-op */ }
+                }
+
+                const res = await fetch(`http://localhost:3001/get-diet?id_diet=${user.id_diet}`);
+                if (!res.ok) return;
+                const rows = await res.json(); // [{dia, tipo_comida, alimento}]
+
+                // Agrupar por día -> tipo_comida -> lista de alimentos
+                const grouped = {};
+                for (const { dia, tipo_comida, alimento } of rows) {
+                    if (!grouped[dia]) grouped[dia] = {};
+                    if (!grouped[dia][tipo_comida]) grouped[dia][tipo_comida] = [];
+                    grouped[dia][tipo_comida].push(alimento);
+                }
+                setDietByDay(grouped);
+            } catch (err) {
+                console.error("Error cargando dieta:", err);
+            }
+        }
+        loadDiet();
+    }, []);
+
     // ======= Render =======
     return (
         <div id="contenedorPrincipal" className="dietas-page">
@@ -107,20 +158,48 @@ const Dietas = () => {
                         <div className="celda">Horario</div>
                     </div>
 
-                    {["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"].map(
-                        (dia, i) => (
-                            <div className={`columna ${dia.toLowerCase()}`} data-dia={i + 1} key={i}>
-                                <div className="titulo">{dia}</div>
-                                <div className="celda"></div>
+                    {(["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]).map((diaNombre, i) => {
+                        const diaNum = i + 1;
+                        const meals = dietByDay[diaNum] || {};
+                        // Orden de presentación por tipo de comida
+                        const order = ["breakfast", "lunch", "dinner", "snack", "snack2"];
+                        // Etiquetas en español
+                        const labels = {
+                            breakfast: "Desayuno",
+                            lunch: "Almuerzo",
+                            dinner: "Cena",
+                            snack: "Snack",
+                            snack2: "Snack 2"
+                        };
+                        return (
+                            <div className={`columna ${diaNombre.toLowerCase()}`} data-dia={diaNum} key={i}>
+                                <div className="titulo">{diaNombre}</div>
+                                <div className="celda">
+                                    {order.map((tipo) => (
+                                        <div key={tipo} className="bloque-comida">
+                                            <strong>{labels[tipo]}:</strong>
+                                            {(meals[tipo] && meals[tipo].length > 0) ? (
+                                                <ul className="lista-comida">
+                                                    {meals[tipo].map((al, idx) => (
+                                                        <li key={idx}>{al}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className="lista-vacia"></p>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        )
-                    )}
+                        );
+                    })}
                 </div>
 
                 <button
                     type="button"
                     id="BtnCrearCuenta"
-                    onClick={() => (window.location.href = "CrearDieta.html")}
+                    // Navegación SPA a la pantalla de edición en vez de HTML estático
+                    onClick={() => (window.location.href = "/crear-dieta")}
                 >
                     Editar Dieta
                 </button>
@@ -138,4 +217,4 @@ const Dietas = () => {
     );
 };
 
-export default withAuth(Dietas, false);
+export default withAuth(Dietas, { requireAuth: true });
