@@ -43,6 +43,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     position: relative;
     z-index: 20;
+    border-radius: 0px 0px 50px 50px;
 }
 
 .header-inner {
@@ -56,6 +57,7 @@ body {
     gap: 2rem;
     /* separación entre logo, menú y login */
     flex-wrap: wrap;
+    border-radius: 50px;
     /* para móviles */
 }
 
@@ -184,6 +186,7 @@ body {
     padding: 1rem;
     color: var(--white);
     margin-top: auto;
+    border-radius: 50px 50px 00px 0px;
     /* fuerza a ir al fondo del flex container */
 }
 

@@ -1,7 +1,9 @@
 // src/components/Login.jsx
 import React, { useState, useEffect } from "react";
-// Base.css is global — it should remain imported only in main.jsx
 import "../styles/Login.css";
+// Base.css is imported in main.jsx globally. Avoid duplicate imports here.
+import withAuth from "../components/withAuth";
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -9,7 +11,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [userName, setUserName] = useState("Invitado");
 
-    // Revisa si hay sesión activa
+    // Revisar si hay sesión activa
     useEffect(() => {
         const usuarioGuardado = localStorage.getItem("usuario");
         if (usuarioGuardado) {
@@ -22,7 +24,6 @@ export default function Login() {
         }
     }, []);
 
-    // Función reutilizable para mostrar loader y redirigir
     const showLoaderAndRedirect = (url) => {
         const loader = document.getElementById("loader");
         if (loader) loader.style.display = "flex";
@@ -31,17 +32,16 @@ export default function Login() {
         }, 2000);
     };
 
-    // Maneja el inicio de sesión
     const handleLogin = async (e) => {
         e.preventDefault();
         if (!email || !password) {
-            alert("Por favor, complete todos los campos");
+            window.notify("Por favor, complete todos los campos", { type: "error" });
             return;
         }
 
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:3000/login", {
+            const response = await fetch("http://localhost:3001/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -51,16 +51,16 @@ export default function Login() {
 
             if (response.ok) {
                 localStorage.setItem("usuario", JSON.stringify(result.user));
-                alert("Login exitoso");
+                window.notify("Login exitoso", { type: "success" });
                 setTimeout(() => {
                     window.location.href = "/"; // redirigir al Home
                 }, 1500);
             } else {
-                alert(result.message || "Correo o contraseña incorrectos");
+                window.notify(result.message || "Correo o contraseña incorrectos", { type: "error" });
             }
         } catch (error) {
             console.error(error);
-            alert("Error en la conexión con el servidor");
+            window.notify("Error en la conexión con el servidor", { type: "error" });
         } finally {
             setLoading(false);
         }
@@ -74,11 +74,7 @@ export default function Login() {
                     <div className="header-inner">
                         <div className="logo">
                             <a href="/">
-                                <img
-                                    src="/Imagenes/Login_Perfil/Logo.png"
-                                    alt="Logo BienStarTotal"
-                                    className="logoImg"
-                                />
+                                <img src="/Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" className="logoImg" />
                             </a>
                         </div>
 
@@ -90,7 +86,7 @@ export default function Login() {
                                 <img
                                     src="/Imagenes/Login_Perfil/Notificacion.png"
                                     id="btnNotification"
-                                    onClick={() => alert("No tienes notificaciones nuevas.")}
+                                    onClick={() => window.notify("No tienes notificaciones nuevas.", { type: "info" })}
                                     style={{ cursor: "pointer" }}
                                     alt="notificaciones"
                                 />
@@ -136,10 +132,9 @@ export default function Login() {
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
                                     />
-                                    <br />
-                                    <br />
-                                    <button type="submit" id="botonIngresar">
-                                        Ingresar
+                                    <br /><br />
+                                    <button type="submit" id="botonIngresar" disabled={loading}>
+                                        {loading ? "Ingresando..." : "Ingresar"}
                                     </button>
 
                                     {loading && (
@@ -150,8 +145,7 @@ export default function Login() {
                                         </div>
                                     )}
 
-                                    <br />
-                                    <br />
+                                    <br /><br />
                                     <button
                                         type="button"
                                         className="btnCrearCuenta"
@@ -176,7 +170,7 @@ export default function Login() {
                 </div>
             </div>
 
-            {/* Loader (igual al del Home) */}
+            {/* Loader */}
             <div id="loader" style={{ display: "none" }}>
                 <span className="loader-text">Cargando</span>
                 <div className="loader-dots">

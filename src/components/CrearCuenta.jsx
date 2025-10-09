@@ -1,11 +1,12 @@
 // src/pages/CrearCuenta.jsx
-import React, { useEffect } from "react";
-// Base.css is global and should be imported only in main.jsx
+import React, { useEffect, useState } from "react";
 import "../styles/CrearCuenta.css";
+import withAuth from "../components/withAuth";
 
 const CrearCuenta = () => {
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
-        // Mostrar nombre del usuario
         const usuarioGuardado = localStorage.getItem("usuario");
         if (usuarioGuardado) {
             const usuario = JSON.parse(usuarioGuardado);
@@ -14,10 +15,46 @@ const CrearCuenta = () => {
         }
     }, []);
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const age = document.getElementById("age").value.trim();
+        const weight = document.getElementById("weight").value.trim();
+        const height = document.getElementById("height").value.trim();
+
+        try {
+            const res = await fetch("http://localhost:3001/registrar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password, age, weight, height }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                if (data.errores && data.errores.length > 0) {
+                    data.errores.forEach(err => window.notify(err, { type: "error" }));
+                } else {
+                    window.notify(data.message || "Error al registrar", { type: "error" });
+                }
+            } else {
+                window.notify(data.message || "Registro exitoso", { type: "success" });
+                setTimeout(() => (window.location.href = "/login"), 2500);
+            }
+        } catch (err) {
+            console.error(err);
+            window.notify("Error de conexión al servidor", { type: "error" });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-       
         <div id="contenedorPrincipal" className="crear-cuenta-page">
-            {/* ===== ENCABEZADO ===== */}
             <header id="encabezado">
                 <div className="header-inner">
                     <div className="logo">
@@ -31,21 +68,11 @@ const CrearCuenta = () => {
                     </div>
 
                     <div className="menúBotones">
-                        <button className="btnMenu" onClick={() => (window.location.href = "/")}>
-                            Inicio
-                        </button>
-                        <button className="btnMenu" onClick={() => (window.location.href = "/alimentos")}>
-                            Alimentos
-                        </button>
-                        <button className="btnMenu" onClick={() => (window.location.href = "/dietas")}>
-                            Dietas
-                        </button>
+                        <button className="btnMenu" onClick={() => (window.location.href = "/")}>Inicio</button>
+                        <button className="btnMenu" onClick={() => (window.location.href = "/alimentos")}>Alimentos</button>
+                        <button className="btnMenu" onClick={() => (window.location.href = "/dietas")}>Dietas</button>
                         <button className="btnMenuNoti">
-                            <img
-                                src="/Imagenes/Login_Perfil/Notificacion.png"
-                                id="btnNotification"
-                                alt="Notificación"
-                            />
+                            <img src="/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification" alt="Notificación" />
                         </button>
                     </div>
 
@@ -55,7 +82,6 @@ const CrearCuenta = () => {
                                 <span className="nameUser">Nombre de Usuario</span>
                             </button>
                         </div>
-
                         <div style={{ float: "left", width: "10%", height: "100%" }}>
                             <img
                                 src="/Imagenes/Login_Perfil/UserPerfil.png"
@@ -69,108 +95,64 @@ const CrearCuenta = () => {
                 </div>
             </header>
 
-            {/* ===== CUERPO ===== */}
             <main id="cuerpo" className="fondoLogin">
                 <div id="contenedorLoginAsist3">
                     <div id="contenedorLogin2">
                         <div style={{ width: "33%", height: "100%", float: "left" }}>
-                            <div
-                                className="contendorLoginFotoCrearUserAsist"
-                                style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
-                            >
+                            <div className="contendorLoginFotoCrearUserAsist" style={{ fontFamily: "Arial, Helvetica, sans-serif" }}>
                                 Rellene los datos solicitados:
                             </div>
                             <div className="contendorLoginFotoCrearUser"></div>
                         </div>
 
                         <div className="contenedorLoginDatosUser">
-                            <form id="CrearCuentaForm">
-                                <div id="formError" className="form-error"></div>
-
+                            <form id="CrearCuentaForm" onSubmit={handleSubmit}>
                                 <div className="divNom">
-                                    Nombre:
-                                    <br />
+                                    Nombre:<br />
                                     <input type="text" id="name" placeholder="Nombre" required />
                                     <div className="field-error" id="err-name"></div>
                                 </div>
 
                                 <div className="divEdadPesoAlt">
                                     <div className="edadPesoAlt">
-                                        Edad:
-                                        <br />
-                                        <input
-                                            type="number"
-                                            id="age"
-                                            placeholder="Escriba su edad"
-                                            required
-                                        />
+                                        Edad:<br />
+                                        <input type="number" id="age" placeholder="Escriba su edad" required />
                                         <div className="field-error" id="err-age"></div>
                                     </div>
 
                                     <div className="edadPesoAlt">
-                                        Peso (KG):
-                                        <br />
-                                        <input
-                                            type="number"
-                                            id="weight"
-                                            placeholder="Escriba su peso"
-                                            step="any"
-                                            required
-                                        />
+                                        Peso (KG):<br />
+                                        <input type="number" id="weight" placeholder="Escriba su peso" step="any" required />
                                         <div className="field-error" id="err-weight"></div>
                                     </div>
 
                                     <div className="edadPesoAlt">
-                                        Altura (CM):
-                                        <br />
-                                        <input
-                                            type="number"
-                                            id="height"
-                                            placeholder="Escriba su altura"
-                                            step="any"
-                                            required
-                                        />
+                                        Altura (CM):<br />
+                                        <input type="number" id="height" placeholder="Escriba su altura" step="any" required />
                                         <div className="field-error" id="err-height"></div>
                                     </div>
                                 </div>
 
                                 <div className="divCorreo">
-                                    Correo electrónico:
-                                    <br />
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        placeholder="Escriba su correo electrónico"
-                                        required
-                                    />
+                                    Correo electrónico:<br />
+                                    <input type="email" id="email" placeholder="Escriba su correo electrónico" required />
                                     <div className="field-error" id="err-email"></div>
                                 </div>
 
                                 <div className="divCorreo">
-                                    Contraseña:
-                                    <br />
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        placeholder="Contraseña"
-                                        required
-                                    />
+                                    Contraseña:<br />
+                                    <input type="password" id="password" placeholder="Contraseña" required />
                                     <div className="field-error" id="err-password"></div>
                                 </div>
 
                                 <br />
-                                <button type="submit" className="buttonCrearIniciarSesion">
-                                    Crear Cuenta
+                                <button type="submit" className="buttonCrearIniciarSesion" disabled={loading}>
+                                    {loading ? "Registrando..." : "Crear Cuenta"}
                                 </button>
                             </form>
 
                             <br />
-
-                            <button
-                                className="buttonCrearIniciarSesion"
-                                id="btnIniciarSesion"
-                                onClick={() => (window.location.href = "/login")}
-                            >
+                            <button className="buttonCrearIniciarSesion" id="btnIniciarSesion" onClick={() => (window.location.href = "/login")}>
                                 Iniciar Sesión
                             </button>
                         </div>
@@ -178,7 +160,6 @@ const CrearCuenta = () => {
                 </div>
             </main>
 
-            {/* ===== PIE ===== */}
             <footer id="pie">
                 <div className="footer-inner">
                     <a href="#" className="footer-link" title="Instagram"><img src="/Imagenes/Pie_Pagina/InstaLogo.png" alt="Instagram" /></a>
@@ -191,4 +172,4 @@ const CrearCuenta = () => {
     );
 };
 
-export default CrearCuenta;
+export default withAuth(CrearCuenta,false);

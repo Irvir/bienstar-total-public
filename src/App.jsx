@@ -5,6 +5,8 @@ import Login from './components/login.jsx';
 import CrearCuenta from './components/CrearCuenta.jsx';
 import CrearDieta from './components/CrearDieta.jsx';
 import Alimentos from './components/Alimentos.jsx';
+import Perfil from './components/Perfil.jsx';
+
 
 export default function App() {
   const raw = window.location.pathname.split('/').pop() || '';
@@ -56,6 +58,10 @@ export default function App() {
       </Suspense>
     );
   }
+  if (currentPath === 'perfil' || currentPath === 'perfil.html') {
+    return <Perfil />;
+  }
+
 
   // Default: render 404 for any unknown path
   return <Error404 />;

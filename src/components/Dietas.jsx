@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
-import "../styles/Base.css";
 import "../styles/Dietas.css";
+import withAuth from "../components/withAuth";
+
+import Encabezado from "./Encabezado";
+import Pie from "./Pie";
 
 const Dietas = () => {
     // ======= Redirección si no hay usuario =======
@@ -92,65 +95,10 @@ const Dietas = () => {
 
     // ======= Render =======
     return (
-        <div id="contenedorPrincipal">
-            {/* ================= ENCABEZADO ================= */}
-            <header id="encabezado">
-                <div className="header-inner">
-                    <div className="logo">
-                        <a href="index.html">
-                            <img
-                                src="../../Imagenes/Login_Perfil/Logo.png"
-                                alt="Logo BienStarTotal"
-                                className="logoImg"
-                            />
-                        </a>
-                    </div>
-
-                    <div className="menúBotones">
-                        <button className="btnMenu" onClick={() => (window.location.href = "index.html")}>
-                            Inicio
-                        </button>
-                        <button className="btnMenu" onClick={() => (window.location.href = "alimentos.html")}>
-                            Alimentos
-                        </button>
-                        <button className="btnMenuSelec" onClick={() => (window.location.href = "dietas.html")}>
-                            Dietas
-                        </button>
-
-                        <button className="btnMenuNoti">
-                            <img
-                                src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png"
-                                id="btnNotification"
-                                alt="Notificación"
-                            />
-                        </button>
-                    </div>
-
-                    <div className="login">
-                        <div
-                            style={{ float: "left", height: "100%", width: "75%" }}
-                            onClick={() => (window.location.href = "login.html")}
-                        >
-                            <button className="btnPerfilView" id="btnPerfilView">
-                                <span className="nameUser">Nombre de Usuario</span>
-                            </button>
-                        </div>
-
-                        <div
-                            style={{ float: "left", width: "10%", height: "100%" }}
-                            onClick={() => (window.location.href = "login.html")}
-                        >
-                            <img
-                                src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png"
-                                id="fotoUsuario"
-                                alt="Foto de Usuario"
-                                style={{ cursor: "pointer" }}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+        <div id="contenedorPrincipal" className="dietas-page">
+            
+                <Encabezado activePage="dietas" />
+                
             {/* ================= CUERPO ================= */}
             <main id="cuerpo">
                 <div className="tabla-dieta">
@@ -179,14 +127,7 @@ const Dietas = () => {
             </main>
 
             {/* ================= PIE ================= */}
-            <footer id="pie">
-                <div className="footer-inner">
-                    <button className="instaBoton"></button>
-                    <button className="faceBoton"></button>
-                    <button className="youTubeBoton"></button>
-                    <button className="whatsBoton"></button>
-                </div>
-            </footer>
+            <Pie></Pie>
 
             {/* Loader */}
             <div id="loader">
@@ -197,4 +138,4 @@ const Dietas = () => {
     );
 };
 
-export default Dietas;
+export default withAuth(Dietas, false);

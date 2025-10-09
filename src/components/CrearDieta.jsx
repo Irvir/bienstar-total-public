@@ -2,8 +2,10 @@
 import React, { useEffect } from "react";
 // Base.css is global and should be imported only once in main.jsx
 import "../styles/CrearDieta.css";
+import { protectPage } from "../controllers/auth";
+import withAuth from "../components/withAuth";
 
-export default function CrearCuenta() {
+export  function CrearCuenta() {
     useEffect(() => {
         // Verificar sesión activa
         try {
@@ -166,3 +168,4 @@ export default function CrearCuenta() {
         </div>
     );
 }
+export default withAuth(CrearCuenta,false);

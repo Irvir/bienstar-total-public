@@ -1,0 +1,117 @@
+
+
+#contenedorPrincipal {
+    width: 100%;
+    min-height: 10vh;
+    /* altura mínima para cubrir toda la pantalla */
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0;
+}
+
+/* ----------------- Filtro ----------------- */
+#contenedorFiltro {
+    width: 90%;
+    max-width: 1200px;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 20px;
+    background-color: lightgray;
+}
+
+#lupe {
+    z-index: 10;
+    width: 10%;
+    min-width: 30px;
+    height: 40px;
+    background-image: url("/Imagenes/Alimentos/Lupepng.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#filtro {
+    flex: 1;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+}
+
+/* ----------------- Contenedor de Alimentos ----------------- */
+#contenedorAlimentos {
+    width: 95%;
+    max-width: 1400px;
+    margin: 1rem auto;
+    flex: 1;
+}
+
+
+
+.cuadro {
+    background-color: #FCF7F8;
+    /* rojo oscuro */
+    border: 3px solid #FF0000;
+    /* borde rojo */
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+/* ----------------- Responsive ----------------- */
+@media (max-width: 1024px) {
+    #contenedorFiltro {
+        width: 95%;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #lupe {
+        width: 15%;
+    }
+
+    #filtro {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.8rem;
+    }
+
+
+    #textTittleFood {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+    }
+
+    #textTittleFood {
+        font-size: 12px;
+    }
+}

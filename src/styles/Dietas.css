@@ -169,8 +169,24 @@
 .celda {
     border-radius: 0;
 }
-#cuerpo{
-    font-family: 'Montserrat', sans-serif;
+#cuerpo {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-image: url('/Imagenes/Dieta/backgroundDiet2.jpg');
+    background-size: contain;
+    /* Muestra toda la imagen sin recortarla */
+    background-repeat: no-repeat;
+    /* Evita que se repita */
+    background-position: top center;
+    /* Centra horizontalmente, alinea arriba */
+    background-attachment: fixed;
+    /* Fija el fondo mientras se hace scroll */
+    background-color: #f5f5f5;
+    /* Color de respaldo si la imagen no cubre todo */
 }
 #pie {
     position: fixed;
