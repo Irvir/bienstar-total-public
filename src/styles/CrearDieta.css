@@ -19,7 +19,7 @@
     width: 10%;
     min-width: 30px;
     height: 40px;
-    background-image: url("/frontEnd/Imagenes/Alimentos/Lupepng.png");
+    background-color: #FCF7F8;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -60,15 +60,16 @@
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10%;
     color: black;
     background-color: #fcf7f8;
     border-radius: 50px;
-    padding-bottom: 5%;
-    padding-top: 5%;
+    padding-bottom: 2%;
+    padding-top: 0%;
     border-color: #931525;
     border-style: solid;
     border-width: 3px;
+    width: 50%;
 }
 
 .crear-dieta-page #alimentosSeleccionados {
@@ -90,6 +91,7 @@
     padding-left: 10%;
 }
 .crear-dieta-page #diaSeleccionado{
+    
     font-family: 'Inter', sans-serif;
     color: #931525;
     
@@ -183,7 +185,11 @@
 .crear-dieta-page #cuerpo {
     display: flex;
     align-items: flex-start;
-    padding: 20px;
+    padding-bottom: 0px;
+    /* antes 20px */
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
 }
 .crear-dieta-page .barraDivisora {
     width: 2px;
@@ -197,9 +203,13 @@
     padding: 10px;
 }
 /* derecha: filtro */
-.crear-dieta-page #filtroContainer { flex: 1; max-width: 100%; padding-top: 1%; margin-right: 6%; box-sizing: border-box; }
+.crear-dieta-page #filtroContainer { 
+    flex: 1; max-width: 60%; padding-top: 1%; margin-left: 5%; box-sizing: border-box; }
 /* izquierda: menu */
-.crear-dieta-page #formContainer { flex: 0 0 30%; }
+.crear-dieta-page #formContainer { 
+        max-width: 40%;
+        flex: 1;
+}
 
 /* Ajustes adicionales para que no se rompa en pantallas pequeñas */
 .crear-dieta-page #lupe {
@@ -214,7 +224,7 @@
 
 @media (max-width: 800px) {
     .crear-dieta-page #cuerpo { flex-direction: column; gap: 20px; }
-    .crear-dieta-page #filtroContainer, .crear-dieta-page #formContainer { max-width: 100%; margin: 0 10px; }
+    .crear-dieta-page #filtroContainer, .crear-dieta-page #formContainer { max-width: 40%; margin: 0 10px; }
     .crear-dieta-page #filtroContainer { margin-right: 0; }
 }
 
@@ -243,6 +253,8 @@
 
 .crear-dieta-page #cuerpo {
     flex: 1;
+    border-bottom: 80%;
+
     padding-bottom: 20px;
     /* espacio para respirar antes del pie */
 }
@@ -264,6 +276,7 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+    margin-right: 0%;
 }
 
 .crear-dieta-page .etiqueta {
@@ -317,10 +330,10 @@
     transform: scale(1.05);
 }
 .crear-dieta-page .lista-comida {
-    list-style: none;
-    padding-left: 0;
-    padding-right: 20px;
-    margin: 0;
+  list-style: none;
+  padding-left: 0;
+  padding-right: 20px;
+  margin: 0;
 }
 .crear-dieta-page .lista-comida li {
     padding: 3px 0;
@@ -344,3 +357,42 @@
     cursor: pointer;
     font-family: 'Inter', sans-serif;
 }
+.crear-dieta-page #formContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.crear-dieta-page #crearDieta {
+    width: 100%;
+    max-width: 500px;
+    /* o 40vw si prefieres en viewport */
+}
+.lista-comida {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.sin-alimentos {
+    color: #888;
+}
+#filtroContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+#cuerpo {
+    
+    align-items: stretch;
+    /* fuerza que ambos hijos se alineen en altura */
+}
+
+#formContainer,
+#filtroContainer {
+    display: flex;
+    flex-direction: column;
+}
+    

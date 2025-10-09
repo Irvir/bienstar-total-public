@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Alimentos.css"; // asegúrate de que este CSS tenga las clases usadas
+import "../../styles/Alimentos.css";
 
 export default function ContenedorAlimentos({ filtered, openModal }) {
     return (

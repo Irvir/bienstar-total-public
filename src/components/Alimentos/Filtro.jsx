@@ -1,5 +1,6 @@
 import React from "react";
-import '../styles/Alimentos.css';
+import "../../styles/Alimentos.css";
+
 
 export default function Filtro({ filter, setFilter }) {
     // Use the CSS from Alimentos.css which defines .alimentos-page and #contenedorFiltro

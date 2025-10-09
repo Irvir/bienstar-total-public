@@ -1,171 +1,252 @@
-// src/components/CrearCuenta.jsx
-import React, { useEffect } from "react";
-// Base.css is global and should be imported only once in main.jsx
+import React, { useEffect, useState } from "react";
 import "../styles/CrearDieta.css";
 import { protectPage } from "../controllers/auth";
 import withAuth from "../components/withAuth";
+import Encabezado from "./Encabezado";
+import Pie from "./Pie";
+import CrearDietaForm from "./CrearDieta/CrearDietaForm";
+const traducciones = {
+    breakfast: "Desayuno",
+    lunch: "Almuerzo",
+    dinner: "Cena",
+    snack: "Snack",
+    snack2: "Snack 2",
+};
 
-export  function CrearCuenta() {
+function CrearDieta() {
+    const [usuario, setUsuario] = useState(null);
+    const [alimentos, setAlimentos] = useState([]);
+    const [filtro, setFiltro] = useState("");
+    const [diaSeleccionado, setDiaSeleccionado] = useState(1);
+    const [dietaAgrupada, setDietaAgrupada] = useState({});
+
+    // ================== SESIÓN ==================
     useEffect(() => {
-        // Verificar sesión activa
-        try {
-            if (!localStorage.getItem("usuario")) {
-                window.location.href = "/login";
-            }
-        } catch (e) {
-            window.location.href = "/login";
-        }
-
-        // Cargar nombre del usuario
         const usuarioGuardado = localStorage.getItem("usuario");
-        if (usuarioGuardado) {
-            const usuario = JSON.parse(usuarioGuardado);
-            const nameUserSpan = document.querySelector(".nameUser");
-            if (nameUserSpan) {
-                nameUserSpan.textContent = usuario.name;
-            }
+        if (!usuarioGuardado) {
+            window.location.href = "/login";
+            return;
         }
+        const user = JSON.parse(usuarioGuardado);
+        setUsuario(user);
 
-        // Ir al perfil al hacer clic en la foto
+        const nameUserSpan = document.querySelector(".nameUser");
+        if (nameUserSpan) nameUserSpan.textContent = user.name;
+
         const fotoUsuario = document.getElementById("fotoUsuario");
         if (fotoUsuario) {
-            fotoUsuario.addEventListener("click", () => {
-                window.location.href = "/perfil";
-            });
+            fotoUsuario.addEventListener("click", () => (window.location.href = "/perfil"));
         }
     }, []);
 
+    // ================== BUSCAR ALIMENTOS ==================
+    async function buscarAlimentos(query = "") {
+        try {
+            const res = await fetch("http://localhost:3001/food-search?q=" + encodeURIComponent(query));
+            if (!res.ok) return [];
+            const data = await res.json();
+            return data;
+        } catch (e) {
+            console.error("Error al buscar alimentos:", e);
+            return [];
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            const iniciales = await buscarAlimentos("");
+            setAlimentos(iniciales);
+        })();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const resultados = await buscarAlimentos(filtro);
+            setAlimentos(resultados);
+        })();
+    }, [filtro]);
+
+    // ================== DIETA DEL DÍA ==================
+    async function cargarDietaDelDia(dia) {
+        try {
+            const res = await fetch(`http://localhost:3001/get-diet?id_diet=${usuario?.id_diet}`);
+            if (!res.ok) throw new Error("No se pudo cargar la dieta");
+
+            const dieta = await res.json();
+            const agrupada = {};
+            dieta.forEach(({ dia: d, tipo_comida, alimento }) => {
+                if (!agrupada[d]) agrupada[d] = {};
+                if (!agrupada[d][tipo_comida]) agrupada[d][tipo_comida] = [];
+                agrupada[d][tipo_comida].push(alimento);
+            });
+
+            setDietaAgrupada(agrupada);
+        } catch (err) {
+            console.error("Error al cargar dieta:", err);
+        }
+    }
+
+    useEffect(() => {
+        if (usuario) cargarDietaDelDia(diaSeleccionado);
+    }, [usuario, diaSeleccionado]);
+
+    // ================== AGREGAR / ELIMINAR ==================
+    async function agregarAlimento(id, name, tipoComida) {
+        const id_diet = usuario?.id_diet ?? 1;
+        try {
+            const res = await fetch("http://localhost:3001/save-diet", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id_diet,
+                    meals: [{ id, name, dia: diaSeleccionado, tipoComida }],
+                }),
+            });
+
+            if (res.ok) {
+                alert(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`);
+                await cargarDietaDelDia(diaSeleccionado);
+            } else alert("Error al guardar alimento");
+        } catch (e) {
+            console.error(e);
+            alert("Error de conexión");
+        }
+    }
+    
+
+    async function eliminarAlimento(id, tipoComida) {
+        const id_diet = usuario?.id_diet ?? 1;
+        try {
+            const res = await fetch("http://localhost:3001/delete-diet-item", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_diet, id_food: id, dia: diaSeleccionado, tipoComida }),
+            });
+
+            if (res.ok) {
+                alert("Alimento eliminado");
+                await cargarDietaDelDia(diaSeleccionado);
+            } else alert("Error al eliminar alimento");
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    async function borrarDietaDelDia() {
+        const id_diet = usuario?.id_diet ?? 1;
+        try {
+            const res = await fetch("http://localhost:3001/clear-day", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id_diet, dia: diaSeleccionado }),
+            });
+
+            const result = await res.json();
+
+            if (res.ok && result.success) {
+                notify(result.message || "Día borrado correctamente", { type: "success" });
+                await cargarDietaDelDia(diaSeleccionado);
+            } else {
+                notify(result.message || "Error al borrar la dieta del día", { type: "error" });
+            }
+        } catch (e) {
+            console.error("Error al borrar dieta:", e);
+            notify("Error de conexión con el servidor", { type: "error" });
+        }
+    }
+
+    // ================== RENDER ==================
     return (
         <div id="contenedorPrincipal" className="crear-dieta-page">
-            {/* ENCABEZADO */}
-            <div id="encabezado">
-                <div className="header-inner">
-                    <div className="logo">
-                        <a href="/">
-                            <img
-                                src="/Imagenes/Login_Perfil/Logo.png"
-                                alt="Logo BienStarTotal"
-                                className="logoImg"
-                            />
-                        </a>
-                    </div>
+            <Encabezado activePage="dietas" />
 
-                    <div className="menúBotones">
-                        <button
-                            className="btnMenu"
-                            onClick={() => (window.location.href = "/")}
-                        >
-                            Inicio
-                        </button>
-                        <button
-                            className="btnMenu"
-                            onClick={() => (window.location.href = "/alimentos")}
-                        >
-                            Alimentos
-                        </button>
-                        <button
-                            className="btnMenuSelec"
-                            onClick={() => (window.location.href = "/dietas")}
-                        >
-                            Dietas
-                        </button>
-                        <button className="btnMenuNoti">
-                            <img
-                                src="/Imagenes/Login_Perfil/Notificacion.png"
-                                id="btnNotification"
-                                alt="notificaciones"
-                            />
-                        </button>
-                    </div>
-
-                    <div className="login">
-                        <div style={{ float: "left", height: "100%", width: "75%" }}>
-                            <button className="btnPerfilView" id="btnPerfilView">
-                                <span className="nameUser">Nombre de Usuario</span>
-                            </button>
-                        </div>
-
-                        {/* Menú desplegable */}
-                        <div id="menuDesplegable" className="menuDesplegable">
-                            <button
-                                className="opcionMenu"
-                                onClick={() => (window.location.href = "/perfil")}
-                            >
-                                Ver Perfil
-                            </button>
-                            <button className="opcionMenu" id="logoutButton">
-                                Cerrar Sesión
-                            </button>
-                        </div>
-
-                        {/* Imagen Usuario */}
-                        <div style={{ float: "left", width: "10%", height: "100%" }}>
-                            <img
-                                src="/Imagenes/Login_Perfil/UserPerfil.png"
-                                id="fotoUsuario"
-                                alt="Foto de Usuario"
-                                style={{ cursor: "pointer" }}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* CUERPO */}
             <div id="cuerpo">
-                {/* Izquierda: Crear Dieta */}
-                <div id="formContainer">
-                    <div id="crearDieta">
-                        <h2 id="diaSeleccionado">
-                            Dieta del Día <span id="diaSeleccionadoTexto">–</span>
-                        </h2>
-                        <div id="resumenDieta"></div>
-                        <div className="barraDivisora"></div>
+                {/* Izquierda */}
+                <CrearDietaForm
+                    dietaAgrupada={dietaAgrupada}
+                    diaSeleccionado={diaSeleccionado}
+                    setDiaSeleccionado={setDiaSeleccionado}
+                    traducciones={traducciones}
+                    borrarDietaDelDia={borrarDietaDelDia}
+                />
 
-                        <div id="botones">
-                            <div className="grupoSelector" style={{ marginRight: "12px" }}>
-                                <div className="etiqueta">DÍA</div>
-                                <div className="selector">
-                                    <select id="dia" className="selectDia">
-                                        <option value="1">Lunes</option>
-                                        <option value="2">Martes</option>
-                                        <option value="3">Miércoles</option>
-                                        <option value="4">Jueves</option>
-                                        <option value="5">Viernes</option>
-                                        <option value="6">Sábado</option>
-                                        <option value="7">Domingo</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button id="btnBorrarDieta">Borrar Todo</button>
-                            <button id="btnSalir">Salir</button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Derecha: Filtro */}
+                {/* Derecha */}
                 <div id="filtroContainer">
                     <div id="contenedorFiltro">
-                        <div id="lupe"></div>
-                        <div style={{ flex: 1 }}>
-                            <input type="text" id="filtro" placeholder="Buscar alimento..." />
-                        </div>
+                        <input
+                            type="text"
+                            id="filtro"
+                            placeholder="Buscar alimento..."
+                            value={filtro}
+                            onChange={(e) => setFiltro(e.target.value)}
+                        />
                     </div>
-                    <div id="resultadosFiltro" className="resultadosFiltro"></div>
+
+                    <div id="resultadosFiltro" className="resultadosFiltro">
+                        {alimentos.map((alimento) => (
+                            <div key={alimento.id} className="alimento-card">
+                                <div className="alimento-info">
+                                    <strong>{alimento.name}</strong>
+                                    <br />
+                                    Calorías: {alimento.calories ?? "-"}
+                                    <div className="nutri-grid">
+                                        <div><b>Proteínas:</b> {alimento.protein ?? "-"} g</div>
+                                        <div><b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g</div>
+                                        <div><b>Grasas:</b> {alimento.total_lipid ?? "-"} g</div>
+                                        <div><b>Azúcares:</b> {alimento.total_sugars ?? "-"} g</div>
+                                        <div><b>Calcio:</b> {alimento.calcium ?? "-"} mg</div>
+                                        <div><b>Hierro:</b> {alimento.iron ?? "-"} mg</div>
+                                        <div><b>Sodio:</b> {alimento.sodium ?? "-"} mg</div>
+                                        <div><b>Colesterol:</b> {alimento.cholesterol ?? "-"} mg</div>
+                                    </div>
+                                </div>
+
+                                <div className="grupoSelector">
+                                    <div className="etiqueta">HORA DE COMIDA</div>
+                                    <div className="selector">
+                                        <select className="selectComida" id={`select-${alimento.id}`}>
+                                            <option value="breakfast">Desayuno</option>
+                                            <option value="lunch">Almuerzo</option>
+                                            <option value="dinner">Cena</option>
+                                            <option value="snack">Snack</option>
+                                            <option value="snack2">Snack 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="botonesAccionVertical">
+                                    <button
+                                        className="btnAgregar"
+                                        onClick={() =>
+                                            agregarAlimento(
+                                                alimento.id,
+                                                alimento.name,
+                                                document.getElementById(`select-${alimento.id}`).value
+                                            )
+                                        }
+                                    >
+                                        Agregar
+                                    </button>
+                                    <button
+                                        className="btnEliminar"
+                                        onClick={() =>
+                                            eliminarAlimento(
+                                                alimento.id,
+                                                document.getElementById(`select-${alimento.id}`).value
+                                            )
+                                        }
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            {/* PIE */}
-            <div id="pie">
-                <div className="footer-inner">
-                    <button className="instaBoton"></button>
-                    <button className="faceBoton"></button>
-                    <button className="youTubeBoton"></button>
-                    <button className="whatsBoton"></button>
-                </div>
-            </div>
+            <Pie />
         </div>
     );
 }
-export default withAuth(CrearCuenta,false);
+
+export default withAuth(CrearDieta, false);

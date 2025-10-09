@@ -338,7 +338,6 @@ app.post("/save-diet", async (req, res) => {
 });
 
 // Borrar todas las comidas de un día específico de la dieta
-// (POST { id_diet, dia })
 app.post("/clear-day", async (req, res) => {
   try {
     const { id_diet, dia } = req.body || {};
@@ -374,16 +373,13 @@ app.post("/clear-day", async (req, res) => {
       await pool.query("DELETE FROM meal WHERE id_day = ?", [id_day]);
     }
 
-    // (Opcional) Mantener el registro del día para conservar estructura
-    // Si quieres borrar también el día, descomenta:
-    // await pool.query("DELETE FROM day WHERE id = ?", [id_day]);
-
     res.json({ success: true, message: "Día limpiado" });
   } catch (err) {
     console.error("/clear-day error:", err);
     res.status(500).json({ message: "Error interno" });
   }
 });
+// Borrar un alimento específico de una comida en un día específico de la dieta
 app.post("/delete-diet-item", async (req, res) => {
   try {
     const { id_diet, id_food, dia, tipoComida } = req.body;

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Alimentos.css';
 import Encabezado from './Encabezado';
 import Pie from './Pie';
-import Filtro from './Filtro';
-import ContenedorAlimentos from "./ContenedorAlimentos";
+import Filtro from './Alimentos/Filtro';
+import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
 
 const alimentosData = [
     { id: 14, img: '/Imagenes/Alimentos/Porotos.jpg', name: 'POROTOS' },
@@ -98,7 +98,7 @@ export default function Alimentos() {
 
     return (
         <>
-            <div id="contenedorPrincipal">
+            <div id="contenedorPrincipal" className="pagina-alimentos">
                 {/* Encabezado con activePage */}
                 <Encabezado activePage={activePage} />
 

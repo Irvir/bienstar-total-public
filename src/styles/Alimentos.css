@@ -1,21 +1,19 @@
-html,
-body {
+.pagina-alimentos html,
+.pagina-alimentos body {
     height: 100%;
     margin: 0;
 }
 
-#contenedorPrincipal {
+.pagina-alimentos #contenedorPrincipal {
     width: 100%;
     min-height: 100vh;
     background-color: #F5F5F5;
     display: flex;
     flex-direction: column;
-    /* Elementos apilados verticalmente */
     align-items: center;
 }
-
 /* ----------------- Filtro ----------------- */
-#contenedorFiltro {
+.pagina-alimentos #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
     margin: 1rem auto;
@@ -37,7 +35,7 @@ body {
     background-position: center;
 }
 
-#filtro {
+.pagina-alimentos #filtro {
 
     flex: 1;
     width: 100%;
@@ -49,7 +47,7 @@ body {
 }
 
 /* ----------------- Contenedor de Alimentos ----------------- */
-#contenedorAlimentos {
+.pagina-alimentos #contenedorAlimentos {
     width: 95%;
     max-width: 1400px;
     margin: 1rem auto 2rem auto;
@@ -60,7 +58,7 @@ body {
 }
 
 /* Grid de alimentos */
-.grid-container {
+.pagina-alimentos .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
@@ -203,7 +201,7 @@ body {
     }
 }
 /* Contenedor intermedio para apilar filtro y alimentos */
-#cuerpo {
+.pagina-alimentos #cuerpo {
     width: 100%;
     display: flex;
     flex-direction: column;

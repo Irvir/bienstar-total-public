@@ -85,24 +85,28 @@
 }/* Contenedor principal del cuerpo */
 #cuerpo {
     display: flex;
+    flex-direction: row;
+    /* 👈 define orden de izquierda a derecha */
     flex-wrap: nowrap;
-    /* que no baje contenido */
     width: 100%;
     height: 100vh;
-    /* ocupar toda la pantalla */
     overflow: hidden;
-    /* evita scroll */
     margin: 0;
     padding: 0;
 }
 
 /* Menú lateral */
 #divMenuLateral {
-    flex: 0 0 12%;
+    flex: 0 0 20%;
+    border-radius: 10px;
+    border-bottom: 20%;
+    /* ocupa un 12% del ancho total */
     min-width: 120px;
     background-color: #3f1e22;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;    
+    align-items: center;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -144,10 +148,9 @@
 
 /* Contenedor info usuario */
 #divInfoUser {
-    flex: 3 1 400px;
-    /* crece, se encoge, mínimo 400px */
+    flex: 1;
+    /* ocupa el resto del espacio */
     padding: 20px;
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");
     background-size: cover;
     background-position: center;
     box-sizing: border-box;
@@ -155,13 +158,12 @@
     flex-direction: column;
     align-items: center;
 }
-
 /* Contenedor de info sesión más grande */
 #contenedorInfoSesion {
     width: 100%;
     max-width: 900px;
     /* antes 700px, ahora más ancho */
-    background-image: url("../../Imagenes/Login_Perfil/FondoSesion.png");
+    background-image: url("/Imagenes/Login_Perfil/FondoSesion.png");
     background-size: cover;
     background-position: center;
     border-radius: 50px;
@@ -226,7 +228,7 @@
     width: 100%;
     padding-top: 100%;
     /* cuadrado responsivo */
-    background-image: url("../../Imagenes/Login_Perfil/Login.png");
+    background-image: url("/Imagenes/Login_Perfil/Login.png");
     background-size: cover;
     background-position: center;
     border-radius: 50%;
