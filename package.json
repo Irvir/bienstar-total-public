@@ -11,12 +11,7 @@
     "preview": "vite preview",
     "start": "node server.js",
     "predeploy": "npm run build",
-    
-    "deploy": "gh-pages -d dist",
-    "dev": "vite",
-    "build": "vite build"
-  
-
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
