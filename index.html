@@ -6,10 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BienStarTotal</title>
   <link rel="icon" href="%BASE_URL%favicon.ico" />
+
+  <!-- 🔧 Redirección automática al hash "/" si no está presente -->
+  <script>
+    if (!location.hash) {
+      location.replace(location.pathname + location.search + '#/');
+    }
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
+  <!-- ✅ Vite reemplaza esta ruta en el build final -->
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
