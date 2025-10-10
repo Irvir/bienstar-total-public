@@ -7,10 +7,9 @@
   <title>BienStarTotal</title>
   <link rel="icon" href="%BASE_URL%favicon.ico" />
 
-  <!-- 🔧 Redirección automática al hash "/" si no está presente -->
   <script>
-    if (!location.hash) {
-      location.replace(location.pathname + location.search + '#/');
+    if (window.location.pathname !== '/' && !window.location.hash) {
+      window.location.replace('/#' + window.location.pathname);
     }
   </script>
 </head>
