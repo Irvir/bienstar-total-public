@@ -197,8 +197,8 @@ const Dietas = () => {
                 <button
                     type="button"
                     id="BtnCrearCuenta"
-                    // Navegación SPA a la pantalla de edición en vez de HTML estático
-                    onClick={() => (window.location.href = "/crear-dieta")}
+                    // Ruta relativa con html con vite
+                    onClick={() => (window.location.href = `${import.meta.env.BASE_URL}crearDieta`)}
                 >
                     Editar Dieta
                 </button>

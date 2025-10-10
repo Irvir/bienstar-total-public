@@ -10,6 +10,8 @@ export function Home() {
     const [userName, setUserName] = useState('Invitado');
     const [activePage, setActivePage] = useState('home');
 
+    const base = import.meta.env.BASE_URL; // prefijo dinámico
+
     useEffect(() => {
         const usuarioGuardado = localStorage.getItem('usuario');
         if (usuarioGuardado) {
@@ -25,12 +27,13 @@ export function Home() {
         setActivePage(currentPage.replace('.html', '').toLowerCase());
     }, []);
 
-    const showLoaderAndRedirect = (url) => {
+    const showLoaderAndRedirect = (path) => {
         const loader = document.getElementById('loader');
         if (loader) loader.style.display = 'flex';
         setTimeout(() => {
-            window.location.href = url;
-        }, 2000);
+            // usamos base para no romper en GitHub Pages
+            window.location.href = `${base}${path}`;
+        }, 1000);
     };
 
     return (
@@ -40,11 +43,11 @@ export function Home() {
 
                 <div id="cuerpo">
                     <div className="botonera">
-                        <button className="btn1" onClick={() => showLoaderAndRedirect('CrearDieta.html')}></button>
-                        <button className="btn2" onClick={() => showLoaderAndRedirect('dietas.html')}></button>
-                        <button className="btn3" onClick={() => showLoaderAndRedirect('calendario.html')}></button>
-                        <button className="btn4" onClick={() => showLoaderAndRedirect('alimentos.html')}></button>
-                        <button className="btn5" onClick={() => showLoaderAndRedirect('tipsParaTuDieta.html')}></button>
+                        <button className="btn1" onClick={() => showLoaderAndRedirect('CrearDieta')}></button>
+                        <button className="btn2" onClick={() => showLoaderAndRedirect('dietas')}></button>
+                        <button className="btn3" onClick={() => showLoaderAndRedirect('calendario')}></button>
+                        <button className="btn4" onClick={() => showLoaderAndRedirect('alimentos')}></button>
+                        <button className="btn5" onClick={() => showLoaderAndRedirect('tipsParaTuDieta')}></button>
                     </div>
                 </div>
 
@@ -54,9 +57,9 @@ export function Home() {
             <div id="loader" style={{ display: 'none' }}>
                 <span className="loader-text">Cargando</span>
                 <div className="loader-dots">
-                    <img src="/Imagenes/Imagenes_de_carga/frutilla1.png" alt="Frutilla1" />
-                    <img src="/Imagenes/Imagenes_de_carga/manzana1.png" alt="Manzana1" />
-                    <img src="/Imagenes/Imagenes_de_carga/naranja1.png" alt="Naranja1" />
+                    <img src={`${base}Imagenes/Imagenes_de_carga/frutilla1.png`} alt="Frutilla1" />
+                    <img src={`${base}Imagenes/Imagenes_de_carga/manzana1.png`} alt="Manzana1" />
+                    <img src={`${base}Imagenes/Imagenes_de_carga/naranja1.png`} alt="Naranja1" />
                 </div>
             </div>
         </div>

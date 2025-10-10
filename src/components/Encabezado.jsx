@@ -17,18 +17,22 @@ export default function Encabezado({ activePage }) {
         }
     }, []);
 
-    function showLoaderAndRedirect(url) {
+    // 🔹 Muestra un loader antes de redirigir
+    function showLoaderAndRedirect(relativePath) {
         const loader = document.getElementById("loader");
         if (loader) loader.style.display = "flex";
+        // Combina la base de Vite con la ruta relativa
+        const url = `${import.meta.env.BASE_URL}${relativePath}`;
         setTimeout(() => (window.location.href = url), 700);
     }
 
+    // 🔹 Redirección al perfil o login según usuario
     function handlePerfilClick() {
         const usuarioGuardado = localStorage.getItem("usuario");
         if (usuarioGuardado) {
-            window.location.href = "/Perfil";
+            window.location.href = `${import.meta.env.BASE_URL}perfil`;
         } else {
-            showLoaderAndRedirect("/login");
+            showLoaderAndRedirect("login");
         }
     }
 
@@ -36,44 +40,50 @@ export default function Encabezado({ activePage }) {
         <div id="contenedorEncabezado">
             <div id="encabezado">
                 <div className="header-inner">
+                    {/* LOGO */}
                     <div className="logo">
-                        <a href="/">
+                        <a href={import.meta.env.BASE_URL}>
                             <img
-                                src="/Imagenes/Login_Perfil/Logo.png"
+                                src={`${import.meta.env.BASE_URL}Imagenes/Login_Perfil/Logo.png`}
                                 alt="Logo BienStarTotal"
                                 className="logoImg"
                             />
                         </a>
                     </div>
 
+                    {/* MENÚ PRINCIPAL */}
                     <div className="menúBotones">
                         <button
                             className={activePage === "home" ? "btnMenuSelec" : "btnMenu"}
-                            onClick={() => showLoaderAndRedirect("/home")}
+                            onClick={() => showLoaderAndRedirect("home")}
                         >
                             Inicio
                         </button>
+
                         <button
                             className={activePage === "alimentos" ? "btnMenuSelec" : "btnMenu"}
-                            onClick={() => showLoaderAndRedirect("/alimentos")}
+                            onClick={() => showLoaderAndRedirect("alimentos")}
                         >
                             Alimentos
                         </button>
+
                         <button
                             className={activePage === "dietas" ? "btnMenuSelec" : "btnMenu"}
-                            onClick={() => showLoaderAndRedirect("/dietas")}
+                            onClick={() => showLoaderAndRedirect("dietas")}
                         >
                             Dietas
                         </button>
+
                         <button className="btnMenuNoti">
                             <img
-                                src="/Imagenes/Login_Perfil/Notificacion.png"
+                                src={`${import.meta.env.BASE_URL}Imagenes/Login_Perfil/Notificacion.png`}
                                 id="btnNotification"
                                 alt="Notificación"
                             />
                         </button>
                     </div>
 
+                    {/* PERFIL / LOGIN */}
                     <div className="login">
                         <div
                             style={{ float: "left", height: "100%", width: "75%" }}
@@ -89,7 +99,7 @@ export default function Encabezado({ activePage }) {
                             onClick={handlePerfilClick}
                         >
                             <img
-                                src="/Imagenes/Login_Perfil/UserPerfil.png"
+                                src={`${import.meta.env.BASE_URL}Imagenes/Login_Perfil/UserPerfil.png`}
                                 id="fotoUsuario"
                                 alt="Foto de Usuario"
                                 style={{ cursor: "pointer" }}

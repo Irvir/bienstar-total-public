@@ -5,55 +5,58 @@ import Pie from './Pie';
 import Filtro from './Alimentos/Filtro';
 import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
 
+const base = import.meta.env.BASE_URL; // ruta base dinámica
+
+// Datos de alimentos (id, imagen relativa, nombre)
 const alimentosData = [
-    { id: 14, img: '/Imagenes/Alimentos/Porotos.jpg', name: 'POROTOS' },
-    { id: 21, img: '/Imagenes/Alimentos/Porotosnegros.jpg', name: 'POROTOS NEGROS' },
-    { id: 25, img: '/Imagenes/Alimentos/broccoli.jpg', name: 'BRÓCOLI' },
-    { id: 42, img: '/Imagenes/Alimentos/Arroz.jpg', name: 'ARROZ INTEGRAL' },
-    { id: 22, img: '/Imagenes/Alimentos/zanahoria.webp', name: 'ZANAHORIA' },
-    { id: 2, img: '/Imagenes/Alimentos/pechugadepollo.jpg', name: 'PECHUGA DE POLLO' },
-    { id: 13, img: '/Imagenes/Alimentos/garbanzos.png', name: 'GARBANZOS' },
-    { id: 48, img: '/Imagenes/Alimentos/Maiz.webp', name: 'MAÍZ' },
-    { id: 50, img: '/Imagenes/Alimentos/Cuscus.jpg', name: 'CUSCÚS' },
-    { id: 30, img: '/Imagenes/Alimentos/pepino.jpg', name: 'ENSALADA DE PEPINO' },
-    { id: 6, img: '/Imagenes/Alimentos/Huevos.avif', name: 'HUEVOS' },
-    { id: 29, img: '/Imagenes/Alimentos/Ajo.webp', name: 'AJO' },
-    { id: 37, img: '/Imagenes/Alimentos/uvas.webp', name: 'UVAS' },
-    { id: 15, img: '/Imagenes/Alimentos/guisantes.jpeg', name: 'GUISANTES' },
-    { id: 10, img: '/Imagenes/Alimentos/filetes de merluza.jpg', name: 'FILETES DE MERLUZA' },
-    { id: 19, img: '/Imagenes/Alimentos/hummus.jpg', name: 'HUMMUS' },
-    { id: 38, img: '/Imagenes/Alimentos/kiwi-1.jpg', name: 'KIWI' },
-    { id: 4, img: '/Imagenes/Alimentos/TROCITOS-RES-DF-CORTES-WEB-2023.jpg', name: 'CARNE DE RES MAGRA' },
-    { id: 41, img: '/Imagenes/Alimentos/limon.jpg', name: 'LIMÓN' },
-    { id: 12, img: '/Imagenes/Alimentos/lentejas.jpg', name: 'LENTEJAS' },
-    { id: 26, img: '/Imagenes/Alimentos/Lechuga.jpg', name: 'LECHUGA' },
-    { id: 39, img: '/Imagenes/Alimentos/mango.jpg', name: 'MANGO' },
-    { id: 43, img: '/Imagenes/Alimentos/avena.webp', name: 'AVENA' },
-    { id: 28, img: '/Imagenes/Alimentos/cebolla.jpeg', name: 'CEBOLLA' },
-    { id: 34, img: '/Imagenes/Alimentos/Naranja.jpg', name: 'NARANJA' },
-    { id: 35, img: '/Imagenes/Alimentos/pera.webp', name: 'PERA' },
-    { id: 27, img: '/Imagenes/Alimentos/pimientos.jpg', name: 'PIMIENTOS' },
-    { id: 40, img: '/Imagenes/Alimentos/piña.jpg', name: 'PIÑA' },
-    { id: 11, img: '/Imagenes/Alimentos/yogurtnatural.webp', name: 'YOGUR NATURAL' },
-    { id: 5, img: '/Imagenes/Alimentos/carnedecerdo.jpg', name: 'CERDO' },
-    { id: 46, img: '/Imagenes/Alimentos/potato patty.avif', name: 'HAMBURGUESA DE PAPA' },
-    { id: 17, img: '/Imagenes/Alimentos/quinoa.jpg', name: 'QUINOA' },
-    { id: 8, img: '/Imagenes/Alimentos/Salmon.jpg', name: 'SALMÓN' },
-    { id: 9, img: '/Imagenes/Alimentos/sardinas.jpg', name: 'SARDINAS' },
-    { id: 24, img: '/Imagenes/Alimentos/espinaca.jpg', name: 'ESPINACA' },
-    { id: 36, img: '/Imagenes/Alimentos/fresa.jpg', name: 'FRESA' },
-    { id: 47, img: '/Imagenes/Alimentos/batata.webp', name: 'BATATA' },
-    { id: 20, img: '/Imagenes/Alimentos/tempe.jpg', name: 'TEMPE' },
-    { id: 18, img: '/Imagenes/Alimentos/Carnesoja.webp', name: 'PROTEÍNA DE SOJA TEXTURIZADA' },
-    { id: 16, img: '/Imagenes/Alimentos/tofu.jpg', name: 'TOFU' },
-    { id: 23, img: '/Imagenes/Alimentos/Tomates.webp', name: 'TOMATE' },
-    { id: 7, img: '/Imagenes/Alimentos/atun.jpg', name: 'ATÚN' },
-    { id: 3, img: '/Imagenes/Alimentos/pavo.webp', name: 'PAVO' },
-    { id: 44, img: '/Imagenes/Alimentos/Pan.jpg', name: 'PAN DE TRIGO ENTERO' },
-    { id: 51, img: '/Imagenes/Alimentos/Harina-integral.png', name: 'HARINA DE TRIGO INTEGRAL' },
-    { id: 45, img: '/Imagenes/Alimentos/pastaintegral.jpg', name: 'PASTA DE TRIGO INTEGRAL' },
-    { id: 49, img: '/Imagenes/Alimentos/tortillaintegral.jpg', name: 'TORTILLAS DE TRIGO INTEGRAL' },
-    { id: 31, img: '/Imagenes/Alimentos/calabacin.jpg', name: 'CALABACÍN' }
+    { id: 14, img: `${base}Imagenes/Alimentos/Porotos.jpg`, name: 'POROTOS' },
+    { id: 21, img: `${base}Imagenes/Alimentos/Porotosnegros.jpg`, name: 'POROTOS NEGROS' },
+    { id: 25, img: `${base}Imagenes/Alimentos/broccoli.jpg`, name: 'BRÓCOLI' },
+    { id: 42, img: `${base}Imagenes/Alimentos/Arroz.jpg`, name: 'ARROZ INTEGRAL' },
+    { id: 22, img: `${base}Imagenes/Alimentos/zanahoria.webp`, name: 'ZANAHORIA' },
+    { id: 2, img: `${base}Imagenes/Alimentos/pechugadepollo.jpg`, name: 'PECHUGA DE POLLO' },
+    { id: 13, img: `${base}Imagenes/Alimentos/garbanzos.png`, name: 'GARBANZOS' },
+    { id: 48, img: `${base}Imagenes/Alimentos/Maiz.webp`, name: 'MAÍZ' },
+    { id: 50, img: `${base}Imagenes/Alimentos/Cuscus.jpg`, name: 'CUSCÚS' },
+    { id: 30, img: `${base}Imagenes/Alimentos/pepino.jpg`, name: 'ENSALADA DE PEPINO' },
+    { id: 6, img: `${base}Imagenes/Alimentos/Huevos.avif`, name: 'HUEVOS' },
+    { id: 29, img: `${base}Imagenes/Alimentos/Ajo.webp`, name: 'AJO' },
+    { id: 37, img: `${base}Imagenes/Alimentos/uvas.webp`, name: 'UVAS' },
+    { id: 15, img: `${base}Imagenes/Alimentos/guisantes.jpeg`, name: 'GUISANTES' },
+    { id: 10, img: `${base}Imagenes/Alimentos/filetes de merluza.jpg`, name: 'FILETES DE MERLUZA' },
+    { id: 19, img: `${base}Imagenes/Alimentos/hummus.jpg`, name: 'HUMMUS' },
+    { id: 38, img: `${base}Imagenes/Alimentos/kiwi-1.jpg`, name: 'KIWI' },
+    { id: 4, img: `${base}Imagenes/Alimentos/TROCITOS-RES-DF-CORTES-WEB-2023.jpg`, name: 'CARNE DE RES MAGRA' },
+    { id: 41, img: `${base}Imagenes/Alimentos/limon.jpg`, name: 'LIMÓN' },
+    { id: 12, img: `${base}Imagenes/Alimentos/lentejas.jpg`, name: 'LENTEJAS' },
+    { id: 26, img: `${base}Imagenes/Alimentos/Lechuga.jpg`, name: 'LECHUGA' },
+    { id: 39, img: `${base}Imagenes/Alimentos/mango.jpg`, name: 'MANGO' },
+    { id: 43, img: `${base}Imagenes/Alimentos/avena.webp`, name: 'AVENA' },
+    { id: 28, img: `${base}Imagenes/Alimentos/cebolla.jpeg`, name: 'CEBOLLA' },
+    { id: 34, img: `${base}Imagenes/Alimentos/Naranja.jpg`, name: 'NARANJA' },
+    { id: 35, img: `${base}Imagenes/Alimentos/pera.webp`, name: 'PERA' },
+    { id: 27, img: `${base}Imagenes/Alimentos/pimientos.jpg`, name: 'PIMIENTOS' },
+    { id: 40, img: `${base}Imagenes/Alimentos/piña.jpg`, name: 'PIÑA' },
+    { id: 11, img: `${base}Imagenes/Alimentos/yogurtnatural.webp`, name: 'YOGUR NATURAL' },
+    { id: 5, img: `${base}Imagenes/Alimentos/carnedecerdo.jpg`, name: 'CERDO' },
+    { id: 46, img: `${base}Imagenes/Alimentos/potato patty.avif`, name: 'HAMBURGUESA DE PAPA' },
+    { id: 17, img: `${base}Imagenes/Alimentos/quinoa.jpg`, name: 'QUINOA' },
+    { id: 8, img: `${base}Imagenes/Alimentos/Salmon.jpg`, name: 'SALMÓN' },
+    { id: 9, img: `${base}Imagenes/Alimentos/sardinas.jpg`, name: 'SARDINAS' },
+    { id: 24, img: `${base}Imagenes/Alimentos/espinaca.jpg`, name: 'ESPINACA' },
+    { id: 36, img: `${base}Imagenes/Alimentos/fresa.jpg`, name: 'FRESA' },
+    { id: 47, img: `${base}Imagenes/Alimentos/batata.webp`, name: 'BATATA' },
+    { id: 20, img: `${base}Imagenes/Alimentos/tempe.jpg`, name: 'TEMPE' },
+    { id: 18, img: `${base}Imagenes/Alimentos/Carnesoja.webp`, name: 'PROTEÍNA DE SOJA TEXTURIZADA' },
+    { id: 16, img: `${base}Imagenes/Alimentos/tofu.jpg`, name: 'TOFU' },
+    { id: 23, img: `${base}Imagenes/Alimentos/Tomates.webp`, name: 'TOMATE' },
+    { id: 7, img: `${base}Imagenes/Alimentos/atun.jpg`, name: 'ATÚN' },
+    { id: 3, img: `${base}Imagenes/Alimentos/pavo.webp`, name: 'PAVO' },
+    { id: 44, img: `${base}Imagenes/Alimentos/Pan.jpg`, name: 'PAN DE TRIGO ENTERO' },
+    { id: 51, img: `${base}Imagenes/Alimentos/Harina-integral.png`, name: 'HARINA DE TRIGO INTEGRAL' },
+    { id: 45, img: `${base}Imagenes/Alimentos/pastaintegral.jpg`, name: 'PASTA DE TRIGO INTEGRAL' },
+    { id: 49, img: `${base}Imagenes/Alimentos/tortillaintegral.jpg`, name: 'TORTILLAS DE TRIGO INTEGRAL' },
+    { id: 31, img: `${base}Imagenes/Alimentos/calabacin.jpg`, name: 'CALABACÍN' }
 ];
 
 export default function Alimentos() {
@@ -113,12 +116,13 @@ export default function Alimentos() {
                 <Pie />
 
                 {/* Loader */}
+
                 <div id="loader" style={{ display: 'none' }}>
                     <span className="loader-text">Cargando</span>
                     <div className="loader-dots">
-                        <img src="/Imagenes/Imagenes_de_carga/frutilla1.png" alt="frutilla" />
-                        <img src="/Imagenes/Imagenes_de_carga/manzana1.png" alt="manzana" />
-                        <img src="/Imagenes/Imagenes_de_carga/naranja1.png" alt="naranja" />
+                        <img src={`${base}Imagenes/Imagenes_de_carga/frutilla1.png`} alt="Frutilla1" />
+                        <img src={`${base}Imagenes/Imagenes_de_carga/manzana1.png`} alt="Manzana1" />
+                        <img src={`${base}Imagenes/Imagenes_de_carga/naranja1.png`} alt="Naranja1" />
                     </div>
                 </div>
             </div>
