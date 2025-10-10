@@ -6,12 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BienStarTotal</title>
   <link rel="icon" href="/bienstar-total-publicfavicon.ico" />
+
+  <!-- 🔧 Redirección automática al hash "/" si no está presente -->
+  <script>
+    if (!location.hash) {
+      location.replace(location.pathname + location.search + '#/');
+    }
+  </script>
   <script type="module" crossorigin src="/bienstar-total-public/assets/index-CrCiX8CN.js"></script>
   <link rel="stylesheet" crossorigin href="/bienstar-total-public/assets/index-B7ZCg1vR.css">
 </head>
 
 <body>
   <div id="root"></div>
+  <!-- ✅ Vite reemplaza esta ruta en el build final -->
 </body>
 
 </html>
