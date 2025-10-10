@@ -5,11 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BienStarTotal</title>
-  <link rel="icon" href="./favicon.ico" />
+  <link rel="icon" href="/favicon.ico" />
 
+  <!-- ✅ Redirección segura solo si no hay hash -->
   <script>
-    if (window.location.pathname !== '/' && !window.location.hash) {
-      window.location.replace('/#' + window.location.pathname);
+    if (!location.hash && location.pathname !== "/") {
+      location.replace("/#/");
     }
   </script>
   <script type="module" crossorigin src="./assets/index-BAUFjHGa.js"></script>
