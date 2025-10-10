@@ -2,8 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './styles/Base.css';
-import './controllers/Notify.js';
-import './controllers/Alimentos.js';
+import './controllers/notify.js';
+import './controllers/alimentos.js';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
