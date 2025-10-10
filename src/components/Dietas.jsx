@@ -98,8 +98,7 @@ const Dietas = () => {
     }, []);
 
     // ======= Cargar dieta desde backend =======
-    // Cambio clave: Ahora se traen los  datos guardados por el CRUD de "Crear Dieta".
-    // Ahora llamamos a GET /get-diet?id_diet=<id> y agrupamos el resultado para mostrarlo.
+    // Cambio clave: Ahora se traen los  datos guardados po el CRUD de "Crear Dieta".
     useEffect(() => {
         async function loadDiet() {
             try {
