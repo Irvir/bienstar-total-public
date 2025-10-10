@@ -1,13 +1,14 @@
-import React from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { HashRouter } from "react-router-dom";
-import App from "./App.jsx";
-import "./styles/Base.css";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <StrictMode>
     <HashRouter>
-      <App />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </HashRouter>
-  </React.StrictMode>
+  </StrictMode>
 );
