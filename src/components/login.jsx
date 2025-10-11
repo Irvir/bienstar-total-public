@@ -1,9 +1,7 @@
-// src/components/Login.jsx
 import React, { useState, useEffect } from "react";
 import "../styles/Login.css";
-// Base.css is imported in main.jsx globally. Avoid duplicate imports here.
 import withAuth from "../components/withAuth";
-
+import Encabezado from "./Encabezado";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -11,7 +9,6 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [userName, setUserName] = useState("Invitado");
 
-    // Revisar si hay sesión activa
     useEffect(() => {
         const usuarioGuardado = localStorage.getItem("usuario");
         if (usuarioGuardado) {
@@ -24,6 +21,7 @@ export default function Login() {
         }
     }, []);
 
+    // ✅ loader + redirección
     const showLoaderAndRedirect = (url) => {
         const loader = document.getElementById("loader");
         if (loader) loader.style.display = "flex";
@@ -53,7 +51,7 @@ export default function Login() {
                 localStorage.setItem("usuario", JSON.stringify(result.user));
                 window.notify("Login exitoso", { type: "success" });
                 setTimeout(() => {
-                    window.location.href = "/"; // redirigir al Home
+                    window.location.href = "/";
                 }, 1500);
             } else {
                 window.notify(result.message || "Correo o contraseña incorrectos", { type: "error" });
@@ -69,49 +67,9 @@ export default function Login() {
     return (
         <>
             <div id="contenedorPrincipal" className="login-page">
-                {/* Encabezado */}
-                <div id="encabezado">
-                    <div className="header-inner">
-                        <div className="logo">
-                            <a href="/">
-                                <img src="/Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" className="logoImg" />
-                            </a>
-                        </div>
+                {/* ✅ PASAMOS la función al Encabezado */}
+                <Encabezado activePage="Login" onNavigate={showLoaderAndRedirect} />
 
-                        <div className="menúBotones">
-                            <button className="btnMenu" onClick={() => showLoaderAndRedirect("/")}>Inicio</button>
-                            <button className="btnMenu" onClick={() => showLoaderAndRedirect("/alimentos")}>Alimentos</button>
-                            <button className="btnMenu" onClick={() => showLoaderAndRedirect("/dietas")}>Dietas</button>
-                            <button className="btnMenuNoti">
-                                <img
-                                    src="/Imagenes/Login_Perfil/Notificacion.png"
-                                    id="btnNotification"
-                                    onClick={() => window.notify("No tienes notificaciones nuevas.", { type: "info" })}
-                                    style={{ cursor: "pointer" }}
-                                    alt="notificaciones"
-                                />
-                            </button>
-                        </div>
-
-                        <div className="login">
-                            <div className="login-left" onClick={() => showLoaderAndRedirect("/login")}>
-                                <button className="btnPerfilView" id="btnPerfilView">
-                                    <span className="nameUser">{userName}</span>
-                                </button>
-                            </div>
-                            <div className="login-avatar" onClick={() => showLoaderAndRedirect("/login")}>
-                                <img
-                                    src="/Imagenes/Login_Perfil/UserPerfil.png"
-                                    id="fotoUsuario"
-                                    alt="Foto de Usuario"
-                                    className="cursor-pointer"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Cuerpo */}
                 <div id="cuerpo" className="fondoLogin">
                     <div id="contenedorLoginAsist">
                         <div id="contenedorLogin">
@@ -159,7 +117,6 @@ export default function Login() {
                     </div>
                 </div>
 
-                {/* Pie de página */}
                 <div id="pie">
                     <div className="footer-inner">
                         <a href="#" className="footer-link" title="Instagram"><img src="/Imagenes/Pie_Pagina/InstaLogo.png" alt="Instagram" /></a>
@@ -170,7 +127,7 @@ export default function Login() {
                 </div>
             </div>
 
-            {/* Loader */}
+            {/* ✅ loader global */}
             <div id="loader" style={{ display: "none" }}>
                 <span className="loader-text">Cargando</span>
                 <div className="loader-dots">

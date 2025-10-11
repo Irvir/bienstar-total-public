@@ -1,10 +1,134 @@
-/* ==============================
-   PANTALLA DE CARGA
-============================== */
-/* Contenedor principal del loader (pantalla de carga) */
+.dietas-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dietas-page #cuerpo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0.5rem;
+}
+
+/* Botón Editar Dieta */
+#BtnCrearCuenta {
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    /* reduce espacio con el pie */
+    padding: 14px 30px;
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #A31621, #d42c3c);
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#BtnCrearCuenta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Pie de página */
+#pie {
+    background-color: #A31621;
+    width: 100%;
+    padding: 0.5rem;
+    color: white;
+    margin-top: auto;
+    /* se mantiene al final */
+}
+
+/* Tabla de dieta */
+.tabla-dieta {
+    width: 99vw;
+    margin: 40px auto 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-height: 60vh;
+    margin-left: 40px;
+}
+
+/* Columnas */
+.columna,
+.columna-horario {
+    border: 3px solid #941424;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 5px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.columna-horario {
+    width: 7vw;
+    min-width: 70px;
+}
+
+.columna {
+    width: 13vw;
+    min-width: 120px;
+}
+
+/* Títulos */
+.titulo {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid #941424;
+    background-color: #fdfdfd;
+    color: #941424;
+}
+
+/* Celdas */
+.celda {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+
+/* Bloques de comida */
+.bloque-comida {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.titulo-comida {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #931525;
+    /* rojo principal */
+    background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
+    /* fondo suave */
+    padding: 0.4rem 0.8rem;
+    border-left: 4px solid #931525;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.titulo-comida:hover {
+    background: linear-gradient(135deg, #ffd6d6, #ffc2c2);
+    transform: scale(1.02); }
+
+/* Loader */
 #loader {
     display: none;
-    /* Solo esta línea */
     position: fixed;
     z-index: 9999;
     top: 0;
@@ -18,36 +142,27 @@
     flex-direction: column;
 }
 
-/* Texto principal del loader */
 .loader-text {
     font-size: 2rem;
-    /* Tamaño del texto */
     color: white;
     letter-spacing: 2px;
-    margin: 0 0 20px 0;
-    /* Solo margen abajo */
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-/* Contenedor de las imágenes de frutas animadas */
 .loader-dots {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    /* Espacio entre las imágenes */
     width: 4rem;
-    /* Ancho total del contenedor */
     height: 2rem;
     margin: 0;
-    /* Sin margen */
-
 }
 
-/* Estilo de las imágenes de frutas */
 .loader-dots img {
     width: 35px;
     height: 35px;
@@ -55,7 +170,6 @@
     animation: fruitDots 1.5s infinite;
 }
 
-/* Delay para que aparezcan una por una */
 .loader-dots img:nth-child(1) {
     animation-delay: 0s;
 }
@@ -68,7 +182,6 @@
     animation-delay: 0.6s;
 }
 
-/* Animación de las frutas */
 @keyframes fruitDots {
 
     0%,
@@ -81,226 +194,20 @@
     40% {
         opacity: 1;
         transform: scale(1.2);
-    }
-}
-.tabla-dieta {
-    width: 99vw;
-    /* Usa casi todo el ancho de la ventana */
-    margin: 40px auto 0 auto;
-    display: flex;
-    flex-direction: row;
-    min-height: 60vh;
-    /* Ocupa la mayor parte de la altura visible */
-    max-height: none;
-    /* Sin límite de alto */
-}
-
-.columna-horario {
-    width: 7vw;
-    /* Ajusta para que sea proporcional al nuevo ancho */
-    min-width: 70px;
-    border: 1px solid #999;
-    display: flex;
-    flex-direction: column;
-}
-
-.columna {
-    width: 13vw;
-    /* Ajusta para que las columnas sean más anchas */
-    min-width: 120px;
-    border: 1px solid #999;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Títulos de columnas */
-.titulo {
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    border-bottom: 1px solid #999;
-}
-
-/* Celdas de contenido */
-.celda {
-    flex: 1;
-    padding: 10px;
-    text-align: left;
-}
-
-/* Colores para cada día - títulos y celdas */
-.lunes .titulo,
-.lunes .celda {
-    background-color: #fff9c4;
-}
-
-.martes .titulo,
-.martes .celda {
-    background-color: #ffcdd2;
-}
-
-.miércoles .titulo,
-.miércoles .celda {
-    background-color: #c8e6c9;
-}
-
-.jueves .titulo,
-.jueves .celda {
-    background-color: #bbdefb;
-}
-
-.viernes .titulo,
-.viernes .celda {
-    background-color: #ffe0b2;
-}
-
-.sábado .titulo,
-.sábado .celda {
-    background-color: #e1bee7;
-}
-
-.domingo .titulo,
-.domingo .celda {
-    background-color: #d7ccc8;
-}
-
-/* Opcional: mejora visual para títulos y celdas */
-.titulo,
-.celda {
-    border-radius: 0;
-}
-#cuerpo {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    background-image: url('/Imagenes/Dieta/backgroundDiet2.jpg');
-    background-size: contain;
-    /* Muestra toda la imagen sin recortarla */
-    background-repeat: no-repeat;
-    /* Evita que se repita */
-    background-position: top center;
-    /* Centra horizontalmente, alinea arriba */
-    background-attachment: fixed;
-    /* Fija el fondo mientras se hace scroll */
-    background-color: #f5f5f5;
-    /* Color de respaldo si la imagen no cubre todo */
-}
-#pie {
-    position: fixed;
+    } }
+#BtnCrearCuenta::after {
+    content: "";
+    position: absolute;
+    top: 0;
     left: 0;
-    bottom: 0;
     width: 100%;
-    z-index: 100;
+    height: 100%;
+    border-radius: 40px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
 }
-#BtnCrearCuenta {
-    display: block;
-    /* Se centra con margin auto */
-    margin: 20px auto;
-    /* Espacio arriba/abajo, centrado horizontal */
-    padding: 12px 25px;
-    font-size: 16px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #931525, #ff416c);
-    color: white;
-    border-radius: 50px;
-    border: none;
-    
-}
-.columna-horario {
-    border: 1px solid #941424;
-    
-}
-
-.columna {
-    border: 1px solid #941424;
-}
-.columna-horario {
-    width: 7vw;
-    min-width: 70px;
-    border: 3px solid #941424;
-    /* Borde más grueso */
-    border-radius: 12px;
-    /* Bordes redondeados */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    /* Para que el contenido no se salga del borde redondeado */
-    margin: 5px;
-    /* Espacio entre columnas */
-}
-.columna {
-    width: 13vw;
-    min-width: 120px;
-    border: 3px solid #941424;
-    /* Borde más grueso */
-    border-radius: 12px;
-    /* Bordes redondeados */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    margin: 5px;
-    /* Espacio entre columnas */
-}
-
-/* Títulos de columnas */
-.titulo {
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    border-bottom: 2px solid #941424;
-    /* Borde más notorio */
-    background-color: #fdfdfd;
-}
-
-/* Celdas de contenido */
-.celda {
-    flex: 1;
-    padding: 10px;
-    text-align: left;
-    background-color: #fff;
-}
-
-/* Opcional: sombra ligera para resaltar las columnas */
-.columna,
-.columna-horario {
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-/* Colores para cada día - títulos y celdas */
-.lunes .titulo,
-.lunes .celda {
-    background-color: #fff9c4;
-}
-
-.martes .titulo,
-.martes .celda {
-    background-color: #ffcdd2;
-}
-
-.miércoles .titulo,
-.miércoles .celda {
-    background-color: #c8e6c9;
-}
-
-.jueves .titulo,
-.jueves .celda {
-    background-color: #bbdefb;
-}
-
-.viernes .titulo,
-.viernes .celda {
-    background-color: #ffe0b2;
-}
-
-.sábado .titulo,
-.sábado .celda {
-    background-color: #e1bee7;
-}
-
-.domingo .titulo,
-.domingo .celda {
-    background-color: #d7ccc8;
+#BtnCrearCuenta:hover::after {
+    opacity: 1;
 }

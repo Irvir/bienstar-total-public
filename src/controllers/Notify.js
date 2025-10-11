@@ -3,10 +3,29 @@
 
   const STYLE_ID = 'toastStyles';
   const CONTAINER_ID = 'toastContainer';
-
+  function notifyThenRedirect(message, opts, redirectUrl, setLoading) {
+    const { duration = 3000, type = "info" } = opts || {};
+  
+    if (window.notify) {
+      window.notify(message, { type, duration });
+  
+      setTimeout(() => {
+        if (setLoading) setLoading(true);
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 700);
+      }, duration);
+    } else {
+      if (setLoading) setLoading(true);
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, 700);
+    }
+  }
+  
   function playSound() {
     try {
-      const audio = new Audio('/public/Sonidos/notification.mp4');
+      const audio = new Audio('/public/Sonidos/notification.mp3');
       audio.volume = 0.5;
       audio.play().catch((err) => {
         console.warn('Autoplay bloqueado, el usuario debe interactuar antes:', err);
@@ -94,19 +113,28 @@
     style.textContent = css;
     document.head.appendChild(style);
   }
-
+ 
   function getContainer() {
-    let el = document.getElementById(CONTAINER_ID);
-    if (!el) {
-      el = document.createElement('div');
-      el.id = CONTAINER_ID;
-      el.className = 'toast-container';
-      document.body.appendChild(el);
-    }
-    el.style.position = 'fixed';
-    el.style.right = '35%';
-    el.style.bottom = '80%';
-    return el;
+      let el = document.getElementById(CONTAINER_ID);
+      if (!el) {
+        el = document.createElement('div');
+        el.id = CONTAINER_ID;
+        el.className = 'toast-container';
+        document.body.appendChild(el);
+      }
+
+      // ✅ Centrado horizontal y vertical relativo
+      el.style.position = 'fixed';
+      el.style.left = '50%';
+      el.style.top = '10%';
+      el.style.transform = 'translateX(-50%)';
+      el.style.zIndex = '9999';
+      el.style.display = 'flex';
+      el.style.flexDirection = 'column';
+      el.style.alignItems = 'center';
+      el.style.gap = '8px';
+
+      return el;
   }
 
   function notify(message, opts) {
@@ -120,15 +148,20 @@
     toast.className = `toast toast-${type}`;
 
     // Animar campana
-    try {
-      const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
-      if (bell) {
-        bell.classList.remove('bell-hint');
-        void bell.offsetWidth;
-        bell.classList.add('bell-hint');
-        setTimeout(() => bell.classList.remove('bell-hint'), 800);
-      }
-    } catch (_) { }
+    // Animar campana
+try {
+  const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
+  if (bell) {
+    bell.classList.remove('bell-hint');
+    void bell.offsetWidth; // Reinicia animación
+    bell.classList.add('bell-hint');
+    setTimeout(() => bell.classList.remove('bell-hint'), 800);
+
+    
+    bell.style.position = ''; // Se mantiene su posición natural
+    bell.style.transition = ''; // No transición extra
+  }
+} catch (_) {}
 
     // Contenido del toast
     const span = document.createElement('span');
@@ -156,6 +189,8 @@
     hideTimer = setTimeout(dismiss, duration);
     return { dismiss };
   }
+  window.notifyThenRedirect = notifyThenRedirect;
 
   window.notify = notify;
+
 })();

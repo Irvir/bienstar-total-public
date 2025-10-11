@@ -116,24 +116,32 @@
 
 /* ----------------- Modal ----------------- */
 .modal {
-    display: none;
+    display: flex;
+    /* ✅ Siempre flex, pero controlado por React */
     position: fixed;
     z-index: 1000;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
+.modal.visible {
+    opacity: 1;
+    pointer-events: auto; }
+
 .modal-content {
+    position: relative;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
     text-align: center;
-    border: 5px solid #b30000;
-}
+    border: 5px solid #b30000; }
 
 .modal-content img {
     width: 200px;
@@ -156,16 +164,18 @@
 }
 
 .close {
-    color: #b30000;
-    align-self: flex-end;
-    font-size: 40px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 32px;
     font-weight: bold;
+    color: #b30000;
     cursor: pointer;
+    z-index: 1001;
 }
 
 .close:hover {
-    color: black;
-}
+    color: black; }
 
 /* ----------------- Responsive ----------------- */
 @media (max-width: 768px) {
@@ -215,3 +225,51 @@
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.modal-content img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer; }
+.nutrient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.5rem 1rem;
+    margin-top: 1rem;
+    text-align: left;
+    font-size: 14px;
+    color: #333;     }
