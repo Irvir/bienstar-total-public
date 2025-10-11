@@ -278,6 +278,9 @@ app.post("/save-diet", async (req, res) => {
   try {
     console.log("Recibido:", meals);
 
+    let addedCount = 0;
+    let alreadyExistsCount = 0;
+
     for (const meal of meals) {
       const { id: id_food, dia, tipoComida } = meal;
 
@@ -321,16 +324,35 @@ app.post("/save-diet", async (req, res) => {
         id_meal = result.insertId;
       }
 
-      // 3) Insertar en meal_food (si no existe ya)
-      await pool.query(
-        `INSERT INTO meal_food (id_meal, id_food, quantity)
-         VALUES (?, ?, 1)
-         ON DUPLICATE KEY UPDATE quantity = quantity`,
+      // 3) Verificar si el alimento ya existe
+      const [existingFood] = await pool.query(
+        "SELECT id_meal, id_food FROM meal_food WHERE id_meal = ? AND id_food = ?",
         [id_meal, id_food]
       );
+
+      if (existingFood.length > 0) {
+        // El alimento ya existe
+        alreadyExistsCount++;
+      } else {
+        // Insertar el alimento nuevo
+        await pool.query(
+          "INSERT INTO meal_food (id_meal, id_food, quantity) VALUES (?, ?, 1)",
+          [id_meal, id_food]
+        );
+        addedCount++;
+      }
     }
 
-    res.json({ message: "Dieta guardada correctamente" });
+    // Devolver respuesta según lo que pasó
+    if (addedCount > 0 && alreadyExistsCount === 0) {
+      res.json({ message: "Dieta guardada correctamente", added: addedCount });
+    } else if (addedCount === 0 && alreadyExistsCount > 0) {
+      res.status(409).json({ message: "El alimento ya está en tu dieta", alreadyExists: true });
+    } else if (addedCount > 0 && alreadyExistsCount > 0) {
+      res.json({ message: `${addedCount} agregado(s), ${alreadyExistsCount} ya existía(n)`, added: addedCount, alreadyExists: alreadyExistsCount });
+    } else {
+      res.json({ message: "No se realizaron cambios" });
+    }
   } catch (error) {
     console.error("Error al guardar dieta:", error);
     res.status(500).json({ error: "Error al guardar dieta" });

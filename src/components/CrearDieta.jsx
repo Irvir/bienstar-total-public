@@ -107,8 +107,21 @@ function CrearDieta() {
             const result = await res.json();
 
             if (res.ok) {
+                // Verificar si realmente se agregó o ya existía
+                if (result.alreadyExists) {
+                    if (window.notify) {
+                        window.notify(`⚠️ ${name} ya está en tu dieta`, { type: "warning" });
+                    }
+                } else {
+                    if (window.notify) {
+                        window.notify(`✅ ${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
+                    }
+                }
+                await cargarDietaDelDia();
+            } else if (res.status === 409) {
+                // Código 409 = Conflicto (ya existe)
                 if (window.notify) {
-                    window.notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
+                    window.notify(result.message || `⚠️ ${name} ya está en tu dieta`, { type: "warning" });
                 }
                 await cargarDietaDelDia();
             } else {
@@ -259,32 +272,32 @@ function CrearDieta() {
                                         <div className="nutri-grid">
                                             {/* COLUMNA IZQUIERDA - MACRONUTRIENTES */}
                                             <div className={nutrientesPrincipales.includes('protein') ? 'nutriente-destacado' : ''}>
-                                                <b>Proteínas:</b> {alimento.protein ?? "-"} g
+                                                <b>🥩 Proteínas:</b> {alimento.protein ?? "-"} g
                                             </div>
                                             {/* COLUMNA DERECHA - MICRONUTRIENTES */}
                                             <div className={nutrientesPrincipales.includes('calcium') ? 'nutriente-destacado' : ''}>
-                                                <b>Calcio:</b> {alimento.calcium ?? "-"} mg
+                                                <b>🦴 Calcio:</b> {alimento.calcium ?? "-"} mg
                                             </div>
                                             
                                             <div className={nutrientesPrincipales.includes('carbohydrate') ? 'nutriente-destacado' : ''}>
-                                                <b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g
+                                                <b>🍞 Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g
                                             </div>
                                             <div className={nutrientesPrincipales.includes('iron') ? 'nutriente-destacado' : ''}>
-                                                <b>Hierro:</b> {alimento.iron ?? "-"} mg
+                                                <b>🩸 Hierro:</b> {alimento.iron ?? "-"} mg
                                             </div>
                                             
                                             <div className={nutrientesPrincipales.includes('total_lipid') ? 'nutriente-destacado' : ''}>
-                                                <b>Grasas:</b> {alimento.total_lipid ?? "-"} g
+                                                <b>🥑 Grasas:</b> {alimento.total_lipid ?? "-"} g
                                             </div>
                                             <div className={nutrientesPrincipales.includes('sodium') ? 'nutriente-destacado' : ''}>
-                                                <b>Sodio:</b> {alimento.sodium ?? "-"} mg
+                                                <b>🧂 Sodio:</b> {alimento.sodium ?? "-"} mg
                                             </div>
                                             
                                             <div className={nutrientesPrincipales.includes('total_sugars') ? 'nutriente-destacado' : ''}>
-                                                <b>Azúcares:</b> {alimento.total_sugars ?? "-"} g
+                                                <b>🍬 Azúcares:</b> {alimento.total_sugars ?? "-"} g
                                             </div>
                                             <div className={nutrientesPrincipales.includes('cholesterol') ? 'nutriente-destacado' : ''}>
-                                                <b>Colesterol:</b> {alimento.cholesterol ?? "-"} mg
+                                                <b>💊 Colesterol:</b> {alimento.cholesterol ?? "-"} mg
                                             </div>
                                         </div>
                                     </div>
