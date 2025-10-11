@@ -14,7 +14,7 @@ const Loader = ({ visible }) => {
     <div className="loader-overlay">
       <div className="loader-content">
         <span className="loader-text">
-          Cargando
+          Cargando<span className="dots">...</span>
         </span>
         <div className="loader-frutas">
           {frutas.map((src, index) => (
