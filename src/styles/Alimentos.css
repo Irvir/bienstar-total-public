@@ -116,24 +116,32 @@
 
 /* ----------------- Modal ----------------- */
 .modal {
-    display: none;
+    display: flex;
+    /* ✅ Siempre flex, pero controlado por React */
     position: fixed;
     z-index: 1000;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
+.modal.visible {
+    opacity: 1;
+    pointer-events: auto; }
+
 .modal-content {
+    position: relative;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
     text-align: center;
-    border: 5px solid #b30000;
-}
+    border: 5px solid #b30000; }
 
 .modal-content img {
     width: 200px;
@@ -156,16 +164,18 @@
 }
 
 .close {
-    color: #b30000;
-    align-self: flex-end;
-    font-size: 40px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 32px;
     font-weight: bold;
+    color: #b30000;
     cursor: pointer;
+    z-index: 1001;
 }
 
 .close:hover {
-    color: black;
-}
+    color: black; }
 
 /* ----------------- Responsive ----------------- */
 @media (max-width: 768px) {

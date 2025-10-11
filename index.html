@@ -5,19 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BienStarTotal</title>
-  <link rel="icon" href="/favicon.ico" />
-
-  <!-- ✅ Redirección segura solo si no hay hash -->
-  <script>
-    if (!location.hash && location.pathname !== "/") {
-      location.replace("/#/");
-    }
-  </script>
+  <link rel="stylesheet" href="/src/styles/Base.css" />
+  <link rel="stylesheet" href="/src/styles/Index.css" />
 </head>
 
 <body>
   <div id="root"></div>
-  <!-- ✅ Vite reemplaza esta ruta en el build final -->
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

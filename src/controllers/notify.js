@@ -6,7 +6,7 @@
 
   function playSound() {
     try {
-      const audio = new Audio('/public/Sonidos/notification.mp4');
+      const audio = new Audio('/public/Sonidos/notification.mp3');
       audio.volume = 0.5;
       audio.play().catch((err) => {
         console.warn('Autoplay bloqueado, el usuario debe interactuar antes:', err);

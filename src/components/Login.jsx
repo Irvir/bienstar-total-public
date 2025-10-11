@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Login.css";
 // Base.css is imported in main.jsx globally. Avoid duplicate imports here.
-import withAuth from "./withAuth";
+import withAuth from "../components/withAuth";
 
 
 export default function Login() {

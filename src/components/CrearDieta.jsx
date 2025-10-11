@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "../styles/CrearDieta.css";
-import { protectPage } from "../controllers/auth";
 import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 import CrearDietaForm from "./CrearDieta/CrearDietaForm";
+import Loader from "./Loader.jsx"; // Asegúrate de tener un componente Loader
+
 const traducciones = {
     breakfast: "Desayuno",
     lunch: "Almuerzo",
@@ -19,6 +20,7 @@ function CrearDieta() {
     const [filtro, setFiltro] = useState("");
     const [diaSeleccionado, setDiaSeleccionado] = useState(1);
     const [dietaAgrupada, setDietaAgrupada] = useState({});
+    const [loading, setLoading] = useState(false); // loader global
 
     // ================== SESIÓN ==================
     useEffect(() => {
@@ -29,20 +31,20 @@ function CrearDieta() {
         }
         const user = JSON.parse(usuarioGuardado);
         setUsuario(user);
-
-        const nameUserSpan = document.querySelector(".nameUser");
-        if (nameUserSpan) nameUserSpan.textContent = user.name;
-
-        const fotoUsuario = document.getElementById("fotoUsuario");
-        if (fotoUsuario) {
-            fotoUsuario.addEventListener("click", () => (window.location.href = "/perfil"));
-        }
     }, []);
+
+    // ================== FUNCIONES DE NAVEGACIÓN ==================
+    const showLoaderAndRedirect = (url) => {
+        setLoading(true);
+        setTimeout(() => (window.location.href = url), 700);
+    };
 
     // ================== BUSCAR ALIMENTOS ==================
     async function buscarAlimentos(query = "") {
         try {
-            const res = await fetch("http://localhost:3001/food-search?q=" + encodeURIComponent(query));
+            const res = await fetch(
+                "http://localhost:3001/food-search?q=" + encodeURIComponent(query)
+            );
             if (!res.ok) return [];
             const data = await res.json();
             return data;
@@ -69,7 +71,9 @@ function CrearDieta() {
     // ================== DIETA DEL DÍA ==================
     async function cargarDietaDelDia(dia) {
         try {
-            const res = await fetch(`http://localhost:3001/get-diet?id_diet=${usuario?.id_diet}`);
+            const res = await fetch(
+                `http://localhost:3001/get-diet?id_diet=${usuario?.id_diet}`
+            );
             if (!res.ok) throw new Error("No se pudo cargar la dieta");
 
             const dieta = await res.json();
@@ -104,17 +108,16 @@ function CrearDieta() {
             });
 
             if (res.ok) {
-                notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
-
+                notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, {
+                    type: "success",
+                });
                 await cargarDietaDelDia(diaSeleccionado);
-            } else
-                notify(result.message || "Error al guardar alimento", { type: "error" }); 
+            } else notify("Error al guardar alimento", { type: "error" });
         } catch (e) {
             console.error(e);
             notify("Error de conexión", { type: "error" });
         }
     }
-    
 
     async function eliminarAlimento(id, tipoComida) {
         const id_diet = usuario?.id_diet ?? 1;
@@ -128,12 +131,12 @@ function CrearDieta() {
             if (res.ok) {
                 notify("Alimento eliminado", { type: "success" });
                 await cargarDietaDelDia(diaSeleccionado);
-            } else
-                notify("Error al eliminar alimento", { type: "error" });
+            } else notify("Error al eliminar alimento", { type: "error" });
         } catch (e) {
             console.error(e);
         }
     }
+
     async function borrarDietaDelDia() {
         const id_diet = usuario?.id_diet ?? 1;
         try {
@@ -160,7 +163,7 @@ function CrearDieta() {
     // ================== RENDER ==================
     return (
         <div id="contenedorPrincipal" className="crear-dieta-page">
-            <Encabezado activePage="dietas" />
+            <Encabezado activePage="dietas" onNavigate={showLoaderAndRedirect} />
 
             <div id="cuerpo">
                 {/* Izquierda */}
@@ -192,21 +195,40 @@ function CrearDieta() {
                                     <br />
                                     Calorías: {alimento.calories ?? "-"}
                                     <div className="nutri-grid">
-                                        <div><b>Proteínas:</b> {alimento.protein ?? "-"} g</div>
-                                        <div><b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g</div>
-                                        <div><b>Grasas:</b> {alimento.total_lipid ?? "-"} g</div>
-                                        <div><b>Azúcares:</b> {alimento.total_sugars ?? "-"} g</div>
-                                        <div><b>Calcio:</b> {alimento.calcium ?? "-"} mg</div>
-                                        <div><b>Hierro:</b> {alimento.iron ?? "-"} mg</div>
-                                        <div><b>Sodio:</b> {alimento.sodium ?? "-"} mg</div>
-                                        <div><b>Colesterol:</b> {alimento.cholesterol ?? "-"} mg</div>
+                                        <div>
+                                            <b>Proteínas:</b> {alimento.protein ?? "-"} g
+                                        </div>
+                                        <div>
+                                            <b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g
+                                        </div>
+                                        <div>
+                                            <b>Grasas:</b> {alimento.total_lipid ?? "-"} g
+                                        </div>
+                                        <div>
+                                            <b>Azúcares:</b> {alimento.total_sugars ?? "-"} g
+                                        </div>
+                                        <div>
+                                            <b>Calcio:</b> {alimento.calcium ?? "-"} mg
+                                        </div>
+                                        <div>
+                                            <b>Hierro:</b> {alimento.iron ?? "-"} mg
+                                        </div>
+                                        <div>
+                                            <b>Sodio:</b> {alimento.sodium ?? "-"} mg
+                                        </div>
+                                        <div>
+                                            <b>Colesterol:</b> {alimento.cholesterol ?? "-"} mg
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="grupoSelector">
                                     <div className="etiqueta">HORA DE COMIDA</div>
                                     <div className="selector">
-                                        <select className="selectComida" id={`select-${alimento.id}`}>
+                                        <select
+                                            className="selectComida"
+                                            id={`select-${alimento.id}`}
+                                        >
                                             <option value="breakfast">Desayuno</option>
                                             <option value="lunch">Almuerzo</option>
                                             <option value="dinner">Cena</option>
@@ -248,6 +270,9 @@ function CrearDieta() {
             </div>
 
             <Pie />
+
+            {/* Loader global */}
+            <Loader visible={loading} />
         </div>
     );
 }
