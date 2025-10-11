@@ -177,6 +177,48 @@ function CrearDieta() {
         }
     }
 
+    // ================== FUNCIÓN PARA RESALTAR NUTRIENTES PRINCIPALES ==================
+    const obtenerNutrientePrincipal = (alimento) => {
+        // Separar macronutrientes (en gramos) de micronutrientes (en miligramos)
+        const macronutrientes = {
+            protein: parseFloat(alimento.protein) || 0,
+            carbohydrate: parseFloat(alimento.carbohydrate) || 0,
+            total_lipid: parseFloat(alimento.total_lipid) || 0,
+        };
+
+        const micronutrientes = {
+            total_sugars: parseFloat(alimento.total_sugars) || 0,
+            calcium: parseFloat(alimento.calcium) || 0,
+            iron: parseFloat(alimento.iron) || 0,
+            sodium: parseFloat(alimento.sodium) || 0,
+            cholesterol: parseFloat(alimento.cholesterol) || 0,
+        };
+
+        const destacados = [];
+
+        // Encontrar el macronutriente principal (proteína, carbohidratos o grasas)
+        const maxMacro = Math.max(...Object.values(macronutrientes));
+        if (maxMacro > 0) {
+            Object.keys(macronutrientes).forEach(key => {
+                if (macronutrientes[key] === maxMacro && macronutrientes[key] > 0) {
+                    destacados.push(key);
+                }
+            });
+        }
+
+        // Encontrar el micronutriente más alto (si hay alguno significativo)
+        const maxMicro = Math.max(...Object.values(micronutrientes));
+        if (maxMicro > 5) { // Solo destacar si el valor es significativo (> 5mg o 5g para azúcares)
+            Object.keys(micronutrientes).forEach(key => {
+                if (micronutrientes[key] === maxMicro) {
+                    destacados.push(key);
+                }
+            });
+        }
+
+        return destacados;
+    };
+
     // ================== RENDER ==================
     return (
         <div id="contenedorPrincipal" className="crear-dieta-page">
@@ -205,23 +247,47 @@ function CrearDieta() {
                     </div>
 
                     <div id="resultadosFiltro" className="resultadosFiltro">
-                        {alimentos.map((alimento) => (
-                            <div key={alimento.id} className="alimento-card">
-                                <div className="alimento-info">
-                                    <strong>{alimento.name}</strong>
-                                    <br />
-                                    Calorías: {alimento.calories ?? "-"}
-                                    <div className="nutri-grid">
-                                        <div><b>Proteínas:</b> {alimento.protein ?? "-"} g</div>
-                                        <div><b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g</div>
-                                        <div><b>Grasas:</b> {alimento.total_lipid ?? "-"} g</div>
-                                        <div><b>Azúcares:</b> {alimento.total_sugars ?? "-"} g</div>
-                                        <div><b>Calcio:</b> {alimento.calcium ?? "-"} mg</div>
-                                        <div><b>Hierro:</b> {alimento.iron ?? "-"} mg</div>
-                                        <div><b>Sodio:</b> {alimento.sodium ?? "-"} mg</div>
-                                        <div><b>Colesterol:</b> {alimento.cholesterol ?? "-"} mg</div>
+                        {alimentos.map((alimento) => {
+                            const nutrientesPrincipales = obtenerNutrientePrincipal(alimento);
+                            
+                            return (
+                                <div key={alimento.id} className="alimento-card">
+                                    <div className="alimento-info">
+                                        <strong>{alimento.name}</strong>
+                                        <br />
+                                        Calorías: {alimento.calories ?? "-"}
+                                        <div className="nutri-grid">
+                                            {/* COLUMNA IZQUIERDA - MACRONUTRIENTES */}
+                                            <div className={nutrientesPrincipales.includes('protein') ? 'nutriente-destacado' : ''}>
+                                                <b>Proteínas:</b> {alimento.protein ?? "-"} g
+                                            </div>
+                                            {/* COLUMNA DERECHA - MICRONUTRIENTES */}
+                                            <div className={nutrientesPrincipales.includes('calcium') ? 'nutriente-destacado' : ''}>
+                                                <b>Calcio:</b> {alimento.calcium ?? "-"} mg
+                                            </div>
+                                            
+                                            <div className={nutrientesPrincipales.includes('carbohydrate') ? 'nutriente-destacado' : ''}>
+                                                <b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g
+                                            </div>
+                                            <div className={nutrientesPrincipales.includes('iron') ? 'nutriente-destacado' : ''}>
+                                                <b>Hierro:</b> {alimento.iron ?? "-"} mg
+                                            </div>
+                                            
+                                            <div className={nutrientesPrincipales.includes('total_lipid') ? 'nutriente-destacado' : ''}>
+                                                <b>Grasas:</b> {alimento.total_lipid ?? "-"} g
+                                            </div>
+                                            <div className={nutrientesPrincipales.includes('sodium') ? 'nutriente-destacado' : ''}>
+                                                <b>Sodio:</b> {alimento.sodium ?? "-"} mg
+                                            </div>
+                                            
+                                            <div className={nutrientesPrincipales.includes('total_sugars') ? 'nutriente-destacado' : ''}>
+                                                <b>Azúcares:</b> {alimento.total_sugars ?? "-"} g
+                                            </div>
+                                            <div className={nutrientesPrincipales.includes('cholesterol') ? 'nutriente-destacado' : ''}>
+                                                <b>Colesterol:</b> {alimento.cholesterol ?? "-"} mg
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
                                 <div className="grupoSelector">
                                     <div className="etiqueta">HORA DE COMIDA</div>
@@ -262,7 +328,8 @@ function CrearDieta() {
                                     </button>
                                 </div>
                             </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>

@@ -343,6 +343,13 @@
     gap: 6px 16px;
     margin-top: 6px;
 }
+.crear-dieta-page .nutri-grid .nutriente-destacado {
+    background-color: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
 .crear-dieta-page .nutri-grid.is-collapsed {
     display: none;
 }
