@@ -47,6 +47,7 @@
         flex-direction: column;
         gap: 8px;
         align-items: flex-end;
+        pointer-events: none; /* allow clicks through the container */
       }
       .toast {
         position: relative;
@@ -60,6 +61,7 @@
         opacity: 0;
         transform: translateY(20px);
         animation: toast-in 180ms ease-out forwards;
+        pointer-events: auto; /* allow interaction with the toast itself */
       }
       .toast-message { white-space: pre-line; }
 
@@ -75,6 +77,7 @@
         font-size: 18px;
         cursor: pointer;
         margin-left: 1rem;
+        pointer-events: auto; /* ensure close button works */
       }
 
       .toast-row {

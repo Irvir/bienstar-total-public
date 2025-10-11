@@ -1,3 +1,13 @@
+.loader {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.loader.visible {
+    opacity: 1;
+    pointer-events: all;
+}
 .loader-overlay {
     position: fixed;
     inset: 0;
@@ -8,6 +18,7 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
+    pointer-events: none; /* allow clicks to pass through the overlay */
 }
 
 .loader-content {
@@ -15,6 +26,7 @@
     color: white;
     font-size: 1.5rem;
     animation: fadeIn 0.3s ease-in-out;
+    pointer-events: auto; /* still allow interacting with loader inner elements if needed */
 }
 
 .loader-text {

@@ -1,141 +1,173 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../styles/Login.css";
-import withAuth from "../components/withAuth";
+import Pie from "./Pie";
 import Encabezado from "./Encabezado";
+import Loader from "./Loader.jsx";
+import withAuth from "../components/withAuth";
 
-export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [userName, setUserName] = useState("Invitado");
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("Invitado");
+  const [activePage, setActivePage] = useState("login");
+  const [loading, setLoading] = useState(false);
+  const passwordRef = useRef(null);
+  const emailRef = useRef(null);
 
-    useEffect(() => {
-        const usuarioGuardado = localStorage.getItem("usuario");
-        if (usuarioGuardado) {
-            try {
-                const usuario = JSON.parse(usuarioGuardado);
-                if (usuario?.name) setUserName(usuario.name);
-            } catch (e) {
-                console.warn("Usuario inválido", e);
-            }
-        }
-    }, []);
+  useEffect(() => {
+    const usuarioGuardado = localStorage.getItem("usuario");
+    if (usuarioGuardado) {
+      try {
+        const usuario = JSON.parse(usuarioGuardado);
+        if (usuario?.name) setUserName(usuario.name);
+      } catch (e) {
+        console.warn("Usuario inválido", e);
+      }
+    }
 
-    // ✅ loader + redirección
-    const showLoaderAndRedirect = (url) => {
-        const loader = document.getElementById("loader");
-        if (loader) loader.style.display = "flex";
-        setTimeout(() => {
-            window.location.href = url;
-        }, 2000);
-    };
+    const currentPage = window.location.pathname.split("/").pop() || "login";
+    setActivePage(currentPage.replace(".html", "").toLowerCase());
+  }, []);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        if (!email || !password) {
-            window.notify("Por favor, complete todos los campos", { type: "error" });
-            return;
-        }
+  const showLoaderAndRedirect = (url) => {
+    setLoading(true);
+    setTimeout(() => {
+      window.location.href = url;
+    }, 700);
+  };
 
-        setLoading(true);
+  const notifyThenRedirect = (mensaje, opciones, url, setLoadingFn) => {
+    window.notify(mensaje, opciones);
+    setLoadingFn(true);
+    setTimeout(() => {
+      window.location.href = url;
+    }, opciones?.duration || 1500);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      window.notify("Por favor, complete todos los campos", { type: "error" });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("usuario", JSON.stringify(result.user));
+        notifyThenRedirect("Login exitoso", { type: "success", duration: 1500 }, "/", setLoading);
+      } else {
+        window.notify(result.message || "Correo o contraseña incorrectos", { type: "error" });
+        // limpiar ambos campos y enfocar el email para permitir reintento inmediato
         try {
-            const response = await fetch("http://localhost:3001/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem("usuario", JSON.stringify(result.user));
-                window.notify("Login exitoso", { type: "success" });
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 1500);
-            } else {
-                window.notify(result.message || "Correo o contraseña incorrectos", { type: "error" });
-            }
-        } catch (error) {
-            console.error(error);
-            window.notify("Error en la conexión con el servidor", { type: "error" });
-        } finally {
-            setLoading(false);
+          setEmail("");
+          setPassword("");
+          // small delay to avoid browser autofill race
+          setTimeout(() => {
+            try {
+              if (emailRef.current) {
+                emailRef.current.value = '';
+                emailRef.current.focus();
+              }
+              if (passwordRef.current) passwordRef.current.value = '';
+            } catch (_) {}
+          }, 50);
+        } catch (e) {
+          // no fatal
         }
-    };
+      }
+    } catch (error) {
+      console.error("Error login:", error);
+      window.notify("Error en la conexión con el servidor", { type: "error" });
+      // limpiar ambos campos y enfocar email para permitir reintento
+      try {
+        setEmail("");
+        setPassword("");
+        setTimeout(() => {
+          try {
+            if (emailRef.current) {
+              emailRef.current.value = '';
+              emailRef.current.focus();
+            }
+            if (passwordRef.current) passwordRef.current.value = '';
+          } catch (_) {}
+        }, 50);
+      } catch (e) {}
+    }
+    finally {
+      // garantizar que loading sea false tras el intento
+      setLoading(false);
+    }
+  };
 
-    return (
-        <>
-            <div id="contenedorPrincipal" className="login-page">
-                {/* ✅ PASAMOS la función al Encabezado */}
-                <Encabezado activePage="Login" onNavigate={showLoaderAndRedirect} />
+  return (
+    <div className="login-page">
+      <div id="contenedorPrincipal">
+        <Encabezado activePage={activePage} onNavigate={showLoaderAndRedirect} />
 
-                <div id="cuerpo" className="fondoLogin">
-                    <div id="contenedorLoginAsist">
-                        <div id="contenedorLogin">
-                            <div id="contenedorLoginFoto"></div>
-                            <div className="login-container">
-                                <form onSubmit={handleLogin}>
-                                    <input
-                                        type="text"
-                                        placeholder="Correo electrónico"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                    <input
-                                        type="password"
-                                        placeholder="Contraseña"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        required
-                                    />
-                                    <br /><br />
-                                    <button type="submit" id="botonIngresar" disabled={loading}>
-                                        {loading ? "Ingresando..." : "Ingresar"}
-                                    </button>
+        <div id="cuerpo" className="fondoLogin">
+          <div id="contenedorLoginAsist">
+            <div id="contenedorLogin">
+              <div id="contenedorLoginFoto"></div>
+              <div className="login-container">
+                <form onSubmit={handleLogin} autoComplete="off">
+                  <input
+                    type="text"
+                    placeholder="Correo electrónico"
+                    ref={emailRef}
+                    autoComplete="off"
+                    name="login_email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="password"
+                    placeholder="Contraseña"
+                    ref={passwordRef}
+                    autoComplete="new-password"
+                    name="login_password"
+                    // also set the DOM value if browser tries to autofill
+                    onFocus={(e) => { if (!password) e.target.value = ''; }}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <br /><br />
+                  <button type="submit" id="botonIngresar">
+                    {loading ? "Ingresando..." : "Ingresar"}
+                  </button>
 
-                                    {loading && (
-                                        <div id="loading-animation">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </div>
-                                    )}
-
-                                    <br /><br />
-                                    <button
-                                        type="button"
-                                        className="btnCrearCuenta"
-                                        onClick={() => showLoaderAndRedirect("/crear-cuenta")}
-                                    >
-                                        Crear Cuenta
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="pie">
-                    <div className="footer-inner">
-                        <a href="#" className="footer-link" title="Instagram"><img src="/Imagenes/Pie_Pagina/InstaLogo.png" alt="Instagram" /></a>
-                        <a href="#" className="footer-link" title="Facebook"><img src="/Imagenes/Pie_Pagina/FaceLogo.png" alt="Facebook" /></a>
-                        <a href="#" className="footer-link" title="YouTube"><img src="/Imagenes/Pie_Pagina/YouTubeLogo.png" alt="YouTube" /></a>
-                        <a href="#" className="footer-link" title="WhatsApp"><img src="/Imagenes/Pie_Pagina/WhatsLogo.png" alt="WhatsApp" /></a>
-                    </div>
-                </div>
+                  <br /><br />
+                  <button
+                    type="button"
+                    className="btnCrearCuenta"
+                    onClick={() => showLoaderAndRedirect("/crear-cuenta")}
+                  >
+                    Crear Cuenta
+                  </button>
+                </form>
+              </div>
             </div>
+          </div>
+        </div>
 
-            {/* ✅ loader global */}
-            <div id="loader" style={{ display: "none" }}>
-                <span className="loader-text">Cargando</span>
-                <div className="loader-dots">
-                    <img src="/Imagenes/Imagenes_de_carga/frutilla1.png" alt="Frutilla1" />
-                    <img src="/Imagenes/Imagenes_de_carga/manzana1.png" alt="Manzana1" />
-                    <img src="/Imagenes/Imagenes_de_carga/naranja1.png" alt="Naranja1" />
-                </div>
-            </div>
-        </>
-    );
+        <Pie />
+      </div>
+
+      <Loader visible={loading} />
+    </div>
+  );
 }
+
+export default withAuth(Login, { requireAuth: false });
