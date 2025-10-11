@@ -83,6 +83,7 @@
         transform: scale(1.2);
     }
 }
+
 .tabla-dieta {
     width: 99vw;
     /* Usa casi todo el ancho de la ventana */
@@ -118,6 +119,7 @@
     padding: 10px;
     text-align: center;
     font-weight: bold;
+    color: white;
     border-bottom: 1px solid #999;
 }
 
@@ -128,40 +130,38 @@
     text-align: left;
 }
 
+.columna-horario .titulo {
+    background-color: #A31621;
+
+}
+
 /* Colores para cada día - títulos y celdas */
-.lunes .titulo,
-.lunes .celda {
-    background-color: #fff9c4;
+.lunes .titulo {
+    background-color: #A31621;
 }
 
-.martes .titulo,
-.martes .celda {
-    background-color: #ffcdd2;
+.martes .titulo {
+    background-color: #A31621;
 }
 
-.miércoles .titulo,
-.miércoles .celda {
-    background-color: #c8e6c9;
+.miércoles .titulo {
+    background-color: #A31621;
 }
 
-.jueves .titulo,
-.jueves .celda {
-    background-color: #bbdefb;
+.jueves .titulo {
+    background-color: #A31621;
 }
 
-.viernes .titulo,
-.viernes .celda {
-    background-color: #ffe0b2;
+.viernes .titulo {
+    background-color: #A31621;
 }
 
-.sábado .titulo,
-.sábado .celda {
-    background-color: #e1bee7;
+.sábado .titulo {
+    background-color: #A31621;
 }
 
-.domingo .titulo,
-.domingo .celda {
-    background-color: #d7ccc8;
+.domingo .titulo {
+    background-color: #A31621;
 }
 
 /* Opcional: mejora visual para títulos y celdas */
@@ -169,6 +169,7 @@
 .celda {
     border-radius: 0;
 }
+
 #cuerpo {
     min-height: 100vh;
     width: 100%;
@@ -176,18 +177,8 @@
     flex-direction: column;
     align-items: center;
 
-    background-image: url('/Imagenes/Dieta/backgroundDiet2.jpg');
-    background-size: contain;
-    /* Muestra toda la imagen sin recortarla */
-    background-repeat: no-repeat;
-    /* Evita que se repita */
-    background-position: top center;
-    /* Centra horizontalmente, alinea arriba */
-    background-attachment: fixed;
-    /* Fija el fondo mientras se hace scroll */
-    background-color: #f5f5f5;
-    /* Color de respaldo si la imagen no cubre todo */
 }
+
 #pie {
     position: fixed;
     left: 0;
@@ -195,28 +186,35 @@
     width: 100%;
     z-index: 100;
 }
+
 #BtnCrearCuenta {
     display: block;
-    /* Se centra con margin auto */
-    margin: 20px auto;
-    /* Espacio arriba/abajo, centrado horizontal */
-    padding: 12px 25px;
-    font-size: 16px;
-    cursor: pointer;
-    background: linear-gradient(135deg, #931525, #ff416c);
+    margin: 5% 5%;
+    padding: 14px 30px;
+    font-size: 17px;
+    font-weight: 600;
     color: white;
-    border-radius: 50px;
+    background: linear-gradient(135deg, #A31621, #d42c3c);
     border: none;
-    
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+#BtnCrearCuenta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
+
 .columna-horario {
     border: 1px solid #941424;
-    
+
 }
 
 .columna {
     border: 1px solid #941424;
 }
+
 .columna-horario {
     width: 7vw;
     min-width: 70px;
@@ -231,6 +229,7 @@
     margin: 5px;
     /* Espacio entre columnas */
 }
+
 .columna {
     width: 13vw;
     min-width: 120px;
@@ -259,7 +258,7 @@
 .celda {
     flex: 1;
     padding: 10px;
-    text-align: left;
+    text-align: center;
     background-color: #fff;
 }
 
@@ -268,39 +267,22 @@
 .columna-horario {
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
 }
-
-/* Colores para cada día - títulos y celdas */
-.lunes .titulo,
-.lunes .celda {
-    background-color: #fff9c4;
+.bloque-comida {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.martes .titulo,
-.martes .celda {
-    background-color: #ffcdd2;
-}
-
-.miércoles .titulo,
-.miércoles .celda {
-    background-color: #c8e6c9;
-}
-
-.jueves .titulo,
-.jueves .celda {
-    background-color: #bbdefb;
-}
-
-.viernes .titulo,
-.viernes .celda {
-    background-color: #ffe0b2;
-}
-
-.sábado .titulo,
-.sábado .celda {
-    background-color: #e1bee7;
-}
-
-.domingo .titulo,
-.domingo .celda {
-    background-color: #d7ccc8;
-}
+.titulo-comida {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #4CAF50;
+    background-color: #e6f4ea;
+    padding: 0.3rem 0.6rem;
+    border-left: 4px solid #4CAF50;
+    border-radius: 6px;
+    margin-bottom: 0.5rem; }

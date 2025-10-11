@@ -21,6 +21,9 @@ body {
     --white: #ffffff;
     --max-w: 1200px;
     --gap: 1rem;
+    --avatar-size: 40px; /* tamaño por defecto para el avatar dentro del recuadro */
+    --avatar-size-lg: 56px;
+    --avatar-size-sm: 36px;
 }
 
 /* Contenedor principal */
@@ -35,20 +38,14 @@ body {
 
 /* Encabezado */
 #encabezado {
-    background-color: #931525;
-    
-    width: 100%;
-    padding: 0.5rem 0;
-    /* no se cambia el alto */
-    color: var(--white);
-    font-family: 'Montserrat', sans-serif;
-    position: relative;
-    z-index: 20;
-    border-radius: 0px 0px 0px 0px;
+    background: linear-gradient(135deg, #A31621, #d42c3c);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-#contenedorEncabezado{
-    background-color: #FCF7F8;
-}
+
 
 .header-inner {
     width: 100%;
@@ -146,6 +143,7 @@ body {
 }
 
 /* Login */
+
 .login {
     flex: 0 0 auto;
 }
@@ -160,14 +158,7 @@ body {
     padding: 0.25rem;
 }
 
-#fotoUsuario {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-}
-
+/* Avatar (login/profile) - unificado y responsivo (ver :root arriba) */
 /* Cuerpo */
 #cuerpo {
     flex: 1;
@@ -309,4 +300,117 @@ body {
 .bell-hint {
     animation: bell-wiggle 700ms ease-in-out;
     filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
+}
+.user-info {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b, #ffb347);
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
+    
+}
+#btnNotification {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+#btnNotification:hover {
+    transform: rotate(-15deg) scale(1.1);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)); }
+        .login {
+            display: flex;
+            align-items: center; /* centra la foto verticalmente */
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 6px 12px; /* menos padding para evitar recorte */
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ff6b6b, #ffb347);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            max-width: 220px;
+            white-space: nowrap;
+            overflow: visible; /* permitir que la imagen sobresalga si escala */
+        }
+    
+        .nameUser {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex-grow: 1;
+            max-width: 120px;
+            text-align: right;
+        }
+
+/* Asegurar que solo haya una regla para el avatar y usar variables para tamaño */
+#fotoUsuario,
+.fotoUsuario {
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+    transition: transform 0.18s ease;
+}
+
+.fotoUsuario:hover,
+#fotoUsuario:hover {
+    transform: scale(1.06);
+}
+
+/* Reglas con mayor especificidad para el header - protegen el avatar del header
+   frente a estilos de páginas (ej. perfil) que usen .login o #imagenUser */
+#encabezado .login {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff6b6b, #ffb347);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+#encabezado .login .fotoUsuario,
+#encabezado .login #fotoUsuario {
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border: 2px solid #fff;
+}
+
+/* Si hay reglas de tipo #imagenUser en perfil, evitamos que afecten al header */
+/* El contenedor #imagenUser se usa en perfil y su estilo está en Perfil.css */
+/* Evitar que se mueva el header al crecer el nombre */
+.header-inner {
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+    .login {
+        padding: 4px 10px;
+        gap: 6px;
+        max-width: 180px;
+    }
+
+    .nameUser {
+        font-size: 14px;
+        max-width: 100px;
+    }
+
+    /* reducir avatar en pantallas pequeñas */
+    #fotoUsuario,
+    .fotoUsuario {
+        width: var(--avatar-size-sm);
+        height: var(--avatar-size-sm);
+    }
 }

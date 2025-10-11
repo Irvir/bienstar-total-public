@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import "../styles/Home.css";
 import Pie from "./Pie";
 import Encabezado from "./Encabezado";
-import Loader from "./Loader.jsx"; // Asegúrate que Loader esté importado correctamente
+import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
 
 function Home() {
   const [userName, setUserName] = useState("Invitado");
   const [activePage, setActivePage] = useState("home");
-  const [loading, setLoading] = useState(false); // Loader global
+  const [loading, setLoading] = useState(false);
 
-  // ===== Obtener usuario y página activa =====
+  // Obtener usuario y página activa
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
@@ -26,7 +26,8 @@ function Home() {
     setActivePage(currentPage.replace(".html", "").toLowerCase());
   }, []);
 
-  // ===== Loader + redirección =====
+
+  // Loader + redirección
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => {
@@ -34,35 +35,53 @@ function Home() {
     }, 700);
   };
 
+  // Notificación + redirección
+  const handleClick = (url, mensaje) => {
+    if (window.notify) {
+      window.notify(mensaje, { type: "info", duration: 3000 });
+    }
+    showLoaderAndRedirect(url);
+  };
+
   return (
     <div className="home-page">
       <div id="contenedorPrincipal">
         <Encabezado
           activePage={activePage}
-          onNavigate={showLoaderAndRedirect} // pasa loader + redirección
+          onNavigate={showLoaderAndRedirect}
         />
 
         <div id="cuerpo">
           <div className="botonera">
             <button
               className="btn1"
-              onClick={() => showLoaderAndRedirect("CrearDieta.html")}
+              onClick={() =>
+                handleClick("CrearDieta.html", "Editando tu dieta semanal")
+              }
             ></button>
             <button
               className="btn2"
-              onClick={() => showLoaderAndRedirect("dietas.html")}
+              onClick={() =>
+                handleClick("dietas.html", "Revisando tus dietas")
+              }
             ></button>
             <button
               className="btn3"
-              onClick={() => showLoaderAndRedirect("calendario.html")}
+              onClick={() =>
+                handleClick("calendario.html", "Abriendo tu calendario")
+              }
             ></button>
             <button
               className="btn4"
-              onClick={() => showLoaderAndRedirect("alimentos.html")}
+              onClick={() =>
+                handleClick("alimentos.html", "Explorando alimentos")
+              }
             ></button>
             <button
               className="btn5"
-              onClick={() => showLoaderAndRedirect("tipsParaTuDieta.html")}
+              onClick={() =>
+                handleClick("tipsParaTuDieta.html", "Consejos para tu dieta")
+              }
             ></button>
           </div>
         </div>
@@ -70,7 +89,6 @@ function Home() {
         <Pie />
       </div>
 
-      {/* Loader global */}
       <Loader visible={loading} />
     </div>
   );

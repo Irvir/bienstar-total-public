@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/Login.css";
 // Base.css is imported in main.jsx globally. Avoid duplicate imports here.
 import withAuth from "../components/withAuth";
-
+import Encabezado from "./Encabezado";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -70,47 +70,7 @@ export default function Login() {
         <>
             <div id="contenedorPrincipal" className="login-page">
                 {/* Encabezado */}
-                <div id="encabezado">
-                    <div className="header-inner">
-                        <div className="logo">
-                            <a href="/">
-                                <img src="/Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" className="logoImg" />
-                            </a>
-                        </div>
-
-                        <div className="menúBotones">
-                            <button className="btnMenu" onClick={() => showLoaderAndRedirect("/")}>Inicio</button>
-                            <button className="btnMenu" onClick={() => showLoaderAndRedirect("/alimentos")}>Alimentos</button>
-                            <button className="btnMenu" onClick={() => showLoaderAndRedirect("/dietas")}>Dietas</button>
-                            <button className="btnMenuNoti">
-                                <img
-                                    src="/Imagenes/Login_Perfil/Notificacion.png"
-                                    id="btnNotification"
-                                    onClick={() => window.notify("No tienes notificaciones nuevas.", { type: "info" })}
-                                    style={{ cursor: "pointer" }}
-                                    alt="notificaciones"
-                                />
-                            </button>
-                        </div>
-
-                        <div className="login">
-                            <div className="login-left" onClick={() => showLoaderAndRedirect("/login")}>
-                                <button className="btnPerfilView" id="btnPerfilView">
-                                    <span className="nameUser">{userName}</span>
-                                </button>
-                            </div>
-                            <div className="login-avatar" onClick={() => showLoaderAndRedirect("/login")}>
-                                <img
-                                    src="/Imagenes/Login_Perfil/UserPerfil.png"
-                                    id="fotoUsuario"
-                                    alt="Foto de Usuario"
-                                    className="cursor-pointer"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <Encabezado activePage={"Login"}/>
                 {/* Cuerpo */}
                 <div id="cuerpo" className="fondoLogin">
                     <div id="contenedorLoginAsist">

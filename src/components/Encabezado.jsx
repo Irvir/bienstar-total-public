@@ -15,6 +15,24 @@ export default function Encabezado({ activePage, onNavigate }) {
       }
     }
   }, []);
+  useEffect(() => {
+    const bell = document.getElementById("btnNotification");
+    if (bell) {
+      const triggerWiggle = () => {
+        bell.classList.remove("bell-hint");
+        void bell.offsetWidth; // fuerza reflow
+        bell.classList.add("bell-hint");
+  
+        setTimeout(() => {
+          bell.classList.remove("bell-hint");
+        }, 800); // duración de la animación
+      };
+  
+      bell.addEventListener("click", triggerWiggle);
+      return () => bell.removeEventListener("click", triggerWiggle);
+    }
+  }, []);
+
 
   function handlePerfilClick() {
     const usuarioGuardado = localStorage.getItem("usuario");
@@ -32,7 +50,7 @@ export default function Encabezado({ activePage, onNavigate }) {
           <div className="logo">
             <a href="/">
               <img
-                src="/Imagenes/Login_Perfil/Logo.png"
+                src="/Imagenes/Login_Perfil/LogoWithOutBackground.png"
                 alt="Logo BienStarTotal"
                 className="logoImg"
               />
@@ -44,19 +62,19 @@ export default function Encabezado({ activePage, onNavigate }) {
               className={activePage === "home" ? "btnMenuSelec" : "btnMenu"}
               onClick={() => onNavigate("/home")}
             >
-              Inicio
+              INICIO
             </button>
             <button
               className={activePage === "alimentos" ? "btnMenuSelec" : "btnMenu"}
               onClick={() => onNavigate("/alimentos")}
             >
-              Alimentos
+              ALIMENTOS
             </button>
             <button
               className={activePage === "dietas" ? "btnMenuSelec" : "btnMenu"}
               onClick={() => onNavigate("/dietas")}
             >
-              Dietas
+              DIETAS
             </button>
             <button className="btnMenuNoti">
               <img
@@ -67,27 +85,14 @@ export default function Encabezado({ activePage, onNavigate }) {
             </button>
           </div>
 
-          <div className="login">
-            <div
-              style={{ float: "left", height: "100%", width: "75%" }}
-              onClick={handlePerfilClick}
-            >
-              <button className="btnPerfilView" id="btnPerfilView">
-                <span className="nameUser">{userName}</span>
-              </button>
-            </div>
-
-            <div
-              style={{ float: "left", width: "10%", height: "100%" }}
-              onClick={handlePerfilClick}
-            >
-              <img
-                src="/Imagenes/Login_Perfil/UserPerfil.png"
-                id="fotoUsuario"
-                alt="Foto de Usuario"
-                style={{ cursor: "pointer" }}
-              />
-            </div>
+          <div className="login" onClick={handlePerfilClick}>
+            <span className="nameUser">{userName}</span>
+            <img
+              src="/Imagenes/Login_Perfil/UserPerfil.png"
+              id="fotoUsuario"
+              alt="Foto de Usuario"
+              className="fotoUsuario"
+            />
           </div>
         </div>
       </div>

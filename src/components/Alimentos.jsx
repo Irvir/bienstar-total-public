@@ -130,37 +130,40 @@ export default function Alimentos() {
       {/* Modal de alimento */}
       {modalOpen && (
         <div
-          id="modalAlimento"
-          className="modal"
-          onClick={(e) => {
-            if (e.target.id === "modalAlimento") closeModal();
-          }}
-        >
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <img src={modalData.img} alt={modalData.name} />
-            <h2>{modalData.name}</h2>
-            <div>
-              {modalData.info === "Cargando..." && <p>Cargando...</p>}
-              {modalData.info &&
-              modalData.info !== "Cargando..." &&
-              typeof modalData.info === "object" ? (
-                <div>
-                  <p>
-                    <b>Proteína:</b> {modalData.info.protein ?? "-"} g
-                  </p>
-                  <p>
-                    <b>Energía:</b> {modalData.info.energy ?? "-"} kcal
-                  </p>
-                </div>
-              ) : (
-                modalData.info !== "Cargando..." && <p>No se pudo cargar la información.</p>
-              )}
-            </div>
-          </div>
-        </div>
+        id="modalAlimento"
+        className={`modal ${modalOpen ? "visible" : ""}`}
+        onClick={(e) => {
+          if (e.target.id === "modalAlimento") closeModal();
+        }}
+      >
+        <div className="modal-content">
+  <span className="close" onClick={closeModal}>
+    &times;
+  </span>
+  <img src={modalData.img} alt={modalData.name} />
+  <h2 id="modalNombre">{modalData.name}</h2>
+
+  <div id="modalInfo">
+    {modalData.info === "Cargando..." && <p>Cargando...</p>}
+
+    {modalData.info && modalData.info !== "Cargando..." && typeof modalData.info === "object" ? (
+      <div className="nutrient-grid">
+        <div><b>Energía:</b> {modalData.info.energy ?? "-"} kcal</div>
+        <div><b>Proteína:</b> {modalData.info.protein ?? "-"} g</div>
+        <div><b>Grasa total:</b> {modalData.info.total_lipid ?? "-"} g</div>
+        <div><b>Carbohidratos:</b> {modalData.info.carbohydrate ?? "-"} g</div>
+        <div><b>Azúcares:</b> {modalData.info.total_sugars ?? "-"} g</div>
+        <div><b>Calcio:</b> {modalData.info.calcium ?? "-"} mg</div>
+        <div><b>Hierro:</b> {modalData.info.iron ?? "-"} mg</div>
+        <div><b>Sodio:</b> {modalData.info.sodium ?? "-"} mg</div>
+        <div><b>Colesterol:</b> {modalData.info.cholesterol ?? "-"} mg</div>
+      </div>
+    ) : (
+      modalData.info !== "Cargando..." && <p>No se pudo cargar la información.</p>
+    )}
+  </div>
+</div>
+      </div>
       )}
     </>
   );

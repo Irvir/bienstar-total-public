@@ -120,15 +120,20 @@
     toast.className = `toast toast-${type}`;
 
     // Animar campana
-    try {
-      const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
-      if (bell) {
-        bell.classList.remove('bell-hint');
-        void bell.offsetWidth;
-        bell.classList.add('bell-hint');
-        setTimeout(() => bell.classList.remove('bell-hint'), 800);
-      }
-    } catch (_) { }
+    // Animar campana
+try {
+  const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
+  if (bell) {
+    bell.classList.remove('bell-hint');
+    void bell.offsetWidth; // Reinicia animación
+    bell.classList.add('bell-hint');
+    setTimeout(() => bell.classList.remove('bell-hint'), 800);
+
+    
+    bell.style.position = ''; // Se mantiene su posición natural
+    bell.style.transition = ''; // No transición extra
+  }
+} catch (_) {}
 
     // Contenido del toast
     const span = document.createElement('span');
