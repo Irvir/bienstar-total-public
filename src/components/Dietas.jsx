@@ -5,7 +5,7 @@ import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 
-const Dietas = () => {
+function Dietas() {
     // Estructura en memoria de la dieta agrupada por día y tipo de comida
     // Ej: { 1: { Desayuno:["Platano"], lunch:[...], ... }, 2: {...}, ... }
     const [dietByDay, setDietByDay] = useState({});
@@ -16,7 +16,7 @@ const Dietas = () => {
             if (!localStorage.getItem("usuario")) {
                 window.location.href = "/login";
             }
-        } catch (e) {
+        } catch {
             window.location.href = "/login";
         }
     }, []);
@@ -215,6 +215,9 @@ const Dietas = () => {
             </div>
         </div>
     );
-};
+}
 
-export default withAuth(Dietas, { requireAuth: true });
+const DietasWithAuth = withAuth(Dietas, { requireAuth: true });
+DietasWithAuth.displayName = 'Dietas';
+
+export default DietasWithAuth;

@@ -136,7 +136,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       // Esperar a que el mensaje se muestre antes de continuar
       setTimeout(async () => {
         // Auto-login
-        const loginRes = await fetch("http://localhost:3000/login", {
+        const loginRes = await fetch("http://localhost:3001/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: data.email, password: data.password })

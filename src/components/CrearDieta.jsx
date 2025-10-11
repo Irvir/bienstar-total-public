@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "../styles/CrearDieta.css";
-import { protectPage } from "../controllers/auth";
 import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 import CrearDietaForm from "./CrearDieta/CrearDietaForm";
-const traducciones = {
-    breakfast: "Desayuno",
-    lunch: "Almuerzo",
-    dinner: "Cena",
-    snack: "Snack",
-    snack2: "Snack 2",
-};
 
 function CrearDieta() {
+    const traducciones = {
+        breakfast: "Desayuno",
+        lunch: "Almuerzo",
+        dinner: "Cena",
+        snack: "Snack",
+        snack2: "Snack 2",
+    };
+
     const [usuario, setUsuario] = useState(null);
     const [alimentos, setAlimentos] = useState([]);
     const [filtro, setFiltro] = useState("");
@@ -67,7 +67,7 @@ function CrearDieta() {
     }, [filtro]);
 
     // ================== DIETA DEL DÍA ==================
-    async function cargarDietaDelDia(dia) {
+    async function cargarDietaDelDia() {
         try {
             const res = await fetch(`http://localhost:3001/get-diet?id_diet=${usuario?.id_diet}`);
             if (!res.ok) throw new Error("No se pudo cargar la dieta");
@@ -87,7 +87,8 @@ function CrearDieta() {
     }
 
     useEffect(() => {
-        if (usuario) cargarDietaDelDia(diaSeleccionado);
+        if (usuario) cargarDietaDelDia();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [usuario, diaSeleccionado]);
 
     // ================== AGREGAR / ELIMINAR ==================
@@ -103,15 +104,23 @@ function CrearDieta() {
                 }),
             });
 
-            if (res.ok) {
-                notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
+            const result = await res.json();
 
-                await cargarDietaDelDia(diaSeleccionado);
-            } else
-                notify(result.message || "Error al guardar alimento", { type: "error" }); 
+            if (res.ok) {
+                if (window.notify) {
+                    window.notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
+                }
+                await cargarDietaDelDia();
+            } else {
+                if (window.notify) {
+                    window.notify(result.message || "Error al guardar alimento", { type: "error" });
+                }
+            }
         } catch (e) {
             console.error(e);
-            notify("Error de conexión", { type: "error" });
+            if (window.notify) {
+                window.notify("Error de conexión", { type: "error" });
+            }
         }
     }
     
@@ -126,10 +135,15 @@ function CrearDieta() {
             });
 
             if (res.ok) {
-                notify("Alimento eliminado", { type: "success" });
-                await cargarDietaDelDia(diaSeleccionado);
-            } else
-                notify("Error al eliminar alimento", { type: "error" });
+                if (window.notify) {
+                    window.notify("Alimento eliminado", { type: "success" });
+                }
+                await cargarDietaDelDia();
+            } else {
+                if (window.notify) {
+                    window.notify("Error al eliminar alimento", { type: "error" });
+                }
+            }
         } catch (e) {
             console.error(e);
         }
@@ -146,14 +160,20 @@ function CrearDieta() {
             const result = await res.json();
 
             if (res.ok && result.success) {
-                notify(result.message || "Día borrado correctamente", { type: "success" });
-                await cargarDietaDelDia(diaSeleccionado);
+                if (window.notify) {
+                    window.notify(result.message || "Día borrado correctamente", { type: "success" });
+                }
+                await cargarDietaDelDia();
             } else {
-                notify(result.message || "Error al borrar la dieta del día", { type: "error" });
+                if (window.notify) {
+                    window.notify(result.message || "Error al borrar la dieta del día", { type: "error" });
+                }
             }
         } catch (e) {
             console.error("Error al borrar dieta:", e);
-            notify("Error de conexión con el servidor", { type: "error" });
+            if (window.notify) {
+                window.notify("Error de conexión con el servidor", { type: "error" });
+            }
         }
     }
 
@@ -252,4 +272,8 @@ function CrearDieta() {
     );
 }
 
-export default withAuth(CrearDieta, false);
+const CrearDietaWithAuth = withAuth(CrearDieta, false);
+CrearDietaWithAuth.displayName = 'CrearDieta';
+
+export default CrearDietaWithAuth;
+

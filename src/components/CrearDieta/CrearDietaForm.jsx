@@ -63,7 +63,7 @@ export default function CrearDietaForm({
                 <button id="btnBorrarDieta" onClick={borrarDietaDelDia}>
                     Borrar Todo
                 </button>
-                <button id="btnSalir">Salir</button>
+                <button id="btnSalir" onClick={() => window.location.href = '/dietas'}>Salir</button>
             </div>
         </div>
     );
