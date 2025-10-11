@@ -43,6 +43,7 @@ npm install
 git clone https://github.com/Irvir/bienstar-total-public.git
 cd bienstar-total-public
 npm install
+npm install express mysql2 cors bcrypt vite
 ```
 
 
