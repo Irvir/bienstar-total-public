@@ -4,7 +4,7 @@ import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 import CrearDietaForm from "./CrearDieta/CrearDietaForm";
-import Loader from "./Loader.jsx"; // Componente Loader
+import Loader from "./Loader.jsx"; // Loader global
 
 function CrearDieta() {
     const traducciones = {
@@ -20,7 +20,7 @@ function CrearDieta() {
     const [filtro, setFiltro] = useState("");
     const [diaSeleccionado, setDiaSeleccionado] = useState(1);
     const [dietaAgrupada, setDietaAgrupada] = useState({});
-    const [loading, setLoading] = useState(false); // loader global
+    const [loading, setLoading] = useState(false);
 
     // ================== SESIÓN ==================
     useEffect(() => {
@@ -53,8 +53,7 @@ function CrearDieta() {
         try {
             const res = await fetch("http://localhost:3001/food-search?q=" + encodeURIComponent(query));
             if (!res.ok) return [];
-            const data = await res.json();
-            return data;
+            return await res.json();
         } catch (e) {
             console.error("Error al buscar alimentos:", e);
             return [];
@@ -118,14 +117,18 @@ function CrearDieta() {
             const result = await res.json();
 
             if (res.ok) {
-                if (window.notify) window.notify(`${name} agregado (Día ${diaSeleccionado}, ${tipoComida})`, { type: "success" });
+                if (result.alreadyExists) {
+                    window.notify?.(`⚠️ ${name} ya está en tu dieta`, { type: "warning" });
+                } else {
+                    window.notify?.(`✅ ${name} agregado (Día ${diaSeleccionado}, ${traducciones[tipoComida]})`, { type: "success" });
+                }
                 await cargarDietaDelDia();
             } else {
-                if (window.notify) window.notify(result.message || "Error al guardar alimento", { type: "error" });
+                window.notify?.(result.message || "Error al guardar alimento", { type: "error" });
             }
         } catch (e) {
             console.error(e);
-            if (window.notify) window.notify("Error de conexión", { type: "error" });
+            window.notify?.("Error de conexión", { type: "error" });
         } finally {
             setLoading(false);
         }
@@ -141,10 +144,10 @@ function CrearDieta() {
                 body: JSON.stringify({ id_diet, id_food: id, dia: diaSeleccionado, tipoComida }),
             });
             if (res.ok) {
-                if (window.notify) window.notify("Alimento eliminado", { type: "success" });
+                window.notify?.("Alimento eliminado", { type: "success" });
                 await cargarDietaDelDia();
             } else {
-                if (window.notify) window.notify("Error al eliminar alimento", { type: "error" });
+                window.notify?.("Error al eliminar alimento", { type: "error" });
             }
         } catch (e) {
             console.error(e);
@@ -164,14 +167,14 @@ function CrearDieta() {
             });
             const result = await res.json();
             if (res.ok && result.success) {
-                if (window.notify) window.notify(result.message || "Día borrado correctamente", { type: "success" });
+                window.notify?.(result.message || "Día borrado correctamente", { type: "success" });
                 await cargarDietaDelDia();
             } else {
-                if (window.notify) window.notify(result.message || "Error al borrar la dieta del día", { type: "error" });
+                window.notify?.(result.message || "Error al borrar la dieta del día", { type: "error" });
             }
         } catch (e) {
             console.error("Error al borrar dieta:", e);
-            if (window.notify) window.notify("Error de conexión con el servidor", { type: "error" });
+            window.notify?.("Error de conexión con el servidor", { type: "error" });
         } finally {
             setLoading(false);
         }
@@ -205,6 +208,7 @@ function CrearDieta() {
             <Encabezado activePage="dietas" onNavigate={navigateWithLoader} />
 
             <div id="cuerpo">
+                {/* IZQUIERDA */}
                 <CrearDietaForm
                     dietaAgrupada={dietaAgrupada}
                     diaSeleccionado={diaSeleccionado}
@@ -213,6 +217,7 @@ function CrearDieta() {
                     borrarDietaDelDia={borrarDietaDelDia}
                 />
 
+                {/* DERECHA */}
                 <div id="filtroContainer">
                     <div id="contenedorFiltro">
                         <input
@@ -234,14 +239,14 @@ function CrearDieta() {
                                         <br />
                                         Calorías: {alimento.calories ?? "-"}
                                         <div className="nutri-grid">
-                                            <div className={nutrientesPrincipales.includes("protein") ? "nutriente-destacado" : ""}><b>Proteínas:</b> {alimento.protein ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("carbohydrate") ? "nutriente-destacado" : ""}><b>Carbohidratos:</b> {alimento.carbohydrate ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("total_lipid") ? "nutriente-destacado" : ""}><b>Grasas:</b> {alimento.total_lipid ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("total_sugars") ? "nutriente-destacado" : ""}><b>Azúcares:</b> {alimento.total_sugars ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("calcium") ? "nutriente-destacado" : ""}><b>Calcio:</b> {alimento.calcium ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("iron") ? "nutriente-destacado" : ""}><b>Hierro:</b> {alimento.iron ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("sodium") ? "nutriente-destacado" : ""}><b>Sodio:</b> {alimento.sodium ?? "-"}</div>
-                                            <div className={nutrientesPrincipales.includes("cholesterol") ? "nutriente-destacado" : ""}><b>Colesterol:</b> {alimento.cholesterol ?? "-"}</div>
+                                            <div className={nutrientesPrincipales.includes("protein") ? "nutriente-destacado" : ""}><b>🥩 Proteínas:</b> {alimento.protein ?? "-"} g</div>
+                                            <div className={nutrientesPrincipales.includes("carbohydrate") ? "nutriente-destacado" : ""}><b>🍞 Carbohidratos:</b> {alimento.carbohydrate ?? "-"} g</div>
+                                            <div className={nutrientesPrincipales.includes("total_lipid") ? "nutriente-destacado" : ""}><b>🥑 Grasas:</b> {alimento.total_lipid ?? "-"} g</div>
+                                            <div className={nutrientesPrincipales.includes("total_sugars") ? "nutriente-destacado" : ""}><b>🍬 Azúcares:</b> {alimento.total_sugars ?? "-"} g</div>
+                                            <div className={nutrientesPrincipales.includes("calcium") ? "nutriente-destacado" : ""}><b>🦴 Calcio:</b> {alimento.calcium ?? "-"} mg</div>
+                                            <div className={nutrientesPrincipales.includes("iron") ? "nutriente-destacado" : ""}><b>🩸 Hierro:</b> {alimento.iron ?? "-"} mg</div>
+                                            <div className={nutrientesPrincipales.includes("sodium") ? "nutriente-destacado" : ""}><b>🧂 Sodio:</b> {alimento.sodium ?? "-"} mg</div>
+                                            <div className={nutrientesPrincipales.includes("cholesterol") ? "nutriente-destacado" : ""}><b>💊 Colesterol:</b> {alimento.cholesterol ?? "-"} mg</div>
                                         </div>
                                     </div>
 
@@ -270,8 +275,6 @@ function CrearDieta() {
             </div>
 
             <Pie />
-
-            {/* Loader global */}
             <Loader visible={loading} />
         </div>
     );
@@ -281,3 +284,5 @@ const CrearDietaWithAuth = withAuth(CrearDieta, false);
 CrearDietaWithAuth.displayName = "CrearDieta";
 
 export default CrearDietaWithAuth;
+
+
