@@ -1,75 +1,111 @@
 .crear-cuenta-page .fondoLogin {
-    background-image: url("/Imagenes/Login_Perfil/fondoLogin.png");
     background-size: cover;
+    background-image: url('/src/assets/fondoLogin.jpg');
     background-position: center;
     width: 100%;
-    min-height: 80vh;
-    /* que se estire pero no corte */
+    margin-top: 30px;
+    height: 100vh;
+    /* ocupar toda la pantalla */
     display: flex;
     justify-content: center;
     align-items: center;
+    /* bajar el contenedor hacia abajo */
+    padding-top: 30vh;
+    /* mayor separacion superior para centrar mejor */
     overflow: hidden;
-    /* aquí sí, para que no meta scroll */
-
+    /* evitar scroll de la página */
 }
 
 #crear-cuenta-page #contenedorLoginAsist3 {
-    width: 80%;
-    max-width: 120vh;
-    min-height: 80vh;
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
     display: flex;
-    flex-wrap: wrap;
-
-    /* fondo semi-transparente */
+    align-items: center;
+    justify-content: center;
+    /* centrar el contenido dentro del asist */
     border-radius: 50px;
     overflow: hidden;
-
+    padding: 20px;
+    margin-top: 48px;
+    /* separar el panel del header */
 }
 
 .crear-cuenta-page #contenedorLogin2 {
-    width: 100%;
-    min-width: 250px;
-    /* agrega px */
-    background-image: url("/Imagenes/Login_Perfil/FondoSesion.png");
-    background-size: cover;
-    background-position: center;
+    width: 96%;
+    min-width: 720px;
+    margin-top: 40px;
+    /* efecto glass: fondo translúcido + blur */
+    background: rgba(255, 255, 255, 0.14);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     display: flex;
-    z-index: 10;
-    justify-content: flex-start;
+    flex-direction: column;
+    /* poner título y formulario en columna centrada */
     align-items: center;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    z-index: 10;
+    border-radius: 28px;
+    padding: 12px;
+    /* un poco más de padding para que el contenido respire */
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+    max-height: 70vh;
+    /* menos altura máxima */
 }
 
 .crear-cuenta-page .contendorLoginFotoCrearUserAsist {
     width: 100%;
-    font-size: clamp(18px, 2.5vw, 30px);
+    font-size: clamp(18px, 2.2vw, 24px);
     font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    color: black;
+    font-weight: 700;
+    color: #0f1720;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 
 .crear-cuenta-page .contendorLoginFotoCrearUser {
-    width: 100%;
-    height: 300px;
-    background-image: url("/Imagenes/Login_Perfil/Login2.png");
-    background-size: cover;
-    background-position: center;
-    border-radius: 20px;
-    float: left;
+    display: none;
+    /* quitada: ya no mostramos imagen */
 }
 
 /* Contenedor de la parte derecha (formulario) */
 .crear-cuenta-page .contenedorLoginDatosUser {
-    width: 67%;
-    min-width: 300px;
-    padding: 5px;
+    width: 100%;
+    max-width: 980px;
+    /* un poco más ancho */
+    padding: 6px 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    float: left;
+    align-items: center;
+    /* centrar botones e inputs */
+    gap: 2px;
+    /* separación mínima entre elementos */
+    margin: 0 auto;
+}
+
+/* Grupo de botones: por defecto apilados en columnas pequeñas, fila en pantallas grandes */
+.crear-cuenta-page .botonesGroup {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    /* separación mínima entre botones */
+    margin-top: 6px;
+}
+
+.crear-cuenta-page .botonesGroup .buttonCrearIniciarSesion {
+    flex: 1 1 60%;
+    /* más ancho */
+    margin: 0;
+    /* eliminar márgenes para que queden pegados */
+    padding: 6px 10px;
+    /* menos alto */
+    font-size: 15px;
+    /* ligeramente menor para botón compacto */
 }
 
 /* Labels y div de inputs */
@@ -77,21 +113,22 @@
 .crear-cuenta-page .divCorreo,
 .crear-cuenta-page .divEdadPesoAlt {
     width: 100%;
-    margin-bottom: 4px;
-    font-size: clamp(16px, 1.5vw, 20px);
-    font-weight: bold;
-    color: black;
+    margin-bottom: 10px;
+    font-size: clamp(14px, 1.3vw, 18px);
+    font-weight: 700;
+    color: #0f1720;
 }
 
 .crear-cuenta-page .edadPesoAlt {
     flex: 1;
     min-width: 80px;
+    margin-right: 8px;
 }
 
 /* Estilo para los botones */
 .crear-cuenta-page .buttonCrearIniciarSesion {
-    width: 50%;
-    padding: 10px;
+    width: 46%;
+    padding: 8px 12px;
     background: linear-gradient(135deg, #931525, #ff416c);
     color: white;
     border: none;
@@ -99,37 +136,29 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    margin-left: 2%;
+    margin-left: 0;
 }
 
 /* Estilo para los cuadros de texto */
+/* Inputs: glass + legibilidad */
 .crear-cuenta-page input[type="number"] {
-    width: 50%;
-    /* ancho */
-    height: 30px;
-    /* alto */
-    padding: 5px;
-    /* espacio interno */
+    width: 100%;
+    height: 36px;
+    padding: 8px 12px;
     font-size: 16px;
-    /* tamaño de letra */
-    border: 2px solid #931525;
-    /* color del borde */
-    border-radius: 8px;
-    /* bordes redondeados */
-    outline: none;
-    /* quita borde azul */
-    background-color: #f8f9fa;
-    /* color de fondo */
-    color: #333;
-    /* color del texto */
-    transition: 0.3s;
-    /* animación */
-    margin-left: 15px;
-    /* mover a la derecha */
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #0b1216;
+    transition: 0.25s;
+    margin-left: 0;
     margin-top: 10px;
-    /* mover hacia abajo */
     font-family: 'Inter', sans-serif;
-    text-align: center;
+    text-align: left;
+    padding-left: 14px;
+    caret-color: #B20C05;
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -140,32 +169,23 @@
 
 .crear-cuenta-page input[type="name"] {
     font-family: 'Inter', sans-serif;
-    width: 50%;
-    /* ancho */
-    height: 50;
-    /* alto */
-    padding: 5px;
-    /* espacio interno */
+    width: 100%;
+    height: 36px;
+    /* ajustar altura */
+    padding: 8px 12px;
     font-size: 16px;
-    /* tamaño de letra */
-    border: 2px solid #931525;
-    /* color del borde */
-    border-radius: 8px;
-    /* bordes redondeados */
-    outline: none;
-    /* quita borde azul */
-    background-color: #f8f9fa;
-    /* color de fondo */
-    color: #333;
-    /* color del texto */
-    transition: 0.3s;
-    /* animación */
-    margin-left: 15px;
-    /* mover a la derecha */
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #0b1216;
+    transition: 0.25s;
+    margin-left: 0;
     margin-top: 10px;
-    /* mover hacia abajo */
-    text-align: center;
-
+    text-align: left;
+    padding-left: 14px;
+    caret-color: #B20C05;
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -176,31 +196,22 @@
 
 .crear-cuenta-page input[type="text"] {
     font-family: 'Inter', sans-serif;
-    width: 50%;
-    /* ancho */
-    height: 30px;
-    /* alto */
-    padding: 5px;
-    /* espacio interno */
+    width: 100%;
+    height: 36px;
+    padding: 8px 12px;
     font-size: 16px;
-    /* tamaño de letra */
-    border: 2px solid #931525;
-    /* color del borde */
-    border-radius: 8px;
-    /* bordes redondeados */
-    outline: none;
-    /* quita borde azul */
-    background-color: #f8f9fa;
-    /* color de fondo */
-    color: #333;
-    /* color del texto */
-    transition: 0.3s;
-    /* animación */
-    margin-left: 15px;
-    /* mover a la derecha */
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #0b1216;
+    transition: 0.25s;
+    margin-left: 0;
     margin-top: 10px;
-    /* mover hacia abajo */
-    text-align: center;
+    text-align: left;
+    padding-left: 14px;
+    caret-color: #B20C05;
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -211,30 +222,22 @@
 
 .crear-cuenta-page input[type="password"] {
     font-family: 'Inter', sans-serif;
-    width: 50%;
-    /* ancho */
-    height: 30px;
-    /* alto */
-    padding: 5px;
-    /* espacio interno */
+    width: 100%;
+    height: 36px;
+    padding: 8px 12px;
     font-size: 16px;
-    /* tamaño de letra */
-    border: 2px solid #931525;
-    /* color del borde */
-    border-radius: 8px;
-    /* bordes redondeados */
-    outline: none;
-    /* quita borde azul */
-    background-color: #f8f9fa;
-    /* color de fondo */
-    color: #333;
-    /* color del texto */
-    transition: 0.3s;
-    /* animación */
-    margin-left: 15px;
-    /* mover a la derecha */
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #0b1216;
+    transition: 0.25s;
+    margin-left: 0;
     margin-top: 10px;
-    /* mover hacia abajo */
+    text-align: left;
+    padding-left: 14px;
+    caret-color: #B20C05;
 }
 
 /* Hover: cuando el mouse pasa encima */
@@ -242,21 +245,81 @@
     border-color: #2980b9;
     background-color: #eef7ff;
 }
+
 .crear-cuenta-page input[type="email"] {
     font-family: 'Inter', sans-serif;
-    text-align: center;
-    width: 50%;
-    height: 30px;
-    padding: 5px;
+    text-align: left;
+    width: 100%;
+    height: 36px;
+    padding: 8px 12px;
     font-size: 16px;
-    border: 2px solid #931525;
-    border-radius: 8px;
-    outline: none;
-    background-color: #f8f9fa;
-    color: #333;
-    transition: 0.3s;
-    margin-left: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #0b1216;
+    transition: 0.25s;
+    margin-left: 0;
     margin-top: 10px;
+    padding-left: 14px;
+    caret-color: #B20C05;
+}
+
+/* Botones centrados */
+.crear-cuenta-page .buttonCrearIniciarSesion {
+    width: auto;
+    margin: 2px auto 0 auto;
+    /* casi pegados */
+    display: block;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+/* boton secundario (Iniciar Sesión) más pegado */
+#btnIniciarSesion {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
+
+@media (max-width: 768px) {
+    .crear-cuenta-page #contenedorLogin2 {
+        padding: 16px;
+    }
+
+    .crear-cuenta-page .contenedorLoginDatosUser {
+        width: 100%;
+    }
+
+    .crear-cuenta-page .botonesGroup {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .crear-cuenta-page .botonesGroup .buttonCrearIniciarSesion {
+        width: 100%;
+    }
+
+    #crear-cuenta-page #contenedorLoginAsist3 {
+        margin-top: 18px;
+    }
+}
+
+/* Placeholders y selección */
+.crear-cuenta-page input::placeholder {
+    color: rgba(11, 18, 22, 0.45);
+}
+
+.crear-cuenta-page input::selection {
+    background: rgba(178, 12, 5, 0.18);
+    color: #fff;
+}
+
+/* Focus */
+.crear-cuenta-page input:focus {
+    outline: none;
+    box-shadow: 0 10px 26px rgba(147, 21, 37, 0.12);
+    border-color: rgba(147, 21, 37, 0.35);
 }
 
 .crear-cuenta-page input[type="email"]:hover {

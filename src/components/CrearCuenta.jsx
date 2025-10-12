@@ -98,16 +98,12 @@ const CrearCuenta = () => {
             <main id="cuerpo" className="fondoLogin">
                 <div id="contenedorLoginAsist3">
                     <div id="contenedorLogin2">
-                        <div style={{ width: "33%", height: "100%", float: "left" }}>
-                            <div className="contendorLoginFotoCrearUserAsist" style={{ fontFamily: "Arial, Helvetica, sans-serif" }}>
-                                Rellene los datos solicitados:
-                            </div>
-                            <div className="contendorLoginFotoCrearUser"></div>
-                        </div>
-
                         <div className="contenedorLoginDatosUser">
                             <form id="CrearCuentaForm" onSubmit={handleSubmit}>
                                 <div className="divNom">
+                                    <h2 className="contendorLoginFotoCrearUserAsist" style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: '0 0 8px 0' }}>
+                                        Rellene los datos solicitados:
+                                    </h2>
                                     Nombre:<br />
                                     <input type="text" id="name" placeholder="Nombre" required />
                                     <div className="field-error" id="err-name"></div>
@@ -146,15 +142,17 @@ const CrearCuenta = () => {
                                 </div>
 
                                 <br />
-                                <button type="submit" className="buttonCrearIniciarSesion" disabled={loading}>
-                                    {loading ? "Registrando..." : "Crear Cuenta"}
-                                </button>
                             </form>
 
-                            <br />
-                            <button className="buttonCrearIniciarSesion" id="btnIniciarSesion" onClick={() => (window.location.href = "/login")}>
-                                Iniciar Sesión
-                            </button>
+                            <div className="botonesGroup">
+                                <button type="submit" className="buttonCrearIniciarSesion" form="CrearCuentaForm" disabled={loading}>
+                                    {loading ? "Registrando..." : "Crear Cuenta"}
+                                </button>
+
+                                <button className="buttonCrearIniciarSesion" id="btnIniciarSesion" onClick={() => (window.location.href = "/login")}>
+                                    Iniciar Sesión
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
