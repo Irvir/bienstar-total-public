@@ -11,6 +11,15 @@ export default function CrearDietaForm({
 }) {
     const comidasDelDia = dietaAgrupada[diaSeleccionado] || {};
 
+    // Emojis para cada tipo de comida
+    const emojisComida = {
+        breakfast: "🌅",
+        lunch: "🍽️",
+        dinner: "🌙",
+        snack: "🍎",
+        snack2: "🥤"
+    };
+
     return (
         <div id="crearDieta">
             <h2 id="diaSeleccionado">
@@ -24,12 +33,24 @@ export default function CrearDietaForm({
 
                     return (
                         <div key={tipo} className={`grupoComida grupo-${tipo}`}>
-                            <h3>{traducciones[tipo]}</h3>
+                            <h3>
+                                <span className="emoji-comida">{emojisComida[tipo]}</span>
+                                {traducciones[tipo]}
+                                <span className="contador-alimentos">({alimentos.length})</span>
+                            </h3>
                             <ul className="lista-comida">
                                 {tieneAlimentos ? (
-                                    alimentos.map((alimento, i) => <li key={i}>{alimento}</li>)
+                                    alimentos.map((alimento, i) => (
+                                        <li key={i}>
+                                            <span className="bullet">•</span>
+                                            {alimento}
+                                        </li>
+                                    ))
                                 ) : (
-                                    <li className="sin-alimentos">(sin alimentos)</li>
+                                    <li className="sin-alimentos">
+                                        <span className="icono-vacio">📭</span>
+                                        Sin alimentos
+                                    </li>
                                 )}
                             </ul>
                         </div>

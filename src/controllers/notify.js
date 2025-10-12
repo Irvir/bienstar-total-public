@@ -23,10 +23,13 @@
     }
   }
   
-  function playSound() {
+  function playSound(type = 'info') {
     try {
-      const audio = new Audio('/public/Sonidos/notification.mp3');
-      audio.volume = 0.5;
+      let soundPath = '/public/Sonidos/notification.mp3';
+      if (type === 'error') soundPath = '/public/Sonidos/NotificationError.mp3';
+  
+      const audio = new Audio(soundPath);
+      audio.volume = type === 'error' ? 0.6 : 0.5;
       audio.play().catch((err) => {
         console.warn('Autoplay bloqueado, el usuario debe interactuar antes:', err);
       });
@@ -126,7 +129,6 @@
         document.body.appendChild(el);
       }
 
-      // ✅ Centrado horizontal y vertical relativo
       el.style.position = 'fixed';
       el.style.left = '50%';
       el.style.top = '10%';
@@ -141,17 +143,15 @@
   }
 
   function notify(message, opts) {
-    playSound();
-    injectStyles();
 
     const { type = 'info', duration = 3000 } = opts || {};
+    playSound(type);
+    injectStyles();
     const container = getContainer();
 
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
 
-    // Animar campana
-    // Animar campana
 try {
   const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
   if (bell) {

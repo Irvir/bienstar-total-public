@@ -107,6 +107,27 @@ function CrearDieta() {
     // ================== AGREGAR / ELIMINAR ==================
     async function agregarAlimento(id, name, tipoComida) {
         const id_diet = usuario?.id_diet ?? 1;
+    
+        // --- 🔍 Verificación previa ---
+        const comidasDelDia = dietaAgrupada[diaSeleccionado]?.[tipoComida] || [];
+        const yaExiste = comidasDelDia.some(alimentoExistente => {
+            // El backend a veces puede guardar solo nombre o id según estructura
+            if (typeof alimentoExistente === "string") {
+                return alimentoExistente.toLowerCase() === name.toLowerCase();
+            } else if (alimentoExistente?.id) {
+                return alimentoExistente.id === id;
+            } else if (alimentoExistente?.name) {
+                return alimentoExistente.name.toLowerCase() === name.toLowerCase();
+            }
+            return false;
+        });
+    
+        if (yaExiste) {
+            window.notify?.(`❌ ${name} ya está agregado en ${traducciones[tipoComida]} del Día ${diaSeleccionado}`, { type: "error" });
+            return; // 🚫 No sigue, evita duplicado
+        }
+    
+        // --- Guardado si no existe ---
         setLoading(true);
         try {
             const res = await fetch("http://localhost:3001/save-diet", {
@@ -115,7 +136,7 @@ function CrearDieta() {
                 body: JSON.stringify({ id_diet, meals: [{ id, name, dia: diaSeleccionado, tipoComida }] }),
             });
             const result = await res.json();
-
+    
             if (res.ok) {
                 if (result.alreadyExists) {
                     window.notify?.(`⚠️ ${name} ya está en tu dieta`, { type: "warning" });
@@ -133,6 +154,7 @@ function CrearDieta() {
             setLoading(false);
         }
     }
+    
 
     async function eliminarAlimento(id, tipoComida) {
         const id_diet = usuario?.id_diet ?? 1;
