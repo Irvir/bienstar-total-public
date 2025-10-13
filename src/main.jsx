@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './styles/Base.css';
 
-import './controllers/Alimentos.js';
-
+import './controllers/alimentos.js';
+import './controllers/notify.js';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
