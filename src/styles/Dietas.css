@@ -1,0 +1,205 @@
+.dietas-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dietas-page #cuerpo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0.5rem;
+}
+
+/* Botón Editar Dieta */
+#BtnCrearCuenta {
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    /* reduce espacio con el pie */
+    padding: 14px 30px;
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #A31621, #d42c3c);
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#BtnCrearCuenta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Tabla de dieta */
+.tabla-dieta {
+    width: 99vw;
+    margin: 40px auto 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-height: 60vh;
+    margin-left: 40px;
+}
+
+/* Columnas */
+.columna,
+.columna-horario {
+    border: 3px solid #941424;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 5px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.columna-horario {
+    width: 7vw;
+    min-width: 70px;
+}
+
+.columna {
+    width: 13vw;
+    min-width: 120px;
+}
+
+/* Títulos */
+.titulo {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid #941424;
+    background-color: #fdfdfd;
+    color: #941424;
+}
+
+/* Celdas */
+.celda {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+
+/* Bloques de comida */
+.bloque-comida {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.titulo-comida {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #931525;
+    /* rojo principal */
+    background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
+    /* fondo suave */
+    padding: 0.4rem 0.8rem;
+    border-left: 4px solid #931525;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.titulo-comida:hover {
+    background: linear-gradient(135deg, #ffd6d6, #ffc2c2);
+    transform: scale(1.02); }
+
+/* Loader */
+#loader {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(219, 219, 219, 0.6);
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loader-text {
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loader-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 4rem;
+    height: 2rem;
+    margin: 0;
+}
+
+.loader-dots img {
+    width: 35px;
+    height: 35px;
+    opacity: 0;
+    animation: fruitDots 1.5s infinite;
+}
+
+.loader-dots img:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loader-dots img:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.loader-dots img:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes fruitDots {
+
+    0%,
+    80%,
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1.2);
+    } }
+#BtnCrearCuenta::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+#BtnCrearCuenta:hover::after {
+    opacity: 1;
+}

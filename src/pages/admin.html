@@ -1,0 +1,126 @@
+<html lang="en">
+<script src="/frontEnd/src/controllers/Error404.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="Base.css">
+    <link rel="stylesheet" href="/src/styles/Pie.css">
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="Admin.css">
+</head>
+
+<body>
+    <script src="/frontEnd/src/controllers/loader.js"></script>
+    <div id="contenedorPrincipal">
+
+        <!-- Encabezado -->
+        <div id="encabezado">
+            <div class="header-inner">
+                <div class="logo">
+                    <a onclick="showLoaderAndRedirect('index.html')">
+                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+                <div class="menúBotones">
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('index.html')">Inicio</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
+                    <button class="btnMenuNoti">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                    </button>
+                </div>
+                <div class="login">
+                    <!-- Botón para ver el perfil -->
+                    <div style="float: left; height: 100%; width: 75%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
+                    </div>
+                    <!-- Imagen de usuario  -->
+                    <div style="float: left; width: 10%; height: 100%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const btnPerfilView = document.getElementById("btnPerfilView");
+                const menuDesplegable = document.getElementById("menuDesplegable");
+                const logoutButton = document.getElementById("logoutButton");
+                const fotoUsuario = document.getElementById("fotoUsuario");
+
+                // Estilo inicial del menú desplegable
+                menuDesplegable.style.position = "absolute";
+                menuDesplegable.style.top = "8%";
+                menuDesplegable.style.right = "8%";
+                menuDesplegable.style.display = "none";
+                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
+
+                // Alternar visibilidad del menú
+                function toggleMenu() {
+                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
+                }
+
+                btnPerfilView.addEventListener("click", toggleMenu);
+
+                // Cerrar sesión
+                logoutButton.addEventListener("click", () => {
+                    localStorage.removeItem("usuario");
+                    window.location.href = "login.html";
+                });
+
+                // Click en la foto de usuario
+                fotoUsuario.addEventListener("click", () => {
+                    window.location.href = "login.html";
+                });
+
+                // Cerrar menú al hacer clic fuera
+                document.addEventListener("click", (event) => {
+                    if (!btnPerfilView.contains(event.target) &&
+                        !menuDesplegable.contains(event.target) &&
+                        !fotoUsuario.contains(event.target)) {
+                        menuDesplegable.style.display = "none";
+                    }
+                });
+            });
+        </script>
+
+
+
+        <!-- Cuerpo -->
+        <div id="cuerpo">
+            <h2>Alimentos disponibles</h2>
+            <div id="resumenDieta" class="contenedor-lista"></div>
+        </div>
+        <!-- Pie de página -->
+        <div id="pie">
+            <div class="footer-inner">
+                <button class="instaBoton"></button>
+                <button class="faceBoton"></button>
+                <button class="youTubeBoton"></button>
+                <button class="whatsBoton"></button>
+            </div>
+        </div>
+    </div>
+    <button id="btnAgregarAlimento" onclick="showLoaderAndRedirect('crearAlimento.html')">+</button>
+
+    <script src="/frontEnd/src/controllers/gestionAlimentos.js"></script>
+    <div id="loader">
+        <span class="loader-text">Cargando</span>
+        <div class="loader-dots"></div>
+    </div>
+</body>
+
+</html>
