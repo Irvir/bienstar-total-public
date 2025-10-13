@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Intentar asegurar dieta en backend si no está o es inválida
         if (!user.id_diet || user.id_diet === 1) {
             try {
-                const ensure = await fetch("http://localhost:3000/ensure-diet", {
+                const ensure = await fetch("http://localhost:3001/ensure-diet", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: user.id })
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        const res = await fetch(`http://localhost:3000/get-diet?id_diet=${user.id_diet}`);
+    const res = await fetch(`http://localhost:3001/get-diet?id_diet=${user.id_diet}`);
         if (!res.ok) {
             console.error("Error al obtener la dieta:", res.statusText);
             return;

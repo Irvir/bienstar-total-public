@@ -2,18 +2,19 @@
     background-size: cover;
     background-image: url('/src/assets/fondoLogin.jpg');
     background-position: center;
+    background-repeat: no-repeat;
     width: 100%;
     margin-top: 30px;
-    height: 100vh;
-    /* ocupar toda la pantalla */
+    min-height: 100vh; /* adapta altura a la pantalla y al contenido */
     display: flex;
     justify-content: center;
-    align-items: center;
-    /* bajar el contenedor hacia abajo */
-    padding-top: 30vh;
-    /* mayor separacion superior para centrar mejor */
-    overflow: hidden;
-    /* evitar scroll de la página */
+    align-items: flex-start; /* alinear arriba para que el padding empuje el contenido */
+    /* separación superior adaptable: evita un desplazamiento fijo demasiado grande */
+    padding-top: clamp(6vh, 10vw, 28vh);
+    padding-bottom: 6vh;
+    box-sizing: border-box;
+    overflow: auto; /* permitir scroll si el contenido excede la pantalla */
+    position: relative;
 }
 
 #crear-cuenta-page #contenedorLoginAsist3 {
@@ -32,8 +33,7 @@
 }
 
 .crear-cuenta-page #contenedorLogin2 {
-    width: 96%;
-    min-width: 720px;
+    min-width: 600px; /* permitir tamaños pequeños en móviles */
     margin-top: 40px;
     /* efecto glass: fondo translúcido + blur */
     background: rgba(255, 255, 255, 0.14);
@@ -49,7 +49,7 @@
     /* un poco más de padding para que el contenido respire */
     border: 1px solid rgba(255, 255, 255, 0.22);
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
-    max-height: 70vh;
+    max-height: 90vh;
     /* menos altura máxima */
 }
 
@@ -282,7 +282,7 @@
     margin-bottom: 2px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 968px) {
     .crear-cuenta-page #contenedorLogin2 {
         padding: 16px;
     }

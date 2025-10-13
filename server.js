@@ -36,7 +36,8 @@ function validarRegistro(email, password, height, weight, age) {
   weight = Number(weight);
   height = Number(height);
 
-  if (height < 10) height = height * 100; // si vino en metros -> cm
+  // si vino en metros -> cm
+  if (height < 10) height = height * 100; 
 
   const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
   if (!regexEmail.test(email)) errores.push("El correo debe contener letras y números válidos.");
@@ -52,9 +53,6 @@ function validarRegistro(email, password, height, weight, age) {
   return errores;
 }
 
-/**
- * --- Rutas ---
- */
 
 // Ruta de prueba
 app.get("/test-db", async (req, res) => {
@@ -147,13 +145,10 @@ app.post("/login", async (req, res) => {
 app.get("/admin/foods", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM food");
-    // Normalize image field so frontend can reliably use `alimento.image`
     const normalized = rows.map(r => {
-      // support common column names: image, imagen, image_url
       const raw = r.image || r.imagen || r.image_url || r.path || null;
       let image = raw || null;
       if (image && typeof image === 'string' && !image.startsWith('http') && !image.startsWith('/')) {
-        // assume filenames are stored and images live under public/Imagenes/Alimentos
         image = `/Imagenes/Alimentos/${image}`;
       }
       return { ...r, image };
@@ -164,7 +159,7 @@ app.get("/admin/foods", async (req, res) => {
     res.status(500).json({ error: "Error al obtener alimentos" });
   }
 });
-// DELETE /user/:id
+// Eliminar Usuario
 app.delete("/user/:id", async (req, res) => {
   const connection = await pool.getConnection();
   try {
@@ -172,7 +167,6 @@ app.delete("/user/:id", async (req, res) => {
 
     await connection.beginTransaction();
 
-    // 1️⃣ Obtener id_diet del usuario
     const [users] = await connection.query("SELECT id_diet FROM user WHERE id = ?", [id]);
     if (users.length === 0) {
       await connection.rollback();
@@ -180,7 +174,6 @@ app.delete("/user/:id", async (req, res) => {
     }
     const id_diet = users[0].id_diet;
 
-    // 2️⃣ Borrar meal_food → meal → day
     const [days] = await connection.query("SELECT id FROM day WHERE id_diet = ?", [id_diet]);
     const dayIds = days.map(d => d.id);
     if (dayIds.length > 0) {
@@ -194,10 +187,8 @@ app.delete("/user/:id", async (req, res) => {
 
     await connection.query("DELETE FROM day WHERE id_diet = ?", [id_diet]);
 
-    // 3️⃣ Borrar usuario
     await connection.query("DELETE FROM user WHERE id = ?", [id]);
 
-    // 4️⃣ Opcional: borrar la dieta si no es la predeterminada
     if (id_diet !== 1) {
       await connection.query("DELETE FROM diet WHERE id = ?", [id_diet]);
     }
@@ -213,8 +204,89 @@ app.delete("/user/:id", async (req, res) => {
   }
 });
 
+// Actualizar datos de usuario 
+app.patch("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, height, weight, age, originalEmail } = req.body || {};
 
-// Asegurar dieta personal para un usuario (POST { user_id? , email? })
+  // Cargar usuario existente
+  let [rows] = await pool.query("SELECT id, name, email, height, weight, age, id_diet FROM user WHERE id = ?", [id]);
+    if (rows.length === 0) {
+      const lookupEmail = originalEmail || email;
+      if (lookupEmail) {
+        const [byEmail] = await pool.query(
+          "SELECT id, name, email, height, weight, age, id_diet FROM user WHERE email = ? LIMIT 1",
+          [lookupEmail]
+        );
+        if (byEmail.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
+        rows = byEmail;
+      } else {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+    }
+
+    const current = rows[0];
+    // usar este id para cualquier actualización
+    const userId = current.id; 
+    const next = {
+      name: (name ?? current.name) || current.name,
+      // email no es editable desde este endpoint
+      email: current.email,
+      height: height === undefined || height === null || height === '' ? current.height : Number(height),
+      weight: weight === undefined || weight === null || weight === '' ? current.weight : Number(weight),
+      age: age === undefined || age === null || age === '' ? current.age : Number(age),
+    };
+
+    // Validaciones básicas (suaves):
+    if (next.height < 10) next.height = next.height * 100; // si vino en metros -> cm
+    if (next.age && (next.age <= 15 || next.age >= 100)) return res.status(400).json({ message: "Edad fuera de rango" });
+    if (next.weight && (next.weight <= 30 || next.weight >= 170)) return res.status(400).json({ message: "Peso fuera de rango" });
+    if (next.height && (next.height <= 80 || next.height >= 250)) return res.status(400).json({ message: "Altura fuera de rango" });
+
+    // Bloquear cambios de email desde este endpoint
+    if (email !== undefined && email !== current.email) {
+      return res.status(400).json({ message: "El correo no se puede cambiar desde esta pantalla" });
+    }
+
+    await pool.query(
+      "UPDATE user SET name = ?, height = ?, weight = ?, age = ? WHERE id = ?",
+      [next.name, next.height, next.weight, next.age, userId]
+    );
+
+    res.json({
+      id: Number(userId),
+      name: next.name,
+      email: next.email,
+      height: next.height,
+      weight: next.weight,
+      age: next.age,
+      id_diet: current.id_diet,
+    });
+  } catch (err) {
+    console.error("PATCH /user/:id error:", err);
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+});
+
+// Obtener usuario por ID 
+app.get("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await pool.query(
+      "SELECT id, name, email, height, weight, age, id_diet FROM user WHERE id = ?",
+      [id]
+    );
+    if (rows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("GET /user/:id error:", err);
+    res.status(500).json({ message: "Error servidor" });
+  }
+});
+
+
+// Asegurar dieta personal para un usuario 
 app.post("/ensure-diet", async (req, res) => {
   try {
     const { user_id, email } = req.body || {};
@@ -242,7 +314,7 @@ app.post("/ensure-diet", async (req, res) => {
   }
 });
 
-// Obtener info alimento por ID (GET /food/:id)
+// Obtener info alimento por ID
 app.get("/food/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -255,7 +327,7 @@ app.get("/food/:id", async (req, res) => {
   }
 });
 
-// Búsqueda de alimentos (GET /food-search?q=)
+// Búsqueda de alimentos 
 app.get("/food-search", async (req, res) => {
   try {
     const q = (req.query.q || "").trim();
@@ -307,7 +379,7 @@ app.get("/food-search", async (req, res) => {
     res.status(500).json([]);
   }
 });
-// Obtener dieta (GET /get-diet?id_diet=1)
+// Obtener dieta 
 app.get("/get-diet", async (req, res) => {
   try {
     const id_diet = parseInt(req.query.id_diet || "1", 10); // por defecto 1
@@ -328,7 +400,6 @@ app.get("/get-diet", async (req, res) => {
       [id_diet]
     );
 
-    // devuelve [{dia, tipo_comida, alimento}, ...]
     res.json(rows);
   } catch (err) {
     console.error("/get-diet error:", err);
@@ -354,10 +425,10 @@ app.post("/save-diet", async (req, res) => {
       // validación dentro del loop
       if (!id_food || !dia || !tipoComida) {
         console.warn("Datos incompletos para alimento:", meal);
-        continue; // ahora sí tiene sentido
+        continue; 
       }
 
-      // 1) Insertar o encontrar el día
+      // - Insertar o encontrar el día
       let [day] = await pool.query(
         "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
         [id_diet, dia]
@@ -374,7 +445,7 @@ app.post("/save-diet", async (req, res) => {
         id_day = result.insertId;
       }
 
-      // 2) Insertar o encontrar el meal
+      //  Insertar o encontrar el meal
       let [mealRow] = await pool.query(
         "SELECT id FROM meal WHERE id_day = ? AND type = ?",
         [id_day, tipoComida]
@@ -391,7 +462,7 @@ app.post("/save-diet", async (req, res) => {
         id_meal = result.insertId;
       }
 
-      // 3) Insertar en meal_food (si no existe ya)
+      // - Insertar en meal_food (si no existe ya)
       await pool.query(
         `INSERT INTO meal_food (id_meal, id_food, quantity)
          VALUES (?, ?, 1)

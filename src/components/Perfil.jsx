@@ -59,6 +59,11 @@ function Perfil() {
 
     if (!usuario) return null;
 
+        const onActualizarUsuario = (u) => {
+                setUsuario(u);
+                try { localStorage.setItem("usuario", JSON.stringify(u)); } catch {}
+        };
+
     return (
         <div id="contenedorPrincipal" className="perfil-page">
             <Encabezado activePage="perfil" onNavigate={showLoaderAndRedirect} />
@@ -70,6 +75,7 @@ function Perfil() {
                     usuario={usuario}
                     handleCerrarSesion={handleCerrarSesion}
                     handleBorrarCuenta={handleBorrarCuenta}
+                    onActualizarUsuario={onActualizarUsuario}
                     />
 
                 </div>
