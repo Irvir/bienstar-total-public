@@ -29,6 +29,7 @@ function Login() {
     setActivePage(currentPage.replace(".html", "").toLowerCase());
   }, []);
 
+  // Mostrar loader + redirigir
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => {
@@ -36,6 +37,7 @@ function Login() {
     }, 700);
   };
 
+  // Notificar + redirigir
   const notifyThenRedirect = (mensaje, opciones, url, setLoadingFn) => {
     window.notify(mensaje, opciones);
     setLoadingFn(true);
@@ -44,6 +46,7 @@ function Login() {
     }, opciones?.duration || 1500);
   };
 
+  // ====== LOGIN PRINCIPAL ======
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -53,6 +56,30 @@ function Login() {
     }
 
     setLoading(true);
+
+    // Shortcut: if the admin2025 email is used, treat as admin locally and redirect
+    try {
+      const emailNormalized = (email || "").trim().toLowerCase();
+      if (emailNormalized === "admin2025@bienstartotal.food") {
+        const adminUser = {
+          id: "admin2025",
+          name: "Administrador",
+          email: emailNormalized,
+          id_diet: null,
+        };
+        localStorage.setItem("usuario", JSON.stringify(adminUser));
+        // show welcome and redirect to admin page
+        notifyThenRedirect(
+          "Bienvenido Administrador",
+          { type: "success", duration: 1200 },
+          "/admin.html",
+          setLoading
+        );
+        return;
+      }
+    } catch (err) {
+      console.warn("Error admin shortcut check", err);
+    }
 
     try {
       const response = await fetch("http://localhost:3001/login", {
@@ -65,47 +92,61 @@ function Login() {
 
       if (response.ok) {
         localStorage.setItem("usuario", JSON.stringify(result.user));
-        notifyThenRedirect("Login exitoso", { type: "success", duration: 1500 }, "/", setLoading);
-      } else {
-        window.notify(result.message || "Correo o contraseña incorrectos", { type: "error" });
-        // limpiar ambos campos y enfocar el email para permitir reintento inmediato
-        try {
-          setEmail("");
-          setPassword("");
-          // small delay to avoid browser autofill race
-          setTimeout(() => {
-            try {
-              if (emailRef.current) {
-                emailRef.current.value = '';
-                emailRef.current.focus();
-              }
-              if (passwordRef.current) passwordRef.current.value = '';
-            } catch (_) {}
-          }, 50);
-        } catch (e) {
-          // no fatal
+
+        // 🔍 Verificación de usuario administrador
+        const user = result.user;
+        const esAdmin =
+          (user.email &&
+            (user.email.trim().toLowerCase() === "admin@bienstartotal.food" ||
+             user.email.trim().toLowerCase() === "admin2025@bienstartotal.food")) ||
+          (user.name && user.name.trim().toLowerCase() === "admin") ||
+          (String(user.id) === "6");
+
+        if (esAdmin) {
+          notifyThenRedirect(
+            "Bienvenido Administrador",
+            { type: "success", duration: 1500 },
+            "/admin.html",
+            setLoading
+          );
+        } else {
+          notifyThenRedirect(
+            "Login exitoso",
+            { type: "success", duration: 1500 },
+            "/",
+            setLoading
+          );
         }
+      } else {
+        window.notify(result.message || "Correo o contraseña incorrectos", {
+          type: "error",
+        });
+
+        // Limpiar campos y enfocar email
+        setEmail("");
+        setPassword("");
+        setTimeout(() => {
+          if (emailRef.current) {
+            emailRef.current.value = "";
+            emailRef.current.focus();
+          }
+          if (passwordRef.current) passwordRef.current.value = "";
+        }, 50);
       }
     } catch (error) {
       console.error("Error login:", error);
       window.notify("Error en la conexión con el servidor", { type: "error" });
-      // limpiar ambos campos y enfocar email para permitir reintento
-      try {
-        setEmail("");
-        setPassword("");
-        setTimeout(() => {
-          try {
-            if (emailRef.current) {
-              emailRef.current.value = '';
-              emailRef.current.focus();
-            }
-            if (passwordRef.current) passwordRef.current.value = '';
-          } catch (_) {}
-        }, 50);
-      } catch (e) {}
-    }
-    finally {
-      // garantizar que loading sea false tras el intento
+
+      setEmail("");
+      setPassword("");
+      setTimeout(() => {
+        if (emailRef.current) {
+          emailRef.current.value = "";
+          emailRef.current.focus();
+        }
+        if (passwordRef.current) passwordRef.current.value = "";
+      }, 50);
+    } finally {
       setLoading(false);
     }
   };
@@ -137,18 +178,21 @@ function Login() {
                     ref={passwordRef}
                     autoComplete="new-password"
                     name="login_password"
-                    // also set the DOM value if browser tries to autofill
-                    onFocus={(e) => { if (!password) e.target.value = ''; }}
+                    onFocus={(e) => {
+                      if (!password) e.target.value = "";
+                    }}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-                  <br /><br />
+                  <br />
+                  <br />
                   <button type="submit" id="botonIngresar">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
 
-                  <br /><br />
+                  <br />
+                  <br />
                   <button
                     type="button"
                     className="btnCrearCuenta"

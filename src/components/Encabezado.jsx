@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/Base.css";
+import "../styles/Encabezado.css";
 
 export default function Encabezado({ activePage, onNavigate }) {
   const [userName, setUserName] = useState("Invitado");
@@ -50,7 +50,7 @@ export default function Encabezado({ activePage, onNavigate }) {
           <div className="logo">
             <a href="/">
               <img
-                src="/Imagenes/Login_Perfil/LogoWithOutBackground.png"
+                src="/assets/LogoRed.png"
                 alt="Logo BienStarTotal"
                 className="logoImg"
               />
@@ -88,7 +88,7 @@ export default function Encabezado({ activePage, onNavigate }) {
           <div className="login" onClick={handlePerfilClick}>
             <span className="nameUser">{userName}</span>
             <img
-              src="/Imagenes/Login_Perfil/UserPerfil.png"
+              src="/Imagenes/Login_Perfil/UserPerfil2.png"
               id="fotoUsuario"
               alt="Foto de Usuario"
               className="fotoUsuario"

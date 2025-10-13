@@ -144,6 +144,76 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Error servidor login" });
   }
 });
+app.get("/admin/foods", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM food");
+    // Normalize image field so frontend can reliably use `alimento.image`
+    const normalized = rows.map(r => {
+      // support common column names: image, imagen, image_url
+      const raw = r.image || r.imagen || r.image_url || r.path || null;
+      let image = raw || null;
+      if (image && typeof image === 'string' && !image.startsWith('http') && !image.startsWith('/')) {
+        // assume filenames are stored and images live under public/Imagenes/Alimentos
+        image = `/Imagenes/Alimentos/${image}`;
+      }
+      return { ...r, image };
+    });
+    res.json(normalized);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener alimentos" });
+  }
+});
+// DELETE /user/:id
+app.delete("/user/:id", async (req, res) => {
+  const connection = await pool.getConnection();
+  try {
+    const { id } = req.params;
+
+    await connection.beginTransaction();
+
+    // 1️⃣ Obtener id_diet del usuario
+    const [users] = await connection.query("SELECT id_diet FROM user WHERE id = ?", [id]);
+    if (users.length === 0) {
+      await connection.rollback();
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    const id_diet = users[0].id_diet;
+
+    // 2️⃣ Borrar meal_food → meal → day
+    const [days] = await connection.query("SELECT id FROM day WHERE id_diet = ?", [id_diet]);
+    const dayIds = days.map(d => d.id);
+    if (dayIds.length > 0) {
+      const [meals] = await connection.query(`SELECT id FROM meal WHERE id_day IN (${dayIds.map(() => '?').join(',')})`, dayIds);
+      const mealIds = meals.map(m => m.id);
+      if (mealIds.length > 0) {
+        await connection.query(`DELETE FROM meal_food WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`, mealIds);
+      }
+      await connection.query(`DELETE FROM meal WHERE id_day IN (${dayIds.map(() => '?').join(',')})`, dayIds);
+    }
+
+    await connection.query("DELETE FROM day WHERE id_diet = ?", [id_diet]);
+
+    // 3️⃣ Borrar usuario
+    await connection.query("DELETE FROM user WHERE id = ?", [id]);
+
+    // 4️⃣ Opcional: borrar la dieta si no es la predeterminada
+    if (id_diet !== 1) {
+      await connection.query("DELETE FROM diet WHERE id = ?", [id_diet]);
+    }
+
+    await connection.commit();
+    res.json({ message: "Usuario y datos asociados eliminados correctamente" });
+  } catch (err) {
+    await connection.rollback();
+    console.error(err);
+    res.status(500).json({ message: "Error al eliminar usuario" });
+  } finally {
+    connection.release();
+  }
+});
+
+
 // Asegurar dieta personal para un usuario (POST { user_id? , email? })
 app.post("/ensure-diet", async (req, res) => {
   try {

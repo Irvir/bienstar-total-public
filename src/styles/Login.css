@@ -1,6 +1,5 @@
 /* Fondo principal ocupa toda la pantalla sin scroll */
 .login-page .fondoLogin {
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");
     background-size: cover;
     background-position: center;
     width: 100%;

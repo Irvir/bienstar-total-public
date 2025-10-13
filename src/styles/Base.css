@@ -5,14 +5,11 @@
 
 html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: center center;
+    background-attachment: fixed; 
+    background-image: url('/public/assets/pe1.png');
 }
 
 :root {
@@ -31,148 +28,28 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    /* ❌ Elimina esta línea */
+    /* background-color: white; */
     position: relative;
     z-index: 10;
 }
 
-/* Encabezado */
-#encabezado {
-    background: linear-gradient(135deg, #A31621, #d42c3c);
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-
-.header-inner {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
-    /* más espacio lateral para que se vea extendido */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    /* separación entre logo, menú y login */
-    flex-wrap: wrap;
-    border-radius: 50px;
-    /* para móviles */
-}
-
-/* Logo */
-.logo {
-    flex: 0 0 auto;
-}
-
-.logoImg {
-    height: clamp(40px, 8vw, 80px);
-    /* mantiene el alto original, responsive */
-    width: auto;
-}
-
-/* Menú central */
-.menúBotones {
-    flex: 2;
-    /* ocupa más espacio horizontal */
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    /* separación entre botones */
-    flex-wrap: wrap;
-    /* se ajusta en pantallas pequeñas */
-}
-
-/* Alias sin acentos para componentes que usan nombres de clase ASCII */
-.menu-botones {
-    flex: 2;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-/* Anchors usados en el header cuando no se usan los botones originales */
-.menu-link {
-    color: var(--white);
-    background-color: transparent;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: clamp(14px, 1.5vw, 18px);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Botones del menú */
-.btnMenuSelec,
-.btnMenu,
-.btnMenuNoti {
-    border: none;
-    cursor: pointer;
-    color: var(--white);
-    background-color: var(--primary);
-    font-weight: bold;
-    font-size: clamp(14px, 1.5vw, 18px);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-}
-
-.btnMenuSelec {
-    background-color: var(--primary-dark);
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.btnMenuNoti {
-    flex: 0 0 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-}
-
-#btnNotification {
-    height: clamp(20px, 3vw, 32px);
-    width: auto;
-    object-fit: contain;
-    display: block;
-}
-
-/* Login */
-
-.login {
-    flex: 0 0 auto;
-}
-
-.btnPerfilView {
-    border: none;
-    background: transparent;
-    color: var(--white);
-    cursor: pointer;
-    font-size: clamp(14px, 1.5vw, 18px);
-    font-weight: bold;
-    padding: 0.25rem;
-}
-
-/* Avatar (login/profile) - unificado y responsivo (ver :root arriba) */
+/* Header and avatar styles were moved to Encabezado.css */
 /* Cuerpo */
 #cuerpo {
     flex: 1;
     width: 100%;
     max-width: 100%;
+    height: 100vh;
     margin: 0;
     padding: 0;
-    background-image: url('/public/assets/calcomaniasAlimentos5.png');
     background-size: 800px 800px;
     /* ajusta el tamaño del patrón */
     background-repeat: repeat;
     /* permite que se repita */
     background-position: center center;
     /* centra el patrón */
+    background-attachment: fixed
 }
 @media (max-width: 768px) {
     #cuerpo {
@@ -180,17 +57,6 @@ body {
     }
 }
 
-/* Pie */
-#pie {
-    background-color: var(--primary);
-    width: 100%;
-    padding: 0.5%;
-    color: var(--white);
-    margin-top: auto;
-    border-radius: 0px 0px 00px 0px;
-    position: relative;
-    /* fuerza a ir al fondo del flex container */
-}
 
 .footer-inner {
     max-width: var(--max-w);
@@ -324,154 +190,22 @@ body {
     transition: transform 0.3s ease;
 }
 
-#btnNotification:hover {
-    transform: rotate(-15deg) scale(1.1);
-    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)); }
-        .login {
-            display: flex;
-            align-items: center; /* centra la foto verticalmente */
-            justify-content: flex-end;
-            gap: 10px;
-            padding: 6px 12px; /* menos padding para evitar recorte */
-            border-radius: 30px;
-            background: linear-gradient(135deg, #ff6b6b, #ffb347);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            max-width: 220px;
-            white-space: nowrap;
-            overflow: visible; /* permitir que la imagen sobresalga si escala */
-        }
-    
-        .nameUser {
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex-grow: 1;
-            max-width: 120px;
-            text-align: right;
-        }
-
-/* Asegurar que solo haya una regla para el avatar y usar variables para tamaño */
-#fotoUsuario,
-.fotoUsuario {
-    width: var(--avatar-size);
-    height: var(--avatar-size);
-    border-radius: 50%;
-    border: 2px solid #fff;
-    object-fit: cover;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0;
-    transition: transform 0.18s ease;
-}
-
-.fotoUsuario:hover,
-#fotoUsuario:hover {
-    transform: scale(1.06);
-}
-
-/* Reglas con mayor especificidad para el header - protegen el avatar del header
-   frente a estilos de páginas (ej. perfil) que usen .login o #imagenUser */
-#encabezado .login {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 12px;
-    border-radius: 30px;
-    background: linear-gradient(135deg, #ff6b6b, #ffb347);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    max-width: 220px;
-    white-space: nowrap;
-    overflow: visible;
-}
-
-#encabezado .login .fotoUsuario,
-#encabezado .login #fotoUsuario {
-    width: var(--avatar-size);
-    height: var(--avatar-size);
-    border: 2px solid #fff;
-}
-
-/* Si hay reglas de tipo #imagenUser en perfil, evitamos que afecten al header */
-/* El contenedor #imagenUser se usa en perfil y su estilo está en Perfil.css */
-/* Evitar que se mueva el header al crecer el nombre */
-.header-inner {
-  align-items: center;
-}
-
-@media (max-width: 768px) {
-    .login {
-        padding: 4px 10px;
-        gap: 6px;
-        max-width: 180px;
+@keyframes fondoRodillo {
+    0% {
+        background-position: 0 0;
     }
 
-    .nameUser {
-        font-size: 14px;
-        max-width: 100px;
-    }
-
-    /* reducir avatar en pantallas pequeñas */
-    #fotoUsuario,
-    .fotoUsuario {
-        width: var(--avatar-size-sm);
-        height: var(--avatar-size-sm);
+    100% {
+        background-position: -400px 0;
+        /* ajusta según el tamaño del patrón */
     }
 }
-.btnMenu,
-.btnMenuSelec {
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-}
 
-.btnMenu:hover,
-.btnMenuSelec:hover {
-    background-color: #d42c3c;
-    /* tono más claro al pasar */
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
-    /* brillo suave */
-    transform: translateY(-2px);
-    /* levanta ligeramente */
-}
-
-/* Opcional: efecto de brillo interno */
-.btnMenu::after,
-.btnMenuSelec::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
-
-.btnMenu:hover::after,
-.btnMenuSelec:hover::after {
-    opacity: 1;
-}
-.login {
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.login:hover {
-    background: linear-gradient(135deg, #ff7b7b, #ffc47a);
-    /* tono más claro */
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
-    /* brillo suave */
-    transform: translateY(-2px);
-    /* levanta ligeramente */
-}
-
-/* Opcional: animación sutil del avatar */
-.login:hover .fotoUsuario {
-    transform: scale(1.08);
-    transition: transform 0.3s ease; }
+html,
+body {
+    background-image: url('/public/assets/pe1.png');
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-attachment: fixed;
+    animation: fondoRodillo 10s linear infinite; }

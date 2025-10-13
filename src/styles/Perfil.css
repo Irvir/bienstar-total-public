@@ -2,87 +2,6 @@
    PANTALLA DE CARGA
 ============================== */
 /* Contenedor principal del loader (pantalla de carga) */
-#loader {
-    display: none;
-    /* Solo esta línea */
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(219, 219, 219, 0.6);
-    backdrop-filter: blur(3px);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-/* Texto principal del loader */
-.loader-text {
-    font-size: 2rem;
-    /* Tamaño del texto */
-    color: white;
-    letter-spacing: 2px;
-    margin: 0 0 20px 0;
-    /* Solo margen abajo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-/* Contenedor de las imágenes de frutas animadas */
-.loader-dots {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    /* Espacio entre las imágenes */
-    width: 4rem;
-    /* Ancho total del contenedor */
-    height: 2rem;
-    margin: 0;
-    /* Sin margen */
-
-}
-
-/* Estilo de las imágenes de frutas */
-.loader-dots img {
-    width: 35px;
-    height: 35px;
-    opacity: 0;
-    animation: fruitDots 1.5s infinite;
-}
-
-/* Delay para que aparezcan una por una */
-.loader-dots img:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.loader-dots img:nth-child(2) {
-    animation-delay: 0.3s;
-}
-
-.loader-dots img:nth-child(3) {
-    animation-delay: 0.6s;
-}
-
-/* Animación de las frutas */
-@keyframes fruitDots {
-
-    0%,
-    80%,
-    100% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    40% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
 
 /* Contenedor principal del cuerpo */
 #cuerpo {
@@ -304,7 +223,7 @@
 
 /* Contenedor cerrar sesión */
 /* Área derecha: foto de perfil y botón cerrar sesión */
-#contenedorCerrarSesion {
+#contenedorCerrarSesion,#contenedorBorrarCuenta {
     flex: 1 1 260px;
     /* más ancho para mantener proporciones con la tarjeta agrandada */
     display: flex;
@@ -327,7 +246,7 @@
 
 /* Botón cerrar sesión estilizado */
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
-#cerrarSesion {
+#cerrarSesion ,#borrarCuenta {
     width: 75%;
     padding: 12px 18px;
     font-size: 16px;
@@ -340,8 +259,10 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-
-#cerrarSesion:hover {
+#borrarCuenta {
+    margin-top: 110%;
+}
+#cerrarSesion:hover,#borrarCuenta:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
@@ -364,7 +285,7 @@
     }
 
     #contenedorInfo,
-    #contenedorCerrarSesion {
+    #contenedorCerrarSesion,#contenedorBorrarCuenta {
         width: 100%;
         margin-bottom: 20px;
     }

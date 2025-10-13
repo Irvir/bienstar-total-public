@@ -35,15 +35,7 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Pie de página */
-#pie {
-    background-color: #A31621;
-    width: 100%;
-    padding: 0.5rem;
-    color: white;
-    margin-top: auto;
-    /* se mantiene al final */
-}
+
 
 /* Tabla de dieta */
 .tabla-dieta {

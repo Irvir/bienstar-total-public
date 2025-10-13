@@ -1,77 +1,206 @@
-.loader {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.loader.visible {
-    opacity: 1;
-    pointer-events: all;
-}
+/* Minimal Loader CSS - only rules used by Loader.jsx */
 .loader-overlay {
-    position: fixed;
-    inset: 0;
-    /* ocupa toda la pantalla */
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    pointer-events: none; /* allow clicks to pass through the overlay */
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: all; /* block interactions while loading */
 }
 
 .loader-content {
-    text-align: center;
-    color: white;
-    font-size: 1.5rem;
-    animation: fadeIn 0.3s ease-in-out;
-    pointer-events: auto; /* still allow interacting with loader inner elements if needed */
+  text-align: center;
+  font-size: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+  pointer-events: auto;
 }
 
+/* Ensure the loader text color is always red */
 .loader-text {
-    display: block;
-    margin-bottom: 1rem;
+  display: block;
+  margin-bottom: 1rem;
+  color: #ff3b3b; /* red */
+  font-weight: 600;
 }
 
 .loader-frutas {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 .loader-fruta {
-    width: 60px;
-    height: 60px;
-    animation: bounce 1.5s infinite;
+  width: 60px;
+  height: 60px;
+  animation: bounce 1.5s infinite;
 }
 
-.loader-fruta:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.loader-fruta:nth-child(3) {
-    animation-delay: 0.4s;
-}
+.loader-fruta:nth-child(2) { animation-delay: 0.2s; }
+.loader-fruta:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* Minimal Loader CSS - only rules used by Loader.jsx */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: all; /* block interactions while loading */
+}
+
+.loader-content {
+  text-align: center;
+  font-size: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+  pointer-events: auto;
+}
+
+/* Ensure the loader text color is always red */
+.loader-text {
+  display: block;
+  margin-bottom: 1rem;
+  color: #ff3b3b; /* red */
+  font-weight: 600;
+}
+
+.loader-frutas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loader-fruta {
+  width: 60px;
+  height: 60px;
+  animation: bounce 1.5s infinite;
+}
+
+.loader-fruta:nth-child(2) { animation-delay: 0.2s; }
+.loader-fruta:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* Minimal Loader CSS - only rules used by Loader.jsx */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: all; /* block interactions while loading */
+}
+
+.loader-content {
+  text-align: center;
+  font-size: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+  pointer-events: auto;
+}
+
+/* Ensure the loader text color is always red */
+.loader-text {
+  display: block;
+  margin-bottom: 1rem;
+  color: #ff3b3b; /* red */
+  font-weight: 600;
+}
+
+.loader-frutas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loader-fruta {
+  width: 60px;
+  height: 60px;
+  animation: bounce 1.5s infinite;
+}
+
+.loader-fruta:nth-child(2) { animation-delay: 0.2s; }
+.loader-fruta:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.loader {
+    color: #ff3b3b; /* primary loader color: red */
+
+    /* Minimal Loader CSS - only rules used by Loader.jsx */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      pointer-events: all; /* block interactions while loading */
     }
 
-    to {
-        opacity: 1;
+    .loader-content {
+      text-align: center;
+      font-size: 1.5rem;
+      animation: fadeIn 0.3s ease-in-out;
+      pointer-events: auto;
     }
-}
+
+    /* Ensure the loader text color is always red */
+    .loader-text {
+      display: block;
+      margin-bottom: 1rem;
+      color: #ff3b3b; /* red */
+      font-weight: 600;
+    }
+
+    .loader-frutas {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .loader-fruta {
+      width: 60px;
+      height: 60px;
+      animation: bounce 1.5s infinite;
+    }
+
+    .loader-fruta:nth-child(2) { animation-delay: 0.2s; }
+    .loader-fruta:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

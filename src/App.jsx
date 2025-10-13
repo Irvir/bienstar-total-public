@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react';
 import Home from './components/Home';
 import Error404 from './components/Error404';
-import Login from './components/login.jsx';
+import Login from './components/Login.jsx';
 import CrearCuenta from './components/CrearCuenta.jsx';
 import CrearDieta from './components/CrearDieta.jsx';
 import Alimentos from './components/Alimentos.jsx';
 import Perfil from './components/Perfil.jsx';
+import Admin from './components/Admin.jsx';
 
 
 export default function App() {
@@ -60,6 +61,9 @@ export default function App() {
   }
   if (currentPath === 'perfil' || currentPath === 'perfil.html') {
     return <Perfil />;
+  }
+  if (currentPath === 'admin' || currentPath === 'admin.html') {
+    return <Admin />;
   }
 
 

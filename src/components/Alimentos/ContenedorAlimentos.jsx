@@ -1,5 +1,6 @@
 import React from "react";
 import "../../styles/Alimentos.css";
+import AlimentoGridCard from "./AlimentoGridCard";
 
 export default function ContenedorAlimentos({ filtered, openModal }) {
     return (
@@ -7,15 +8,7 @@ export default function ContenedorAlimentos({ filtered, openModal }) {
             <div className="grid-container">
                 {filtered.length > 0 ? (
                     filtered.map(item => (
-                        <div key={item.id} className="cuadro" onClick={() => openModal(item)}>
-                            <button className="botonAlimento">
-                                <img src={item.img} id="imgAlimento" alt={item.name} />
-                                <br />
-                                <p className="nombre" data-alimento-id={item.id}>
-                                    {item.name}
-                                </p>
-                            </button>
-                        </div>
+                        <AlimentoGridCard key={item.id} item={item} onClick={openModal} />
                     ))
                 ) : (
                     <p className="sin-resultados">No se encontraron alimentos.</p>

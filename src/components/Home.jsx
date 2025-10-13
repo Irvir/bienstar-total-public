@@ -4,6 +4,7 @@ import Pie from "./Pie";
 import Encabezado from "./Encabezado";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
+import "../styles/Pie.css";
 
 function Home() {
   const [userName, setUserName] = useState("Invitado");

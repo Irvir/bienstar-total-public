@@ -5,6 +5,7 @@ import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 import Loader from "./Loader.jsx"; // Loader global
+import "../styles/Pie.css"; // estilos del pie de página
 
 function Dietas() {
     const [dietByDay, setDietByDay] = useState({});

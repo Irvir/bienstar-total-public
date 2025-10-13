@@ -21,7 +21,6 @@ function Perfil() {
         }
     }, []);
 
-    // ✅ loader + redirección
     const showLoaderAndRedirect = (url) => {
         setLoading(true);
         setTimeout(() => {
@@ -34,6 +33,30 @@ function Perfil() {
         showLoaderAndRedirect("/login");
     };
 
+    // Borrar Cuenta
+    const handleBorrarCuenta = async () => {
+        if (!confirm("¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.")) return;
+      
+        setLoading(true);
+        try {
+          const res = await fetch(`http://localhost:3001/user/${usuario.id}`, { method: "DELETE" });
+          if (!res.ok) throw new Error("Error al eliminar la cuenta");
+      
+          localStorage.removeItem("usuario");
+          window.notify?.("Cuenta borrada correctamente", { type: "success" });
+      
+          setTimeout(() => {
+            window.location.href = "/"; // ✅ redirige a Home.jsx
+          }, 800);
+        } catch (err) {
+          console.error(err);
+          window.notify?.("Error al borrar la cuenta", { type: "error" });
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+
     if (!usuario) return null;
 
     return (
@@ -43,7 +66,12 @@ function Perfil() {
             <div id="cuerpo">
                 <MenuLateral showLoaderAndRedirect={showLoaderAndRedirect} />
                 <div id="divInfoUser">
-                    <ContenedorInfo usuario={usuario} handleCerrarSesion={handleCerrarSesion} />
+                <ContenedorInfo
+                    usuario={usuario}
+                    handleCerrarSesion={handleCerrarSesion}
+                    handleBorrarCuenta={handleBorrarCuenta}
+                    />
+
                 </div>
             </div>
 

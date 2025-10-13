@@ -216,7 +216,6 @@ html, body {
 }
 
 .fondoLogin {
-    background-image: url("Imagenes/Login_Perfil/fondoLogin.png");  /* aquí tu imagen */
     background-size: cover;           /* ajusta la imagen al tamaño del botón */
     background-position: center; 
 }

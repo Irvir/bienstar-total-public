@@ -146,7 +146,7 @@ body {
 }
 
 .btn4 {
-    background-image: url("/public/Imagenes/Home/Alimentos.png");
+    background-image: url("/public/Imagenes/Home/Alimentos2.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
@@ -155,7 +155,7 @@ body {
     /* 🔹 Ajusta este valor según lo que necesites */
 
 .btn5 {
-    background-image: url("/public/Imagenes/Home/Tips_Dieta.png");
+    background-image: url("/public/Imagenes/Home/Tips_Dieta2.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
@@ -243,4 +243,41 @@ body {
 .botonera button:hover {
     transform: scale(1.08);
     box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.5);
+}
+/* 🔴 Resaltado más intenso para botones */
+.botonera button {
+    border: 3px solid #f5f5f5;
+    /* rojo vibrante */
+    box-shadow: 2px 4px 8px rgba(214, 40, 40, 0.6);
+    /* sombra con tinte rojo */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 🔴 Efecto hover más llamativo */
+.botonera button:hover {
+    transform: scale(1.08);
+    box-shadow: 4px 6px 14px rgba(214, 40, 40, 0.8);
+    /* sombra más intensa */
+    border-color: #ff0000;
+    /* rojo puro al pasar el mouse */
+}
+
+/* ✨ Animación de resplandor (opcional) */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(214, 40, 40, 0.9);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
+    }
+}
+
+.botonera button:focus {
+    animation: glowPulse 1.5s infinite;
+    outline: none;
 }
