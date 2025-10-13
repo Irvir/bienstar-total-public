@@ -1,0 +1,283 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+        font-family: 'Segoe UI', sans-serif;
+}
+
+/* ==============================
+   PANTALLA DE CARGA
+============================== */
+/* Contenedor principal del loader (pantalla de carga) */
+#loader {
+    display: none;
+    /* Solo esta línea */
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(219, 219, 219, 0.6);
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+/* Texto principal del loader */
+.loader-text {
+    font-size: 2rem;
+    /* Tamaño del texto */
+    color: white;
+    letter-spacing: 2px;
+    margin: 0 0 20px 0;
+    /* Solo margen abajo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* Contenedor de las imágenes de frutas animadas */
+.loader-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    /* Espacio entre las imágenes */
+    width: 4rem;
+    /* Ancho total del contenedor */
+    height: 2rem;
+    margin: 0;
+    /* Sin margen */
+
+}
+
+/* Estilo de las imágenes de frutas */
+.loader-dots img {
+    width: 35px;
+    height: 35px;
+    opacity: 0;
+    animation: fruitDots 1.5s infinite;
+}
+
+/* Delay para que aparezcan una por una */
+.loader-dots img:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loader-dots img:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.loader-dots img:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+/* Animación de las frutas */
+@keyframes fruitDots {
+
+    0%,
+    80%,
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* ==============================
+   CUERPO PRINCIPAL
+============================== */
+#cuerpo {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedorIzq,
+.contenedorDer {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    min-height: 50vh;
+}
+
+.contenedorIzq button,
+.contenedorDer button {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 80px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
+    margin: 0;
+}
+
+/* Fondos de los botones */
+.btn1 {
+    background-image: url("/public/Imagenes/Home/Crear_Horario.png");
+    background-size: 100% 100% !important;
+        background-repeat: no-repeat;
+        background-position: center;
+}
+
+.btn2 {
+    background-image: url("/public/Imagenes/Home/Dietas.png");
+    font-size: 3vw;
+}
+
+.btn3 {
+    background-image: url("/public/Imagenes/Home/Calendario.png");
+    font-size: 3vw;
+}
+
+.btn4 {
+    background-image: url("/public/Imagenes/Home/Alimentos2.png");
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
+}
+    /* 🔹 Ajusta este valor según lo que necesites */
+
+.btn5 {
+    background-image: url("/public/Imagenes/Home/Tips_Dieta2.png");
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
+}
+.contenedorIzq button:hover,
+.contenedorDer button:hover {
+    opacity: 0.8;
+}
+
+/* ==============================
+   RESPONSIVO
+============================== */
+@media (max-width: 768px) {
+
+    .contenedorIzq,
+    .contenedorDer {
+        flex: 1 1 100%;
+    }
+
+    .btn1,
+    .btn2,
+    .btn3,
+    .btn4,
+    .btn5 {
+        font-size: 5vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    #cuerpo {
+        flex-direction: row;
+    }
+
+    .contenedorIzq,
+    .contenedorDer {
+        flex: 1 1 50%;
+    }
+
+    .contenedorIzq button,
+    .contenedorDer button {
+        font-size: 2vw;
+    }
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.contenedorIzq button,
+.contenedorDer button {
+    animation: fadeInUp 0.6s ease forwards;
+}
+.botonera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.botonera button {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-height: 220px;
+    min-width: 350px;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
+    font-size: 2vw;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.botonera button:hover {
+    transform: scale(1.08);
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.5);
+}
+/* 🔴 Resaltado más intenso para botones */
+.botonera button {
+    border: 3px solid #f5f5f5;
+    /* rojo vibrante */
+    box-shadow: 2px 4px 8px rgba(214, 40, 40, 0.6);
+    /* sombra con tinte rojo */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 🔴 Efecto hover más llamativo */
+.botonera button:hover {
+    transform: scale(1.08);
+    box-shadow: 4px 6px 14px rgba(214, 40, 40, 0.8);
+    /* sombra más intensa */
+    border-color: #ff0000;
+    /* rojo puro al pasar el mouse */
+}
+
+/* ✨ Animación de resplandor (opcional) */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(214, 40, 40, 0.9);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
+    }
+}
+
+.botonera button:focus {
+    animation: glowPulse 1.5s infinite;
+    outline: none;
+}

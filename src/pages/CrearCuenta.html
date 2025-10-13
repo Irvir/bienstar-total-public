@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/frontEnd/src/controllers/Error404.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="CrearCuenta" content="width=device-width, initial-scale=1.0">
+    <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="Base.css">
+    <link rel="stylesheet" href="/src/styles/Pie.css">
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="CrearCuenta.css">
+    <script defer src="/frontEnd/src/controllers/notify.js"></script>
+   
+    <style>
+        .field-error{ color:#b91c1c; font-size:12px; margin-top:4px; min-height:14px; }
+        .input-invalid{ border-color:#ef4444 !important; outline-color:#ef4444 !important; }
+        .form-error{ color:#b91c1c; margin:8px 0; font-size:13px; white-space:pre-line; }
+    </style>
+  
+</head>
+<body>
+    <div id="contenedorPrincipal">
+
+    
+        <div id="encabezado">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+                <div class="menúBotones">
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuNoti">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                    </button>
+                </div>
+                <div class="login">
+                    <div style="float: left; height: 100%; width: 75%;">
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
+                    </div>
+                    <!-- Menú desplegable -->
+                    <div id="menuDesplegable" class="menuDesplegable">
+                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
+                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
+                    </div>
+                    <!-- Imagen Usuario -->
+                    <div style="float: left; width: 10%; height: 100%;">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const btnPerfilView = document.getElementById("btnPerfilView");
+                const menuDesplegable = document.getElementById("menuDesplegable");
+                const logoutButton = document.getElementById("logoutButton");
+                const fotoUsuario = document.getElementById("fotoUsuario");
+
+                // Estilo inicial del menú desplegable
+                menuDesplegable.style.position = "absolute";
+                menuDesplegable.style.top = "8%";
+                menuDesplegable.style.right = "8%";
+                menuDesplegable.style.display = "none";
+                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
+
+                // Alternar visibilidad del menú
+                function toggleMenu() {
+                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
+                }
+
+                btnPerfilView.addEventListener("click", toggleMenu);
+
+                // Cerrar sesión
+                logoutButton.addEventListener("click", () => {
+                    localStorage.removeItem("usuario");
+                    window.location.href = "login.html";
+                });
+
+                // Click en la foto de usuario
+                fotoUsuario.addEventListener("click", () => {
+                    window.location.href = "login.html";
+                });
+
+                // Cerrar menú al hacer clic fuera
+                document.addEventListener("click", (event) => {
+                    if (!btnPerfilView.contains(event.target) &&
+                        !menuDesplegable.contains(event.target) &&
+                        !fotoUsuario.contains(event.target)) {
+                        menuDesplegable.style.display = "none";
+                    }
+                });
+            });
+        </script>
+        <div id="cuerpo" class="fondoLogin">
+            <div id="contenedorLoginAsist3">
+                <div id="contenedorLogin2">
+                    <div style="width: 33%; height: 100%; float: left;">
+                        <div class="contendorLoginFotoCrearUserAsist" style="font-family: Arial, Helvetica, sans-serif;">
+                            Rellene los datos solicitados:
+                        </div>
+                        <div class="contendorLoginFotoCrearUser">
+                            
+                        </div>
+                    </div>
+                    <div class="contenedorLoginDatosUser">
+                        <form id="CrearCuentaForm" >
+                            <div id="formError" class="form-error"></div>
+                            <div class="divNom">
+                                Nombre:
+                                <br>
+
+                                <input type="name" id="name" placeholder="Nombre" required>
+                                <div class="field-error" id="err-name"></div>
+                            </div>
+                            <!-- en esta parte debería estar el apellido, al parecer l quitaron, debo preguntar -->
+                            <div class="divEdadPesoAlt">
+                                <div class="edadPesoAlt">
+                                    Edad:
+                                    <br>
+                                    <input type="number" id="age" placeholder="Escriba su edad" required>
+                                    <div class="field-error" id="err-age"></div>
+                                </div>
+                                <div class="edadPesoAlt">
+
+                                    Peso (KG):
+                                <br>
+                                    <input type="number" id="weight" placeholder="Escriba su peso" required step="any">
+                                    <div class="field-error" id="err-weight"></div>
+                                </div>
+                                <div class="edadPesoAlt">
+                                    Altura (CM):
+                                <br>
+
+                                    <input type="number" id="height" placeholder="Escriba su altura" required step="any">
+                                    <div class="field-error" id="err-height"></div>
+                                </div>
+                            </div>
+                            <div class="divCorreo">
+
+                                Correo electrónico:
+                                <br>
+                                <input type="text" id="email" placeholder="Escriba su correo electrónico" required>
+                                <div class="field-error" id="err-email"></div>
+                            </div>
+                            
+                            <div class="divCorreo">
+                                Contraseña:
+                                <br>
+
+                                <input type="password" id="password" placeholder="Contraseña" required>
+                                <div class="field-error" id="err-password"></div>
+                            </div>
+                            
+                            <br>
+                            <button type="submit" class="buttonCrearIniciarSesion">
+                                Crear Cuenta
+                            </button>
+                            <br>
+                            
+                        </form>
+                        <p id="resultado"></p>
+                        
+                        <button class="buttonCrearIniciarSesion" id="btnIniciarSesion" type="submit" onclick="window.location.href='login.html'" >
+                            Iniciar Sesion
+                        </button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pie">
+            <div class="footer-inner">
+                <button class="instaBoton"></button>
+                <button class="faceBoton"></button>
+                <button class="youTubeBoton"></button>
+                <button class="whatsBoton"></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("btnIniciarSesion").addEventListener("click", function() {
+            window.location.href = "login.html";
+        });
+    </script>
+        <script src="/frontEnd/src/controllers/CrearCuenta.js"></script>
+    <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const usuarioGuardado = localStorage.getItem("usuario");
+
+                if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+                }
+            });
+        </script>
+    
+</body>
+</html>
+

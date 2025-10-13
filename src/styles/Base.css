@@ -1,0 +1,211 @@
+/* --------------- RESET Y VARIABLES --------------- */
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: center center;
+    background-attachment: fixed; 
+    background-image: url('/public/assets/pe1.png');
+}
+
+:root {
+    --primary: #931525;
+    --primary-dark: #6F0E1A;
+    --white: #ffffff;
+    --max-w: 1200px;
+    --gap: 1rem;
+    --avatar-size: 40px; /* tamaño por defecto para el avatar dentro del recuadro */
+    --avatar-size-lg: 56px;
+    --avatar-size-sm: 36px;
+}
+
+/* Contenedor principal */
+#contenedorPrincipal {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* ❌ Elimina esta línea */
+    /* background-color: white; */
+    position: relative;
+    z-index: 10;
+}
+
+/* Header and avatar styles were moved to Encabezado.css */
+/* Cuerpo */
+#cuerpo {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-size: 800px 800px;
+    /* ajusta el tamaño del patrón */
+    background-repeat: repeat;
+    /* permite que se repita */
+    background-position: center center;
+    /* centra el patrón */
+    background-attachment: fixed
+}
+@media (max-width: 768px) {
+    #cuerpo {
+        padding: 0;
+    }
+}
+
+
+.footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer-inner .footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(32px, 6vw, 48px);
+    height: clamp(32px, 6vw, 48px);
+}
+
+.footer-inner .footer-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Menú desplegable */
+.menuDesplegable {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 1rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+    width: 180px;
+}
+
+.opcionMenu {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.opcionMenu:hover {
+    background-color: #f3f3f3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .menúBotones {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .login {
+        order: 2;
+    }
+
+    #cuerpo {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-inner {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+@keyframes bell-wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    15% {
+        transform: rotate(-16deg);
+    }
+
+    30% {
+        transform: rotate(12deg);
+    }
+
+    45% {
+        transform: rotate(-8deg);
+    }
+
+    60% {
+        transform: rotate(5deg);
+    }
+
+    75% {
+        transform: rotate(-2deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.bell-hint {
+    animation: bell-wiggle 700ms ease-in-out;
+    filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
+}
+.user-info {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b, #ffb347);
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
+    
+}
+#btnNotification {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+@keyframes fondoRodillo {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: -400px 0;
+        /* ajusta según el tamaño del patrón */
+    }
+}
+
+html,
+body {
+    background-image: url('/public/assets/pe1.png');
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-attachment: fixed;
+    animation: fondoRodillo 10s linear infinite; }
