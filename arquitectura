@@ -1,0 +1,21 @@
+BienStarTotal/
+│
+├── node_modules/               # 📦 Módulos instalados por npm (dependencias)
+│
+├── public/                     # 🌐 Recursos públicos accesibles por el navegador
+│   ├── assets/                 # 🔐 Imágenes y estilos del login
+│   ├── imagenes/               # 🖼️ Imágenes utilizadas en las páginas
+│   ├── sonidos/                # 🔔 Archivos de sonido para notificaciones
+│   └── index.html              # 🏠 HTML base donde se monta la app React
+│
+├── src/                        # ⚛️ Código fuente de la aplicación React
+│   ├── components/             # 🧩 Componentes reutilizables (.jsx)
+│   ├── controllers/            # 🧠 Lógica de control y funciones (.js)
+│   ├── pages/                  # 📄 Vistas principales (pueden ser .jsx o .js)
+│   ├── styles/                 # 🎨 Archivos CSS para estilos globales y por componente
+│   ├── App.jsx                 # 🚀 Componente raíz de la aplicación
+│   └── main.jsx                # 🧬 Punto de entrada que renderiza <App />
+│
+├── package.json                # 📋 Configuración del proyecto y dependencias
+├── server.js                   # 🔧 Servidor backend con Node.js (API, rutas, etc.)
+└── README.md                   # 📖 Documentación del proyecto (opcional pero recomendado)

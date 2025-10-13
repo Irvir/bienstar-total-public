@@ -17,9 +17,10 @@
 }
 
 #divMenuLateral {
+    margin-top: 50px;
     flex: 0 0 20%;
     border-radius: 12px;
-    min-width: 450px;
+    min-width: 250px;
     /* efecto glass con tinte rojizo para integrar el tema */
     background: rgba(63, 30, 34, 0.20);
     -webkit-backdrop-filter: blur(8px);
@@ -120,6 +121,7 @@
     /* mayor altura mínima */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
     background: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
@@ -140,6 +142,56 @@
     color: #0f1720;
     /* color más oscuro para mejor contraste */
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Fila de título + botón editar */
+#tituloInfoRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.btnEditarPerfil {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #22c55e; /* verde */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.btnEditarPerfil:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.22); }
+.btnEditarPerfil:active { transform: translateY(0); opacity: .9; }
+.btnEditarPerfil .iconLapiz { display: block; }
+
+.accionesEditarPerfil { display: flex; gap: 8px; }
+.btnGuardarPerfil {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+.btnGuardarPerfil:hover { filter: brightness(1.05); }
+.btnCancelarPerfil {
+    background: #e5e7eb;
+    color: #111827;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 800;
+    cursor: pointer;
 }
 
 .datoUsuarioRow {
@@ -190,9 +242,21 @@
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
 }
 
+/* Estado de solo lectura dentro de edición */
+.spReadonly {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.spReadonly:hover {
+    transform: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
 /* Si hay inputs reales dentro, que hereden el estilo glass y mantengan legibilidad */
 #contenedorInfo input[type="text"],
-#contenedorInfo input[type="email"] {
+#contenedorInfo input[type="email"],
+#contenedorInfo input[type="number"] {
     width: 100%;
     border: none;
     outline: none;
@@ -212,7 +276,8 @@
 
 /* Si se usan inputs reales dentro de los spans, también darles estilo similar */
 #contenedorInfo input[type="text"],
-#contenedorInfo input[type="email"] {
+#contenedorInfo input[type="email"],
+#contenedorInfo input[type="number"] {
     width: 100%;
     border: none;
     outline: none;

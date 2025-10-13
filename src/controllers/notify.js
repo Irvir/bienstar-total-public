@@ -25,7 +25,7 @@
   
   function playSound(type = 'info') {
     try {
-      let soundPath = '/public/Sonidos/notificationYamete.mp3';
+      let soundPath = '/public/Sonidos/Notification.mp3';
       if (type === 'error') soundPath = '/public/Sonidos/NotificationError.mp3';
   
       const audio = new Audio(soundPath);

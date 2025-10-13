@@ -188,3 +188,195 @@
     padding: 8px 12px;
     border-radius: 8px;
 }
+/* Contenedor principal */
+.admin-contenedor {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Cuerpo principal */
+.admin-cuerpo {
+    padding: 24px;
+    background: transparent;
+}
+
+.admin-cuerpo h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: #931525;
+    margin-bottom: 12px;
+}
+
+/* Controles superiores */
+.admin-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn-primary {
+    background: linear-gradient(180deg, #D33B3B, #B20C05);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Lista de tarjetas */
+.admin-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+/* Tarjeta de alimento */
+.admin-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.admin-card-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.admin-card-img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.admin-card h3 {
+    margin: 0;
+    color: #6F0E1A;
+    font-size: 18px;
+}
+
+.nutri-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+    color: #444;
+    font-size: 13px;
+}
+
+.admin-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn-accion {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-accion.editar {
+    background: #0A74C3;
+}
+
+.btn-accion.eliminar {
+    background: #C0392B;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 2000;
+}
+
+.admin-modal {
+    width: 92%;
+    max-width: 820px;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.modal-close {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.modal-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-form input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.grid-dos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.file-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.preview {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 14px;
+}
+
+.btn-cancel {
+    background: #ddd;
+    color: #333;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.btn-save {
+    background: #0A74C3;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+}

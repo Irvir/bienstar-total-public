@@ -7,7 +7,7 @@ import AdminAlimentoCard from "./Admin/AdminAlimentoCard";
 import ModalEditarAlimento from "./Admin/ModalEditarAlimento";
 import "../styles/Admin.css";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001";
 
 function AdminAlimentos() {
   const [alimentos, setAlimentos] = useState([]);
@@ -28,13 +28,11 @@ function AdminAlimentos() {
       const contentType = res.headers.get("content-type");
       if (!res.ok || !contentType?.includes("application/json")) {
         const raw = await res.text();
-        console.error("Respuesta inesperada:", raw);
         throw new Error("Respuesta no válida del servidor");
       }
       const data = await res.json();
       setAlimentos(data);
     } catch (e) {
-      console.error("Error al cargar alimentos:", e);
       setError("No se pudo cargar la lista de alimentos.");
     } finally {
       setLoading(false);
@@ -46,21 +44,17 @@ function AdminAlimentos() {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/admin/foods/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("No se pudo eliminar");
+      if (!res.ok) throw new Error();
       setAlimentos(prev => prev.filter(x => x.id !== id));
       window.notify?.(`Alimento "${nombre}" eliminado`, { type: "success" });
-    } catch (e) {
-      console.error("Error al eliminar alimento:", e);
+    } catch {
       window.notify?.("Error al eliminar alimento", { type: "error" });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAbrirEditar = (alimento) => {
-    setModalAlimento(alimento);
-  };
-
+  const handleAbrirEditar = (alimento) => setModalAlimento(alimento);
   const handleCerrarModal = () => setModalAlimento(null);
 
   const handleGuardar = async (formDataObj) => {
@@ -73,7 +67,7 @@ function AdminAlimentos() {
           method: "POST",
           body: fd,
         });
-        if (!uploadRes.ok) throw new Error("Error al subir imagen");
+        if (!uploadRes.ok) throw new Error();
         const uploadJson = await uploadRes.json();
         formDataObj.image = uploadJson.url;
       }
@@ -84,17 +78,12 @@ function AdminAlimentos() {
         body: JSON.stringify(formDataObj),
       });
 
-      if (!putRes.ok) {
-        const err = await putRes.json().catch(() => ({}));
-        throw new Error(err.message || "Error al guardar cambios");
-      }
-
+      if (!putRes.ok) throw new Error();
       const updated = await putRes.json();
       setAlimentos(prev => prev.map(a => (a.id === updated.id ? updated : a)));
       window.notify?.("Cambios guardados correctamente", { type: "success" });
       setModalAlimento(null);
-    } catch (e) {
-      console.error("Error al guardar cambios:", e);
+    } catch {
       window.notify?.("Error al guardar cambios", { type: "error" });
     } finally {
       setLoading(false);
@@ -103,7 +92,7 @@ function AdminAlimentos() {
 
   return (
     <div className="admin-alimentos-page">
-      <div id="contenedorPrincipal" className="admin-contenedor">
+      <div className="admin-contenedor">
         <Encabezado
           activePage={activePage}
           onNavigate={() => {
@@ -112,17 +101,24 @@ function AdminAlimentos() {
           }}
         />
 
-        <main id="cuerpo" className="admin-cuerpo">
+        <main className="admin-cuerpo">
           <h1>Admin — Gestión de Alimentos</h1>
           {error && <div className="admin-error">{error}</div>}
 
           <div className="admin-controls">
-            <button className="btn-primary" onClick={fetchListado}>Refrescar</button>
-            <button className="btn-primary" onClick={() => window.location.href = "/admin/crear-alimento"}>Crear alimento</button>
+            <button className="btn-primary" onClick={fetchListado}>
+              Refrescar
+            </button>
+            <button
+              className="btn-primary"
+              onClick={() => (window.location.href = "/admin/crear-alimento")}
+            >
+              Crear alimento
+            </button>
           </div>
 
           <div className="admin-lista">
-            {alimentos.map(a => (
+            {alimentos.map((a) => (
               <AdminAlimentoCard
                 key={a.id}
                 alimento={a}

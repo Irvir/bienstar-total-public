@@ -64,10 +64,10 @@
     height: 160vh;
     overflow-y: auto;
     overflow-x: hidden;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: transparent; /* transparente: muestra el fondo de la página en los márgenes */
+        border: none; /* sin borde para que fuera del card no tenga marco */
+        border-radius: 0;
+        box-shadow: none;
     padding: 12px;
 }
 
