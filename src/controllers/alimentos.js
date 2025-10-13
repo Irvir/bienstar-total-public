@@ -1,4 +1,4 @@
-/*
+
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("modalAlimento");
   const modalImg = document.getElementById("modalImg");
@@ -93,4 +93,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
-*/
