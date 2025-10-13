@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/Alimentos.css';
-import Encabezado from './Encabezado';
-import Pie from './Pie';
-import Filtro from './Alimentos/Filtro';
-import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
+import React, { useEffect, useState } from "react";
+import "../styles/Alimentos.css";
+import "../styles/Base.css";
 
+import Encabezado from "./Encabezado";
+import Pie from "./Pie";
+import Filtro from "./Alimentos/Filtro";
+import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
+import Loader from "./Loader";
+
+// Datos estáticos de ejemplo
 const alimentosData = [
     { id: 14, img: '/Imagenes/Alimentos/Porotos.jpg', name: 'POROTOS' },
     { id: 21, img: '/Imagenes/Alimentos/Porotosnegros.jpg', name: 'POROTOS NEGROS' },
@@ -57,104 +61,110 @@ const alimentosData = [
 ];
 
 export default function Alimentos() {
-    const [filter, setFilter] = useState('');
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalData, setModalData] = useState({});
-    const [activePage, setActivePage] = useState('alimentos');
+  const [filter, setFilter] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [activePage, setActivePage] = useState("alimentos");
+  const [loading, setLoading] = useState(false);
 
-    // Detectar página activa
-    useEffect(() => {
-        const currentPage = window.location.pathname.split('/').pop() || 'alimentos';
-        setActivePage(currentPage.replace('.html', '').toLowerCase());
-    }, []);
+  // Detectar página actual
+  useEffect(() => {
+    const currentPage = window.location.pathname.split("/").pop() || "alimentos";
+    setActivePage(currentPage.replace(".html", "").toLowerCase());
+  }, []);
 
-    // Filtrado de alimentos
-    const filtered = alimentosData.filter(a =>
-        a.name.toLowerCase().includes(filter.toLowerCase())
-    );
+  // Abrir modal y cargar info desde backend
+  const openModal = async (item) => {
+    setModalOpen(true);
+    setLoading(true);
+    setModalData({ name: item.name, img: item.img, info: "Cargando..." });
 
-    // Abrir modal
-    const openModal = (item) => {
-        setModalOpen(true);
-        setModalData({ name: item.name, img: item.img, info: 'Cargando...' });
-        fetch(`http://localhost:3001/food/${item.id}`)
-            .then(res => res.ok ? res.json() : Promise.reject('Error de servidor'))
-            .then(data => setModalData({ name: item.name, img: item.img, info: data }))
-            .catch(() => setModalData({ name: item.name, img: item.img, info: null }));
-    };
+    try {
+      const res = await fetch(`http://localhost:3001/food/${item.id}`);
+      if (!res.ok) throw new Error("Error de servidor");
+      const data = await res.json();
+      setModalData({ name: item.name, img: item.img, info: data });
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setModalData({ name: item.name, img: item.img, info: null });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // Cerrar modal
-    const closeModal = () => {
-        setModalOpen(false);
-        setModalData({});
-    };
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalData({});
+  };
 
-    // Loader + redireccion
-    const showLoaderAndRedirect = (url) => {
-        const loader = document.getElementById('loader');
-        if (loader) loader.style.display = 'flex';
-        setTimeout(() => (window.location.href = url), 700);
-    };
+  // Loader al navegar desde encabezado
+  const showLoaderAndRedirect = (url) => {
+    setLoading(true);
+    setTimeout(() => {
+      window.location.href = url;
+    }, 800);
+  };
 
-    return (
-        <>
-            <div id="contenedorPrincipal" className="pagina-alimentos">
-                {/* Encabezado con activePage */}
-                <Encabezado activePage={activePage} />
+  return (
+    <>
+      <div id="contenedorPrincipal" className="pagina-alimentos">
+        <Encabezado activePage={activePage} onNavigate={showLoaderAndRedirect} />
 
-                <div id="cuerpo" className="alimentos-page">
-                    {/* Filtro */}
-                    <Filtro filter={filter} setFilter={setFilter} />
+        <div id="cuerpo" className="alimentos-page">
+          <Filtro filter={filter} setFilter={setFilter} />
 
-                    {/* Contenedor de alimentos */}
-                    <ContenedorAlimentos filtered={filtered} openModal={openModal} />
-                </div>
-
-                <Pie />
-
-                {/* Loader */}
-                <div id="loader" style={{ display: 'none' }}>
-                    <span className="loader-text">Cargando</span>
-                    <div className="loader-dots">
-                        <img src="/Imagenes/Imagenes_de_carga/frutilla1.png" alt="frutilla" />
-                        <img src="/Imagenes/Imagenes_de_carga/manzana1.png" alt="manzana" />
-                        <img src="/Imagenes/Imagenes_de_carga/naranja1.png" alt="naranja" />
-                    </div>
-                </div>
-            </div>
-
-            {/* Modal */}
-            {modalOpen && (
-                <div
-                    id="modalAlimento"
-                    className="modal"
-                    onClick={e => { if (e.target.id === 'modalAlimento') closeModal(); }}
-                >
-                    <div className="modal-content">
-                        <span className="close" onClick={closeModal}>&times;</span>
-                        <img id="modalImg" src={modalData.img} alt={modalData.name} />
-                        <h2 id="modalNombre">{modalData.name}</h2>
-                        <div id="modalInfo">
-                            {modalData.info === 'Cargando...' && <p>Cargando...</p>}
-                            {modalData.info && modalData.info !== 'Cargando...' && typeof modalData.info === 'object' ? (
-                                <div>
-                                    <p>Proteína: {modalData.info.protein} g</p>
-                                    <p>Lípidos Totales: {modalData.info.total_lipid} g</p>
-                                    <p>Carbohidratos: {modalData.info.carbohydrate} g</p>
-                                    <p>Energía: {modalData.info.energy} kcal</p>
-                                    <p>Azúcares Totales: {modalData.info.total_sugars} g</p>
-                                    <p>Calcio: {modalData.info.calcium} mg</p>
-                                    <p>Hierro: {modalData.info.iron} mg</p>
-                                    <p>Sodio: {modalData.info.sodium} mg</p>
-                                    <p>Colesterol: {modalData.info.cholesterol} mg</p>
-                                </div>
-                            ) : (
-                                <p>No se pudo cargar la información nutricional.</p>
-                            )}
-                        </div>
-                    </div>
-                </div>
+          <ContenedorAlimentos
+            filtered={alimentosData.filter((a) =>
+              a.name.toLowerCase().includes(filter.toLowerCase())
             )}
-        </>
-    );
+            openModal={openModal}
+          />
+        </div>
+
+        <Pie />
+      </div>
+
+      {/* Loader global */}
+      <Loader visible={loading} />
+
+      {/* Modal de alimento */}
+      {modalOpen && (
+        <div
+        id="modalAlimento"
+        className={`modal ${modalOpen ? "visible" : ""}`}
+        onClick={(e) => {
+          if (e.target.id === "modalAlimento") closeModal();
+        }}
+      >
+        <div className="modal-content">
+  <span className="close" onClick={closeModal}>
+    &times;
+  </span>
+  <img src={modalData.img} alt={modalData.name} />
+  <h2 id="modalNombre">{modalData.name}</h2>
+
+  <div id="modalInfo">
+    {modalData.info === "Cargando..." && <p>Cargando...</p>}
+
+    {modalData.info && modalData.info !== "Cargando..." && typeof modalData.info === "object" ? (
+      <div className="nutrient-grid">
+        <div><b>Energía:</b> {modalData.info.energy ?? "-"} kcal</div>
+        <div><b>Proteína:</b> {modalData.info.protein ?? "-"} g</div>
+        <div><b>Grasa total:</b> {modalData.info.total_lipid ?? "-"} g</div>
+        <div><b>Carbohidratos:</b> {modalData.info.carbohydrate ?? "-"} g</div>
+        <div><b>Azúcares:</b> {modalData.info.total_sugars ?? "-"} g</div>
+        <div><b>Calcio:</b> {modalData.info.calcium ?? "-"} mg</div>
+        <div><b>Hierro:</b> {modalData.info.iron ?? "-"} mg</div>
+        <div><b>Sodio:</b> {modalData.info.sodium ?? "-"} mg</div>
+        <div><b>Colesterol:</b> {modalData.info.cholesterol ?? "-"} mg</div>
+      </div>
+    ) : (
+      modalData.info !== "Cargando..." && <p>No se pudo cargar la información.</p>
+    )}
+  </div>
+</div>
+      </div>
+      )}
+    </>
+  );
 }

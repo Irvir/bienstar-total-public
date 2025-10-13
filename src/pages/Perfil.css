@@ -30,6 +30,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    color: #931525;
 }
 
 /* Contenedor de las imágenes de frutas animadas */
@@ -147,7 +148,6 @@
     flex: 3 1 400px;
     /* crece, se encoge, mínimo 400px */
     padding: 20px;
-    background-image: url("../../Imagenes/Login_Perfil/fondoLogin.png");
     background-size: cover;
     background-position: center;
     box-sizing: border-box;

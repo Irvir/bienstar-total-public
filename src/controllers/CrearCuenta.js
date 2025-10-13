@@ -38,21 +38,24 @@ function validatePasswordField() {
 function validateAgeField() {
   const raw = document.getElementById('age')?.value?.trim();
   const val = parseInt(raw || '');
-  if (isNaN(val) || val <= 0 || val > 120) { setFieldError('age', 'Edad entre 1 y 120.'); return false; }
+  // Backend acepta >15 y <100 -> 16 a 99
+  if (isNaN(val) || val < 16 || val > 99) { setFieldError('age', 'Edad entre 16 y 99.'); return false; }
   setFieldError('age', ''); return true;
 }
 
 function validateWeightField() {
   const raw = document.getElementById('weight')?.value?.trim();
   const val = parseFloat(raw || '');
-  if (isNaN(val) || val <= 20 || val > 300) { setFieldError('weight', 'Peso entre 21 y 300 kg.'); return false; }
+  // Backend acepta >30 y <170 -> 31 a 169
+  if (isNaN(val) || val < 31 || val > 169) { setFieldError('weight', 'Peso entre 31 y 169 kg.'); return false; }
   setFieldError('weight', ''); return true;
 }
 
 function validateHeightField() {
   const raw = document.getElementById('height')?.value?.trim();
   const val = parseFloat(raw || '');
-  if (isNaN(val) || val <= 80 || val > 250) { setFieldError('height', 'Altura entre 81 y 250 cm.'); return false; }
+  // Backend acepta >80 y <250 -> 81 a 249
+  if (isNaN(val) || val < 81 || val > 249) { setFieldError('height', 'Altura entre 81 y 249 cm.'); return false; }
   setFieldError('height', ''); return true;
 }
 
@@ -98,7 +101,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
   try {
     // Verificar si el correo ya existe
-    const checkEmail = await fetch("http://localhost:3000/checkEmail", {
+  const checkEmail = await fetch("http://localhost:3001/checkEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: data.email })
@@ -112,7 +115,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     }
 
     // Registrar cuenta
-    const response = await fetch("http://localhost:3000/registrar", {
+  const response = await fetch("http://localhost:3001/registrar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -136,7 +139,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       // Esperar a que el mensaje se muestre antes de continuar
       setTimeout(async () => {
         // Auto-login
-        const loginRes = await fetch("http://localhost:3001/login", {
+  const loginRes = await fetch("http://localhost:3001/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: data.email, password: data.password })

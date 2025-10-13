@@ -2,87 +2,8 @@
    PANTALLA DE CARGA
 ============================== */
 /* Contenedor principal del loader (pantalla de carga) */
-#loader {
-    display: none;
-    /* Solo esta línea */
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(219, 219, 219, 0.6);
-    backdrop-filter: blur(3px);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
 
-/* Texto principal del loader */
-.loader-text {
-    font-size: 2rem;
-    /* Tamaño del texto */
-    color: white;
-    letter-spacing: 2px;
-    margin: 0 0 20px 0;
-    /* Solo margen abajo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-/* Contenedor de las imágenes de frutas animadas */
-.loader-dots {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    /* Espacio entre las imágenes */
-    width: 4rem;
-    /* Ancho total del contenedor */
-    height: 2rem;
-    margin: 0;
-    /* Sin margen */
-
-}
-
-/* Estilo de las imágenes de frutas */
-.loader-dots img {
-    width: 35px;
-    height: 35px;
-    opacity: 0;
-    animation: fruitDots 1.5s infinite;
-}
-
-/* Delay para que aparezcan una por una */
-.loader-dots img:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.loader-dots img:nth-child(2) {
-    animation-delay: 0.3s;
-}
-
-.loader-dots img:nth-child(3) {
-    animation-delay: 0.6s;
-}
-
-/* Animación de las frutas */
-@keyframes fruitDots {
-
-    0%,
-    80%,
-    100% {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    40% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}/* Contenedor principal del cuerpo */
+/* Contenedor principal del cuerpo */
 #cuerpo {
     display: flex;
     flex-direction: row;
@@ -95,20 +16,42 @@
     padding: 0;
 }
 
-/* Menú lateral */
 #divMenuLateral {
+    margin-top: 50px;
     flex: 0 0 20%;
-    border-radius: 10px;
-    border-bottom: 20%;
-    /* ocupa un 12% del ancho total */
-    min-width: 120px;
-    background-color: #3f1e22;
+    border-radius: 12px;
+    min-width: 250px;
+    /* efecto glass con tinte rojizo para integrar el tema */
+    background: rgba(63, 30, 34, 0.20);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;    
+    justify-content: flex-start;
+    /* empieza desde arriba */
     align-items: center;
     padding: 10px;
+    padding-top: 70px;
+    /* ajusta manualmente la altura de los botones */
     box-sizing: border-box;
+    height: 79vh;
+    /* el glass llega hasta la mitad de la pantalla */
+    min-height: 320px;
+}
+
+/* Si la pantalla es pequeña, dejar que el menu sea auto (no ocupar 50vh) */
+@media (max-width: 768px) {
+    #divMenuLateral {
+        height: auto;
+        min-width: 0;
+        padding-top: 20px;
+        background: transparent;
+        /* en móvil preferimos transparencia simple */
+        box-shadow: none;
+        border: none;
+    }
 }
 
 /* Botones menú lateral */
@@ -158,100 +101,235 @@
     flex-direction: column;
     align-items: center;
 }
+
 /* Contenedor de info sesión más grande */
+/* Contenedor principal que alberga la tarjeta de perfil */
 #contenedorInfoSesion {
     width: 100%;
-    max-width: 900px;
-    /* antes 700px, ahora más ancho */
-    background-image: url("/Imagenes/Login_Perfil/FondoSesion.png");
-    background-size: cover;
-    background-position: center;
-    border-radius: 50px;
-    padding: 30px;
-    /* más espacio interno */
+    max-width: 1000px;
+    /* aumentado para tener una tarjeta más ancha */
+    border-radius: 28px;
+    padding: 36px 36px;
+    /* un poco más de espacio interno */
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 95%;
-    /* antes 90%, ahora un poco más alto */
-    min-height: 400px;
-    /* asegura que no se vea demasiado pequeño en pantallas grandes */
+    height: auto;
+    margin-top: 20px;
+    min-height: 580px;
+    /* mayor altura mínima */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+    background: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
 }
 
 /* Ajuste interno de info usuario */
+/* Área que contiene los campos de información (izquierda) */
 #contenedorInfo {
-    flex: 2.5;
-    /* más espacio para los datos */
+    flex: 2.6;
+    padding-right: 10px;
 }
 
 #tituloInfo {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 15px;
+    font-size: 1.95rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #0f1720;
+    /* color más oscuro para mejor contraste */
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Fila de título + botón editar */
+#tituloInfoRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.btnEditarPerfil {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #22c55e; /* verde */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.btnEditarPerfil:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.22); }
+.btnEditarPerfil:active { transform: translateY(0); opacity: .9; }
+.btnEditarPerfil .iconLapiz { display: block; }
+
+.accionesEditarPerfil { display: flex; gap: 8px; }
+.btnGuardarPerfil {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+.btnGuardarPerfil:hover { filter: brightness(1.05); }
+.btnCancelarPerfil {
+    background: #e5e7eb;
+    color: #111827;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 800;
+    cursor: pointer;
 }
 
 .datoUsuarioRow {
     display: flex;
-    margin-bottom: 15px;
-    /* más separación entre filas */
+    margin-bottom: 14px;
     align-items: center;
 }
 
 .info {
-    font-weight: bold;
+    font-weight: 800;
     width: 100px;
+    color: #0b1216;
+    /* más oscuro */
+    letter-spacing: 0.2px;
 }
 
-.spNombre, .spAge, .spWeight, .spHeight, .spEmail {
-    padding: 6px 12px;
-    margin-left: 10px;
-    border: 2px solid #931525;
+/* Estilo de los campos que imitan inputs (parecen cuadros con borde y fondo blanco) */
+/* Campos con efecto glass (semirretransparente + blur) */
+.spNombre,
+.spAge,
+.spWeight,
+.spHeight,
+.spEmail {
+    margin-left: 12px;
     border-radius: 12px;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    /* fondo translúcido */
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    /* efecto blur del fondo */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* borde claro sobre el glass */
     font-size: 16px;
     flex: 1;
-    padding: 8px 16px;
-    font-size: 18px;
+    padding: 12px 16px;
+    color: #111;
+    /* texto oscuro para buena lectura */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
+}
+
+.spNombre:hover,
+.spAge:hover,
+.spWeight:hover,
+.spHeight:hover,
+.spEmail:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+}
+
+/* Estado de solo lectura dentro de edición */
+.spReadonly {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.spReadonly:hover {
+    transform: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Si hay inputs reales dentro, que hereden el estilo glass y mantengan legibilidad */
+#contenedorInfo input[type="text"],
+#contenedorInfo input[type="email"],
+#contenedorInfo input[type="number"] {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    /* ya está el glass en el contenedor */
+    font-size: 16px;
+    color: #111;
+    padding: 0;
+    /* evitar padding duplicado si el input está dentro de un span estilizado */
+}
+
+/* foco accesible para inputs */
+#contenedorInfo input[type="text"]:focus,
+#contenedorInfo input[type="email"]:focus {
+    box-shadow: 0 6px 18px rgba(147, 21, 37, 0.12);
+}
+
+/* Si se usan inputs reales dentro de los spans, también darles estilo similar */
+#contenedorInfo input[type="text"],
+#contenedorInfo input[type="email"],
+#contenedorInfo input[type="number"] {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    color: #222;
 }
 
 /* Contenedor cerrar sesión */
-#contenedorCerrarSesion {
-    flex: 1 1 150px;
+/* Área derecha: foto de perfil y botón cerrar sesión */
+#contenedorCerrarSesion,#contenedorBorrarCuenta {
+    flex: 1 1 260px;
+    /* más ancho para mantener proporciones con la tarjeta agrandada */
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
+/* Contenedor circular para la imagen del usuario. URL vacía para que el usuario la rellene más tarde */
 #imagenUser {
-    width: 100%;
-    padding-top: 100%;
-    /* cuadrado responsivo */
-    background-image: url("/Imagenes/Login_Perfil/Login.png");
+    width: 320px;
+    /* agrandada */
+    height: 300px;
+    /* usar la imagen del directorio public */
+    background-image: url("/Imagenes/Login_Perfil/fotoperfilusuario.png");
     background-size: cover;
     background-position: center;
-    border-radius: 50%;
+    margin-bottom: 12px;
 }
 
 /* Botón cerrar sesión estilizado */
-#cerrarSesion {
-    width: 90%;
-    padding: 12px;
-    font-size: 18px;
-    font-weight: bold;
+/* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
+#cerrarSesion ,#borrarCuenta {
+    width: 75%;
+    padding: 12px 18px;
+    font-size: 16px;
+    font-weight: 800;
     color: #fff;
-    background: linear-gradient(135deg, #931525, #ff416c);
+    background: linear-gradient(180deg, #D33B3B, #B20C05);
     border: none;
-    border-radius: 25px;
+    border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-
-#cerrarSesion:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+#borrarCuenta {
+    margin-top: 110%;
+}
+#cerrarSesion:hover,#borrarCuenta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 /* Media queries para pantallas pequeñas */
@@ -272,7 +350,7 @@
     }
 
     #contenedorInfo,
-    #contenedorCerrarSesion {
+    #contenedorCerrarSesion,#contenedorBorrarCuenta {
         width: 100%;
         margin-bottom: 20px;
     }

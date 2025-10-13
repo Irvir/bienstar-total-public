@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+
 .crear-dieta-page html,
 .crear-dieta-page body {
     font-family: 'Inter', sans-serif;
 }
+
 .crear-dieta-page #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
@@ -16,6 +18,7 @@
     position: relative;
     flex-shrink: 0;
 }
+
 .crear-dieta-page #lupe {
     width: 10%;
     min-width: 30px;
@@ -25,6 +28,7 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .crear-dieta-page #filtro {
     flex: 1;
     height: 40px;
@@ -34,12 +38,14 @@
     font-size: 16px;
     width: 90%;
 }
+
 .crear-dieta-page footer {
     background: #333;
     color: white;
     text-align: center;
     padding: 15px;
 }
+
 .crear-dieta-page #filtroContainer {
     display: flex;
     flex-direction: column;
@@ -51,16 +57,17 @@
     /* Se adapta visualmente pero no afecta el scroll de la página */
     align-self: flex-start;
 }
+
 .crear-dieta-page #resultadosFiltro,
 .crear-dieta-page .resultadosFiltro {
     width: 100%;
     height: 160vh;
     overflow-y: auto;
     overflow-x: hidden;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: transparent; /* transparente: muestra el fondo de la página en los márgenes */
+        border: none; /* sin borde para que fuera del card no tenga marco */
+        border-radius: 0;
+        box-shadow: none;
     padding: 12px;
 }
 
@@ -104,18 +111,20 @@
     padding-top: 5%;
     padding-left: 10%;
 }
-.crear-dieta-page #diaSeleccionado{
-    
+
+.crear-dieta-page #diaSeleccionado {
+
     font-family: 'Inter', sans-serif;
     color: #931525;
-    
+
 }
+
 .crear-dieta-page #btnGuardarDieta,
 .crear-dieta-page #btnBorrarDieta,
-.crear-dieta-page #btnSalir{
+.crear-dieta-page #btnSalir {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #931525, #ff416c);
-        color: white;
+    color: white;
     color: white;
     border-radius: 50px;
     padding-top: 5%;
@@ -131,21 +140,22 @@
     border: none;
     height: 20%;
 }
+
 .crear-dieta-page #btnAgregar {
     font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #931525, #ff416c);
-        color: white;
-        border-radius: 25px;
-        padding-top: 4%;
-        padding-bottom: 4%;
-        flex-wrap: wrap;
-        gap: 30px;
-        font-size: 14px;
-        text-align: center;
-        width: 30%;
-        cursor: pointer;
-        border: none;
-        height: 20%;
+    background: linear-gradient(135deg, #931525, #ff416c);
+    color: white;
+    border-radius: 25px;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    flex-wrap: wrap;
+    gap: 30px;
+    font-size: 14px;
+    text-align: center;
+    width: 30%;
+    cursor: pointer;
+    border: none;
+    height: 20%;
 }
 
 
@@ -165,29 +175,35 @@
     gap: 20px;
     padding: 20px;
     width: 100%;
-   
+
 }
-.crear-dieta-page .dia{
+
+.crear-dieta-page .dia {
     background-color: #931525;
 }
+
 .crear-dieta-page #cuerpo {
-    font-family: 'Inter','sans-family';
-    
+    font-family: 'Inter', 'sans-family';
+
 }
 
 .crear-dieta-page .alimento-card strong {
     font-size: 18px;
     color: #931525;
 }
+
 .crear-dieta-page .alimento-info,
 .crear-dieta-page .alimento-botones {
     flex: 1;
 }
+
 .crear-dieta-page .alimento-info {
-    flex: 2 1 360px; /* crece más para mostrar más datos en pantallas grandes */
+    flex: 2 1 360px;
+    /* crece más para mostrar más datos en pantallas grandes */
     line-height: 1.3;
     word-break: break-word;
 }
+
 .crear-dieta-page .alimento-botones {
     display: flex;
     flex-direction: column;
@@ -204,24 +220,33 @@
     padding-right: 20px;
     padding-left: 20px;
 }
+
 .crear-dieta-page .barraDivisora {
     width: 2px;
     background-color: #000;
     height: auto;
     margin: 0 8px;
 }
+
 .crear-dieta-page #formContainer {
     /* Color y grosor del borde */
     border-radius: 4px;
     padding: 10px;
 }
+
 /* derecha: filtro */
-.crear-dieta-page #filtroContainer { 
-    flex: 1; max-width: 60%; padding-top: 1%; margin-left: 1%; box-sizing: border-box; }
+.crear-dieta-page #filtroContainer {
+    flex: 1;
+    max-width: 60%;
+    padding-top: 1%;
+    margin-left: 1%;
+    box-sizing: border-box;
+}
+
 /* izquierda: menu */
-.crear-dieta-page #formContainer { 
-        max-width: 40%;
-        flex: 1;
+.crear-dieta-page #formContainer {
+    max-width: 40%;
+    flex: 1;
 }
 
 /* Ajustes adicionales para que no se rompa en pantallas pequeñas */
@@ -236,9 +261,20 @@
 }
 
 @media (max-width: 800px) {
-    .crear-dieta-page #cuerpo { flex-direction: column; gap: 20px; }
-    .crear-dieta-page #filtroContainer, .crear-dieta-page #formContainer { max-width: 40%; margin: 0 10px; }
-    .crear-dieta-page #filtroContainer { margin-right: 0; }
+    .crear-dieta-page #cuerpo {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .crear-dieta-page #filtroContainer,
+    .crear-dieta-page #formContainer {
+        max-width: 40%;
+        margin: 0 10px;
+    }
+
+    .crear-dieta-page #filtroContainer {
+        margin-right: 0;
+    }
 }
 
 .crear-dieta-page #resultadosFiltro {
@@ -251,7 +287,7 @@
 }
 
 /* En Base.css o CrearDieta.css */
-.crear-dieta-page html,         
+.crear-dieta-page html,
 .crear-dieta-page body {
     height: 100%;
     margin: 0;
@@ -272,18 +308,14 @@
     /* espacio para respirar antes del pie */
 }
 
-.crear-dieta-page #pie {
-    background-color: #931525;
-    padding-top: auto;
-    text-align: center;
 
-}
 .crear-dieta-page footer {
     background: #931525;
     color: white;
     text-align: center;
     padding: 15px;
 }
+
 .crear-dieta-page .grupoSelector {
     display: flex;
     flex-direction: column;
@@ -314,6 +346,7 @@
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .crear-dieta-page .botonesAccionVertical {
     display: flex;
     flex-direction: column;
@@ -321,7 +354,8 @@
     gap: 12px;
     /* Espacio entre botones */
     margin-top: 10px;
-    margin-left: auto; /* empuja la columna hacia la derecha */
+    margin-left: auto;
+    /* empuja la columna hacia la derecha */
 }
 
 .crear-dieta-page .btnAgregar,
@@ -342,21 +376,25 @@
 .crear-dieta-page .btnEliminar:hover {
     transform: scale(1.05);
 }
+
 .crear-dieta-page .lista-comida {
-  list-style: none;
-  padding-left: 0;
-  padding-right: 20px;
-  margin: 0;
+    list-style: none;
+    padding-left: 0;
+    padding-right: 20px;
+    margin: 0;
 }
+
 .crear-dieta-page .lista-comida li {
     padding: 3px 0;
 }
+
 .crear-dieta-page .nutri-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(140px, 1fr));
     gap: 6px 16px;
     margin-top: 6px;
 }
+
 .crear-dieta-page .nutri-grid .nutriente-destacado {
     background-color: #28a745;
     color: white;
@@ -364,9 +402,11 @@
     border-radius: 6px;
     font-weight: 500;
 }
+
 .crear-dieta-page .nutri-grid.is-collapsed {
     display: none;
 }
+
 .crear-dieta-page .btnToggleDetalles {
     margin-top: 8px;
     background: transparent;
@@ -377,6 +417,7 @@
     cursor: pointer;
     font-family: 'Inter', sans-serif;
 }
+
 .crear-dieta-page #formContainer {
     display: flex;
     justify-content: center;
@@ -388,6 +429,7 @@
     max-width: 500px;
     /* o 40vw si prefieres en viewport */
 }
+
 .lista-comida {
     list-style: none;
     padding-left: 0;
@@ -397,6 +439,7 @@
 .sin-alimentos {
     color: #888;
 }
+
 #filtroContainer {
     display: flex;
     flex-direction: column;
@@ -405,7 +448,7 @@
 }
 
 #cuerpo {
-    
+
     align-items: stretch;
     /* fuerza que ambos hijos se alineen en altura */
 }
@@ -541,4 +584,3 @@
 .crear-dieta-page #resumenDieta {
     grid-template-columns: 1fr !important;
 }
-    

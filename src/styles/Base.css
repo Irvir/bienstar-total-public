@@ -5,14 +5,11 @@
 
 html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: center center;
+    background-attachment: fixed; 
+    background-image: url('/public/assets/pe1.png');
 }
 
 :root {
@@ -21,6 +18,9 @@ body {
     --white: #ffffff;
     --max-w: 1200px;
     --gap: 1rem;
+    --avatar-size: 40px; /* tamaño por defecto para el avatar dentro del recuadro */
+    --avatar-size-lg: 56px;
+    --avatar-size-sm: 36px;
 }
 
 /* Contenedor principal */
@@ -28,172 +28,35 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    /* ❌ Elimina esta línea */
+    /* background-color: white; */
     position: relative;
     z-index: 10;
 }
 
-/* Encabezado */
-#encabezado {
-    background-color: #931525;
-    
-    width: 100%;
-    padding: 0.5rem 0;
-    /* no se cambia el alto */
-    color: var(--white);
-    font-family: 'Montserrat', sans-serif;
-    position: relative;
-    z-index: 20;
-    border-radius: 0px 0px 50px 50px;
-}
-#contenedorEncabezado{
-    background-color: #FCF7F8;
-}
-
-.header-inner {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
-    /* más espacio lateral para que se vea extendido */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    /* separación entre logo, menú y login */
-    flex-wrap: wrap;
-    border-radius: 50px;
-    /* para móviles */
-}
-
-/* Logo */
-.logo {
-    flex: 0 0 auto;
-}
-
-.logoImg {
-    height: clamp(40px, 8vw, 80px);
-    /* mantiene el alto original, responsive */
-    width: auto;
-}
-
-/* Menú central */
-.menúBotones {
-    flex: 2;
-    /* ocupa más espacio horizontal */
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    /* separación entre botones */
-    flex-wrap: wrap;
-    /* se ajusta en pantallas pequeñas */
-}
-
-/* Alias sin acentos para componentes que usan nombres de clase ASCII */
-.menu-botones {
-    flex: 2;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-/* Anchors usados en el header cuando no se usan los botones originales */
-.menu-link {
-    color: var(--white);
-    background-color: transparent;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: clamp(14px, 1.5vw, 18px);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Botones del menú */
-.btnMenuSelec,
-.btnMenu,
-.btnMenuNoti {
-    border: none;
-    cursor: pointer;
-    color: var(--white);
-    background-color: var(--primary);
-    font-weight: bold;
-    font-size: clamp(14px, 1.5vw, 18px);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-}
-
-.btnMenuSelec {
-    background-color: var(--primary-dark);
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.btnMenuNoti {
-    flex: 0 0 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-}
-
-#btnNotification {
-    height: clamp(20px, 3vw, 32px);
-    width: auto;
-    object-fit: contain;
-    display: block;
-}
-
-/* Login */
-.login {
-    flex: 0 0 auto;
-}
-
-.btnPerfilView {
-    border: none;
-    background: transparent;
-    color: var(--white);
-    cursor: pointer;
-    font-size: clamp(14px, 1.5vw, 18px);
-    font-weight: bold;
-    padding: 0.25rem;
-}
-
-#fotoUsuario {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-}
-
+/* Header and avatar styles were moved to Encabezado.css */
 /* Cuerpo */
 #cuerpo {
     flex: 1;
     width: 100%;
     max-width: 100%;
+    height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #FCF7F8;
+    background-size: 800px 800px;
+    /* ajusta el tamaño del patrón */
+    background-repeat: repeat;
+    /* permite que se repita */
+    background-position: center center;
+    /* centra el patrón */
+    background-attachment: fixed
 }
-
 @media (max-width: 768px) {
     #cuerpo {
         padding: 0;
     }
 }
 
-/* Pie */
-#pie {
-    background-color: var(--primary);
-    width: 100%;
-    padding: 0.5%;
-    color: var(--white);
-    margin-top: auto;
-    border-radius: 50px 50px 00px 0px;
-    /* fuerza a ir al fondo del flex container */
-}
 
 .footer-inner {
     max-width: var(--max-w);
@@ -310,3 +173,39 @@ body {
     animation: bell-wiggle 700ms ease-in-out;
     filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
 }
+.user-info {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b, #ffb347);
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
+    
+}
+#btnNotification {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+@keyframes fondoRodillo {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: -400px 0;
+        /* ajusta según el tamaño del patrón */
+    }
+}
+
+html,
+body {
+    background-image: url('/public/assets/pe1.png');
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-attachment: fixed;
+    animation: fondoRodillo 10s linear infinite; }
