@@ -7,6 +7,7 @@ import Pie from "./Pie";
 import Filtro from "./Alimentos/Filtro";
 import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
 import Loader from "./Loader";
+import { API_BASE } from "../shared/apiBase";
 
 // Datos estáticos de ejemplo
 const alimentosData = [
@@ -80,7 +81,7 @@ export default function Alimentos() {
     setModalData({ name: item.name, img: item.img, info: "Cargando..." });
 
     try {
-      const res = await fetch(`http://localhost:3001/food/${item.id}`);
+  const res = await fetch(`${API_BASE}/food/${item.id}`);
       if (!res.ok) throw new Error("Error de servidor");
       const data = await res.json();
       setModalData({ name: item.name, img: item.img, info: data });

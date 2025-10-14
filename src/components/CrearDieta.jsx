@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { API_BASE } from "../shared/apiBase";
 import "../styles/CrearDieta.css";
 import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";
@@ -51,7 +52,7 @@ function CrearDieta() {
     async function buscarAlimentos(query = "") {
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3001/food-search?q=" + encodeURIComponent(query));
+            const res = await fetch(`${API_BASE}/food-search?q=` + encodeURIComponent(query));
             if (!res.ok) return [];
             return await res.json();
         } catch (e) {
@@ -81,7 +82,7 @@ function CrearDieta() {
         if (!usuario) return;
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:3001/get-diet?id_diet=${usuario.id_diet}`);
+            const res = await fetch(`${API_BASE}/get-diet?id_diet=${usuario.id_diet}`);
             if (!res.ok) throw new Error("No se pudo cargar la dieta");
 
             const dieta = await res.json();
@@ -130,7 +131,7 @@ function CrearDieta() {
         // --- Guardado si no existe ---
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3001/save-diet", {
+            const res = await fetch(`${API_BASE}/save-diet`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id_diet, meals: [{ id, name, dia: diaSeleccionado, tipoComida }] }),
@@ -160,7 +161,7 @@ function CrearDieta() {
         const id_diet = usuario?.id_diet ?? 1;
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3001/delete-diet-item", {
+            const res = await fetch(`${API_BASE}/delete-diet-item`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id_diet, id_food: id, dia: diaSeleccionado, tipoComida }),
@@ -182,7 +183,7 @@ function CrearDieta() {
         const id_diet = usuario?.id_diet ?? 1;
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:3001/clear-day", {
+            const res = await fetch(`${API_BASE}/clear-day`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id_diet, dia: diaSeleccionado }),

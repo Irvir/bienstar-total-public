@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { API_BASE } from "../shared/apiBase";
 import "../styles/Dietas.css";
 import withAuth from "../components/withAuth";
 
@@ -89,7 +90,7 @@ function Dietas() {
 
                 // Asegurar id_diet válido
                 if (!user.id_diet || user.id_diet === 1) {
-                    const ensure = await fetch("http://localhost:3001/ensure-diet", {
+                    const ensure = await fetch(`${API_BASE}/ensure-diet`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ user_id: user.id })
@@ -103,7 +104,7 @@ function Dietas() {
                     }
                 }
 
-                const res = await fetch(`http://localhost:3001/get-diet?id_diet=${user.id_diet}`);
+                const res = await fetch(`${API_BASE}/get-diet?id_diet=${user.id_diet}`);
                 if (!res.ok) return;
                 const rows = await res.json(); // [{dia, tipo_comida, alimento}]
 
