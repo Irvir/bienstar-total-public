@@ -1,3 +1,11 @@
+/**
+ * @file server.js
+ * @description Servidor backend de BienStarTotal con Express y MySQL
+ * @version 1.0.0
+ */
+
+/* global process */
+
 // server.js
 import path from "path";
 import { fileURLToPath } from "url";
@@ -557,7 +565,7 @@ app.post("/delete-diet-item", async (req, res) => {
       return res.status(404).json({ error: "El alimento no está registrado en esa comida" });
     }
 
-    const [result] = await pool.query(
+    await pool.query(
       "DELETE FROM meal_food WHERE id_meal = ? AND id_food = ?",
       [id_meal, idFoodNum]
     );
