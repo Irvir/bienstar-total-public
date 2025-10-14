@@ -18,6 +18,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+  <Route path="/home" element={<Home />} />
         <Route path="/crear-cuenta" element={<CrearCuenta />} />
         <Route path="/crearcuenta" element={<CrearCuenta />} />
         <Route path="/crear-dieta" element={<CrearDieta />} />

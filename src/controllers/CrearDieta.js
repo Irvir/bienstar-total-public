@@ -274,6 +274,8 @@ function actualizarEncabezadoDia(dia) {
 }
 
 // ================== GUARDAR Y BORRAR ==================
+/*
+// Función legacy no utilizada en React - comentada para evitar errores ESLint
 async function guardarDieta() {
     if (alimentosSeleccionados.length === 0) {
         if (window.notify) window.notify('No hay alimentos seleccionados.', { type: 'warning' });
@@ -303,11 +305,11 @@ async function guardarDieta() {
     else alert('Error de conexión.');
     }
 }
+*/
 
 async function eliminarAlimento(id, dia, tipoComida) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const id_diet = usuario?.id_diet ?? 1;
-    console.log("Eliminar:", { id_diet, id, dia, tipoComida });
 
     try {
     const res = await fetch(`${API_BASE}/delete-diet-item`, {
@@ -368,7 +370,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ✅ Buscar alimentos iniciales
     const alimentos = await buscarAlimentos("");
-    console.log("Alimentos al cargar:", alimentos);
 
     renderResultados(alimentos);
 

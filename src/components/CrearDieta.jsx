@@ -20,6 +20,9 @@ import Pie from "./Pie";
 import CrearDietaForm from "./CrearDieta/CrearDietaForm";
 import Loader from "./Loader.jsx";
 
+// Importar el sistema de notificaciones
+import "../controllers/notify.js";
+
 /**
  * Componente CrearDieta
  * Permite crear y editar dietas semanales personalizadas

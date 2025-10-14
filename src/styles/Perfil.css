@@ -355,6 +355,7 @@
 #imagenUser {
     width: 320px;
     height: 300px;
+    /* Asegurar que use public */
     background-image: url("/Imagenes/Login_Perfil/fotoperfilusuario.png");
     background-size: cover;
     background-position: center;

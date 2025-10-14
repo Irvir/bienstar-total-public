@@ -1,5 +1,29 @@
+/**
+ * @file ModalEditarAlimento.jsx
+ * @description Modal para editar información de alimentos en la sección de usuario
+ * 
+ * Funcionalidades principales:
+ * - Formulario de edición de alimentos
+ * - Campos para todos los nutrientes principales
+ * - Edición de imagen mediante URL o subida de archivo
+ * - Validación de datos
+ * - Cierre con click fuera del modal
+ * 
+ * @version 1.0.0
+ */
+
 import React, { useState } from "react";
 
+/**
+ * Componente ModalEditarAlimento
+ * Modal para editar datos de alimentos existentes
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {Object} props.alimento - Datos del alimento a editar
+ * @param {Function} props.onClose - Función para cerrar el modal
+ * @param {Function} props.onSave - Función para guardar los cambios
+ * @returns {JSX.Element} Modal de edición
+ */
 export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
   const [form, setForm] = useState({ ...alimento });
 

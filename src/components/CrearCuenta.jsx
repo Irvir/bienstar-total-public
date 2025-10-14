@@ -23,6 +23,9 @@ import Loader from "./Loader.jsx";
 import "../styles/Encabezado.css";
 import { API_BASE } from "../shared/apiBase";
 
+// Importar el sistema de notificaciones
+import "../controllers/notify.js";
+
 /**
  * Componente CrearCuenta
  * Página de registro de nuevos usuarios con formulario completo

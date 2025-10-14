@@ -19,6 +19,9 @@ import React, { useState } from "react";
 import "../../styles/Perfil.css";
 import { API_BASE } from "../../shared/apiBase";
 
+// Importar el sistema de notificaciones
+import "../../controllers/notify.js";
+
 /**
  * Componente ContenedorInfo
  * Panel principal de información y edición del perfil

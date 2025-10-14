@@ -138,6 +138,35 @@ export default function Alimentos() {
             filtered={alimentosData.filter((a) =>
               a.name.toLowerCase().includes(filter.toLowerCase())
             )}
-        </>
-    );
+            openModal={openModal}
+          />
+        </div>
+
+        <Pie />
+      </div>
+
+      {/* Modal de información nutricional */}
+      {modalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>×</button>
+            <h2>{modalData.name}</h2>
+            <img src={modalData.img} alt={modalData.name} />
+            {modalData.info && typeof modalData.info === 'object' ? (
+              <div className="modal-info">
+                <p><strong>Proteínas:</strong> {modalData.info.protein}g</p>
+                <p><strong>Carbohidratos:</strong> {modalData.info.carbs}g</p>
+                <p><strong>Grasas:</strong> {modalData.info.fat}g</p>
+                <p><strong>Calorías:</strong> {modalData.info.calories} kcal</p>
+              </div>
+            ) : (
+              <p>{modalData.info || "No hay información disponible"}</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <Loader loading={loading} />
+    </>
+  );
 }

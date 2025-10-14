@@ -9,6 +9,9 @@ import "../styles/Admin.css";
 import { API_BASE } from "../shared/apiBase";
 import "../styles/Base.css";
 
+// Importar el sistema de notificaciones
+import "../controllers/notify.js";
+
 function AdminAlimentos() {
   const [alimentos, setAlimentos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,12 +30,11 @@ function AdminAlimentos() {
       const res = await fetch(`${API_BASE}/admin/foods`);
       const contentType = res.headers.get("content-type");
       if (!res.ok || !contentType?.includes("application/json")) {
-        const raw = await res.text();
         throw new Error("Respuesta no válida del servidor");
       }
       const data = await res.json();
       setAlimentos(data);
-    } catch (e) {
+    } catch {
       setError("No se pudo cargar la lista de alimentos.");
     } finally {
       setLoading(false);
@@ -145,4 +147,6 @@ function AdminAlimentos() {
   );
 }
 
-export default withAuth(AdminAlimentos, { requireAuth: true });
+// Exportar con autenticación requerida
+const AdminAlimentosProtected = withAuth(AdminAlimentos, { requireAuth: true });
+export default AdminAlimentosProtected;

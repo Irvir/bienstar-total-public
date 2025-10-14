@@ -1,5 +1,21 @@
+/* eslint-disable */
+/**
+ * @file CrearCuenta.js (LEGACY - NO SE USA EN REACT)
+ * @description Script legacy para formulario de registro en HTML tradicional
+ * 
+ * ⚠️ ADVERTENCIA: Este archivo contiene código legacy con problemas estructurales
+ * NO se utiliza en la aplicación React actual
+ * La funcionalidad de registro se implementa en src/components/CrearCuenta.jsx
+ * 
+ * Este archivo se mantiene por compatibilidad con páginas HTML antiguas pero
+ * NO debe ser modificado ni usado como referencia
+ */
+
 // API base configurable desde public/config.js
 const API_BASE = (typeof window !== 'undefined' && window.API_BASE) || 'http://localhost:3001';
+// Constantes de tiempo para notificaciones y redirecciones (fallbacks seguros)
+const NOTIFICATION_DURATION = 6000;
+const REDIRECT_DELAY = 1200;
 // ===== Inline validation helpers =====
 function setFieldError(id, msg) {
     const input = document.getElementById(id);
@@ -202,147 +218,104 @@ function validateAll() {
  * 4. Realiza login automático
  * 5. Redirige al index.html
  */
-document.getElementById("CrearCuentaForm").addEventListener("submit", async function (event) {
-  event.preventDefault();
+const formEl = (typeof document !== 'undefined') ? document.getElementById("CrearCuentaForm") : null;
+if (formEl) {
+    formEl.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-  const data = {
-    name: document.getElementById("name").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    password: document.getElementById("password").value.trim(),
-    weight: parseFloat(document.getElementById("weight").value.trim()),
-    height: parseFloat(document.getElementById("height").value.trim()),
-    age: parseInt(document.getElementById("age").value.trim())
-  };
+        const data = {
+            name: document.getElementById("name")?.value?.trim() || '',
+            email: document.getElementById("email")?.value?.trim() || '',
+            password: document.getElementById("password")?.value?.trim() || '',
+            weight: parseFloat(document.getElementById("weight")?.value?.trim() || '0'),
+            height: parseFloat(document.getElementById("height")?.value?.trim() || '0'),
+            age: parseInt(document.getElementById("age")?.value?.trim() || '0')
+        };
 
-  const isValid = validateAll();
-  if (!isValid) return;
+        // Validar todos los campos antes de enviar
+        const valid = validateAll();
+        if (!valid) return;
 
-  try {
-    // Verificar si el correo ya existe
-  const checkEmail = await fetch(`${API_BASE}/checkEmail`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: data.email })
-    });
-
-    // Recopilar datos del formulario
-    const data = {
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value.trim(),
-        weight: parseFloat(document.getElementById("weight").value.trim()),
-        height: parseFloat(document.getElementById("height").value.trim()),
-        age: parseInt(document.getElementById("age").value.trim())
-    };
-
-    // Validar todos los campos antes de enviar
-    const isValid = validateAll();
-    if (!isValid) return;
-
-    // Registrar cuenta
-  const response = await fetch(`${API_BASE}/registrar`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-
-        const checkResult = await checkEmail.json();
-
-    if (response.ok) {
-      console.log("✅ Registro exitoso:", result);
-    
-      if (window.notify) {
-        console.log(result.message)
-        window.notify('Registro exitoso', {
-          type: 'success',
-          duration: 6000
-        });
-      } else {
-        alert(result.message || 'Registro exitoso');
-      }
-    
-      // Esperar a que el mensaje se muestre antes de continuar
-      setTimeout(async () => {
-        // Auto-login
-  const loginRes = await fetch(`${API_BASE}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: data.email, password: data.password })
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            console.log("✅ Registro exitoso:", result);
-
-            // Mostrar notificación de éxito
-            if (window.notify) {
-                window.notify('Registro exitoso', {
-                    type: 'success',
-                    duration: NOTIFICATION_DURATION
-                });
-            } else {
-                alert(result.message || 'Registro exitoso');
-            }
-
-            // 3. Realizar auto-login después de mostrar la notificación
-            setTimeout(async () => {
-                const loginRes = await fetch(`${API_URL}/login`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        email: data.email, 
-                        password: data.password 
-                    })
-                });
-
-                const loginResult = await loginRes.json();
-
-                if (loginRes.ok) {
-                    // Guardar usuario en localStorage
-                    localStorage.setItem("usuario", JSON.stringify(loginResult.user));
-                    // Redirigir al index
-                    window.location.href = "index.html";
-                } else {
-                    // Si falla el auto-login, redirigir a login manual
-                    window.location.href = "login.html";
-                }
-            }, REDIRECT_DELAY);
-
-        } else {
-            // Error en el registro
-            console.error("🚫 Error en registro:", result);
-
-            if (result.errores && Array.isArray(result.errores)) {
-                // Mostrar lista de errores de validación del servidor
-                if (window.notify) {
-                    window.notify(
-                        "❌ No se pudo registrar:\n- " + result.errores.join("\n- "),
-                        { type: 'error', duration: NOTIFICATION_DURATION }
-                    );
-                }
-            } else {
-                // Mostrar mensaje de error genérico
-                if (window.notify) {
-                    window.notify(
-                        "❌ Error: " + (result.message || "No se pudo registrar"),
-                        { type: 'error', duration: NOTIFICATION_DURATION }
-                    );
-                }
-            }
-        }
-
-    } catch (error) {
-        // Error de red o conexión
-        console.error("💥 Error en la conexión:", error);
-        
-        if (window.notify) {
-            window.notify("Error en la conexión con el servidor", {
-                type: 'error',
-                duration: NOTIFICATION_DURATION
+        try {
+            // 1) Verificar si el correo ya existe
+            const checkEmailRes = await fetch(`${API_BASE}/checkEmail`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: data.email })
             });
-        } else {
-            alert("Error en la conexión con el servidor");
+            const checkEmailJson = await checkEmailRes.json().catch(() => ({}));
+            if (checkEmailRes.ok && (checkEmailJson.exists === true || checkEmailJson.exists === 'true')) {
+                if (window.notify) {
+                    window.notify('El correo ya está registrado', { type: 'error', duration: NOTIFICATION_DURATION });
+                } else {
+                    alert('El correo ya está registrado');
+                }
+                return;
+            }
+
+            // 2) Registrar la cuenta
+            const response = await fetch(`${API_BASE}/registrar`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                // Notificación de éxito
+                if (window.notify) {
+                    window.notify('Registro exitoso', { type: 'success', duration: NOTIFICATION_DURATION });
+                } else {
+                    alert(result.message || 'Registro exitoso');
+                }
+
+                // 3) Auto-login tras una pequeña espera
+                setTimeout(async () => {
+                    try {
+                        const loginRes = await fetch(`${API_BASE}/login`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: data.email, password: data.password })
+                        });
+                        const loginResult = await loginRes.json().catch(() => ({}));
+
+                        if (loginRes.ok) {
+                            localStorage.setItem("usuario", JSON.stringify(loginResult.user || {}));
+                            window.location.href = "index.html";
+                        } else {
+                            window.location.href = "login.html";
+                        }
+                    } catch (e) {
+                        window.location.href = "login.html";
+                    }
+                }, REDIRECT_DELAY);
+            } else {
+                // Manejo de error en registro
+                const errores = (result && Array.isArray(result.errores)) ? result.errores : null;
+                if (errores && errores.length) {
+                    const msg = "❌ No se pudo registrar:\n- " + errores.join("\n- ");
+                    if (window.notify) {
+                        window.notify(msg, { type: 'error', duration: NOTIFICATION_DURATION });
+                    } else {
+                        alert(msg);
+                    }
+                } else {
+                    const msg = "❌ Error: " + ((result && result.message) || "No se pudo registrar");
+                    if (window.notify) {
+                        window.notify(msg, { type: 'error', duration: NOTIFICATION_DURATION });
+                    } else {
+                        alert(msg);
+                    }
+                }
+            }
+        } catch (error) {
+            // Error de red o conexión
+            console.error("💥 Error en la conexión:", error);
+            if (window.notify) {
+                window.notify("Error en la conexión con el servidor", { type: 'error', duration: NOTIFICATION_DURATION });
+            } else {
+                alert("Error en la conexión con el servidor");
+            }
         }
-    }
-});
+    });
+}

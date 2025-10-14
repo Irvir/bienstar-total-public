@@ -60,22 +60,25 @@ document.addEventListener("DOMContentLoaded", () => {
           // 👇 Ya no abrimos modal en caso de error
         });
     });
+  });
 
-    /**
-     * Cerrar modal con botón de cierre (X)
-     */
+  /**
+   * Cerrar modal con botón de cierre (X)
+   */
+  if (closeBtn) {
     closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
     });
+  }
 
-    /**
-     * Cerrar modal haciendo click fuera de él
-     */
-    window.addEventListener("click", e => {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
-    });
+  /**
+   * Cerrar modal haciendo click fuera de él
+   */
+  window.addEventListener("click", e => {
+      if (e.target === modal) {
+          modal.style.display = "none";
+      }
+  });
 });
 
 // ===== FILTRO DE BÚSQUEDA DE ALIMENTOS =====

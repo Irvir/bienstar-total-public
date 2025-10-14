@@ -70,6 +70,7 @@
 #lupe {
     width: 40px;
     height: 40px;
+    /* Asegurar ruta desde public */
     background-image: url("/Imagenes/Alimentos/Lupepng.png");
     background-size: contain;
     background-repeat: no-repeat;

@@ -23,6 +23,9 @@ import withAuth from "../components/withAuth";
 import "../styles/Pie.css";
 import { API_BASE } from "../shared/apiBase";
 
+// Importar el sistema de notificaciones
+import "../controllers/notify.js";
+
 /**
  * Componente Perfil
  * Página de perfil del usuario con menú lateral e información editable

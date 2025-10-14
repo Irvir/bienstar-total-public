@@ -104,7 +104,7 @@ export default function Encabezado({ activePage, onNavigate }) {
                     <div className="menúBotones">
                         <button
                             className={activePage === "home" ? "btnMenuSelec" : "btnMenu"}
-                            onClick={() => onNavigate("/home")}
+                            onClick={() => onNavigate("/")}
                         >
                             INICIO
                         </button>

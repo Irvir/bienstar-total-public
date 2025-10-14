@@ -1,5 +1,37 @@
+/**
+ * @file AlimentoCard.jsx
+ * @description Tarjeta de alimento con información nutricional completa
+ * 
+ * Funcionalidades principales:
+ * - Visualización de nombre del alimento
+ * - Tabla de información nutricional (proteínas, carbohidratos, grasas, etc.)
+ * - Botones para editar y eliminar alimento
+ * - Diseño adaptativo en grid
+ * 
+ * @version 1.0.0
+ */
+
 import React from "react";
 
+/**
+ * Componente AlimentoCard
+ * Muestra la información nutricional completa de un alimento
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {Object} props.alimento - Datos del alimento
+ * @param {string} props.alimento.nombre - Nombre del alimento
+ * @param {number} props.alimento.protein - Proteínas en gramos
+ * @param {number} props.alimento.carbohydrate - Carbohidratos en gramos
+ * @param {number} props.alimento.total_lipid - Grasas totales en gramos
+ * @param {number} props.alimento.total_sugars - Azúcares totales en gramos
+ * @param {number} props.alimento.calcium - Calcio en miligramos
+ * @param {number} props.alimento.iron - Hierro en miligramos
+ * @param {number} props.alimento.sodium - Sodio en miligramos
+ * @param {number} props.alimento.cholesterol - Colesterol en miligramos
+ * @param {Function} props.onEditar - Función callback para editar el alimento
+ * @param {Function} props.onEliminar - Función callback para eliminar el alimento
+ * @returns {JSX.Element} Tarjeta con información del alimento
+ */
 export default function AlimentoCard({ alimento, onEditar, onEliminar }) {
   return (
     <div className="ver-alimentos-card">

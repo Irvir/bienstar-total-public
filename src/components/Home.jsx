@@ -16,6 +16,9 @@ import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
 import "../styles/Pie.css";
 
+// Importar el sistema de notificaciones
+import "../controllers/notify.js";
+
 /**
  * Componente principal de la página de inicio
  * 
@@ -92,32 +95,32 @@ function Home() {
                         <button
                             className="btn1"
                             onClick={() =>
-                                handleClick("CrearDieta.html", "Editando tu dieta semanal")
+                                handleClick("/crear-dieta", "Editando tu dieta semanal")
                             }
                         ></button>
             <button
               className="btn2"
-              onClick={() =>
-                handleClick("dietas.html", "Revisando tus dietas")
-              }
+                            onClick={() =>
+                                handleClick("/dietas", "Revisando tus dietas")
+                            }
             ></button>
             <button
               className="btn3"
-              onClick={() =>
-                handleClick("calendario.html", "Abriendo tu calendario")
-              }
+                            onClick={() =>
+                                handleClick("/dietas", "Abriendo tu calendario")
+                            }
             ></button>
             <button
               className="btn4"
-              onClick={() =>
-                handleClick("alimentos.html", "Explorando alimentos")
-              }
+                            onClick={() =>
+                                handleClick("/alimentos", "Explorando alimentos")
+                            }
             ></button>
             <button
               className="btn5"
-              onClick={() =>
-                handleClick("tipsParaTuDieta.html", "Consejos para tu dieta")
-              }
+                            onClick={() =>
+                                handleClick("/dietas", "Consejos para tu dieta")
+                            }
                         ></button>
                     </div>
                 </div>

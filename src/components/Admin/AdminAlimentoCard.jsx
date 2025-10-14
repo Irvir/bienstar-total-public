@@ -1,5 +1,35 @@
+/**
+ * @file AdminAlimentoCard.jsx
+ * @description Tarjeta de alimento para el panel de administración
+ * 
+ * Funcionalidades principales:
+ * - Muestra información básica del alimento (nombre, imagen, nutrientes principales)
+ * - Botones para editar y eliminar el alimento
+ * - Manejo de imágenes con fallback a placeholder
+ * - Lazy loading de imágenes
+ * 
+ * @version 1.0.0
+ */
+
 import React, { useState } from "react";
 
+/**
+ * Componente AdminAlimentoCard
+ * Tarjeta individual de alimento en el panel de administración
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {Object} props.alimento - Datos del alimento
+ * @param {number} props.alimento.id - ID del alimento
+ * @param {string} props.alimento.nombre - Nombre del alimento
+ * @param {string} props.alimento.image - URL de la imagen
+ * @param {number} props.alimento.energy - Energía en kcal
+ * @param {number} props.alimento.protein - Proteínas en gramos
+ * @param {number} props.alimento.total_lipid - Grasas totales en gramos
+ * @param {number} props.alimento.carbohydrate - Carbohidratos en gramos
+ * @param {Function} props.onEditar - Función para editar el alimento
+ * @param {Function} props.onEliminar - Función para eliminar el alimento
+ * @returns {JSX.Element} Tarjeta de alimento
+ */
 export default function AdminAlimentoCard({ alimento, onEditar, onEliminar }) {
   const [src, setSrc] = useState(alimento.image || "/Imagenes/placeholder.png");
 

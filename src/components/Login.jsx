@@ -23,6 +23,9 @@ import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
 import { API_BASE } from "../shared/apiBase";
 
+// Importar el sistema de notificaciones
+import "../controllers/notify.js";
+
 /**
  * Componente Login
  * Página de autenticación con formulario de email y contraseña

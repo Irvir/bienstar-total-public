@@ -353,7 +353,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("/frontEnd/Imagenes/Alimentos/Lupepng.png");
+    background-image: url("/Imagenes/Alimentos/Lupepng.png");
 }
 
 /**
@@ -895,7 +895,7 @@
     width: 10%;
     min-width: 30px;
     height: 40px;
-    background-image: url("/frontEnd/Imagenes/Alimentos/Lupepng.png");
+    background-image: url("/Imagenes/Alimentos/Lupepng.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
