@@ -7,6 +7,7 @@ import ContenedorInfo from "./Perfil/contenedorInfo";
 import MenuLateral from "./Perfil/menuLateral";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
+import "../styles/Pie.css";
 import { API_BASE } from "../shared/apiBase";
 
 function Perfil() {

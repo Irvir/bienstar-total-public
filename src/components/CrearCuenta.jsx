@@ -6,6 +6,7 @@ import Pie from "./Pie";
 import "../styles/Base.css";
 import "../styles/Pie.css";
 import Loader from "./Loader.jsx";
+import "../styles/Encabezado.css";
 import { API_BASE } from "../shared/apiBase";
 
 const CrearCuenta = () => {

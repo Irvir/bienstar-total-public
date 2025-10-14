@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE } from "../shared/apiBase";
+import "../styles/Base.css";
 import "../styles/CrearDieta.css";
 import withAuth from "../components/withAuth";
 import Encabezado from "./Encabezado";

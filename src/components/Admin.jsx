@@ -7,6 +7,7 @@ import AdminAlimentoCard from "./Admin/AdminAlimentoCard";
 import ModalEditarAlimento from "./Admin/ModalEditarAlimento";
 import "../styles/Admin.css";
 import { API_BASE } from "../shared/apiBase";
+import "../styles/Base.css";
 
 function AdminAlimentos() {
   const [alimentos, setAlimentos] = useState([]);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Alimentos.css";
 import "../styles/Base.css";
+import "../styles/Pie.css";
 
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";

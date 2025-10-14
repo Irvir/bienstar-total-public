@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/Login.css";
+import "../styles/Base.css";
+import "../styles/Pie.css";
 import Pie from "./Pie";
 import Encabezado from "./Encabezado";
 import Loader from "./Loader.jsx";
