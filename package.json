@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie": "^0.5.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql2": "^3.15.2",

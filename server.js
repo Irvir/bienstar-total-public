@@ -580,9 +580,10 @@ app.post("/delete-diet-item", async (req, res) => {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "dist")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
+
 }
 // Puerto 3001 debido a que React usa 3000 por defecto  
 const PORT = process.env.PORT || 3001;

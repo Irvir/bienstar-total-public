@@ -1,29 +1,6 @@
-/**
- * CrearCuenta.js - Controlador de registro de nuevos usuarios
- * 
- * Maneja validación en tiempo real y envío del formulario de registro
- * Incluye validaciones de:
- * - Nombre (solo letras y espacios, 2-40 caracteres)
- * - Email (formato válido, mínimo 4 letras y 1 número, máximo 50 caracteres)
- * - Contraseña (mínimo 6 caracteres con letras y números)
- * - Edad (16-99 años)
- * - Peso (31-169 kg)
- * - Altura (81-249 cm)
- */
-
-// ===== CONSTANTES =====
-const API_URL = "http://localhost:3001";
-const NOTIFICATION_DURATION = 6000;
-const REDIRECT_DELAY = 6000;
-
-// ===== FUNCIONES AUXILIARES =====
-
-/**
- * Marca un campo como válido o inválido visualmente
- * 
- * @param {string} id - ID del input a marcar
- * @param {string} msg - Mensaje de error (vacío si es válido)
- */
+// API base configurable desde public/config.js
+const API_BASE = (typeof window !== 'undefined' && window.API_BASE) || 'http://localhost:3001';
+// ===== Inline validation helpers =====
 function setFieldError(id, msg) {
     const input = document.getElementById(id);
     const err = document.getElementById(`err-${id}`);
@@ -226,7 +203,27 @@ function validateAll() {
  * 5. Redirige al index.html
  */
 document.getElementById("CrearCuentaForm").addEventListener("submit", async function (event) {
-    event.preventDefault();
+  event.preventDefault();
+
+  const data = {
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    password: document.getElementById("password").value.trim(),
+    weight: parseFloat(document.getElementById("weight").value.trim()),
+    height: parseFloat(document.getElementById("height").value.trim()),
+    age: parseInt(document.getElementById("age").value.trim())
+  };
+
+  const isValid = validateAll();
+  if (!isValid) return;
+
+  try {
+    // Verificar si el correo ya existe
+  const checkEmail = await fetch(`${API_BASE}/checkEmail`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: data.email })
+    });
 
     // Recopilar datos del formulario
     const data = {
@@ -242,26 +239,35 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     const isValid = validateAll();
     if (!isValid) return;
 
-    try {
-        // 1. Verificar si el correo ya existe en la base de datos
-        const checkEmail = await fetch(`${API_URL}/checkEmail`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: data.email })
-        });
+    // Registrar cuenta
+  const response = await fetch(`${API_BASE}/registrar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
         const checkResult = await checkEmail.json();
 
-        if (!checkEmail.ok || checkResult.exists) {
-            setFieldError('email', 'Este correo ya está registrado. Usa otro.');
-            return;
-        }
-
-        // 2. Registrar al nuevo usuario
-        const response = await fetch(`${API_URL}/registrar`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+    if (response.ok) {
+      console.log("✅ Registro exitoso:", result);
+    
+      if (window.notify) {
+        console.log(result.message)
+        window.notify('Registro exitoso', {
+          type: 'success',
+          duration: 6000
+        });
+      } else {
+        alert(result.message || 'Registro exitoso');
+      }
+    
+      // Esperar a que el mensaje se muestre antes de continuar
+      setTimeout(async () => {
+        // Auto-login
+  const loginRes = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: data.email, password: data.password })
         });
 
         const result = await response.json();

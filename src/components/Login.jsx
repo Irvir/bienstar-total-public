@@ -15,10 +15,13 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/Login.css";
+import "../styles/Base.css";
+import "../styles/Pie.css";
 import Pie from "./Pie";
 import Encabezado from "./Encabezado";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
+import { API_BASE } from "../shared/apiBase";
 
 /**
  * Componente Login
@@ -148,7 +151,7 @@ function Login() {
 
     // Proceso de login normal con backend
     try {
-      const response = await fetch("http://localhost:3001/login", {
+  const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

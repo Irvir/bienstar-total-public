@@ -20,6 +20,8 @@ import Pie from "./Pie";
 import "../styles/Base.css";
 import "../styles/Pie.css";
 import Loader from "./Loader.jsx";
+import "../styles/Encabezado.css";
+import { API_BASE } from "../shared/apiBase";
 
 /**
  * Componente CrearCuenta
@@ -106,8 +108,7 @@ const CrearCuenta = () => {
     setLoading(true);
 
     try {
-      // Enviar datos de registro al backend
-      const res = await fetch("http://localhost:3001/registrar", {
+  const res = await fetch(`${API_BASE}/registrar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
