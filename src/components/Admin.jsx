@@ -6,8 +6,8 @@ import withAuth from "../components/withAuth";
 import AdminAlimentoCard from "./Admin/AdminAlimentoCard";
 import ModalEditarAlimento from "./Admin/ModalEditarAlimento";
 import "../styles/Admin.css";
-
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001";
+import { API_BASE } from "../shared/apiBase";
+import "../styles/Base.css";
 
 function AdminAlimentos() {
   const [alimentos, setAlimentos] = useState([]);

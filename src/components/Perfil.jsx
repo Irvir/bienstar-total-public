@@ -20,6 +20,8 @@ import ContenedorInfo from "./Perfil/contenedorInfo";
 import MenuLateral from "./Perfil/menuLateral";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
+import "../styles/Pie.css";
+import { API_BASE } from "../shared/apiBase";
 
 /**
  * Componente Perfil
@@ -94,8 +96,7 @@ function Perfil() {
       
         setLoading(true);
         try {
-          // Enviar petición DELETE al backend
-          const res = await fetch(`http://localhost:3001/user/${usuario.id}`, { method: "DELETE" });
+          const res = await fetch(`${API_BASE}/user/${usuario.id}`, { method: "DELETE" });
           if (!res.ok) throw new Error("Error al eliminar la cuenta");
       
           // Limpiar sesión y notificar

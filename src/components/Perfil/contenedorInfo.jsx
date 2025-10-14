@@ -17,6 +17,7 @@
 
 import React, { useState } from "react";
 import "../../styles/Perfil.css";
+import { API_BASE } from "../../shared/apiBase";
 
 /**
  * Componente ContenedorInfo
@@ -161,7 +162,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         // Enviar al backend
         try {
             if (usuario?.id) {
-                const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
+                const res = await fetch(`${API_BASE}/user/${usuario.id}`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
