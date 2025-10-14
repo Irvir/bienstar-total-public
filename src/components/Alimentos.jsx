@@ -1,3 +1,13 @@
+/**
+ * Alimentos.jsx - Componente de página de alimentos
+ * 
+ * Muestra una galería de alimentos con:
+ * - Búsqueda/filtrado en tiempo real
+ * - Modal con información nutricional detallada
+ * - Datos cargados desde el backend
+ * - Loader durante navegación
+ */
+
 import React, { useEffect, useState } from "react";
 import "../styles/Alimentos.css";
 import "../styles/Base.css";
@@ -8,7 +18,11 @@ import Filtro from "./Alimentos/Filtro";
 import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
 import Loader from "./Loader";
 
-// Datos estáticos de ejemplo
+/**
+ * Datos estáticos de alimentos disponibles
+ * Cada alimento tiene: id, imagen y nombre
+ * @constant {Array<Object>}
+ */
 const alimentosData = [
     { id: 14, img: '/Imagenes/Alimentos/Porotos.jpg', name: 'POROTOS' },
     { id: 21, img: '/Imagenes/Alimentos/Porotosnegros.jpg', name: 'POROTOS NEGROS' },
@@ -60,111 +74,167 @@ const alimentosData = [
     { id: 31, img: '/Imagenes/Alimentos/calabacin.jpg', name: 'CALABACÍN' }
 ];
 
+/**
+ * Componente principal de la página de alimentos
+ * 
+ * @returns {JSX.Element} Página completa con encabezado, filtro, galería y modal
+ */
 export default function Alimentos() {
-  const [filter, setFilter] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalData, setModalData] = useState({});
-  const [activePage, setActivePage] = useState("alimentos");
-  const [loading, setLoading] = useState(false);
+    // ===== ESTADO DEL COMPONENTE =====
+    
+    /** @type {string} Texto de búsqueda/filtro */
+    const [filter, setFilter] = useState("");
+    
+    /** @type {boolean} Estado de visibilidad del modal */
+    const [modalOpen, setModalOpen] = useState(false);
+    
+    /** @type {Object} Datos del alimento mostrado en el modal */
+    const [modalData, setModalData] = useState({});
+    
+    /** @type {string} Página actualmente activa en el encabezado */
+    const [activePage, setActivePage] = useState("alimentos");
+    
+    /** @type {boolean} Estado del loader de carga */
+    const [loading, setLoading] = useState(false);
 
-  // Detectar página actual
-  useEffect(() => {
-    const currentPage = window.location.pathname.split("/").pop() || "alimentos";
-    setActivePage(currentPage.replace(".html", "").toLowerCase());
-  }, []);
+    // ===== EFECTOS =====
 
-  // Abrir modal y cargar info desde backend
-  const openModal = async (item) => {
-    setModalOpen(true);
-    setLoading(true);
-    setModalData({ name: item.name, img: item.img, info: "Cargando..." });
+    /**
+     * Detecta la página actual desde la URL
+     */
+    useEffect(() => {
+        const currentPage = window.location.pathname.split("/").pop() || "alimentos";
+        setActivePage(currentPage.replace(".html", "").toLowerCase());
+    }, []);
 
-    try {
-      const res = await fetch(`http://localhost:3001/food/${item.id}`);
-      if (!res.ok) throw new Error("Error de servidor");
-      const data = await res.json();
-      setModalData({ name: item.name, img: item.img, info: data });
-    } catch (err) {
-      console.error("Fetch error:", err);
-      setModalData({ name: item.name, img: item.img, info: null });
-    } finally {
-      setLoading(false);
-    }
-  };
+    // ===== FUNCIONES DE MODAL =====
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setModalData({});
-  };
+    /**
+     * Abre el modal y carga información nutricional desde el backend
+     * 
+     * @param {Object} item - Alimento seleccionado
+     * @param {number} item.id - ID del alimento
+     * @param {string} item.name - Nombre del alimento
+     * @param {string} item.img - URL de la imagen
+     */
+    const openModal = async (item) => {
+        setModalOpen(true);
+        setLoading(true);
+        setModalData({ name: item.name, img: item.img, info: "Cargando..." });
 
-  // Loader al navegar desde encabezado
-  const showLoaderAndRedirect = (url) => {
-    setLoading(true);
-    setTimeout(() => {
-      window.location.href = url;
-    }, 800);
-  };
+        try {
+            const res = await fetch(`http://localhost:3001/food/${item.id}`);
+            if (!res.ok) throw new Error("Error de servidor");
+            
+            const data = await res.json();
+            setModalData({ name: item.name, img: item.img, info: data });
+        } catch (err) {
+            console.error("Fetch error:", err);
+            setModalData({ name: item.name, img: item.img, info: null });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  return (
-    <>
-      <div id="contenedorPrincipal" className="pagina-alimentos">
-        <Encabezado activePage={activePage} onNavigate={showLoaderAndRedirect} />
+    /**
+     * Cierra el modal y limpia los datos
+     */
+    const closeModal = () => {
+        setModalOpen(false);
+        setModalData({});
+    };
 
-        <div id="cuerpo" className="alimentos-page">
-          <Filtro filter={filter} setFilter={setFilter} />
+    // ===== NAVEGACIÓN =====
 
-          <ContenedorAlimentos
-            filtered={alimentosData.filter((a) =>
-              a.name.toLowerCase().includes(filter.toLowerCase())
+    /**
+     * Muestra el loader y redirige a otra página
+     * 
+     * @param {string} url - URL de destino
+     */
+    const showLoaderAndRedirect = (url) => {
+        setLoading(true);
+        setTimeout(() => {
+            window.location.href = url;
+        }, 800);
+    };
+
+    // ===== RENDER =====
+    // ===== RENDER =====
+
+    return (
+        <>
+            {/* Contenedor principal de la página */}
+            <div id="contenedorPrincipal" className="pagina-alimentos">
+                <Encabezado 
+                    activePage={activePage} 
+                    onNavigate={showLoaderAndRedirect} 
+                />
+
+                <div id="cuerpo" className="alimentos-page">
+                    {/* Filtro de búsqueda */}
+                    <Filtro filter={filter} setFilter={setFilter} />
+
+                    {/* Galería de alimentos filtrados */}
+                    <ContenedorAlimentos
+                        filtered={alimentosData.filter((a) =>
+                            a.name.toLowerCase().includes(filter.toLowerCase())
+                        )}
+                        openModal={openModal}
+                    />
+                </div>
+
+                <Pie />
+            </div>
+
+            {/* Loader global para navegación */}
+            <Loader visible={loading} />
+
+            {/* Modal con información nutricional */}
+            {modalOpen && (
+                <div
+                    id="modalAlimento"
+                    className={`modal ${modalOpen ? "visible" : ""}`}
+                    onClick={(e) => {
+                        // Cerrar al hacer clic fuera del contenido
+                        if (e.target.id === "modalAlimento") closeModal();
+                    }}
+                >
+                    <div className="modal-content">
+                        <span className="close" onClick={closeModal}>
+                            &times;
+                        </span>
+                        
+                        <img src={modalData.img} alt={modalData.name} />
+                        <h2 id="modalNombre">{modalData.name}</h2>
+
+                        <div id="modalInfo">
+                            {/* Estado de carga */}
+                            {modalData.info === "Cargando..." && <p>Cargando...</p>}
+
+                            {/* Información nutricional */}
+                            {modalData.info && 
+                             modalData.info !== "Cargando..." && 
+                             typeof modalData.info === "object" ? (
+                                <div className="nutrient-grid">
+                                    <div><b>Energía:</b> {modalData.info.energy ?? "-"} kcal</div>
+                                    <div><b>Proteína:</b> {modalData.info.protein ?? "-"} g</div>
+                                    <div><b>Grasa total:</b> {modalData.info.total_lipid ?? "-"} g</div>
+                                    <div><b>Carbohidratos:</b> {modalData.info.carbohydrate ?? "-"} g</div>
+                                    <div><b>Azúcares:</b> {modalData.info.total_sugars ?? "-"} g</div>
+                                    <div><b>Calcio:</b> {modalData.info.calcium ?? "-"} mg</div>
+                                    <div><b>Hierro:</b> {modalData.info.iron ?? "-"} mg</div>
+                                    <div><b>Sodio:</b> {modalData.info.sodium ?? "-"} mg</div>
+                                    <div><b>Colesterol:</b> {modalData.info.cholesterol ?? "-"} mg</div>
+                                </div>
+                            ) : (
+                                // Mensaje de error si no se pudo cargar
+                                modalData.info !== "Cargando..." && 
+                                <p>No se pudo cargar la información.</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
             )}
-            openModal={openModal}
-          />
-        </div>
-
-        <Pie />
-      </div>
-
-      {/* Loader global */}
-      <Loader visible={loading} />
-
-      {/* Modal de alimento */}
-      {modalOpen && (
-        <div
-        id="modalAlimento"
-        className={`modal ${modalOpen ? "visible" : ""}`}
-        onClick={(e) => {
-          if (e.target.id === "modalAlimento") closeModal();
-        }}
-      >
-        <div className="modal-content">
-  <span className="close" onClick={closeModal}>
-    &times;
-  </span>
-  <img src={modalData.img} alt={modalData.name} />
-  <h2 id="modalNombre">{modalData.name}</h2>
-
-  <div id="modalInfo">
-    {modalData.info === "Cargando..." && <p>Cargando...</p>}
-
-    {modalData.info && modalData.info !== "Cargando..." && typeof modalData.info === "object" ? (
-      <div className="nutrient-grid">
-        <div><b>Energía:</b> {modalData.info.energy ?? "-"} kcal</div>
-        <div><b>Proteína:</b> {modalData.info.protein ?? "-"} g</div>
-        <div><b>Grasa total:</b> {modalData.info.total_lipid ?? "-"} g</div>
-        <div><b>Carbohidratos:</b> {modalData.info.carbohydrate ?? "-"} g</div>
-        <div><b>Azúcares:</b> {modalData.info.total_sugars ?? "-"} g</div>
-        <div><b>Calcio:</b> {modalData.info.calcium ?? "-"} mg</div>
-        <div><b>Hierro:</b> {modalData.info.iron ?? "-"} mg</div>
-        <div><b>Sodio:</b> {modalData.info.sodium ?? "-"} mg</div>
-        <div><b>Colesterol:</b> {modalData.info.cholesterol ?? "-"} mg</div>
-      </div>
-    ) : (
-      modalData.info !== "Cargando..." && <p>No se pudo cargar la información.</p>
-    )}
-  </div>
-</div>
-      </div>
-      )}
-    </>
-  );
+        </>
+    );
 }

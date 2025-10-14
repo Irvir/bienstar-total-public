@@ -8,6 +8,7 @@ const traducciones = {
 
 let diaSeleccionado = null;
 let dietaAgrupada = {};
+
 // Redirigir si no hay sesión iniciada
 try {
     const usuario = localStorage.getItem("usuario");
@@ -19,7 +20,9 @@ try {
     window.location.href = "login.html";
     throw e;
 }
-const alimentosSeleccionados = [];
+
+// Variable comentada - no se usa actualmente pero podría ser útil
+// const alimentosSeleccionados = [];
 
 // ================== INFO SELECCIÓN ==================
 function actualizarInfoSeleccion() {
@@ -50,8 +53,6 @@ async function buscarAlimentos(query) {
 function renderResultados(alimentos) {
     const cont = document.getElementById('resultadosFiltro');
     cont.innerHTML = ''; // Limpiar resultados anteriores
-    const encabezado = document.getElementById('diaSeleccionadoTexto');
-  
     alimentos.forEach(alimento => {
         const card = document.createElement('div');
         card.className = 'alimento-card';
@@ -272,35 +273,35 @@ function actualizarEncabezadoDia(dia) {
 }
 
 // ================== GUARDAR Y BORRAR ==================
-async function guardarDieta() {
-    if (alimentosSeleccionados.length === 0) {
-        if (window.notify) window.notify('No hay alimentos seleccionados.', { type: 'warning' });
-        else alert('No hay alimentos seleccionados.');
-        return;
-    }
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const id_diet = usuario?.id_diet ?? 1;
-
-    try {
-    const res = await fetch('http://localhost:3001/save-diet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id_diet, meals: alimentosSeleccionados })
-        });
-        if (res.ok) {
-            if (window.notify) window.notify('Dieta guardada exitosamente.', { type: 'success' });
-            else alert('Dieta guardada exitosamente.');
-            alimentosSeleccionados.length = 0;
-            document.getElementById('listaAlimentos').innerHTML = '';
-        } else {
-            if (window.notify) window.notify('Error al guardar la dieta.', { type: 'error' });
-            else alert('Error al guardar la dieta.');
-        }
-    } catch (e) {
-    if (window.notify) window.notify('Error de conexión.', { type: 'error' });
-    else alert('Error de conexión.');
-    }
-}
+// Función guardarDieta comentada - no se usa actualmente pero podría ser útil
+// async function guardarDieta() {
+//     if (alimentosSeleccionados.length === 0) {
+//         if (window.notify) window.notify('No hay alimentos seleccionados.', { type: 'warning' });
+//         else alert('No hay alimentos seleccionados.');
+//         return;
+//     }
+//     const usuario = JSON.parse(localStorage.getItem("usuario"));
+//     const id_diet = usuario?.id_diet ?? 1;
+//     try {
+//         const res = await fetch('http://localhost:3001/save-diet', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ id_diet, meals: alimentosSeleccionados })
+//         });
+//         if (res.ok) {
+//             if (window.notify) window.notify('Dieta guardada exitosamente.', { type: 'success' });
+//             else alert('Dieta guardada exitosamente.');
+//             alimentosSeleccionados.length = 0;
+//             document.getElementById('listaAlimentos').innerHTML = '';
+//         } else {
+//             if (window.notify) window.notify('Error al guardar la dieta.', { type: 'error' });
+//             else alert('Error al guardar la dieta.');
+//         }
+//     } catch {
+//         if (window.notify) window.notify('Error de conexión.', { type: 'error' });
+//         else alert('Error de conexión.');
+//     }
+// }
 
 async function eliminarAlimento(id, dia, tipoComida) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));

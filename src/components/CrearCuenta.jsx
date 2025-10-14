@@ -1,3 +1,17 @@
+/**
+ * @file CrearCuenta.jsx
+ * @description Componente de registro de nuevos usuarios
+ * 
+ * Funcionalidades principales:
+ * - Formulario de registro con validación
+ * - Campos: nombre, email, contraseña, edad, peso, altura
+ * - Envío de datos al backend para crear cuenta
+ * - Manejo de errores con notificaciones
+ * - Redirección automática al login tras registro exitoso
+ * - Loader durante el proceso de registro
+ * - Protección de ruta: solo usuarios NO autenticados
+ */
+
 import React, { useEffect, useState } from "react";
 import "../styles/CrearCuenta.css";
 import withAuth from "../components/withAuth";
@@ -7,11 +21,32 @@ import "../styles/Base.css";
 import "../styles/Pie.css";
 import Loader from "./Loader.jsx";
 
+/**
+ * Componente CrearCuenta
+ * Página de registro de nuevos usuarios con formulario completo
+ * 
+ * @returns {JSX.Element} Página de crear cuenta
+ */
 const CrearCuenta = () => {
+  // ===========================================
+  // STATE - Estado del componente
+  // ===========================================
+  
+  /** @type {string} Página activa en el encabezado */
   const [activePage, setActivePage] = useState("crearcuenta");
+  
+  /** @type {boolean} Estado del loader durante registro */
   const [loading, setLoading] = useState(false);
 
-  // Campos del formulario
+  /**
+   * @type {Object} Datos del formulario de registro
+   * @property {string} name - Nombre del usuario
+   * @property {string} email - Correo electrónico
+   * @property {string} password - Contraseña
+   * @property {string} age - Edad del usuario
+   * @property {string} weight - Peso en kilogramos
+   * @property {string} height - Altura en centímetros
+   */
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,11 +56,28 @@ const CrearCuenta = () => {
     height: "",
   });
 
+  // ===========================================
+  // EFFECTS - Efectos del ciclo de vida
+  // ===========================================
+
+  /**
+   * Efecto 1: Detectar página activa desde la URL
+   * - Extrae el nombre de la página de la ruta actual
+   * - Actualiza el estado para resaltar en el encabezado
+   */
   useEffect(() => {
     const currentPage = window.location.pathname.split("/").pop() || "crearcuenta";
     setActivePage(currentPage);
   }, []);
 
+  // ===========================================
+  // FUNCTIONS - Funciones auxiliares
+  // ===========================================
+
+  /**
+   * Muestra el loader y redirige a una URL
+   * @param {string} url - URL de destino
+   */
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => {
@@ -33,16 +85,28 @@ const CrearCuenta = () => {
     }, 700);
   };
 
+  /**
+   * Maneja cambios en los inputs del formulario
+   * @param {Event} e - Evento de cambio del input
+   */
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
+  /**
+   * Maneja el envío del formulario de registro
+   * - Valida y envía datos al backend
+   * - Muestra notificaciones según el resultado
+   * - Redirige al login si el registro es exitoso
+   * @param {Event} e - Evento de submit del formulario
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // Enviar datos de registro al backend
       const res = await fetch("http://localhost:3001/registrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -51,6 +115,7 @@ const CrearCuenta = () => {
 
       const data = await res.json();
 
+      // Manejo de respuesta: éxito o error
       if (!res.ok) {
         if (data.errores?.length) {
           data.errores.forEach((err) => window.notify(err, { type: "error" }));
@@ -58,10 +123,12 @@ const CrearCuenta = () => {
           window.notify(data.message || "Error al registrar", { type: "error" });
         }
       } else {
+        // Registro exitoso: notificar y redirigir
         window.notify(data.message || "Registro exitoso", { type: "success" });
         setTimeout(() => (window.location.href = "/login"), 2500);
       }
     } catch (err) {
+      // Error de conexión con el servidor
       console.error(err);
       window.notify("Error de conexión al servidor", { type: "error" });
     } finally {
@@ -69,6 +136,9 @@ const CrearCuenta = () => {
     }
   };
 
+  // ===========================================
+  // RENDER - Renderizado del componente
+  // ===========================================
   return (
     <div id="contenedorPrincipal" className="crear-cuenta-page">
       <Encabezado activePage={activePage} onNavigate={showLoaderAndRedirect} />
@@ -138,5 +208,9 @@ const CrearCuenta = () => {
   );
 };
 
-// Página pública: accesible sin sesión. Si ya estás logueado, redirige a /perfil.
-export default withAuth(CrearCuenta, { requireAuth: false, redirectIfLoggedIn: true });
+// Exportar con HOC de autenticación
+// requireAuth: false - No requiere sesión (página pública)
+// redirectIfLoggedIn: true - Redirige al perfil si ya está logueado
+const CrearCuentaWithAuth = withAuth(CrearCuenta, { requireAuth: false, redirectIfLoggedIn: true });
+CrearCuentaWithAuth.displayName = 'CrearCuentaWithAuth';
+export default CrearCuentaWithAuth;

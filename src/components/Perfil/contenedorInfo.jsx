@@ -1,8 +1,50 @@
+/**
+ * @file contenedorInfo.jsx
+ * @description Contenedor de información del usuario en el perfil
+ * 
+ * Funcionalidades principales:
+ * - Visualización de datos del usuario (nombre, edad, peso, altura, email)
+ * - Modo edición con validación de campos
+ * - Actualización de datos en backend y localStorage
+ * - Conversión automática de altura (metros a centímetros)
+ * - Validaciones alineadas con backend:
+ *   - Edad: 16-99 años
+ *   - Peso: 31-169 kg
+ *   - Altura: 81-249 cm (o 0.81-2.49 m)
+ * - Email no editable (solo lectura)
+ * - Botones de cerrar sesión y borrar cuenta
+ */
+
 import React, { useState } from "react";
 import "../../styles/Perfil.css";
 
+/**
+ * Componente ContenedorInfo
+ * Panel principal de información y edición del perfil
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {Object} props.usuario - Datos del usuario actual
+ * @param {Function} props.handleCerrarSesion - Función para cerrar sesión
+ * @param {Function} props.handleBorrarCuenta - Función para eliminar cuenta
+ * @param {Function} props.onActualizarUsuario - Callback para actualizar usuario en componente padre
+ * @returns {JSX.Element} Panel de información del usuario
+ */
 export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
+    // ===========================================
+    // STATE - Estado del componente
+    // ===========================================
+    
+    /** @type {boolean} Indica si está en modo edición */
     const [editMode, setEditMode] = useState(false);
+    
+    /**
+     * @type {Object} Formulario con datos editables del usuario
+     * @property {string} name - Nombre del usuario
+     * @property {number|string} age - Edad del usuario
+     * @property {number|string} weight - Peso en kilogramos
+     * @property {number|string} height - Altura en centímetros
+     * @property {string} email - Correo (solo lectura en edición)
+     */
     const [form, setForm] = useState({
         name: usuario?.name || "",
         age: usuario?.age ?? "",
@@ -12,7 +54,18 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         email: usuario?.email || "",
     });
 
-    // Validaciones alineadas con el backend
+    // ===========================================
+    // FUNCTIONS - Funciones auxiliares
+    // ===========================================
+
+    /**
+     * Valida los campos del formulario
+     * - Nombre: no puede estar vacío
+     * - Edad: 16-99 años (opcional)
+     * - Peso: 31-169 kg (opcional)
+     * - Altura: 81-249 cm o 0.81-2.49 m (opcional, convierte automáticamente)
+     * @returns {Object} { ok: boolean, message?: string }
+     */
     const validateForm = () => {
         const name = String(form.name || "").trim();
         const age = form.age === "" || form.age === null ? null : Number(form.age);
@@ -33,7 +86,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
         if (height !== null) {
             if (Number.isNaN(height)) return { ok: false, message: "Altura inválida." };
-            // si el usuario ingresa metros (< 10), convertir a cm
+            // Conversión automática: si el usuario ingresa metros (< 10), convertir a cm
             if (height < 10) height = height * 100;
             if (height < 81 || height > 249) return { ok: false, message: "La altura debe estar entre 81 y 249 cm." };
         }
@@ -41,6 +94,10 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         return { ok: true };
     };
 
+    /**
+     * Activa el modo edición
+     * Copia los datos actuales del usuario al formulario
+     */
     const startEdit = () => {
         setForm({
             name: usuario?.name || "",
@@ -52,15 +109,31 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         setEditMode(true);
     };
 
+    /**
+     * Cancela el modo edición
+     * Descarta cambios sin guardar
+     */
     const cancelEdit = () => {
         setEditMode(false);
     };
 
+    /**
+     * Maneja cambios en los inputs del formulario
+     * @param {Event} e - Evento de cambio
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+    /**
+     * Guarda los cambios del formulario
+     * - Valida campos antes de enviar
+     * - Normaliza datos (conversión altura, trim, null values)
+     * - Envía PATCH al backend
+     * - Actualiza localStorage y estado global
+     * - Muestra notificación de éxito o error
+     */
     const saveEdit = async () => {
         // Validación previa
         const v = validateForm();
@@ -74,7 +147,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         const age = form.age === "" || form.age === null ? null : Number(form.age);
         const weight = form.weight === "" || form.weight === null ? null : Number(form.weight);
         let height = form.height === "" || form.height === null ? null : Number(form.height);
-        if (height !== null && height < 10) height = height * 100; // metros -> cm
+        if (height !== null && height < 10) height = height * 100; // Conversión metros -> cm
 
         const payload = {
             ...usuario,
@@ -85,7 +158,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
             email: String(usuario?.email || "").trim(),
         };
 
-        // Guardar en API; si falla, no mostrar éxito ni actualizar local
+        // Enviar al backend
         try {
             if (usuario?.id) {
                 const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
@@ -100,25 +173,35 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
                     }),
                 });
                 if (res.ok) {
+                    // Actualización exitosa
                     const updated = await res.json();
-                    try { localStorage.setItem("usuario", JSON.stringify(updated)); } catch {}
+                    try { 
+                        localStorage.setItem("usuario", JSON.stringify(updated)); 
+                    } catch (e) {
+                        console.warn("Error al guardar en localStorage", e);
+                    }
                     onActualizarUsuario?.(updated);
                     window.notify?.("Perfil actualizado", { type: "success" });
                     setEditMode(false);
                     return;
                 } else {
+                    // Error del servidor
                     const err = await res.json().catch(() => ({}));
                     window.notify?.(err.message || "No se pudo actualizar en el servidor", { type: "error" });
                     return;
                 }
             }
         } catch (err) {
-            console.warn("Error de red al guardar", err);
+            // Error de conexión
+            console.warn("Error de red al guardar perfil", err);
             window.notify?.("Error de conexión con el servidor", { type: "error" });
             return;
         }
     };
 
+    // ===========================================
+    // RENDER - Renderizado del componente
+    // ===========================================
     return (
         <div id="contenedorInfoSesion">
             <div id="contenedorInfo">
