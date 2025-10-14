@@ -1,8 +1,28 @@
-/* Scoped 404 styles: only apply when .error404-page is present */
+/**
+ * @file Error404.css
+ * @description Estilos para la página de error 404 con gradiente cálido
+ * @version 1.0.0
+ */
+
+/* ===================================================================
+   CONFIGURACIÓN BASE
+   =================================================================== */
+
+/**
+ * Reset de box-sizing para todos los elementos dentro de .error404-page
+ */
 .error404-page * {
     box-sizing: border-box;
 }
 
+/* ===================================================================
+   CONTENEDOR PRINCIPAL
+   =================================================================== */
+
+/**
+ * Página completa con gradiente naranja-coral
+ * Centrado vertical y horizontal del contenido
+ */
 .error404-page {
     min-height: 100vh;
     display: flex;
@@ -14,26 +34,50 @@
     text-align: center;
 }
 
+/**
+ * Contenedor interno con padding responsivo
+ */
 .error404-page .container {
     max-width: 500px;
     padding: 20px;
 }
 
+/* ===================================================================
+   TIPOGRAFÍA
+   =================================================================== */
+
+/**
+ * Número 404 en tamaño grande
+ */
 .error404-page h1 {
     font-size: 8rem;
     margin-bottom: 0.5rem;
 }
 
+/**
+ * Título secundario del mensaje de error
+ */
 .error404-page h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
 }
 
+/**
+ * Descripción del error
+ */
 .error404-page p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
 }
 
+/* ===================================================================
+   BOTÓN DE NAVEGACIÓN
+   =================================================================== */
+
+/**
+ * Botón de retorno al inicio con fondo blanco
+ * Incluye transición suave y efecto hover
+ */
 .error404-page .btn {
     text-decoration: none;
     padding: 10px 20px;
@@ -44,12 +88,22 @@
     transition: 0.3s;
 }
 
+/**
+ * Efecto hover del botón (fondo más cálido)
+ */
 .error404-page .btn:hover {
     background-color: #ffe6d5;
     color: #ff4b2b;
 }
 
-/* Responsive */
+/* ===================================================================
+   RESPONSIVE DESIGN
+   =================================================================== */
+
+/**
+ * Adaptaciones para móviles (600px y menos)
+ * Reduce tamaños de fuente para mejor legibilidad
+ */
 @media (max-width: 600px) {
     .error404-page h1 {
         font-size: 5rem;

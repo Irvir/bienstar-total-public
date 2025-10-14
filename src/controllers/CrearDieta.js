@@ -9,6 +9,7 @@ const traducciones = {
 
 let diaSeleccionado = null;
 let dietaAgrupada = {};
+
 // Redirigir si no hay sesión iniciada
 try {
     const usuario = localStorage.getItem("usuario");
@@ -20,7 +21,9 @@ try {
     window.location.href = "login.html";
     throw e;
 }
-const alimentosSeleccionados = [];
+
+// Variable comentada - no se usa actualmente pero podría ser útil
+// const alimentosSeleccionados = [];
 
 // ================== INFO SELECCIÓN ==================
 function actualizarInfoSeleccion() {
@@ -51,8 +54,6 @@ async function buscarAlimentos(query) {
 function renderResultados(alimentos) {
     const cont = document.getElementById('resultadosFiltro');
     cont.innerHTML = ''; // Limpiar resultados anteriores
-    const encabezado = document.getElementById('diaSeleccionadoTexto');
-  
     alimentos.forEach(alimento => {
         const card = document.createElement('div');
         card.className = 'alimento-card';

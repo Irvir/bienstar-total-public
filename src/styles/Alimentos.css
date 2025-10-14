@@ -1,9 +1,29 @@
+/**
+ * @file Alimentos.css
+ * @description Estilos para la página de alimentos con galería filtrable y modal de detalles
+ * @version 1.0.0
+ */
+
+/* ===================================================================
+   CONFIGURACIÓN BASE
+   =================================================================== */
+
+/**
+ * Reset de altura y margen para el contenedor de alimentos
+ */
 .pagina-alimentos html,
 .pagina-alimentos body {
     height: 100%;
     margin: 0;
 }
 
+/* ===================================================================
+   CONTENEDOR PRINCIPAL
+   =================================================================== */
+
+/**
+ * Contenedor principal con altura completa y fondo gris claro
+ */
 .pagina-alimentos #contenedorPrincipal {
     width: 100%;
     min-height: 100vh;
@@ -12,7 +32,25 @@
     flex-direction: column;
     align-items: center;
 }
-/* ----------------- Filtro ----------------- */
+
+/**
+ * Contenedor intermedio para apilar filtro y alimentos
+ */
+.pagina-alimentos #cuerpo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===================================================================
+   SISTEMA DE FILTRO
+   =================================================================== */
+
+/**
+ * Contenedor del filtro con lupa y campo de búsqueda
+ * Incluye borde redondeado y fondo gris
+ */
 .pagina-alimentos #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
@@ -26,6 +64,9 @@
     padding: 0.5rem;
 }
 
+/**
+ * Icono de lupa decorativo
+ */
 #lupe {
     width: 40px;
     height: 40px;
@@ -35,8 +76,10 @@
     background-position: center;
 }
 
+/**
+ * Campo de entrada del filtro con bordes redondeados
+ */
 .pagina-alimentos #filtro {
-
     flex: 1;
     width: 100%;
     height: 40px;
@@ -46,18 +89,27 @@
     font-size: 16px;
 }
 
-/* ----------------- Contenedor de Alimentos ----------------- */
+/* ===================================================================
+   CONTENEDOR Y GRID DE ALIMENTOS
+   =================================================================== */
+
+/**
+ * Contenedor flexible para el grid de alimentos
+ * Toma el espacio restante entre header y footer
+ */
 .pagina-alimentos #contenedorAlimentos {
     width: 95%;
     max-width: 1400px;
     margin: 1rem auto 2rem auto;
     flex: 1;
-    /* Toma el espacio restante entre header y footer */
     display: flex;
     justify-content: center;
 }
 
-/* Grid de alimentos */
+/**
+ * Grid responsive de tarjetas de alimentos
+ * Columnas auto-ajustables con mínimo de 180px
+ */
 .pagina-alimentos .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -70,6 +122,14 @@
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
 }
 
+/* ===================================================================
+   TARJETAS DE ALIMENTOS
+   =================================================================== */
+
+/**
+ * Tarjeta individual de alimento con efectos hover
+ * Incluye borde rojo y sombra
+ */
 .cuadro {
     background-color: #FCF7F8;
     border: 3px solid #FF0000;
@@ -80,10 +140,21 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/**
+ * Efecto hover: elevación y sombra ampliada
+ */
+.cuadro:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/**
+ * Botón interno de la tarjeta (sin borde)
+ */
 .botonAlimento {
     width: 100%;
     height: 100%;
@@ -98,8 +169,10 @@
     transition: transform 0.2s;
 }
 
-
-
+/**
+ * Imagen del alimento con bordes redondeados
+ * Object-fit cover para mantener proporciones
+ */
 #imgAlimento {
     width: 80%;
     max-height: 150px;
@@ -107,6 +180,9 @@
     border-radius: 10px;
 }
 
+/**
+ * Título del alimento en negrita
+ */
 #textTittleFood {
     font-size: 16px;
     font-weight: bold;
@@ -114,43 +190,68 @@
     color: black;
 }
 
-/* ----------------- Modal ----------------- */
+/* ===================================================================
+   MODAL DE DETALLES
+   =================================================================== */
+
+/**
+ * Overlay del modal con blur y transiciones suaves
+ * Controla visibilidad mediante clase 'visible' y React
+ */
 .modal {
-    display: flex;
-    /* ✅ Siempre flex, pero controlado por React */
     position: fixed;
-    z-index: 1000;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
-    justify-content: center;
+    backdrop-filter: blur(3px);
+    display: flex;
     align-items: center;
+    justify-content: center;
+    z-index: 9999;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
 
+/**
+ * Estado visible del modal (controlado por React)
+ */
 .modal.visible {
     opacity: 1;
-    pointer-events: auto; }
-
-.modal-content {
-    position: relative;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    border: 5px solid #b30000; }
-
-.modal-content img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    pointer-events: auto;
 }
 
+/**
+ * Contenido del modal con borde rojo característico
+ */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    border: 5px solid #b30000;
+}
+
+/**
+ * Imagen del alimento en el modal
+ */
+.modal-content img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/**
+ * Nombre del alimento en el modal (destacado)
+ */
 #modalNombre {
     font-size: 22px;
     font-weight: bold;
@@ -158,11 +259,30 @@
     color: black;
 }
 
+/**
+ * Información nutricional del alimento
+ */
 #modalInfo {
     font-size: 13px;
     text-align: center;
 }
 
+/**
+ * Grid de nutrientes en el modal
+ */
+.nutrient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.5rem 1rem;
+    margin-top: 1rem;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+/**
+ * Botón de cierre del modal (X roja)
+ */
 .close {
     position: absolute;
     top: 10px;
@@ -174,17 +294,27 @@
     z-index: 1001;
 }
 
+/**
+ * Efecto hover del botón de cierre
+ */
 .close:hover {
-    color: black; }
+    color: black;
+}
 
-/* ----------------- Responsive ----------------- */
+/* ===================================================================
+   RESPONSIVE DESIGN
+   =================================================================== */
+
+/**
+ * Adaptaciones para tablets (768px y menos)
+ */
 @media (max-width: 768px) {
-    #contenedorFiltro {
+    .pagina-alimentos #contenedorFiltro {
         flex-direction: column;
         width: 95%;
     }
 
-    .grid-container {
+    .pagina-alimentos .grid-container {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
 
@@ -197,8 +327,11 @@
     }
 }
 
+/**
+ * Adaptaciones para móviles (480px y menos)
+ */
 @media (max-width: 480px) {
-    .grid-container {
+    .pagina-alimentos .grid-container {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 
@@ -210,67 +343,4 @@
         font-size: 12px;
     }
 }
-/* Contenedor intermedio para apilar filtro y alimentos */
-.pagina-alimentos #cuerpo {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.cuadro {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.cuadro:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-}
-
-.modal-content {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-.modal-content img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-
-.close {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer; }
-.nutrient-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.5rem 1rem;
-    margin-top: 1rem;
-    text-align: left;
-    font-size: 14px;
-    color: #333;     }
     

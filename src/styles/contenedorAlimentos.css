@@ -1,17 +1,29 @@
-/* ----------------- Contenedor de Alimentos ----------------- */
+/**
+ * @file contenedorAlimentos.css
+ * @description Estilos para el contenedor y grid de tarjetas de alimentos
+ * @version 1.0.0
+ */
 
+/* ===================================================================
+   CONTENEDOR PRINCIPAL
+   =================================================================== */
 
-/* Contenedor de las cards (usa flex o bloque) */
+/**
+ * Contenedor principal con ancho máximo y centrado
+ */
 #contenedorAlimentos {
     width: 95%;
     max-width: 1400px;
     margin: 1rem auto;
 }
 
+/**
+ * Grid flexible de tarjetas con wrap
+ * Fondo rosa claro con borde rojo
+ */
 .grid-container {
     display: flex;
     flex-wrap: wrap;
-    /* 👈 Evita que crezca horizontalmente */
     justify-content: center;
     gap: 1rem;
     padding: 10px;
@@ -20,14 +32,21 @@
     border-radius: 2vw;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
-/* Cada card de alimento */
+
+/* ===================================================================
+   TARJETAS DE ALIMENTOS
+   =================================================================== */
+
+/**
+ * Tarjeta individual de alimento con tamaño fijo
+ * Incluye borde rojo y efecto hover
+ */
 .cuadro {
     background-color: #FCF7F8;
     border: 3px solid #FF0000;
     border-radius: 10px;
     text-align: center;
     width: 180px;
-    /* tamaño fijo para que queden bien en fila */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,11 +56,16 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+/**
+ * Efecto hover: escala aumentada
+ */
 .cuadro:hover {
     transform: scale(1.05);
 }
 
-/* Botón dentro del cuadro */
+/**
+ * Botón interno transparente de la tarjeta
+ */
 .botonAlimento {
     width: 100%;
     height: 100%;
@@ -55,7 +79,9 @@
     cursor: pointer;
 }
 
-/* Imagen de alimento */
+/**
+ * Imagen del alimento con object-fit cover
+ */
 #imgAlimento {
     width: 80%;
     max-height: 150px;
@@ -63,7 +89,9 @@
     border-radius: 10px;
 }
 
-/* Nombre del alimento */
+/**
+ * Nombre del alimento en negrita
+ */
 .nombre {
     font-size: 16px;
     font-weight: bold;
@@ -71,7 +99,9 @@
     color: black;
 }
 
-/* Mensaje cuando no hay resultados */
+/**
+ * Mensaje cuando no hay resultados de búsqueda
+ */
 .sin-resultados {
     width: 100%;
     text-align: center;
@@ -80,10 +110,15 @@
     font-style: italic;
 }
 
-/* ----------------- Modal ----------------- */
+/* ===================================================================
+   MODAL DE DETALLES
+   =================================================================== */
+
+/**
+ * Overlay del modal con fondo oscuro
+ */
 .modal {
     display: none;
-    /* oculto por defecto */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -96,6 +131,9 @@
     overflow: hidden;
 }
 
+/**
+ * Contenido del modal con borde rojo
+ */
 .modal-content {
     background-color: white;
     padding: 20px;
@@ -109,6 +147,9 @@
     border: 5px solid #b30000;
 }
 
+/**
+ * Imagen grande del alimento en el modal
+ */
 .modal-content img {
     width: 200px;
     height: 200px;
@@ -117,6 +158,9 @@
     margin-bottom: 15px;
 }
 
+/**
+ * Nombre del alimento en el modal
+ */
 #modalNombre {
     font-size: 22px;
     font-weight: bold;
@@ -124,12 +168,18 @@
     color: black;
 }
 
+/**
+ * Información nutricional del alimento
+ */
 #modalInfo {
     font-size: 13px;
     text-align: center;
     width: 100%;
 }
 
+/**
+ * Botón de cierre del modal (X roja)
+ */
 .close {
     color: #b30000;
     align-self: flex-end;
@@ -138,11 +188,20 @@
     cursor: pointer;
 }
 
+/**
+ * Efecto hover del botón de cierre
+ */
 .close:hover {
     color: black;
 }
 
-/* ----------------- Responsive ----------------- */
+/* ===================================================================
+   RESPONSIVE DESIGN
+   =================================================================== */
+
+/**
+ * Tablets (768px y menos)
+ */
 @media (max-width: 768px) {
     .cuadro {
         width: 140px;
@@ -157,6 +216,9 @@
     }
 }
 
+/**
+ * Móviles (480px y menos)
+ */
 @media (max-width: 480px) {
     .cuadro {
         width: 120px;
