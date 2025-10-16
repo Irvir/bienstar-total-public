@@ -1,16 +1,16 @@
-// server.js
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
 import mysql from "mysql2/promise";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import multer from "multer";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- Configuración de la base de datos ---
+// --- Configuración de DB ---
 const DB_CONFIG = {
   host: "sql10.freesqldatabase.com",
   user: "sql10801474",
@@ -18,17 +18,112 @@ const DB_CONFIG = {
   database: "sql10801474",
   port: 3306
 };
+
 // Archivo y directorio actual
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 // Pool de conexiones
 const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
 
-/**
- * Helpers
- */
+// --- Servir imágenes ---
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+// --- Multer: subida de imágenes ---
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "public/uploads/"),
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
+// --- POST crear alimento ---
+app.post("/admin/foods", async (req, res) => {
+  try {
+    const {
+      nombre,
+      energy,
+      protein,
+      total_lipid,
+      carbohydrate,
+      total_sugars,
+      calcium,
+      iron,
+      sodium,
+      cholesterol,
+      image_url,
+    } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO food (nombre, energy, protein, total_lipid, carbohydrate, total_sugars, calcium, iron, sodium, cholesterol, image_url)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, energy, protein, total_lipid, carbohydrate, total_sugars, calcium, iron, sodium, cholesterol, image_url]
+    );
+
+    res.json({ message: "Alimento creado correctamente", id: result.insertId });
+  } catch (err) {
+    console.error("POST /admin/foods error:", err);
+    res.status(500).json({ error: "Error al crear alimento" });
+  }
+});
+
+// --- Ruta subir imagen ---
+app.post("/admin/foods/upload-image", upload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No se subió la imagen" });
+  res.json({ image_url: `/uploads/${req.file.filename}` });
+});
+
+// --- GET todos los alimentos con image_url ---
+app.get("/admin/foods", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM food");
+    const normalized = rows.map(r => {
+      const image = r.image_url || null;
+      return { ...r, image_url: image };
+    });
+    res.json(normalized);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener alimentos" });
+  }
+});
+
+// --- PUT actualizar alimento ---
+app.put("/admin/foods/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      nombre,
+      energy,
+      protein,
+      total_lipid,
+      carbohydrate,
+      total_sugars,
+      calcium,
+      iron,
+      sodium,
+      cholesterol,
+      image_url
+    } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE food SET 
+         nombre = ?, energy = ?, protein = ?, total_lipid = ?, carbohydrate = ?, 
+         total_sugars = ?, calcium = ?, iron = ?, sodium = ?, cholesterol = ?, image_url = ?
+       WHERE id = ?`,
+      [nombre, energy, protein, total_lipid, carbohydrate, total_sugars, calcium, iron, sodium, cholesterol, image_url, id]
+    );
+
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Alimento no encontrado" });
+
+    res.json({ message: "Alimento actualizado correctamente" });
+  } catch (err) {
+    console.error("/admin/foods/:id PUT error:", err);
+    res.status(500).json({ error: "Error al actualizar alimento" });
+  }
+});
+
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 
@@ -37,7 +132,7 @@ function validarRegistro(email, password, height, weight, age) {
   height = Number(height);
 
   // si vino en metros -> cm
-  if (height < 10) height = height * 100; 
+  if (height < 10) height = height * 100;
 
   const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
   if (!regexEmail.test(email)) errores.push("El correo debe contener letras y números válidos.");
@@ -210,8 +305,8 @@ app.patch("/user/:id", async (req, res) => {
     const { id } = req.params;
     const { name, email, height, weight, age, originalEmail } = req.body || {};
 
-  // Cargar usuario existente
-  let [rows] = await pool.query("SELECT id, name, email, height, weight, age, id_diet FROM user WHERE id = ?", [id]);
+    // Cargar usuario existente
+    let [rows] = await pool.query("SELECT id, name, email, height, weight, age, id_diet FROM user WHERE id = ?", [id]);
     if (rows.length === 0) {
       const lookupEmail = originalEmail || email;
       if (lookupEmail) {
@@ -228,7 +323,7 @@ app.patch("/user/:id", async (req, res) => {
 
     const current = rows[0];
     // usar este id para cualquier actualización
-    const userId = current.id; 
+    const userId = current.id;
     const next = {
       name: (name ?? current.name) || current.name,
       // email no es editable desde este endpoint
@@ -425,7 +520,7 @@ app.post("/save-diet", async (req, res) => {
       // validación dentro del loop
       if (!id_food || !dia || !tipoComida) {
         console.warn("Datos incompletos para alimento:", meal);
-        continue; 
+        continue;
       }
 
       // - Insertar o encontrar el día
@@ -557,7 +652,7 @@ app.post("/delete-diet-item", async (req, res) => {
       return res.status(404).json({ error: "El alimento no está registrado en esa comida" });
     }
 
-    const [result] = await pool.query(
+    await pool.query(
       "DELETE FROM meal_food WHERE id_meal = ? AND id_food = ?",
       [id_meal, idFoodNum]
     );
@@ -568,15 +663,14 @@ app.post("/delete-diet-item", async (req, res) => {
     res.status(500).json({ error: "Error interno" });
   }
 });
-// --- SERVIR FRONTEND EN PRODUCCIÓN ---
+// --- Servir frontend en producción ---
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "dist")));
-
-  app.get("*", (req, res) => {
+  app.get(/^\/(?!admin).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
-// Puerto 3001 debido a que React usa 3000 por defecto  
+// --- Iniciar servidor ---
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);

@@ -7,6 +7,7 @@ import CrearDieta from './components/CrearDieta.jsx';
 import Alimentos from './components/Alimentos.jsx';
 import Perfil from './components/Perfil.jsx';
 import Admin from './components/Admin.jsx';
+import CrearAlimento from './components/CrearAlimento.jsx';
 
 
 export default function App() {
@@ -64,6 +65,9 @@ export default function App() {
   }
   if (currentPath === 'admin' || currentPath === 'admin.html') {
     return <Admin />;
+  }
+  if (currentPath === 'crear-alimento' || currentPath === 'crear-alimento.html') {
+    return <CrearAlimento />;
   }
 
 

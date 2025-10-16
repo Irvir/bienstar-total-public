@@ -7,6 +7,9 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
             MI DIETA
         </button>
         <button className="botonesPerfil">CALENDARIO</button>
+        <button className="botonesPerfil" id="btnAlimentos" onClick={() => showLoaderAndRedirect("/admin")}>
+            ADMIN
+        </button>
     </div>
     );
 }

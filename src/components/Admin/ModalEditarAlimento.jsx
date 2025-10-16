@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_BASE } from "../../components/shared/apiBase";
 
 export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
   const [form, setForm] = useState({

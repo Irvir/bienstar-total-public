@@ -1,9 +1,18 @@
 import React, { useState } from "react";
+import { API_BASE } from "../shared/apiBase";
 
 export default function AdminAlimentoCard({ alimento, onEditar, onEliminar }) {
-  const [src, setSrc] = useState(alimento.image || "/Imagenes/placeholder.png");
+  const resolve = (candidate) => {
+    if (!candidate) return `${API_BASE}/uploads/placeholder.png`;
+    if (/^https?:\/\//i.test(candidate)) return candidate;
+    if (candidate.startsWith("/")) return `${API_BASE}${candidate}`;
+    return `${API_BASE}/uploads/${candidate}`;
+  };
 
-  const handleError = () => setSrc("/Imagenes/placeholder.png");
+  const initial = resolve(alimento.image_url || alimento.image || alimento.img || alimento.url);
+  const [src, setSrc] = useState(initial);
+
+  const handleError = () => setSrc(`${API_BASE}/uploads/placeholder.png`);
 
   return (
     <div className="admin-card">
