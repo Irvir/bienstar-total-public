@@ -1,25 +1,9 @@
-/**
- * @file Dietas.css
- * @description Estilos para la página de visualización de dietas con calendario semanal
- * @version 1.0.0
- */
-
-/* ===================================================================
-   LAYOUT PRINCIPAL
-   =================================================================== */
-
-/**
- * Contenedor principal de la página con altura completa
- */
 .dietas-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/**
- * Cuerpo de la página centrado
- */
 .dietas-page #cuerpo {
     flex: 1;
     display: flex;
@@ -28,17 +12,12 @@
     padding-bottom: 0.5rem;
 }
 
-/* ===================================================================
-   BOTÓN DE EDITAR DIETA
-   =================================================================== */
-
-/**
- * Botón principal con gradiente rojo y efecto hover
- */
+/* Botón Editar Dieta */
 #BtnCrearCuenta {
     display: block;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
+    /* reduce espacio con el pie */
     padding: 14px 30px;
     font-size: 17px;
     font-weight: 600;
@@ -49,48 +28,16 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative;
 }
 
-/**
- * Efecto hover del botón: escala y sombra
- */
 #BtnCrearCuenta:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-/**
- * Pseudo-elemento para efecto de brillo radial
- */
-#BtnCrearCuenta::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 40px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-}
 
-/**
- * Activación del brillo en hover
- */
-#BtnCrearCuenta:hover::after {
-    opacity: 1;
-}
 
-/* ===================================================================
-   TABLA DE DIETAS (CALENDARIO)
-   =================================================================== */
-
-/**
- * Tabla horizontal con columnas por día de la semana
- */
+/* Tabla de dieta */
 .tabla-dieta {
     width: 99vw;
     margin: 40px auto 0 auto;
@@ -101,13 +48,7 @@
     margin-left: 40px;
 }
 
-/* ===================================================================
-   COLUMNAS Y HORARIOS
-   =================================================================== */
-
-/**
- * Estilo base para columnas con borde rojo
- */
+/* Columnas */
 .columna,
 .columna-horario {
     border: 3px solid #941424;
@@ -119,25 +60,17 @@
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/**
- * Columna de horarios (más estrecha)
- */
 .columna-horario {
     width: 7vw;
     min-width: 70px;
 }
 
-/**
- * Columnas de días de la semana
- */
 .columna {
     width: 13vw;
     min-width: 120px;
 }
 
-/**
- * Títulos de las columnas (días/horario)
- */
+/* Títulos */
 .titulo {
     padding: 10px;
     text-align: center;
@@ -147,9 +80,7 @@
     color: #941424;
 }
 
-/**
- * Celdas de contenido
- */
+/* Celdas */
 .celda {
     flex: 1;
     padding: 10px;
@@ -157,13 +88,7 @@
     background-color: #fff;
 }
 
-/* ===================================================================
-   BLOQUES DE COMIDA
-   =================================================================== */
-
-/**
- * Contenedor de cada comida con sombra suave
- */
+/* Bloques de comida */
 .bloque-comida {
     margin-bottom: 1rem;
     padding: 0.5rem;
@@ -172,17 +97,15 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-/**
- * Título de cada comida (Desayuno, Almuerzo, etc.)
- * Estilo destacado con gradiente y borde izquierdo rojo
- */
 .titulo-comida {
     font-size: 16px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: #931525;
+    /* rojo principal */
     background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
+    /* fondo suave */
     padding: 0.4rem 0.8rem;
     border-left: 4px solid #931525;
     border-radius: 8px;
@@ -191,21 +114,11 @@
     transition: background 0.3s ease, transform 0.2s ease;
 }
 
-/**
- * Efecto hover del título de comida
- */
 .titulo-comida:hover {
     background: linear-gradient(135deg, #ffd6d6, #ffc2c2);
-    transform: scale(1.02);
-}
+    transform: scale(1.02); }
 
-/* ===================================================================
-   LOADER (PANTALLA DE CARGA)
-   =================================================================== */
-
-/**
- * Overlay de carga con blur
- */
+/* Loader */
 #loader {
     display: none;
     position: fixed;
@@ -221,9 +134,6 @@
     flex-direction: column;
 }
 
-/**
- * Texto del loader
- */
 .loader-text {
     font-size: 2rem;
     color: white;
@@ -235,9 +145,6 @@
     flex-direction: column;
 }
 
-/**
- * Contenedor de frutas animadas
- */
 .loader-dots {
     display: inline-flex;
     align-items: center;
@@ -248,9 +155,6 @@
     margin: 0;
 }
 
-/**
- * Frutas con animación de aparición
- */
 .loader-dots img {
     width: 35px;
     height: 35px;
@@ -258,9 +162,6 @@
     animation: fruitDots 1.5s infinite;
 }
 
-/**
- * Delays escalonados para cada fruta
- */
 .loader-dots img:nth-child(1) {
     animation-delay: 0s;
 }
@@ -273,14 +174,8 @@
     animation-delay: 0.6s;
 }
 
-/* ===================================================================
-   ANIMACIONES
-   =================================================================== */
-
-/**
- * Animación de aparición de frutas con escala
- */
 @keyframes fruitDots {
+
     0%,
     80%,
     100% {
@@ -291,5 +186,20 @@
     40% {
         opacity: 1;
         transform: scale(1.2);
-    }
+    } }
+#BtnCrearCuenta::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+#BtnCrearCuenta:hover::after {
+    opacity: 1;
 }

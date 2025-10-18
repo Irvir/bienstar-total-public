@@ -1,19 +1,7 @@
-/**
- * @file Encabezado.css
- * @description Estilos para el header con efecto glass morphism, logo, navegación y perfil de usuario
- * @version 1.0.0
- */
-
-/* ===================================================================
-   CONTENEDOR PRINCIPAL DEL ENCABEZADO
-   =================================================================== */
-
-/**
- * Header con efecto glass morphism y bordes redondeados
- * Incluye backdrop-filter para crear el efecto cristal
- */
+/* Encabezado con estilo plomizo y efecto glass */
 #encabezado {
-    background: #fff2e2;
+    background:#fff2e2;
+    /* tono plomizo translúcido */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -26,9 +14,7 @@
     color: #fff2e2;
 }
 
-/**
- * Contenedor interno flexible con espaciado responsivo
- */
+/* Contenedor interno */
 .header-inner {
     width: 100%;
     margin: 0 auto;
@@ -41,33 +27,17 @@
     border-radius: 50px;
 }
 
-/* ===================================================================
-   LOGO
-   =================================================================== */
-
-/**
- * Contenedor del logo con tamaño fijo
- */
+/* Logo */
 .logo {
     flex: 0 0 auto;
 }
 
-/**
- * Imagen del logo con altura responsiva usando clamp
- */
 .logoImg {
     height: clamp(40px, 8vw, 80px);
     width: auto;
 }
 
-/* ===================================================================
-   NAVEGACIÓN Y BOTONES
-   =================================================================== */
-
-/**
- * Contenedor de botones de menú centrado
- * Soporta ambos nombres (menúBotones y menu-botones)
- */
+/* Botones de menú */
 .menúBotones,
 .menu-botones {
     flex: 2;
@@ -77,9 +47,7 @@
     flex-wrap: wrap;
 }
 
-/**
- * Enlaces de navegación base
- */
+/* Enlaces de menú */
 .menu-link {
     color: var(--white);
     background-color: transparent;
@@ -93,10 +61,7 @@
     justify-content: center;
 }
 
-/**
- * Botones de menú con color rojo característico (#A31621)
- * Incluye efecto glass, bordes redondeados y transiciones
- */
+/* Botones con efecto classy y color A31621 */
 .btnMenu,
 .btnMenuSelec,
 .btnMenuNoti {
@@ -115,16 +80,10 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/**
- * Estado seleccionado con sombra más prominente
- */
 .btnMenuSelec {
     box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/**
- * Efecto hover: color más brillante y elevación
- */
 .btnMenu:hover,
 .btnMenuSelec:hover {
     background-color: #d42c3c;
@@ -132,9 +91,6 @@
     transform: translateY(-2px);
 }
 
-/**
- * Pseudo-elemento para efecto de brillo radial en hover
- */
 .btnMenu::after,
 .btnMenuSelec::after {
     content: "";
@@ -150,21 +106,12 @@
     z-index: -1;
 }
 
-/**
- * Activación del brillo en hover
- */
 .btnMenu:hover::after,
 .btnMenuSelec:hover::after {
     opacity: 1;
 }
 
-/* ===================================================================
-   BOTÓN DE NOTIFICACIONES
-   =================================================================== */
-
-/**
- * Botón circular para notificaciones
- */
+/* Botón de notificación */
 .btnMenuNoti {
     flex: 0 0 42px;
     display: flex;
@@ -173,9 +120,7 @@
     background-color: transparent;
 }
 
-/**
- * Icono de campana de notificaciones
- */
+/* Icono de notificación */
 #btnNotification {
     height: clamp(20px, 3vw, 32px);
     width: auto;
@@ -183,14 +128,7 @@
     display: block;
 }
 
-/* ===================================================================
-   SECCIÓN DE LOGIN / PERFIL
-   =================================================================== */
-
-/**
- * Contenedor de perfil con efecto glass estilo iOS
- * Incluye bordes translúcidos y sombras internas
- */
+/* --- Login con efecto glass tipo iPhone --- */
 .login {
     display: flex;
     align-items: center;
@@ -198,6 +136,7 @@
     padding: 8px 16px;
     border-radius: 30px;
     background: rgba(255, 255, 255, 0.15);
+    /* cristal translúcido */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -207,18 +146,13 @@
     color: #fff;
 }
 
-/**
- * Efecto hover del perfil: mayor transparencia y elevación
- */
 .login:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 10px rgba(255, 255, 255, 0.3);
 }
 
-/**
- * Foto de perfil circular con borde cristal
- */
+/* --- Foto de usuario con borde cristal --- */
 .fotoUsuario,
 #fotoUsuario {
     width: clamp(38px, 5vw, 48px);
@@ -230,18 +164,13 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/**
- * Efecto hover de la foto: escala y brillo
- */
 .fotoUsuario:hover,
 #fotoUsuario:hover {
     transform: scale(1.08);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
 }
 
-/**
- * Nombre de usuario con text-shadow para efecto de brillo
- */
+/* --- Nombre de usuario con texto brillante --- */
 .nameUser {
     font-size: 16px;
     font-weight: 600;
@@ -255,14 +184,7 @@
     text-align: right;
 }
 
-/* ===================================================================
-   MENÚ DESPLEGABLE
-   =================================================================== */
-
-/**
- * Dropdown del menú de usuario
- * Posicionado absolutamente debajo del perfil
- */
+/* Menú desplegable */
 .menuDesplegable {
     display: none;
     position: absolute;
@@ -276,9 +198,6 @@
     width: 180px;
 }
 
-/**
- * Opciones individuales del menú
- */
 .opcionMenu {
     display: block;
     width: 100%;
@@ -290,21 +209,43 @@
     font-size: 14px;
 }
 
-/**
- * Efecto hover de las opciones
- */
 .opcionMenu:hover {
     background-color: #f3f3f3;
 }
 
-/* ===================================================================
-   ANIMACIONES
-   =================================================================== */
+/* Responsive */
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-/**
- * Animación de campana de notificación (wiggle)
- * Simula el movimiento de una campana sonando
- */
+    .menúBotones {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .login {
+        order: 2;
+        padding: 4px 10px;
+        gap: 6px;
+        max-width: 180px;
+    }
+
+    .nameUser {
+        font-size: 14px;
+        max-width: 100px;
+    }
+
+    #fotoUsuario,
+    .fotoUsuario {
+        width: var(--avatar-size-sm);
+        height: var(--avatar-size-sm);
+    }
+}
+
+/* Animación de campana */
 @keyframes bell-wiggle {
     0% {
         transform: rotate(0deg);
@@ -335,62 +276,7 @@
     }
 }
 
-/**
- * Clase para aplicar animación de campana
- * Incluye drop-shadow rojo para enfatizar
- */
 .bell-hint {
     animation: bell-wiggle 700ms ease-in-out;
     filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
-}
-
-/* ===================================================================
-   RESPONSIVE DESIGN
-   =================================================================== */
-
-/**
- * Adaptaciones para tablets (768px y menos)
- * Reorganiza el layout en múltiples filas
- */
-@media (max-width: 768px) {
-    .header-inner {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    /**
-     * Botones de menú en nueva fila (order: 3)
-     */
-    .menúBotones {
-        order: 3;
-        width: 100%;
-        flex-wrap: wrap;
-    }
-
-    /**
-     * Login en segunda posición (order: 2)
-     */
-    .login {
-        order: 2;
-        padding: 4px 10px;
-        gap: 6px;
-        max-width: 180px;
-    }
-
-    /**
-     * Nombre de usuario reducido
-     */
-    .nameUser {
-        font-size: 14px;
-        max-width: 100px;
-    }
-
-    /**
-     * Avatar más pequeño en móvil
-     */
-    #fotoUsuario,
-    .fotoUsuario {
-        width: var(--avatar-size-sm);
-        height: var(--avatar-size-sm);
-    }
 }

@@ -1,73 +1,27 @@
-/**
- * @file Login.jsx
- * @description Componente de inicio de sesión de usuarios
- * 
- * Funcionalidades principales:
- * - Formulario de login con email y contraseña
- * - Validación de credenciales con el backend
- * - Detección automática de usuario administrador
- * - Almacenamiento de sesión en localStorage
- * - Redirección según tipo de usuario (admin/regular)
- * - Manejo de errores con notificaciones
- * - Loader durante autenticación
- * - Atajo directo para admin2025@bienstartotal.food
- */
-
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/Login.css";
-import "../styles/Base.css";
-import "../styles/Pie.css";
 import Pie from "./Pie";
 import Encabezado from "./Encabezado";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
-import { API_BASE } from "../shared/apiBase";
 
-/**
- * Componente Login
- * Página de autenticación con formulario de email y contraseña
- * 
- * @returns {JSX.Element} Página de inicio de sesión
- */
 function Login() {
-  // ===========================================
-  // STATE - Estado del componente
-  // ===========================================
-  
-  /** @type {string} Email ingresado por el usuario */
   const [email, setEmail] = useState("");
-  
-  /** @type {string} Contraseña ingresada por el usuario */
   const [password, setPassword] = useState("");
-  
-  /** @type {string} Página activa en el encabezado */
+  const [userName, setUserName] = useState("Invitado");
   const [activePage, setActivePage] = useState("login");
-  
-  /** @type {boolean} Estado del loader durante autenticación */
   const [loading, setLoading] = useState(false);
-  
-  /** @type {React.RefObject} Referencia al input de contraseña */
   const passwordRef = useRef(null);
-  
-  /** @type {React.RefObject} Referencia al input de email */
   const emailRef = useRef(null);
 
-  // ===========================================
-  // EFFECTS - Efectos del ciclo de vida
-  // ===========================================
-
-  /**
-   * Efecto 1: Inicialización al montar el componente
-   * - Carga el usuario desde localStorage si existe
-   * - Detecta la página activa desde la URL
-   */
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
       try {
-        JSON.parse(usuarioGuardado); // Validar formato JSON
+        const usuario = JSON.parse(usuarioGuardado);
+        if (usuario?.name) setUserName(usuario.name);
       } catch (e) {
-        console.warn("Usuario inválido en localStorage", e);
+        console.warn("Usuario inválido", e);
       }
     }
 
@@ -75,14 +29,7 @@ function Login() {
     setActivePage(currentPage.replace(".html", "").toLowerCase());
   }, []);
 
-  // ===========================================
-  // FUNCTIONS - Funciones auxiliares
-  // ===========================================
-
-  /**
-   * Muestra el loader y redirige a una URL
-   * @param {string} url - URL de destino
-   */
+  // Mostrar loader + redirigir
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => {
@@ -90,13 +37,7 @@ function Login() {
     }, 700);
   };
 
-  /**
-   * Notifica al usuario y redirige después de un retraso
-   * @param {string} mensaje - Mensaje de notificación
-   * @param {Object} opciones - Opciones de notificación (type, duration)
-   * @param {string} url - URL de destino
-   * @param {Function} setLoadingFn - Función para activar loading
-   */
+  // Notificar + redirigir
   const notifyThenRedirect = (mensaje, opciones, url, setLoadingFn) => {
     window.notify(mensaje, opciones);
     setLoadingFn(true);
@@ -105,16 +46,7 @@ function Login() {
     }, opciones?.duration || 1500);
   };
 
-  /**
-   * Maneja el proceso de login
-   * - Valida campos requeridos
-   * - Verifica atajo de admin2025@bienstartotal.food
-   * - Envía credenciales al backend
-   * - Detecta tipo de usuario (admin/regular)
-   * - Guarda sesión en localStorage
-   * - Redirige según el tipo de usuario
-   * @param {Event} e - Evento de submit del formulario
-   */
+  // ====== LOGIN PRINCIPAL ======
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -125,7 +57,7 @@ function Login() {
 
     setLoading(true);
 
-    // Atajo especial: admin2025@bienstartotal.food ingresa como admin sin validación backend
+    // Shortcut: if the admin2025 email is used, treat as admin locally and redirect
     try {
       const emailNormalized = (email || "").trim().toLowerCase();
       if (emailNormalized === "admin2025@bienstartotal.food") {
@@ -136,7 +68,7 @@ function Login() {
           id_diet: null,
         };
         localStorage.setItem("usuario", JSON.stringify(adminUser));
-        // Mostrar bienvenida y redirigir a página de administrador
+        // Muestra notificacion del Admin
         notifyThenRedirect(
           "Bienvenido Administrador",
           { type: "success", duration: 1200 },
@@ -146,12 +78,11 @@ function Login() {
         return;
       }
     } catch (err) {
-      console.warn("Error en verificación de atajo admin", err);
+      console.warn("Error admin shortcut check", err);
     }
 
-    // Proceso de login normal con backend
     try {
-  const response = await fetch(`${API_BASE}/login`, {
+      const response = await fetch("http://localhost:3001/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -160,10 +91,9 @@ function Login() {
       const result = await response.json();
 
       if (response.ok) {
-        // Login exitoso: guardar usuario en localStorage
         localStorage.setItem("usuario", JSON.stringify(result.user));
 
-        // Verificación de usuario administrador
+        // 🔍 Verificación de usuario administrador
         const user = result.user;
         const esAdmin =
           (user.email &&
@@ -172,7 +102,6 @@ function Login() {
           (user.name && user.name.trim().toLowerCase() === "admin") ||
           (String(user.id) === "6");
 
-        // Redirigir según tipo de usuario
         if (esAdmin) {
           notifyThenRedirect(
             "Bienvenido Administrador",
@@ -189,12 +118,11 @@ function Login() {
           );
         }
       } else {
-        // Login fallido: mostrar error
         window.notify(result.message || "Correo o contraseña incorrectos", {
           type: "error",
         });
 
-        // Limpiar campos y enfocar en email
+        // Limpiar campos y enfocar email
         setEmail("");
         setPassword("");
         setTimeout(() => {
@@ -206,11 +134,9 @@ function Login() {
         }, 50);
       }
     } catch (error) {
-      // Error de conexión con el servidor
-      console.error("Error durante login:", error);
+      console.error("Error login:", error);
       window.notify("Error en la conexión con el servidor", { type: "error" });
 
-      // Limpiar y resetear formulario
       setEmail("");
       setPassword("");
       setTimeout(() => {
@@ -225,9 +151,6 @@ function Login() {
     }
   };
 
-  // ===========================================
-  // RENDER - Renderizado del componente
-  // ===========================================
   return (
     <div className="login-page">
       <div id="contenedorPrincipal">
@@ -291,8 +214,4 @@ function Login() {
   );
 }
 
-// Exportar con HOC de autenticación
-// requireAuth: false - No requiere sesión (página pública)
-const LoginWithAuth = withAuth(Login, { requireAuth: false });
-LoginWithAuth.displayName = 'LoginWithAuth';
-export default LoginWithAuth;
+export default withAuth(Login, { requireAuth: false });

@@ -1,16 +1,16 @@
-// server.js
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
 import mysql from "mysql2/promise";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import multer from "multer";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- Configuración de la base de datos ---
+// --- Configuración de DB ---
 const DB_CONFIG = {
   host: "sql10.freesqldatabase.com",
   user: "sql10801474",
@@ -18,17 +18,158 @@ const DB_CONFIG = {
   database: "sql10801474",
   port: 3306
 };
+
 // Archivo y directorio actual
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 // Pool de conexiones
 const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
 
-/**
- * Helpers
- */
+// --- Servir imágenes ---
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+// --- Multer: subida de imágenes ---
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "public/uploads/"),
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
+// --- POST crear alimento ---
+app.post("/admin/foods", async (req, res) => {
+  try {
+    const {
+      nombre,
+      Energia,
+      Humedad,
+      Cenizas,
+      Proteinas,
+      H_de_C_disp,
+      Azucares_totales,
+      Fibra_dietetica_total,
+      Lipidos_totales,
+      Ac_grasos_totales,
+      Ac_grasos_poliinsat,
+      Ac_grasos_trans,
+      Colesterol,
+      Vitamina_A,
+      Vitamina_C,
+      Vitamina_D,
+      Vitamina_E,
+      Vitamina_K,
+      Vitamina_B1,
+      Vitamina_B2 ,
+      Niacina,
+      Vitamina_B6,
+      Ac_pantotenico,
+      Vitamina_B12,
+      Folatos,
+      Sodio,
+      Potasio,
+      Calcio,
+      Fosforo,
+      Magnesio,
+      Hierro,
+      Zinc,
+      Cobre,
+      Selenio
+    } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO alimento (nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio]
+    );
+
+    res.json({ message: "Alimento creado correctamente", id: result.insertId });
+  } catch (err) {
+    console.error("POST /admin/foods error:", err);
+    res.status(500).json({ error: "Error al crear alimento" });
+  }
+});
+
+// --- Ruta subir imagen ---
+app.post("/admin/foods/upload-image", upload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No se subió la imagen" });
+  res.json({ image_url: `/uploads/${req.file.filename}` });
+});
+
+// --- GET todos los alimentos con image_url ---
+app.get("/admin/foods", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM alimento");
+    const normalized = rows.map(r => {
+      const image = r.image_url || null;
+      return { ...r, image_url: image };
+    });
+    res.json(normalized);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener alimentos" });
+  }
+});
+
+// --- PUT actualizar alimento ---
+app.put("/admin/foods/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      nombre,
+      Energia,
+      Humedad,
+      Cenizas,
+      Proteinas,
+      H_de_C_disp,
+      Azucares_totales,
+      Fibra_dietetica_total,
+      Lipidos_totales,
+      Ac_grasos_totales,
+      Ac_grasos_poliinsat,
+      Ac_grasos_trans,
+      Colesterol,
+      Vitamina_A,
+      Vitamina_C,
+      Vitamina_D,
+      Vitamina_E,
+      Vitamina_K,
+      Vitamina_B1,
+      Vitamina_B2 ,
+      Niacina,
+      Vitamina_B6,
+      Ac_pantotenico,
+      Vitamina_B12,
+      Folatos,
+      Sodio,
+      Potasio,
+      Calcio,
+      Fosforo,
+      Magnesio,
+      Hierro,
+      Zinc,
+      Cobre,
+      Selenio,
+      image_url
+    } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE alimento SET 
+         nombre = ?, Energia = ?, Humedad = ?, Cenizas = ?, Proteinas = ?, H_de_C_disp = ?, Azucares_totales = ?, Fibra_dietetica_total = ?, Lipidos_totales = ?, Ac_grasos_totales = ?, Ac_grasos_poliinsat = ?, Ac_grasos_trans = ?, Colesterol = ?, Vitamina_A = ?, Vitamina_C = ?, Vitamina_D = ?, Vitamina_E = ?, Vitamina_K = ?, Vitamina_B1 = ?, Vitamina_B2 = ?, Niacina = ?, Vitamina_B6 = ?, Ac_pantotenico = ?, Vitamina_B12 = ?, Folatos = ?, Sodio = ?, Potasio = ?, Calcio = ?, Fosforo = ?, Magnesio = ?, Hierro = ?, Zinc = ?, Cobre = ?, Selenio = ?, image_url = ?
+       WHERE id = ?`,
+      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio, image_url, id]
+    );
+
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Alimento no encontrado" });
+
+    res.json({ message: "Alimento actualizado correctamente" });
+  } catch (err) {
+    console.error("/admin/foods/:id PUT error:", err);
+    res.status(500).json({ error: "Error al actualizar alimento" });
+  }
+});
+
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 
@@ -37,7 +178,7 @@ function validarRegistro(email, password, height, weight, age) {
   height = Number(height);
 
   // si vino en metros -> cm
-  if (height < 10) height = height * 100; 
+  if (height < 10) height = height * 100;
 
   const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
   if (!regexEmail.test(email)) errores.push("El correo debe contener letras y números válidos.");
@@ -52,7 +193,7 @@ function validarRegistro(email, password, height, weight, age) {
 
   return errores;
 }
-
+/*
 
 // Ruta de prueba
 app.get("/test-db", async (req, res) => {
@@ -64,7 +205,7 @@ app.get("/test-db", async (req, res) => {
     res.status(500).json({ error: "DB error" });
   }
 });
-
+*/
 // Check email
 app.post("/checkEmail", async (req, res) => {
   try {
@@ -79,24 +220,43 @@ app.post("/checkEmail", async (req, res) => {
   }
 });
 
-// Registro
+// Registro de cuentas - crear cuenta
+// Nueva arquitectura: id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta
 app.post("/registrar", async (req, res) => {
   try {
-    const { name, email, password, height, weight, age } = req.body;
-    const errores = validarRegistro(email, password, height, weight, age);
+    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias } = req.body;
+    const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
 
-    const [rows] = await pool.query("SELECT id FROM user WHERE email = ?", [email]);
+    const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
     if (rows.length) return res.status(400).json({ message: "El correo ya está registrado" });
 
-    const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [`Dieta de ${name || email}`]);
+    const [dietInsert] = await pool.query("INSERT INTO dieta (nombre) VALUES (?)", [`Dieta de ${nombre || email}`]);
     const newDietId = dietInsert.insertId;
 
     const hash = await bcrypt.hash(password, 10);
-    await pool.query(
-      "INSERT INTO user (name, email, password, height, weight, age, id_diet) VALUES (?,?,?,?,?,?,?)",
-      [name, email, hash, height, weight, age, newDietId]
+    const [userInsert] = await pool.query(
+      `INSERT INTO usuario 
+      (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, email, hash, altura, peso, edad, nivelActividad, sexo, 2, newDietId, "activo"]
     );
+
+    const newUserId = userInsert.insertId;
+
+    //Guardar alergias múltiples
+    if (Array.isArray(alergias)) {
+      for (const alergia of alergias) {
+        if (alergia !== "ninguna") {
+          await pool.query("INSERT INTO categoria_alergico (id_usuario, nombre) VALUES (?, ?)", [newUserId, alergia]);
+        }
+      }
+    }
+
+    // 🔹 Guardar otras alergias personalizadas
+    if (otrasAlergias && otrasAlergias.trim() !== "") {
+      await pool.query("INSERT INTO categoria_alergico (id_usuario, nombre) VALUES (?, ?)", [newUserId, otrasAlergias.trim()]);
+    }
 
     res.json({ message: "Usuario registrado exitosamente" });
   } catch (err) {
@@ -105,23 +265,37 @@ app.post("/registrar", async (req, res) => {
   }
 });
 
+
 // Login
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ message: "Falta email o password" });
+    if (!email || !password)
+      return res.status(400).json({ message: "Falta email o password" });
 
-    const [rows] = await pool.query("SELECT * FROM user WHERE email = ?", [email]);
-    if (rows.length === 0) return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+    const [rows] = await pool.query("SELECT * FROM usuario WHERE email = ?", [email]);
+    if (rows.length === 0)
+      return res.status(401).json({ message: "Correo o contraseña incorrectos" });
 
     const usuario = rows[0];
-    const ok = await bcrypt.compare(password, usuario.password);
-    if (!ok) return res.status(401).json({ message: "Correo o contraseña incorrectos" });
 
+    // Nuevo: verificar si el usuario está inactivo
+    if (usuario.estado === "inactivo") {
+      return res.status(403).json({ message: "Tu cuenta está inactiva. Contacta al administrador." });
+    }
+
+    const ok = await bcrypt.compare(password, usuario.password);
+    if (!ok)
+      return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+
+    // Crear dieta si no tiene una
     if (!usuario.id_diet || usuario.id_diet === 1) {
-      const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [`Dieta de ${usuario.name || usuario.email}`]);
+      const [dietInsert] = await pool.query(
+        "INSERT INTO dieta (nombre) VALUES (?)",
+        [`Dieta de ${usuario.nombre || usuario.email}`]
+      );
       const newDietId = dietInsert.insertId;
-      await pool.query("UPDATE user SET id_diet = ? WHERE id = ?", [newDietId, usuario.id]);
+      await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [newDietId, usuario.id]);
       usuario.id_diet = newDietId;
     }
 
@@ -129,12 +303,16 @@ app.post("/login", async (req, res) => {
       message: "Login exitoso",
       user: {
         id: usuario.id,
-        name: usuario.name,
+        nombre: usuario.nombre,
         email: usuario.email,
-        height: usuario.height,
-        weight: usuario.weight,
-        age: usuario.age,
-        id_diet: usuario.id_diet
+        altura: usuario.altura,
+        peso: usuario.peso,
+        edad: usuario.edad,
+        id_dieta: usuario.id_dieta,
+        nivelActividad: usuario.nivelActividad,
+        sexo: usuario.sexo,
+        alergias: usuario.alergias,
+        otrasAlergias: usuario.otrasAlergias
       }
     });
   } catch (err) {
@@ -142,9 +320,31 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Error servidor login" });
   }
 });
+// Reactivar Usuario
+app.patch("/user/:id/activar", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await pool.query(
+      "UPDATE usuario SET estado = 'activo' WHERE id = ?",
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json({ message: "Usuario reactivado correctamente" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error al reactivar usuario" });
+  }
+});
+
+
 app.get("/admin/foods", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM food");
+    const [rows] = await pool.query("SELECT * FROM alimento");
     const normalized = rows.map(r => {
       const raw = r.image || r.imagen || r.image_url || r.path || null;
       let image = raw || null;
@@ -159,122 +359,135 @@ app.get("/admin/foods", async (req, res) => {
     res.status(500).json({ error: "Error al obtener alimentos" });
   }
 });
+
+
+
 // Eliminar Usuario
+// Marcar usuario como inactivo (en vez de eliminarlo)
 app.delete("/user/:id", async (req, res) => {
-  const connection = await pool.getConnection();
   try {
     const { id } = req.params;
 
+    const [result] = await pool.query(
+      "UPDATE usuario SET estado = 'inactivo' WHERE id = ?",
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json({ message: "Usuario marcado como inactivo correctamente" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error al marcar usuario como inactivo" });
+  }
+});
+
+
+app.patch("/user/:id", async (req, res) => {
+  const connection = await pool.getConnection();
+  try {
+    const { id } = req.params;
+    const {
+      nombre,
+      altura,
+      peso,
+      edad,
+      actividad_fisica,
+      sexo,
+      id_perfil,
+      id_dieta,
+      estado,
+      alergias, // array de strings o IDs
+    } = req.body || {};
+
     await connection.beginTransaction();
 
-    const [users] = await connection.query("SELECT id_diet FROM user WHERE id = ?", [id]);
-    if (users.length === 0) {
+    //  1. Verificar si el usuario existe
+    const [rows] = await connection.query("SELECT * FROM usuario WHERE id = ?", [id]);
+    if (rows.length === 0) {
       await connection.rollback();
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    const id_diet = users[0].id_diet;
+    const current = rows[0];
 
-    const [days] = await connection.query("SELECT id FROM day WHERE id_diet = ?", [id_diet]);
-    const dayIds = days.map(d => d.id);
-    if (dayIds.length > 0) {
-      const [meals] = await connection.query(`SELECT id FROM meal WHERE id_day IN (${dayIds.map(() => '?').join(',')})`, dayIds);
-      const mealIds = meals.map(m => m.id);
-      if (mealIds.length > 0) {
-        await connection.query(`DELETE FROM meal_food WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`, mealIds);
+    // 2. Preparar datos nuevos (sin modificar email ni password)
+    const updated = {
+      nombre: nombre ?? current.nombre,
+      altura: altura ?? current.altura,
+      peso: peso ?? current.peso,
+      edad: edad ?? current.edad,
+      actividad_fisica: actividad_fisica ?? current.actividad_fisica,
+      sexo: sexo ?? current.sexo,
+      id_perfil: id_perfil ?? current.id_perfil,
+      id_dieta: id_dieta ?? current.id_dieta,
+      estado: estado ?? current.estado,
+    };
+
+    // Validaciones opcionales
+    if (updated.edad && (updated.edad <= 10 || updated.edad > 120))
+      return res.status(400).json({ message: "Edad fuera de rango válido" });
+
+    // 3. Actualizar usuario principal
+    await connection.query(
+      `UPDATE usuario
+       SET nombre = ?, altura = ?, peso = ?, edad = ?, actividad_fisica = ?, sexo = ?,
+           id_perfil = ?, id_dieta = ?, estado = ?
+       WHERE id = ?`,
+      [
+        updated.nombre,
+        updated.altura,
+        updated.peso,
+        updated.edad,
+        updated.actividad_fisica,
+        updated.sexo,
+        updated.id_perfil,
+        updated.id_dieta,
+        updated.estado,
+        id,
+      ]
+    );
+
+    // 4. Actualizar alergias si se incluyen en el body
+    if (Array.isArray(alergias)) {
+      // Elimina las alergias anteriores
+      await connection.query("DELETE FROM categoria_alergico WHERE id_usuario = ?", [id]);
+
+      // Inserta las nuevas alergias
+      if (alergias.length > 0) {
+        const values = alergias.map((nombre) => [id, nombre]);
+        await connection.query("INSERT INTO categoria_alergico (id_usuario, nombre) VALUES ?", [values]);
       }
-      await connection.query(`DELETE FROM meal WHERE id_day IN (${dayIds.map(() => '?').join(',')})`, dayIds);
-    }
-
-    await connection.query("DELETE FROM day WHERE id_diet = ?", [id_diet]);
-
-    await connection.query("DELETE FROM user WHERE id = ?", [id]);
-
-    if (id_diet !== 1) {
-      await connection.query("DELETE FROM diet WHERE id = ?", [id_diet]);
     }
 
     await connection.commit();
-    res.json({ message: "Usuario y datos asociados eliminados correctamente" });
+
+    res.json({
+      message: "Usuario actualizado correctamente",
+      usuario: {
+        id,
+        ...updated,
+        alergias: alergias || [],
+      },
+    });
   } catch (err) {
     await connection.rollback();
-    console.error(err);
-    res.status(500).json({ message: "Error al eliminar usuario" });
+    console.error("PATCH /user/:id error:", err);
+    res.status(500).json({ message: "Error al actualizar usuario" });
   } finally {
     connection.release();
   }
 });
 
-// Actualizar datos de usuario 
-app.patch("/user/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, email, height, weight, age, originalEmail } = req.body || {};
-
-  // Cargar usuario existente
-  let [rows] = await pool.query("SELECT id, name, email, height, weight, age, id_diet FROM user WHERE id = ?", [id]);
-    if (rows.length === 0) {
-      const lookupEmail = originalEmail || email;
-      if (lookupEmail) {
-        const [byEmail] = await pool.query(
-          "SELECT id, name, email, height, weight, age, id_diet FROM user WHERE email = ? LIMIT 1",
-          [lookupEmail]
-        );
-        if (byEmail.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
-        rows = byEmail;
-      } else {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-      }
-    }
-
-    const current = rows[0];
-    // usar este id para cualquier actualización
-    const userId = current.id; 
-    const next = {
-      name: (name ?? current.name) || current.name,
-      // email no es editable desde este endpoint
-      email: current.email,
-      height: height === undefined || height === null || height === '' ? current.height : Number(height),
-      weight: weight === undefined || weight === null || weight === '' ? current.weight : Number(weight),
-      age: age === undefined || age === null || age === '' ? current.age : Number(age),
-    };
-
-    // Validaciones básicas (suaves):
-    if (next.height < 10) next.height = next.height * 100; // si vino en metros -> cm
-    if (next.age && (next.age <= 15 || next.age >= 100)) return res.status(400).json({ message: "Edad fuera de rango" });
-    if (next.weight && (next.weight <= 30 || next.weight >= 170)) return res.status(400).json({ message: "Peso fuera de rango" });
-    if (next.height && (next.height <= 80 || next.height >= 250)) return res.status(400).json({ message: "Altura fuera de rango" });
-
-    // Bloquear cambios de email desde este endpoint
-    if (email !== undefined && email !== current.email) {
-      return res.status(400).json({ message: "El correo no se puede cambiar desde esta pantalla" });
-    }
-
-    await pool.query(
-      "UPDATE user SET name = ?, height = ?, weight = ?, age = ? WHERE id = ?",
-      [next.name, next.height, next.weight, next.age, userId]
-    );
-
-    res.json({
-      id: Number(userId),
-      name: next.name,
-      email: next.email,
-      height: next.height,
-      weight: next.weight,
-      age: next.age,
-      id_diet: current.id_diet,
-    });
-  } catch (err) {
-    console.error("PATCH /user/:id error:", err);
-    res.status(500).json({ message: "Error al actualizar usuario" });
-  }
-});
 
 // Obtener usuario por ID 
 app.get("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    //id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado
     const [rows] = await pool.query(
-      "SELECT id, name, email, height, weight, age, id_diet FROM user WHERE id = ?",
+      "SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM user WHERE id = ?",
       [id]
     );
     if (rows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
@@ -293,21 +506,21 @@ app.post("/ensure-diet", async (req, res) => {
     if (!user_id && !email) return res.status(400).json({ message: "Falta user_id o email" });
 
     const where = user_id ? ["id = ?", user_id] : ["email = ?", email];
-    const [uRows] = await pool.query(`SELECT id, name, email, id_diet FROM user WHERE ${where[0]} LIMIT 1`, [where[1]]);
+    const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM user WHERE ${where[0]} LIMIT 1`, [where[1]]);
     if (uRows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
 
     const u = uRows[0];
-    let id_diet = u.id_diet;
+    let id_dieta = u.id_dieta;
 
-    if (!id_diet || id_diet === 1) {
+    if (!id_dieta || id_dieta === 1) {
       const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
-        `Dieta de ${u.name || u.email}`
+        `Dieta de ${u.nombre || u.email}`
       ]);
-      id_diet = dietInsert.insertId;
-      await pool.query("UPDATE user SET id_diet = ? WHERE id = ?", [id_diet, u.id]);
+      id_dieta = dietInsert.insertId;
+      await pool.query("UPDATE user SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
     }
 
-    res.json({ id_diet });
+    res.json({ id_dieta });
   } catch (err) {
     console.error("/ensure-diet error:", err);
     res.status(500).json({ message: "Error servidor" });
@@ -315,10 +528,11 @@ app.post("/ensure-diet", async (req, res) => {
 });
 
 // Obtener info alimento por ID
+// Estructura id, id_alimento, image_url, nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio
 app.get("/food/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const [rows] = await pool.query("SELECT * FROM food WHERE id = ?", [id]);
+    const [rows] = await pool.query("SELECT * FROM alimento WHERE id = ?", [id]);
     if (rows.length === 0) return res.status(404).json({ message: "Alimento no encontrado" });
     res.json(rows[0]);
   } catch (err) {
@@ -328,47 +542,102 @@ app.get("/food/:id", async (req, res) => {
 });
 
 // Búsqueda de alimentos 
+// Estructura id, id_alimento, image_url, nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio
+
+// 🔍 Buscar alimentos por nombre o listar los primeros 50
 app.get("/food-search", async (req, res) => {
   try {
     const q = (req.query.q || "").trim();
     let rows;
 
     if (q) {
-      // Buscar por coincidencia
+      // Buscar alimentos cuyo nombre contenga el texto dado (sin distinción de mayúsculas)
       [rows] = await pool.query(
         `SELECT 
            id,
-           nombre AS name,
-           energy AS calories,
-           protein,
-           total_lipid,
-           carbohydrate,
-           total_sugars,
-           calcium,
-           iron,
-           sodium,
-           cholesterol
-         FROM food
+           id_alimento,
+           image_url,
+           nombre,
+           Energia,
+           Humedad,
+           Cenizas,
+           Proteinas,
+           H_de_C_disp,
+           Azucares_totales,
+           Fibra_dietetica_total,
+           Lipidos_totales,
+           Ac_grasos_totales,
+           Ac_grasos_poliinsat,
+           Ac_grasos_trans,
+           Colesterol,
+           Vitamina_A,
+           Vitamina_C,
+           Vitamina_D,
+           Vitamina_E,
+           Vitamina_K,
+           Vitamina_B1,
+           Vitamina_B2,
+           Niacina,
+           Vitamina_B6,
+           Ac_pantotenico,
+           Vitamina_B12,
+           Folatos,
+           Sodio,
+           Potasio,
+           Calcio,
+           Fosforo,
+           Magnesio,
+           Hierro,
+           Zinc,
+           Cobre,
+           Selenio
+         FROM alimento
          WHERE nombre LIKE ? COLLATE utf8mb4_general_ci
          LIMIT 50`,
         [`%${q}%`]
       );
     } else {
-      // Mostrar todos los alimentos
+      // Si no hay búsqueda, devolver los primeros 50 alimentos
       [rows] = await pool.query(
         `SELECT 
            id,
-           nombre AS name,
-           energy AS calories,
-           protein,
-           total_lipid,
-           carbohydrate,
-           total_sugars,
-           calcium,
-           iron,
-           sodium,
-           cholesterol
-         FROM food
+           id_alimento,
+           image_url,
+           nombre,
+           Energia,
+           Humedad,
+           Cenizas,
+           Proteinas,
+           H_de_C_disp,
+           Azucares_totales,
+           Fibra_dietetica_total,
+           Lipidos_totales,
+           Ac_grasos_totales,
+           Ac_grasos_poliinsat,
+           Ac_grasos_trans,
+           Colesterol,
+           Vitamina_A,
+           Vitamina_C,
+           Vitamina_D,
+           Vitamina_E,
+           Vitamina_K,
+           Vitamina_B1,
+           Vitamina_B2,
+           Niacina,
+           Vitamina_B6,
+           Ac_pantotenico,
+           Vitamina_B12,
+           Folatos,
+           Sodio,
+           Potasio,
+           Calcio,
+           Fosforo,
+           Magnesio,
+           Hierro,
+           Zinc,
+           Cobre,
+           Selenio
+         FROM alimento
          LIMIT 50`
       );
     }
@@ -376,28 +645,34 @@ app.get("/food-search", async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error("/food-search error:", err);
-    res.status(500).json([]);
+    res.status(500).json({ message: "Error al obtener alimentos" });
   }
 });
-// Obtener dieta 
+
+
+//Obtener la dieta completa con días, comidas y alimentos
 app.get("/get-diet", async (req, res) => {
   try {
-    const id_diet = parseInt(req.query.id_diet || "1", 10); // por defecto 1
-    if (!id_diet) return res.status(400).json({ message: "Falta id_diet" });
+    const id_dieta = parseInt(req.query.id_dieta || "1", 10); // Por defecto dieta 1
+    if (!id_dieta) return res.status(400).json({ message: "Falta id_dieta" });
 
     const [rows] = await pool.query(
       `
-      SELECT d.number_day AS dia,
-             m.type AS tipo_comida,
-             f.nombre AS alimento
-      FROM day d
-      JOIN meal m ON m.id_day = d.id
-      JOIN meal_food mf ON mf.id_meal = m.id
-      JOIN food f ON f.id = mf.id_food
-      WHERE d.id_diet = ?
-      ORDER BY d.number_day, FIELD(m.type,'breakfast','lunch','dinner','snack','snack2')
+      SELECT 
+        d.numero_dia AS dia,
+        c.tipo AS tipo_comida,
+        a.nombre AS alimento,
+        ca.cantidad
+      FROM dia d
+      JOIN comida c ON c.id_dia = d.id
+      JOIN comida_alimento ca ON ca.id_comida = c.id
+      JOIN alimento a ON a.id = ca.id_alimento
+      WHERE d.id_dieta = ?
+      ORDER BY 
+        d.numero_dia, 
+        FIELD(c.tipo, 'Desayuno', 'Almuerzo', 'Cena', 'Snack', 'Snack2')
       `,
-      [id_diet]
+      [id_dieta]
     );
 
     res.json(rows);
@@ -408,85 +683,97 @@ app.get("/get-diet", async (req, res) => {
 });
 
 
+
 // Guardar dieta (POST /save-diet)
 app.post("/save-diet", async (req, res) => {
-  const { id_diet, meals } = req.body;
+  const { id_dieta, comidas } = req.body;
 
-  if (!id_diet || !meals || !meals.length) {
+  if (!id_dieta || !comidas || !comidas.length) {
     return res.status(400).json({ error: "Datos incompletos" });
   }
 
+  const connection = await pool.getConnection();
   try {
-    console.log("Recibido:", meals);
+    console.log("📥 Recibido:", comidas);
+    await connection.beginTransaction();
 
-    for (const meal of meals) {
-      const { id: id_food, dia, tipoComida } = meal;
+    for (const comida of comidas) {
+      const { id: id_alimento, dia, tipoComida, cantidad } = comida;
 
-      // validación dentro del loop
-      if (!id_food || !dia || !tipoComida) {
-        console.warn("Datos incompletos para alimento:", meal);
-        continue; 
+      // Validar campos básicos
+      if (!id_alimento || !dia || !tipoComida) {
+        console.warn("⚠️ Datos incompletos para alimento:", comida);
+        continue;
       }
 
-      // - Insertar o encontrar el día
-      let [day] = await pool.query(
-        "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
-        [id_diet, dia]
+      // 🔹 Verificar o crear día
+      let [diaRows] = await connection.query(
+        "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
+        [id_dieta, dia]
       );
 
-      let id_day;
-      if (day.length > 0) {
-        id_day = day[0].id;
+      let id_dia;
+      if (diaRows.length > 0) {
+        id_dia = diaRows[0].id;
       } else {
-        const [result] = await pool.query(
-          "INSERT INTO day (id_diet, number_day) VALUES (?, ?)",
-          [id_diet, dia]
+        const [insertDia] = await connection.query(
+          "INSERT INTO dia (id_dieta, numero_dia) VALUES (?, ?)",
+          [id_dieta, dia]
         );
-        id_day = result.insertId;
+        id_dia = insertDia.insertId;
       }
 
-      //  Insertar o encontrar el meal
-      let [mealRow] = await pool.query(
-        "SELECT id FROM meal WHERE id_day = ? AND type = ?",
-        [id_day, tipoComida]
+      // 🔹 Verificar o crear comida
+      let [comidaRows] = await connection.query(
+        "SELECT id FROM comida WHERE id_dia = ? AND tipo = ?",
+        [id_dia, tipoComida]
       );
 
-      let id_meal;
-      if (mealRow.length > 0) {
-        id_meal = mealRow[0].id;
+      let id_comida;
+      if (comidaRows.length > 0) {
+        id_comida = comidaRows[0].id;
       } else {
-        const [result] = await pool.query(
-          "INSERT INTO meal (id_day, type) VALUES (?, ?)",
-          [id_day, tipoComida]
+        const [insertComida] = await connection.query(
+          "INSERT INTO comida (id_dia, tipo) VALUES (?, ?)",
+          [id_dia, tipoComida]
         );
-        id_meal = result.insertId;
+        id_comida = insertComida.insertId;
       }
 
-      // - Insertar en meal_food (si no existe ya)
-      await pool.query(
-        `INSERT INTO meal_food (id_meal, id_food, quantity)
-         VALUES (?, ?, 1)
-         ON DUPLICATE KEY UPDATE quantity = quantity`,
-        [id_meal, id_food]
+      // 🔹 Insertar alimento en la comida (relación N:M)
+      await connection.query(
+        `
+        INSERT INTO comida_alimento (id_comida, id_alimento, cantidad)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE cantidad = VALUES(cantidad)
+        `,
+        [id_comida, id_alimento, cantidad || 1]
       );
     }
 
-    res.json({ message: "Dieta guardada correctamente" });
+    await connection.commit();
+    res.json({ message: "✅ Dieta guardada correctamente" });
   } catch (error) {
-    console.error("Error al guardar dieta:", error);
+    await connection.rollback();
+    console.error("❌ Error al guardar dieta:", error);
     res.status(500).json({ error: "Error al guardar dieta" });
+  } finally {
+    connection.release();
   }
 });
 
+
 // Borrar todas las comidas de un día específico de la dieta
+// Inactivar todas las comidas y alimentos de un día específico de la dieta
 app.post("/clear-day", async (req, res) => {
   try {
     const { id_diet, dia } = req.body || {};
     const idDietNum = Number(id_diet);
     const diaNum = Number(dia);
-    if (!idDietNum || !diaNum) return res.status(400).json({ message: "Faltan parámetros" });
+    if (!idDietNum || !diaNum)
+      return res.status(400).json({ message: "Faltan parámetros" });
 
-    // Encontrar el día
+    // Buscar el día
     const [dayRows] = await pool.query(
       "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
       [idDietNum, diaNum]
@@ -497,30 +784,31 @@ app.post("/clear-day", async (req, res) => {
 
     const id_day = dayRows[0].id;
 
-    // Obtener meals del día
-    const [mealRows] = await pool.query(
-      "SELECT id FROM meal WHERE id_day = ?",
-      [id_day]
-    );
+    // Buscar comidas del día
+    const [mealRows] = await pool.query("SELECT id FROM meal WHERE id_day = ?", [id_day]);
 
     if (mealRows.length > 0) {
       const mealIds = mealRows.map(r => r.id);
-      // Borrar de meal_food
+
+      // Inactivar alimentos relacionados
       await pool.query(
-        `DELETE FROM meal_food WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`,
+        `UPDATE meal_food SET estado = 'inactivo' WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`,
         mealIds
       );
-      // Borrar meals
-      await pool.query("DELETE FROM meal WHERE id_day = ?", [id_day]);
+
+      // Inactivar comidas
+      await pool.query("UPDATE meal SET estado = 'inactivo' WHERE id_day = ?", [id_day]);
     }
 
-    res.json({ success: true, message: "Día limpiado" });
+    res.json({ success: true, message: "Día inactivado correctamente" });
   } catch (err) {
     console.error("/clear-day error:", err);
     res.status(500).json({ message: "Error interno" });
   }
 });
+
 // Borrar un alimento específico de una comida en un día específico de la dieta
+// Inactivar un alimento específico de una comida en un día específico de la dieta
 app.post("/delete-diet-item", async (req, res) => {
   try {
     const { id_diet, id_food, dia, tipoComida } = req.body;
@@ -529,6 +817,7 @@ app.post("/delete-diet-item", async (req, res) => {
     const idFoodNum = Number(id_food);
     const diaNum = Number(dia);
 
+    // Buscar el día
     const [dayRows] = await pool.query(
       "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
       [idDietNum, diaNum]
@@ -539,6 +828,7 @@ app.post("/delete-diet-item", async (req, res) => {
 
     const id_day = dayRows[0].id;
 
+    // Buscar la comida (meal)
     const [mealRows] = await pool.query(
       "SELECT id FROM meal WHERE id_day = ? AND type = ?",
       [id_day, tipoComida]
@@ -549,35 +839,37 @@ app.post("/delete-diet-item", async (req, res) => {
 
     const id_meal = mealRows[0].id;
 
+    // Verificar si el alimento existe
     const [checkRows] = await pool.query(
-      "SELECT * FROM meal_food WHERE id_meal = ? AND id_food = ?",
+      "SELECT * FROM meal_food WHERE id_meal = ? AND id_food = ? AND estado = 'activo'",
       [id_meal, idFoodNum]
     );
     if (checkRows.length === 0) {
-      return res.status(404).json({ error: "El alimento no está registrado en esa comida" });
+      return res.status(404).json({ error: "El alimento no está activo en esa comida" });
     }
 
-    const [result] = await pool.query(
-      "DELETE FROM meal_food WHERE id_meal = ? AND id_food = ?",
+    // Inactivar el alimento
+    await pool.query(
+      "UPDATE meal_food SET estado = 'inactivo' WHERE id_meal = ? AND id_food = ?",
       [id_meal, idFoodNum]
     );
 
-    res.json({ success: true });
+    res.json({ success: true, message: "Alimento inactivado correctamente" });
   } catch (err) {
-    console.error("Error al eliminar alimento:", err);
+    console.error("Error al inactivar alimento:", err);
     res.status(500).json({ error: "Error interno" });
   }
 });
-// --- SERVIR FRONTEND EN PRODUCCIÓN ---
+
+
+// --- Servir frontend en producción ---
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "dist")));
-
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  app.get(/^\/(?!admin).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
-
 }
-// Puerto 3001 debido a que React usa 3000 por defecto  
+// --- Iniciar servidor ---
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);

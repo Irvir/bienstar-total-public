@@ -1,36 +1,19 @@
-/**
- * @file Home.css
- * @description Estilos para la página principal (Home) con loader de frutas y grid de botones
- * @version 1.0.0
- */
-
-/* ===================================================================
-   CONFIGURACIÓN BASE
-   =================================================================== */
-
-/**
- * Reset global para html y body
- * Establece altura completa y fondo gris claro
- */
 html,
 body {
     height: 100%;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
-    font-family: 'Segoe UI', sans-serif;
+        font-family: 'Segoe UI', sans-serif;
 }
 
-/* ===================================================================
-   PANTALLA DE CARGA CON FRUTAS ANIMADAS
-   =================================================================== */
-
-/**
- * Overlay de carga con blur y posición fija
- * Controlado por display: none/flex desde JavaScript
- */
+/* ==============================
+   PANTALLA DE CARGA
+============================== */
+/* Contenedor principal del loader (pantalla de carga) */
 #loader {
     display: none;
+    /* Solo esta línea */
     position: fixed;
     z-index: 9999;
     top: 0;
@@ -43,37 +26,36 @@ body {
     justify-content: center;
     flex-direction: column;
 }
-
-/**
- * Texto "Cargando..." centrado y espaciado
- */
+/* Texto principal del loader */
 .loader-text {
     font-size: 2rem;
+    /* Tamaño del texto */
     color: white;
     letter-spacing: 2px;
     margin: 0 0 20px 0;
+    /* Solo margen abajo */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-/**
- * Contenedor horizontal de las frutas animadas
- */
+/* Contenedor de las imágenes de frutas animadas */
 .loader-dots {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
+    /* Espacio entre las imágenes */
     width: 4rem;
+    /* Ancho total del contenedor */
     height: 2rem;
     margin: 0;
+    /* Sin margen */
+
 }
 
-/**
- * Imágenes de frutas con animación de aparición
- */
+/* Estilo de las imágenes de frutas */
 .loader-dots img {
     width: 35px;
     height: 35px;
@@ -81,9 +63,7 @@ body {
     animation: fruitDots 1.5s infinite;
 }
 
-/**
- * Delay escalonado para cada fruta (efecto secuencial)
- */
+/* Delay para que aparezcan una por una */
 .loader-dots img:nth-child(1) {
     animation-delay: 0s;
 }
@@ -96,10 +76,9 @@ body {
     animation-delay: 0.6s;
 }
 
-/**
- * Animación de aparición/desaparición de frutas con escala
- */
+/* Animación de las frutas */
 @keyframes fruitDots {
+
     0%,
     80%,
     100% {
@@ -113,13 +92,9 @@ body {
     }
 }
 
-/* ===================================================================
-   CONTENEDOR PRINCIPAL Y LAYOUT
-   =================================================================== */
-
-/**
- * Contenedor principal con flexbox que ocupa toda la pantalla
- */
+/* ==============================
+   CUERPO PRINCIPAL
+============================== */
 #cuerpo {
     display: flex;
     flex-wrap: wrap;
@@ -129,10 +104,6 @@ body {
     padding: 0;
 }
 
-/**
- * Contenedores izquierdo y derecho para dividir la pantalla
- * Cada uno ocupa 50% del ancho en desktop
- */
 .contenedorIzq,
 .contenedorDer {
     flex: 1 1 50%;
@@ -141,14 +112,6 @@ body {
     min-height: 50vh;
 }
 
-/* ===================================================================
-   BOTONES DE NAVEGACIÓN
-   =================================================================== */
-
-/**
- * Estilo base para todos los botones de navegación
- * Ocupan el espacio flexible dentro de los contenedores
- */
 .contenedorIzq button,
 .contenedorDer button {
     flex: 1 1 auto;
@@ -162,169 +125,52 @@ body {
     background-position: center;
     box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
     margin: 0;
-    animation: fadeInUp 0.6s ease forwards;
 }
 
-/**
- * Efecto hover: reducción de opacidad
- */
-.contenedorIzq button:hover,
-.contenedorDer button:hover {
-    opacity: 0.8;
-}
-
-/* ===================================================================
-   FONDOS PERSONALIZADOS DE BOTONES
-   =================================================================== */
-
-/**
- * Botón 1: Crear Horario
- */
+/* Fondos de los botones */
 .btn1 {
     background-image: url("/public/Imagenes/Home/Crear_Horario.png");
     background-size: 100% 100% !important;
-    background-repeat: no-repeat;
-    background-position: center;
+        background-repeat: no-repeat;
+        background-position: center;
 }
 
-/**
- * Botón 2: Dietas
- */
 .btn2 {
     background-image: url("/public/Imagenes/Home/Dietas.png");
     font-size: 3vw;
 }
 
-/**
- * Botón 3: Calendario
- */
 .btn3 {
     background-image: url("/public/Imagenes/Home/Calendario.png");
     font-size: 3vw;
 }
 
-/**
- * Botón 4: Alimentos
- * Con ancho fijo del 30% en flexbox
- */
 .btn4 {
     background-image: url("/public/Imagenes/Home/Alimentos2.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
-    flex: 0 0 30% !important;
+    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
 }
+    /* 🔹 Ajusta este valor según lo que necesites */
 
-/**
- * Botón 5: Tips de Dieta
- * Con ancho fijo del 30% en flexbox
- */
 .btn5 {
     background-image: url("/public/Imagenes/Home/Tips_Dieta2.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
-    flex: 0 0 30% !important;
+    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
+}
+.contenedorIzq button:hover,
+.contenedorDer button:hover {
+    opacity: 0.8;
 }
 
-/* ===================================================================
-   BOTONERA ALTERNATIVA (GRID)
-   =================================================================== */
-
-/**
- * Layout alternativo con flexbox wrap para botones grandes
- * Grid de 3 columnas con gap uniforme
- */
-.botonera {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    gap: 1rem;
-    padding: 2rem;
-}
-
-/**
- * Botones de la botonera con borde rojo característico
- * Incluye animaciones de hover y focus
- */
-.botonera button {
-    flex: 1 1 calc(33.333% - 1rem);
-    min-height: 220px;
-    min-width: 350px;
-    border: 3px solid #f5f5f5;
-    border-radius: 50px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 2px 4px 8px rgba(214, 40, 40, 0.6);
-    font-size: 2vw;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-/**
- * Efecto hover: escala y borde rojo intenso
- */
-.botonera button:hover {
-    transform: scale(1.08);
-    box-shadow: 4px 6px 14px rgba(214, 40, 40, 0.8);
-    border-color: #ff0000;
-}
-
-/**
- * Efecto focus: animación de resplandor pulsante
- */
-.botonera button:focus {
-    animation: glowPulse 1.5s infinite;
-    outline: none;
-}
-
-/* ===================================================================
-   ANIMACIONES
-   =================================================================== */
-
-/**
- * Animación de aparición desde abajo con fade
- */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/**
- * Animación de resplandor rojo pulsante para focus
- */
-@keyframes glowPulse {
-    0% {
-        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
-    }
-
-    50% {
-        box-shadow: 0 0 15px rgba(214, 40, 40, 0.9);
-    }
-
-    100% {
-        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
-    }
-}
-
-/* ===================================================================
-   RESPONSIVE DESIGN
-   =================================================================== */
-
-/**
- * Tablets: contenedores en columna completa
- */
+/* ==============================
+   RESPONSIVO
+============================== */
 @media (max-width: 768px) {
+
     .contenedorIzq,
     .contenedorDer {
         flex: 1 1 100%;
@@ -339,9 +185,6 @@ body {
     }
 }
 
-/**
- * Desktop grande: layout en filas horizontales
- */
 @media (min-width: 1200px) {
     #cuerpo {
         flex-direction: row;
@@ -356,4 +199,85 @@ body {
     .contenedorDer button {
         font-size: 2vw;
     }
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.contenedorIzq button,
+.contenedorDer button {
+    animation: fadeInUp 0.6s ease forwards;
+}
+.botonera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.botonera button {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-height: 220px;
+    min-width: 350px;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
+    font-size: 2vw;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.botonera button:hover {
+    transform: scale(1.08);
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.5);
+}
+/* 🔴 Resaltado más intenso para botones */
+.botonera button {
+    border: 3px solid #f5f5f5;
+    /* rojo vibrante */
+    box-shadow: 2px 4px 8px rgba(214, 40, 40, 0.6);
+    /* sombra con tinte rojo */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 🔴 Efecto hover más llamativo */
+.botonera button:hover {
+    transform: scale(1.08);
+    box-shadow: 4px 6px 14px rgba(214, 40, 40, 0.8);
+    /* sombra más intensa */
+    border-color: #ff0000;
+    /* rojo puro al pasar el mouse */
+}
+
+/* ✨ Animación de resplandor (opcional) */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(214, 40, 40, 0.9);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
+    }
+}
+
+.botonera button:focus {
+    animation: glowPulse 1.5s infinite;
+    outline: none;
 }

@@ -1,10 +1,3 @@
-<!--
-/**
- * @file admin.html
- * @description Página de administración para gestionar alimentos y contenido del sistema
- * @version 1.0.0
- */
--->
 <html lang="en">
 <script src="/frontEnd/src/controllers/Error404.js"></script>
 
@@ -27,7 +20,7 @@
     <script src="/frontEnd/src/controllers/loader.js"></script>
     <div id="contenedorPrincipal">
 
-        <!-- ===== Encabezado de Navegación ===== -->
+        <!-- Encabezado -->
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
@@ -46,12 +39,14 @@
                 <div class="login">
                     <!-- Botón para ver el perfil -->
                     <div style="float: left; height: 100%; width: 75%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
                         <button class="btnPerfilView" id="btnPerfilView">
                             <span class="nameUser">Nombre de Usuario</span>
                         </button>
                     </div>
                     <!-- Imagen de usuario  -->
                     <div style="float: left; width: 10%; height: 100%;" onclick="showLoaderAndRedirect('login.html')">
+                        <!--Animación de carga--->
                         <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
                             style="cursor:pointer;">
                     </div>
@@ -60,9 +55,6 @@
         </div>
 
         <script>
-            /**
-             * Manejo del menú desplegable de administración
-             */
             document.addEventListener("DOMContentLoaded", () => {
                 const btnPerfilView = document.getElementById("btnPerfilView");
                 const menuDesplegable = document.getElementById("menuDesplegable");
@@ -74,7 +66,7 @@
                 menuDesplegable.style.top = "8%";
                 menuDesplegable.style.right = "8%";
                 menuDesplegable.style.display = "none";
-                menuDesplegable.style.width = "10%";
+                menuDesplegable.style.width = "10%"; // Ajusta según tu diseño
 
                 // Alternar visibilidad del menú
                 function toggleMenu() {
