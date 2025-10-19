@@ -289,7 +289,7 @@
 /* Contenedor cerrar sesión */
 /* Área derecha: foto de perfil y botón cerrar sesión */
 #contenedorCerrarSesion,#contenedorBorrarCuenta {
-    flex: 1 1 260px;
+    flex: 1 1 150px;
     /* más ancho para mantener proporciones con la tarjeta agrandada */
     display: flex;
     flex-direction: column;
@@ -312,7 +312,6 @@
 /* Botón cerrar sesión estilizado */
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
 #cerrarSesion ,#borrarCuenta {
-    width: 75%;
     padding: 12px 18px;
     font-size: 16px;
     font-weight: 800;
@@ -323,9 +322,6 @@
     cursor: pointer;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-#borrarCuenta {
-    margin-top: 110%;
 }
 #cerrarSesion:hover,#borrarCuenta:hover {
     transform: translateY(-3px);

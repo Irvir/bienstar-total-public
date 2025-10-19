@@ -25,7 +25,10 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         actividad_fisica: usuario.actividad_fisica || "",
         sexo: usuario.sexo || "",
         email: usuario.email || "",
-        alergias: usuario.alergias || "",
+        // store alergias as a comma-separated string in the edit form
+        alergias: Array.isArray(usuario.alergias)
+          ? (usuario.alergias.length ? usuario.alergias.join(', ') : '')
+          : (usuario.alergias || ""),
       });
     }
   }, [usuario]);
@@ -70,7 +73,10 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
       altura: form.altura === "" ? null : Number(form.altura < 10 ? form.altura * 100 : form.altura),
       actividad_fisica: form.actividad_fisica,
       sexo: form.sexo,
-      alergias: form.alergias,
+      // convert comma-separated string into array for the API
+      alergias: (typeof form.alergias === 'string' && form.alergias.trim() !== '')
+        ? form.alergias.split(',').map(s => s.trim()).filter(Boolean)
+        : [],
     };
 
     try {
@@ -94,7 +100,8 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
                 actividad_fisica: updatedUser.actividad_fisica || "",
                 sexo: updatedUser.sexo || "",
                 email: updatedUser.email || "",
-                alergias: updatedUser.alergias || "",
+                // updatedUser.alergias comes as an array from the server; convert to string for the form
+                alergias: Array.isArray(updatedUser.alergias) ? (updatedUser.alergias.length ? updatedUser.alergias.join(', ') : '') : (updatedUser.alergias || ""),
               });
               
             window.notify?.("Perfil actualizado", { type: "success" });
@@ -203,11 +210,10 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         </div>
       </div>
 
-      <div id="contenedorCerrarSesion">
+      <div id="contenedorBorrarCuenta">
+        <div id="contenedorCerrarSesion">
         <button id="cerrarSesion" onClick={handleCerrarSesion}>CERRAR SESIÓN</button>
       </div>
-
-      <div id="contenedorBorrarCuenta">
         <button id="borrarCuenta" onClick={handleBorrarCuenta}>BORRAR CUENTA</button>
       </div>
     </div>

@@ -109,66 +109,92 @@ export default function Alimentos() {
           <div className="modal-content">
             <span className="close" onClick={closeModal}>&times;</span>
 
-            {modalData.img ? (
-              <img src={`http://localhost:3001${modalData.img}`} alt={modalData.name} />
-            ) : (
-              <div className="no-image">Sin imagen</div>
-            )}
+            {/* LAYOUT LATERAL: izquierda imagen+nombre, derecha detalles con scroll */}
+            <div className="modal-body">
+              <div className="modal-left">
+                {modalData.img ? (
+                  <img src={`http://localhost:3001${modalData.img}`} alt={modalData.name} />
+                ) : (
+                  <div className="no-image">Sin imagen</div>
+                )}
+                <h2 id="modalNombre">{modalData.name}</h2>
+              </div>
 
-            <h2 id="modalNombre">{modalData.name}</h2>
+              <div className="modal-right">
+                <div id="modalInfo">
+                  {modalData.info && modalData.info !== "Cargando..." && typeof modalData.info === "object" ? (
+                    <div className="nutrient-details">
+                      <div className="nutrient-row">
+                        <div className="nutrient-header">General</div>
+                        <div className="nutrient-grid cols-2">
+                          <div><b>Categoría:</b> {modalData.info.categoria ?? "-"}</div>
+                          <div><b>Estado:</b> {modalData.info.estado ?? "-"}</div>
+                          <div><b>Energía:</b> {modalData.info.Energia ?? "-"} kcal</div>
+                          <div><b>Humedad:</b> {modalData.info.Humedad ?? "-"} g</div>
+                        </div>
+                      </div>
 
-            <div id="modalInfo">
-            {modalData.info && modalData.info !== "Cargando..." && typeof modalData.info === "object" ? (
-            <div
-              className="nutrient-grid"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)", // 4 columnas, cambia a 3 si quieres
-                gap: "12px",
-                marginTop: "12px",
-              }}
-            >
-              <div><b>Categoria:</b> {modalData.info.categoria ?? "-"}</div>
-              <div><b>Energía:</b> {modalData.info.Energia ?? "-"} kcal</div>
-              <div><b>Humedad:</b> {modalData.info.Humedad ?? "-"} g</div>
-              <div><b>Cenizas:</b> {modalData.info.Cenizas ?? "-"} g</div>
-              <div><b>Proteínas:</b> {modalData.info.Proteinas ?? "-"} g</div>
-              <div><b>H. de C. disp:</b> {modalData.info.H_de_C_disp ?? "-"} g</div>
-              <div><b>Azúcares totales:</b> {modalData.info.Azucares_totales ?? "-"} g</div>
-              <div><b>Fibra dietética total:</b> {modalData.info.Fibra_dietetica_total ?? "-"} g</div>
-              <div><b>Lípidos totales:</b> {modalData.info.Lipidos_totales ?? "-"} g</div>
-              <div><b>Ác. grasos totales:</b> {modalData.info.Ac_grasos_totales ?? "-"} g</div>
-              <div><b>Ác. grasos poliinsat:</b> {modalData.info.Ac_grasos_poliinsat ?? "-"} g</div>
-              <div><b>Ác. grasos trans:</b> {modalData.info.Ac_grasos_trans ?? "-"} g</div>
-              <div><b>Colesterol:</b> {modalData.info.Colesterol ?? "-"} mg</div>
-              <div><b>Vitamina A:</b> {modalData.info.Vitamina_A ?? "-"} µg</div>
-              <div><b>Vitamina C:</b> {modalData.info.Vitamina_C ?? "-"} mg</div>
-              <div><b>Vitamina D:</b> {modalData.info.Vitamina_D ?? "-"} µg</div>
-              <div><b>Vitamina E:</b> {modalData.info.Vitamina_E ?? "-"} mg</div>
-              <div><b>Vitamina K:</b> {modalData.info.Vitamina_K ?? "-"} µg</div>
-              <div><b>Vitamina B1:</b> {modalData.info.Vitamina_B1 ?? "-"} mg</div>
-              <div><b>Vitamina B2:</b> {modalData.info.Vitamina_B2 ?? "-"} mg</div>
-              <div><b>Niacina:</b> {modalData.info.Niacina ?? "-"} mg</div>
-              <div><b>Vitamina B6:</b> {modalData.info.Vitamina_B6 ?? "-"} mg</div>
-              <div><b>Ác. pantoténico:</b> {modalData.info.Ac_pantotenico ?? "-"} mg</div>
-              <div><b>Vitamina B12:</b> {modalData.info.Vitamina_B12 ?? "-"} µg</div>
-              <div><b>Folatos:</b> {modalData.info.Folatos ?? "-"} µg</div>
-              <div><b>Sodio:</b> {modalData.info.Sodio ?? "-"} mg</div>
-              <div><b>Potasio:</b> {modalData.info.Potasio ?? "-"} mg</div>
-              <div><b>Calcio:</b> {modalData.info.Calcio ?? "-"} mg</div>
-              <div><b>Fósforo:</b> {modalData.info.Fosforo ?? "-"} mg</div>
-              <div><b>Magnesio:</b> {modalData.info.Magnesio ?? "-"} mg</div>
-              <div><b>Hierro:</b> {modalData.info.Hierro ?? "-"} mg</div>
-              <div><b>Zinc:</b> {modalData.info.Zinc ?? "-"} mg</div>
-              <div><b>Cobre:</b> {modalData.info.Cobre ?? "-"} mg</div>
-              <div><b>Selenio:</b> {modalData.info.Selenio ?? "-"} µg</div>
-              <div><b>Estado:</b> {modalData.info.estado ?? "-"}</div>
+                      <div className="nutrient-row">
+                        <div className="nutrient-header">Macros</div>
+                        <div className="nutrient-grid cols-3">
+                          <div><b>Proteínas:</b> {modalData.info.Proteinas ?? "-"} g</div>
+                          <div><b>Carbohidratos (disp):</b> {modalData.info.H_de_C_disp ?? "-"} g</div>
+                          <div><b>Azúcares totales:</b> {modalData.info.Azucares_totales ?? "-"} g</div>
+                          <div><b>Fibra:</b> {modalData.info.Fibra_dietetica_total ?? "-"} g</div>
+                          <div><b>Lípidos totales:</b> {modalData.info.Lipidos_totales ?? "-"} g</div>
+                        </div>
+                      </div>
+
+                      <div className="nutrient-row">
+                        <div className="nutrient-header">Grasas</div>
+                        <div className="nutrient-grid cols-3">
+                          <div><b>Ác. grasos totales:</b> {modalData.info.Ac_grasos_totales ?? "-"} g</div>
+                          <div><b>Ác. grasos poliinsat:</b> {modalData.info.Ac_grasos_poliinsat ?? "-"} g</div>
+                          <div><b>Ác. grasos trans:</b> {modalData.info.Ac_grasos_trans ?? "-"} g</div>
+                          <div><b>Colesterol:</b> {modalData.info.Colesterol ?? "-"} mg</div>
+                        </div>
+                      </div>
+
+                      <div className="nutrient-row">
+                        <div className="nutrient-header">Vitaminas</div>
+                        <div className="nutrient-grid cols-4">
+                          <div><b>A:</b> {modalData.info.Vitamina_A ?? "-"} µg</div>
+                          <div><b>C:</b> {modalData.info.Vitamina_C ?? "-"} mg</div>
+                          <div><b>D:</b> {modalData.info.Vitamina_D ?? "-"} µg</div>
+                          <div><b>E:</b> {modalData.info.Vitamina_E ?? "-"} mg</div>
+                          <div><b>K:</b> {modalData.info.Vitamina_K ?? "-"} µg</div>
+                          <div><b>B1:</b> {modalData.info.Vitamina_B1 ?? "-"} mg</div>
+                          <div><b>B2:</b> {modalData.info.Vitamina_B2 ?? "-"} mg</div>
+                          <div><b>Niacina:</b> {modalData.info.Niacina ?? "-"} mg</div>
+                          <div><b>B6:</b> {modalData.info.Vitamina_B6 ?? "-"} mg</div>
+                          <div><b>Ác. pantoténico:</b> {modalData.info.Ac_pantotenico ?? "-"} mg</div>
+                          <div><b>B12:</b> {modalData.info.Vitamina_B12 ?? "-"} µg</div>
+                          <div><b>Folatos:</b> {modalData.info.Folatos ?? "-"} µg</div>
+                        </div>
+                      </div>
+
+                      <div className="nutrient-row">
+                        <div className="nutrient-header">Minerales</div>
+                        <div className="nutrient-grid cols-4">
+                          <div><b>Sodio:</b> {modalData.info.Sodio ?? "-"} mg</div>
+                          <div><b>Potasio:</b> {modalData.info.Potasio ?? "-"} mg</div>
+                          <div><b>Calcio:</b> {modalData.info.Calcio ?? "-"} mg</div>
+                          <div><b>Fósforo:</b> {modalData.info.Fosforo ?? "-"} mg</div>
+                          <div><b>Magnesio:</b> {modalData.info.Magnesio ?? "-"} mg</div>
+                          <div><b>Hierro:</b> {modalData.info.Hierro ?? "-"} mg</div>
+                          <div><b>Zinc:</b> {modalData.info.Zinc ?? "-"} mg</div>
+                          <div><b>Cobre:</b> {modalData.info.Cobre ?? "-"} mg</div>
+                          <div><b>Selenio:</b> {modalData.info.Selenio ?? "-"} µg</div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    modalData.info !== "Cargando..." && <p>No se pudo cargar la información.</p>
+                  )}
+                </div>
+              </div>
             </div>
-          ) : (
-            modalData.info !== "Cargando..." && <p>No se pudo cargar la información.</p>
-          )}
 
-            </div>
           </div>
         </div>
       )}

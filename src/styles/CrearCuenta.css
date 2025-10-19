@@ -34,8 +34,11 @@
 }
 
 .crear-cuenta-page #contenedorLogin2 {
-    min-width: 600px; /* permitir tamaños pequeños en móviles */
-    margin-top: 40px;
+    /* Make it responsive: fill width up to a max without forcing overflow */
+    width: 100%;
+    max-width: 720px;
+    min-width: 0;
+    margin: 40px auto 0;
     /* efecto glass: fondo translúcido + blur */
     background: rgba(255, 255, 255, 0.14);
     -webkit-backdrop-filter: blur(10px);
@@ -50,8 +53,9 @@
     /* un poco más de padding para que el contenido respire */
     border: 1px solid rgba(255, 255, 255, 0.22);
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
-    max-height: 90vh;
-    /* menos altura máxima */
+    /* Allow content to define height without clipping; parent handles scrolling */
+    max-height: none;
+    box-sizing: border-box;
 }
 
 .crear-cuenta-page .contendorLoginFotoCrearUserAsist {
@@ -118,6 +122,13 @@
     font-size: clamp(14px, 1.3vw, 18px);
     font-weight: 700;
     color: #0f1720;
+}
+
+/* Grouped inputs responsive layout */
+.crear-cuenta-page .divEdadPesoAlt {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
 }
 
 .crear-cuenta-page .edadPesoAlt {
@@ -286,6 +297,7 @@
 @media (max-width: 968px) {
     .crear-cuenta-page #contenedorLogin2 {
         padding: 16px;
+        margin: 20px 12px 0;
     }
 
     .crear-cuenta-page .contenedorLoginDatosUser {
@@ -327,6 +339,77 @@
     border-color: #2980b9;
     background-color: #eef7ff;
 }
+/* --- Two-column layout and select/chips styling --- */
+.crear-cuenta-page .formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+}
+
+.crear-cuenta-page .colLeft,
+.crear-cuenta-page .colRight {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.crear-cuenta-page .select-control {
+    width: 100%;
+    height: 36px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #0b1216;
+    transition: 0.25s;
+    margin-top: 10px;
+}
+
+.crear-cuenta-page .select-control:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+
+.crear-cuenta-page .alergias-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.crear-cuenta-page .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+.crear-cuenta-page .chip button {
+    appearance: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.crear-cuenta-page .alergias-empty {
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    color: rgba(15,23,32,0.7);
+}
+
+@media (max-width: 720px) {
+    .crear-cuenta-page .formGrid {
+        grid-template-columns: 1fr;
+    }
+}
 .loader-overlay {
     position: fixed;
     top: 0;
@@ -366,3 +449,16 @@
       transform: rotate(360deg);
     }
   }
+
+/* --- Inline validation styles --- */
+.crear-cuenta-page .error-text {
+        color: #B20C05;
+        font-size: 12px;
+        margin-top: 4px;
+}
+
+.crear-cuenta-page input[aria-invalid="true"],
+.crear-cuenta-page select[aria-invalid="true"] {
+        border-color: #B20C05;
+        background-color: #ffecec;
+}

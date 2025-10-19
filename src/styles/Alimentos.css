@@ -134,34 +134,64 @@
     opacity: 1;
     pointer-events: auto; }
 
+/* Compact lateral modal: left image/title, right scrollable details */
 .modal-content {
     position: relative;
-    background-color: white;
-    padding: 20px;
+    background-color: #fff;
+    padding: 12px;
     border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    border: 5px solid #b30000; }
+    width: min(96%, 780px);
+    max-width: 780px;
+    text-align: left;
+    border: 3px solid #b30000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    overflow-x: hidden;
+}
 
-.modal-content img {
-    width: 200px;
-    height: 200px;
+.modal-body {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.modal-body > * { min-width: 0; box-sizing: border-box; }
+
+.modal-left {
+    flex: 0 0 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-left img {
+    display: block;
+    width: 100%;
+    max-width: 220px;
+    max-height: 220px;
+    height: auto;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.modal-right {
+    flex: 1 1 420px;
+    max-height: 72vh;
+    overflow: auto;
+    padding-right: 10px;
 }
 
 #modalNombre {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: black;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #111;
+    text-align: center;
 }
 
 #modalInfo {
     font-size: 13px;
-    text-align: center;
+    text-align: left;
 }
 
 .close {
@@ -179,6 +209,10 @@
     color: black; }
 
 /* ----------------- Responsive ----------------- */
+@media (max-width: 1024px) {
+    .modal-content { max-width: 640px; }
+}
+
 @media (max-width: 768px) {
     #contenedorFiltro {
         flex-direction: column;
@@ -196,6 +230,11 @@
     #textTittleFood {
         font-size: 14px;
     }
+
+    /* On smaller screens stack modal vertically */
+    .modal-body { flex-direction: column; }
+    .modal-left { flex: none; width: 100%; }
+    .modal-left img { max-width: 260px; margin: 0 auto; }
 }
 
 @media (max-width: 480px) {
@@ -240,38 +279,65 @@
     z-index: 9999;
 }
 
-.modal-content {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-.modal-content img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-
 .close {
     position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 24px;
-    font-weight: bold;
+    top: 10px;
+    right: 12px;
+    font-size: 20px;
+    font-weight: 700;
     color: #333;
-    cursor: pointer; }
+    cursor: pointer;
+    line-height: 1;
+}
 .nutrient-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.5rem 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem 0.75rem;
     margin-top: 1rem;
     text-align: left;
-    font-size: 14px;
-    color: #333;     }
+    font-size: 13px;
+    color: #333;
+}
+
+/* New styles for grouped nutrient display */
+.nutrient-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 12px;
+    text-align: left;
+}
+
+.nutrient-row {
+    background: #fafafa;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.nutrient-header {
+    font-weight: 700;
+    color: #b30000;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.nutrient-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.nutrient-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.nutrient-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+.nutrient-grid div { padding: 4px 6px; }
+
+/* Improve modal width for nutrient-rich content */
+/* compact modal behavior defined in the rules above and media queries */
+
+@media (max-width: 900px) {
+    .modal-content { max-width: 560px; padding: 10px; }
+}
+
+@media (max-width: 600px) {
+    .modal-content { max-width: 95%; padding: 8px; }
+    .nutrient-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    .nutrient-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+}
     

@@ -148,7 +148,22 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
         const loginResult = await loginRes.json();
     
         if (loginRes.ok) {
-          localStorage.setItem("usuario", JSON.stringify(loginResult.user));
+          const u = loginResult.user || {};
+          const usuarioToStore = {
+            id: u.id,
+            nombre: u.nombre || u.name || null,
+            email: u.email,
+            altura: u.altura || null,
+            peso: u.peso || null,
+            edad: u.edad || null,
+            actividad_fisica: u.actividad_fisica || u.nivelActividad || null,
+            sexo: u.sexo || null,
+            id_dieta: u.id_dieta || u.id_diet || null,
+            alergias: Array.isArray(u.alergias) ? u.alergias : (u.alergias ? [u.alergias] : []),
+            otrasAlergias: u.otrasAlergias || null,
+          };
+
+          localStorage.setItem("usuario", JSON.stringify(usuarioToStore));
           window.location.href = "index.html";
         } else {
           window.location.href = "login.html";

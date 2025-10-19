@@ -212,7 +212,7 @@ app.post("/checkEmail", async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: "Falta email" });
 
-    const [rows] = await pool.query("SELECT id FROM user WHERE email = ?", [email]);
+  const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
     res.json({ exists: rows.length > 0 });
   } catch (err) {
     console.error("/checkEmail error:", err);
@@ -299,6 +299,10 @@ app.post("/login", async (req, res) => {
       usuario.id_diet = newDietId;
     }
 
+    // Obtener alergias desde la tabla categoria_alergico
+    const [alRows] = await pool.query("SELECT nombre FROM categoria_alergico WHERE id_usuario = ?", [usuario.id]);
+    const alergias = alRows.map(r => r.nombre);
+
     res.json({
       message: "Login exitoso",
       user: {
@@ -308,11 +312,11 @@ app.post("/login", async (req, res) => {
         altura: usuario.altura,
         peso: usuario.peso,
         edad: usuario.edad,
-        id_dieta: usuario.id_dieta,
-        nivelActividad: usuario.nivelActividad,
+        id_dieta: usuario.id_diet || usuario.id_dieta,
+        actividad_fisica: usuario.actividad_fisica || usuario.nivelActividad || null,
         sexo: usuario.sexo,
-        alergias: usuario.alergias,
-        otrasAlergias: usuario.otrasAlergias
+        alergias,
+        otrasAlergias: usuario.otrasAlergias || null
       }
     });
   } catch (err) {
@@ -487,11 +491,17 @@ app.get("/user/:id", async (req, res) => {
     const { id } = req.params;
     //id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado
     const [rows] = await pool.query(
-      "SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM user WHERE id = ?",
+      "SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM usuario WHERE id = ?",
       [id]
     );
     if (rows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
-    res.json(rows[0]);
+    const user = rows[0];
+
+    // Traer alergias del usuario
+    const [alRows] = await pool.query("SELECT nombre FROM categoria_alergico WHERE id_usuario = ?", [id]);
+    const alergias = alRows.map(r => r.nombre);
+
+    res.json({ ...user, alergias });
   } catch (err) {
     console.error("GET /user/:id error:", err);
     res.status(500).json({ message: "Error servidor" });
@@ -506,7 +516,7 @@ app.post("/ensure-diet", async (req, res) => {
     if (!user_id && !email) return res.status(400).json({ message: "Falta user_id o email" });
 
     const where = user_id ? ["id = ?", user_id] : ["email = ?", email];
-    const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM user WHERE ${where[0]} LIMIT 1`, [where[1]]);
+  const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM usuario WHERE ${where[0]} LIMIT 1`, [where[1]]);
     if (uRows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
 
     const u = uRows[0];

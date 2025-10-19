@@ -28,7 +28,7 @@ body {
 }
 /* Texto principal del loader */
 .loader-text {
-    font-size: 2rem;
+    font-size: 1.25rem;
     /* Tamaño del texto */
     color: white;
     letter-spacing: 2px;
@@ -116,7 +116,7 @@ body {
 .contenedorDer button {
     flex: 1 1 auto;
     width: 100%;
-    min-height: 80px;
+    min-height: 60px;
     border: none;
     color: white;
     font-weight: bold;
@@ -227,8 +227,8 @@ body {
 
 .botonera button {
     flex: 1 1 calc(33.333% - 1rem);
-    min-height: 220px;
-    min-width: 350px;
+    min-height: 160px;
+    min-width: 260px;
     border: none;
     border-radius: 50px;
     color: white;
@@ -237,7 +237,7 @@ body {
     background-size: cover;
     background-position: center;
     box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
-    font-size: 2vw;
+    font-size: 1.4vw;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .botonera button:hover {

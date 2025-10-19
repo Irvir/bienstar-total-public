@@ -59,10 +59,15 @@ function Perfil() {
 
     if (!usuario) return null;
 
-        const onActualizarUsuario = (u) => {
-                setUsuario(u);
-                try { localStorage.setItem("usuario", JSON.stringify(u)); } catch {}
-        };
+    const onActualizarUsuario = (u) => {
+        setUsuario(u);
+        try {
+            localStorage.setItem("usuario", JSON.stringify(u));
+        } catch (err) {
+            // No bloquear la aplicación si localStorage falla (p. ej. en modo privado)
+            console.warn('No se pudo guardar usuario en localStorage', err);
+        }
+    };
 
     return (
         <div id="contenedorPrincipal" className="perfil-page">
@@ -88,4 +93,6 @@ function Perfil() {
     );
 }
 
-export default withAuth(Perfil, { requireAuth: true });
+const PerfilWithAuth = withAuth(Perfil, { requireAuth: true });
+
+export default PerfilWithAuth;

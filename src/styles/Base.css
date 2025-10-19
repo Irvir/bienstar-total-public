@@ -16,12 +16,15 @@ body {
     --primary: #931525;
     --primary-dark: #6F0E1A;
     --white: #ffffff;
-    --max-w: 1200px;
-    --gap: 1rem;
-    --avatar-size: 40px; /* tamaño por defecto para el avatar dentro del recuadro */
-    --avatar-size-lg: 56px;
-    --avatar-size-sm: 36px;
+    --max-w: 1000px; /* reducido para que el contenido no se estire tanto */
+    --gap: 0.75rem;
+    --avatar-size: 36px; /* ligeramente más pequeño */
+    --avatar-size-lg: 48px;
+    --avatar-size-sm: 32px;
 }
+
+/* Escala global: reduce tamaño base de fuente para hacer la UI más compacta */
+html { font-size: 14px; }
 
 /* Contenedor principal */
 #contenedorPrincipal {
