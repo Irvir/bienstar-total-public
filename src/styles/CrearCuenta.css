@@ -1,17 +1,3 @@
-/**
- * @file CrearCuenta.css
- * @description Estilos para la página de registro de nuevos usuarios con glass morphism
- * @version 1.0.0
- */
-
-/* ===================================================================
-   FONDO Y LAYOUT PRINCIPAL
-   =================================================================== */
-
-/**
- * Fondo de la página con imagen de fondo
- * Usa padding-top clamp para adaptarse a diferentes pantallas
- */
 .crear-cuenta-page .fondoLogin {
     background-size: cover;
     /* Revertido a la ruta anterior solicitada */
@@ -20,21 +6,18 @@
     background-repeat: no-repeat;
     width: 100%;
     margin-top: 30px;
-    min-height: 100vh;
+    min-height: 100vh; /* adapta altura a la pantalla y al contenido */
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-start; /* alinear arriba para que el padding empuje el contenido */
+    /* separación superior adaptable: evita un desplazamiento fijo demasiado grande */
     padding-top: clamp(6vh, 10vw, 28vh);
     padding-bottom: 6vh;
     box-sizing: border-box;
-    overflow: auto;
+    overflow: auto; /* permitir scroll si el contenido excede la pantalla */
     position: relative;
 }
 
-/**
- * Contenedor asistente principal
- * Envuelve la tarjeta de registro
- */
 #crear-cuenta-page #contenedorLoginAsist3 {
     width: 100%;
     max-width: 1200px;
@@ -42,44 +25,35 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* centrar el contenido dentro del asist */
     border-radius: 50px;
     overflow: hidden;
     padding: 20px;
     margin-top: 48px;
+    /* separar el panel del header */
 }
 
-/* ===================================================================
-   TARJETA DE REGISTRO (GLASS MORPHISM)
-   =================================================================== */
-
-/**
- * Tarjeta principal con efecto glass morphism
- * Fondo translúcido con blur
- */
 .crear-cuenta-page #contenedorLogin2 {
-    min-width: 600px;
+    min-width: 600px; /* permitir tamaños pequeños en móviles */
     margin-top: 40px;
+    /* efecto glass: fondo translúcido + blur */
     background: rgba(255, 255, 255, 0.14);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
+    /* poner título y formulario en columna centrada */
     align-items: center;
     z-index: 10;
     border-radius: 28px;
     padding: 12px;
+    /* un poco más de padding para que el contenido respire */
     border: 1px solid rgba(255, 255, 255, 0.22);
     box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
     max-height: 90vh;
+    /* menos altura máxima */
 }
 
-/* ===================================================================
-   TÍTULO Y CONTENIDO
-   =================================================================== */
-
-/**
- * Contenedor del título del formulario
- */
 .crear-cuenta-page .contendorLoginFotoCrearUserAsist {
     width: 100%;
     font-size: clamp(18px, 2.2vw, 24px);
@@ -90,35 +64,52 @@
     margin-bottom: 8px;
 }
 
-/**
- * Contenedor de foto (deshabilitado)
- */
 .crear-cuenta-page .contendorLoginFotoCrearUser {
     display: none;
+    /* quitada: ya no mostramos imagen */
 }
 
-/**
- * Contenedor principal del formulario
- */
+/* Contenedor de la parte derecha (formulario) */
 .crear-cuenta-page .contenedorLoginDatosUser {
     width: 100%;
     max-width: 980px;
+    /* un poco más ancho */
     padding: 6px 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* centrar botones e inputs */
     gap: 2px;
+    /* separación mínima entre elementos */
     margin: 0 auto;
 }
 
-/* ===================================================================
-   LABELS Y CAMPOS
-   =================================================================== */
+/* Grupo de botones: por defecto apilados en columnas pequeñas, fila en pantallas grandes */
+.crear-cuenta-page .botonesGroup {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    /* separación mínima entre botones */
+    margin-top: 6px;
+}
 
-/**
- * Labels de los campos del formulario
- */
+.crear-cuenta-page .botonesGroup .buttonCrearIniciarSesion {
+    flex: 1 1 60%;
+    /* más ancho */
+    margin: 0;
+    /* eliminar márgenes para que queden pegados */
+    padding: 6px 10px;
+    /* menos alto */
+    font-size: 15px;
+    /* ligeramente menor para botón compacto */
+}
+
+/* Labels y div de inputs */
 .crear-cuenta-page .divNom,
 .crear-cuenta-page .divCorreo,
 .crear-cuenta-page .divEdadPesoAlt {
@@ -129,22 +120,28 @@
     color: #0f1720;
 }
 
-/**
- * Campos de edad, peso y altura
- */
 .crear-cuenta-page .edadPesoAlt {
     flex: 1;
     min-width: 80px;
     margin-right: 8px;
 }
 
-/* ===================================================================
-   INPUTS (GLASS MORPHISM)
-   =================================================================== */
+/* Estilo para los botones */
+.crear-cuenta-page .buttonCrearIniciarSesion {
+    width: 46%;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #931525, #ff416c);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 0;
+}
 
-/**
- * Input de número con efecto glass
- */
+/* Estilo para los cuadros de texto */
+/* Inputs: glass + legibilidad */
 .crear-cuenta-page input[type="number"] {
     width: 100%;
     height: 36px;
@@ -165,18 +162,17 @@
     caret-color: #B20C05;
 }
 
+/* Hover: cuando el mouse pasa encima */
 .crear-cuenta-page input[type="number"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
 }
 
-/**
- * Input de nombre con efecto glass
- */
 .crear-cuenta-page input[type="name"] {
     font-family: 'Inter', sans-serif;
     width: 100%;
     height: 36px;
+    /* ajustar altura */
     padding: 8px 12px;
     font-size: 16px;
     border-radius: 10px;
@@ -193,14 +189,12 @@
     caret-color: #B20C05;
 }
 
+/* Hover: cuando el mouse pasa encima */
 .crear-cuenta-page input[type="name"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
 }
 
-/**
- * Input de texto con efecto glass
- */
 .crear-cuenta-page input[type="text"] {
     font-family: 'Inter', sans-serif;
     width: 100%;
@@ -221,14 +215,12 @@
     caret-color: #B20C05;
 }
 
+/* Hover: cuando el mouse pasa encima */
 .crear-cuenta-page input[type="text"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
 }
 
-/**
- * Input de contraseña con efecto glass
- */
 .crear-cuenta-page input[type="password"] {
     font-family: 'Inter', sans-serif;
     width: 100%;
@@ -249,14 +241,12 @@
     caret-color: #B20C05;
 }
 
+/* Hover: cuando el mouse pasa encima */
 .crear-cuenta-page input[type="password"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
 }
 
-/**
- * Input de email con efecto glass
- */
 .crear-cuenta-page input[type="email"] {
     font-family: 'Inter', sans-serif;
     text-align: left;
@@ -277,165 +267,22 @@
     caret-color: #B20C05;
 }
 
-.crear-cuenta-page input[type="email"]:hover {
-    border-color: #2980b9;
-    background-color: #eef7ff;
-}
-
-/* ===================================================================
-   ESTADOS DE INPUTS
-   =================================================================== */
-
-/**
- * Estilo del placeholder
- */
-.crear-cuenta-page input::placeholder {
-    color: rgba(11, 18, 22, 0.45);
-}
-
-/**
- * Estilo de la selección de texto
- */
-.crear-cuenta-page input::selection {
-    background: rgba(178, 12, 5, 0.18);
-    color: #fff;
-}
-
-/**
- * Estado de foco
- */
-.crear-cuenta-page input:focus {
-    outline: none;
-    box-shadow: 0 10px 26px rgba(147, 21, 37, 0.12);
-    border-color: rgba(147, 21, 37, 0.35);
-}
-
-/* ===================================================================
-   BOTONES
-   =================================================================== */
-
-/**
- * Grupo de botones (Crear Cuenta / Iniciar Sesión)
- */
-.crear-cuenta-page .botonesGroup {
-    width: 100%;
-    max-width: 640px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-}
-
-.crear-cuenta-page .botonesGroup .buttonCrearIniciarSesion {
-    flex: 1 1 60%;
-    margin: 0;
-    padding: 6px 10px;
-    font-size: 15px;
-}
-
-/**
- * Botones con gradiente rojo
- */
-.crear-cuenta-page .buttonCrearIniciarSesion {
-    width: 46%;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, #931525, #ff416c);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    margin-left: 0;
-}
-
-/**
- * Botones centrados con mínimo margen
- */
+/* Botones centrados */
 .crear-cuenta-page .buttonCrearIniciarSesion {
     width: auto;
     margin: 2px auto 0 auto;
+    /* casi pegados */
     display: block;
     padding: 6px 10px;
     border-radius: 8px;
 }
 
-/**
- * Botón de iniciar sesión más pegado
- */
+/* boton secundario (Iniciar Sesión) más pegado */
 #btnIniciarSesion {
     margin-top: 2px !important;
     margin-bottom: 2px !important;
 }
 
-/* ===================================================================
-   LOADER OVERLAY
-   =================================================================== */
-
-/**
- * Overlay de carga durante el registro
- */
-.loader-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/**
- * Contenedor del loader
- */
-.loader-container {
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-}
-
-/**
- * Texto del loader
- */
-.loader-text {
-    font-size: 20px;
-    color: #931525;
-    margin-bottom: 12px;
-}
-
-/**
- * Spinner circular rotatorio
- */
-.loader-dots {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #931525;
-    border-top: 4px solid transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto;
-}
-
-/**
- * Animación de rotación del spinner
- */
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* ===================================================================
-   RESPONSIVE DESIGN
-   =================================================================== */
-
-/**
- * Pantallas medianas y pequeñas
- */
 @media (max-width: 968px) {
     .crear-cuenta-page #contenedorLogin2 {
         padding: 16px;
@@ -445,9 +292,6 @@
         width: 100%;
     }
 
-    /**
-     * Botones apilados en columna
-     */
     .crear-cuenta-page .botonesGroup {
         flex-direction: column;
         gap: 4px;
@@ -461,3 +305,64 @@
         margin-top: 18px;
     }
 }
+
+/* Placeholders y selección */
+.crear-cuenta-page input::placeholder {
+    color: rgba(11, 18, 22, 0.45);
+}
+
+.crear-cuenta-page input::selection {
+    background: rgba(178, 12, 5, 0.18);
+    color: #fff;
+}
+
+/* Focus */
+.crear-cuenta-page input:focus {
+    outline: none;
+    box-shadow: 0 10px 26px rgba(147, 21, 37, 0.12);
+    border-color: rgba(147, 21, 37, 0.35);
+}
+
+.crear-cuenta-page input[type="email"]:hover {
+    border-color: #2980b9;
+    background-color: #eef7ff;
+}
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loader-container {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .loader-text {
+    font-size: 20px;
+    color: #931525;
+    margin-bottom: 12px;
+  }
+  
+  .loader-dots {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #931525;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }

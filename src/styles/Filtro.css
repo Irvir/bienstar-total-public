@@ -1,19 +1,9 @@
-/**
- * @file Filtro.css
- * @description Estilos para el componente de filtro de búsqueda de alimentos
- * @version 1.0.0
- */
 
-/* ===================================================================
-   CONTENEDOR PRINCIPAL
-   =================================================================== */
 
-/**
- * Contenedor principal con altura mínima y fondo gris
- */
 #contenedorPrincipal {
     width: 100%;
     min-height: 10vh;
+    /* altura mínima para cubrir toda la pantalla */
     background-color: #F5F5F5;
     display: flex;
     flex-direction: column;
@@ -21,14 +11,7 @@
     padding-bottom: 0;
 }
 
-/* ===================================================================
-   SISTEMA DE FILTRO
-   =================================================================== */
-
-/**
- * Contenedor del filtro con lupa y campo de búsqueda
- * Incluye borde redondeado y fondo gris claro
- */
+/* ----------------- Filtro ----------------- */
 #contenedorFiltro {
     width: 90%;
     max-width: 1200px;
@@ -40,9 +23,6 @@
     background-color: lightgray;
 }
 
-/**
- * Icono de lupa decorativo
- */
 #lupe {
     z-index: 10;
     width: 10%;
@@ -54,9 +34,6 @@
     background-position: center;
 }
 
-/**
- * Campo de entrada del filtro con bordes redondeados
- */
 #filtro {
     flex: 1;
     height: 40px;
@@ -67,13 +44,7 @@
     width: 100%;
 }
 
-/* ===================================================================
-   CONTENEDOR DE ALIMENTOS
-   =================================================================== */
-
-/**
- * Contenedor flexible para el grid de alimentos
- */
+/* ----------------- Contenedor de Alimentos ----------------- */
 #contenedorAlimentos {
     width: 95%;
     max-width: 1400px;
@@ -81,30 +52,31 @@
     flex: 1;
 }
 
-/**
- * Tarjeta individual de alimento con bordes rojos
- */
+
+
 .cuadro {
     background-color: #FCF7F8;
+    /* rojo oscuro */
     border: 3px solid #FF0000;
+    /* borde rojo */
     border-radius: 10px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     cursor: pointer;
     transition: transform 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* ===================================================================
-   RESPONSIVE DESIGN
-   =================================================================== */
 
-/**
- * Tablets grandes (1024px y menos)
- */
+
+
+
+
+/* ----------------- Responsive ----------------- */
 @media (max-width: 1024px) {
     #contenedorFiltro {
         width: 95%;
@@ -121,23 +93,18 @@
     }
 }
 
-/**
- * Tablets (768px y menos)
- */
 @media (max-width: 768px) {
     .grid-container {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 0.8rem;
     }
 
+
     #textTittleFood {
         font-size: 14px;
     }
 }
 
-/**
- * Móviles (480px y menos)
- */
 @media (max-width: 480px) {
     .grid-container {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));

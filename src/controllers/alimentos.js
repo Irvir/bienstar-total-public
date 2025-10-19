@@ -1,16 +1,4 @@
-/**
- * Alimentos.js - Controlador de la página de alimentos
- * 
- * Maneja:
- * - Modal con información nutricional detallada de cada alimento
- * - Filtro de búsqueda en tiempo real
- * - Carga del nombre de usuario en la interfaz
- */
-
-const API_URL = "http://localhost:3001";
-
-// ===== MANEJO DEL MODAL DE INFORMACIÓN NUTRICIONAL =====
-
+/*
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("modalAlimento");
   const modalImg = document.getElementById("modalImg");
@@ -33,8 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modalInfo.textContent = "Cargando...";
 
       // Buscar info del alimento
-  const API_BASE = (typeof window !== 'undefined' && window.API_BASE) || 'http://localhost:3001';
-  fetch(`${API_BASE}/food/${id}`)
+      fetch(`http://localhost:3001/food/${id}`)
         .then(res => {
           if (!res.ok) throw new Error("Error en la respuesta del servidor");
           return res.json();
@@ -62,61 +49,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /**
-   * Cerrar modal con botón de cierre (X)
-   */
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
-  }
+  // Cerrar modal con botón
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
 
-  /**
-   * Cerrar modal haciendo click fuera de él
-   */
+  // Cerrar modal haciendo click fuera
   window.addEventListener("click", e => {
-      if (e.target === modal) {
-          modal.style.display = "none";
-      }
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
   });
 });
 
-// ===== FILTRO DE BÚSQUEDA DE ALIMENTOS =====
-
+// ---------------------------
+// Filtro de alimentos
+// ---------------------------
 const inputFiltro = document.getElementById("filtro");
 
 if (inputFiltro) {
-    /**
-     * Filtrar alimentos en tiempo real según el texto ingresado
-     * Oculta los cuadros que no coinciden con la búsqueda
-     */
-    inputFiltro.addEventListener("input", () => {
-        const texto = inputFiltro.value.toLowerCase();
+  inputFiltro.addEventListener("input", () => {
+    const texto = inputFiltro.value.toLowerCase();
 
-        document.querySelectorAll(".grid-container .cuadro").forEach(cuadro => {
-            const nombreElem = cuadro.querySelector(".nombre");
-            if (!nombreElem) return;
+    document.querySelectorAll(".grid-container .cuadro").forEach(cuadro => {
+      const nombreElem = cuadro.querySelector(".nombre");
+      if (!nombreElem) return;
 
-            const nombre = nombreElem.textContent.toLowerCase();
-            
-            // Mostrar u ocultar según coincidencia
-            cuadro.style.display = nombre.includes(texto) ? "block" : "none";
-        });
+      const nombre = nombreElem.textContent.toLowerCase();
+      cuadro.style.display = nombre.includes(texto) ? "block" : "none";
     });
+  });
 }
 
-// ===== CARGAR NOMBRE DE USUARIO EN LA INTERFAZ =====
-
+//Cargar Nombre Usuario
 document.addEventListener("DOMContentLoaded", () => {
-    const usuarioGuardado = localStorage.getItem("usuario");
+  const usuarioGuardado = localStorage.getItem("usuario");
 
-    if (usuarioGuardado) {
-        const usuario = JSON.parse(usuarioGuardado);
-        const nameUserSpan = document.querySelector(".nameUser");
-        
-        // Actualizar el nombre de usuario en el encabezado
-        if (nameUserSpan) {
-            nameUserSpan.textContent = usuario.name;
-        }
+  if (usuarioGuardado) {
+    const usuario = JSON.parse(usuarioGuardado);
+    const nameUserSpan = document.querySelector(".nameUser");
+    if (nameUserSpan) {
+      nameUserSpan.textContent = usuario.name;
     }
+  }
 });
+*/

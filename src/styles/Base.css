@@ -1,71 +1,41 @@
-/**
- * @file Base.css
- * @description Estilos base globales para toda la aplicación
- * 
- * Contenido:
- * - Reset CSS y box-sizing
- * - Variables CSS globales (colores, tamaños)
- * - Estilos del contenedor principal
- * - Estilos de footer
- * - Menú desplegable de usuario
- * - Animaciones (bell-wiggle, fondoRodillo)
- * - Media queries responsive
- */
-
-/* ===========================================
-   RESET Y CONFIGURACIÓN BASE
-   =========================================== */
-
-/* Reset universal de box-sizing */
+/* --------------- RESET Y VARIABLES --------------- */
 * {
     box-sizing: border-box;
 }
 
-/* Fondo global con patrón animado */
 html,
 body {
     background-size: 400px 200px;
     background-repeat: repeat;
-    background-position: 0 0;
-    background-attachment: fixed;
+    background-position: center center;
+    background-attachment: fixed; 
     background-image: url('/public/assets/pe1.png');
-    animation: fondoRodillo 10s linear infinite;
 }
 
-/* ===========================================
-   VARIABLES CSS GLOBALES
-   =========================================== */
-
 :root {
-    /* Colores principales */
     --primary: #931525;
     --primary-dark: #6F0E1A;
     --white: #ffffff;
-    
-    /* Layout */
     --max-w: 1200px;
     --gap: 1rem;
-    
-    /* Tamaños de avatar */
-    --avatar-size: 40px;      /* Tamaño por defecto */
-    --avatar-size-lg: 56px;   /* Grande */
-    --avatar-size-sm: 36px;   /* Pequeño */
+    --avatar-size: 40px; /* tamaño por defecto para el avatar dentro del recuadro */
+    --avatar-size-lg: 56px;
+    --avatar-size-sm: 36px;
 }
 
-/* ===========================================
-   LAYOUT PRINCIPAL
-   =========================================== */
-
-/* Contenedor principal de la aplicación */
+/* Contenedor principal */
 #contenedorPrincipal {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* ❌ Elimina esta línea */
+    /* background-color: white; */
     position: relative;
     z-index: 10;
 }
 
-/* Área de contenido principal */
+/* Header and avatar styles were moved to Encabezado.css */
+/* Cuerpo */
 #cuerpo {
     flex: 1;
     width: 100%;
@@ -74,14 +44,19 @@ body {
     margin: 0;
     padding: 0;
     background-size: 800px 800px;
+    /* ajusta el tamaño del patrón */
     background-repeat: repeat;
+    /* permite que se repita */
     background-position: center center;
-    background-attachment: fixed;
+    /* centra el patrón */
+    background-attachment: fixed
+}
+@media (max-width: 768px) {
+    #cuerpo {
+        padding: 0;
+    }
 }
 
-/* ===========================================
-   FOOTER
-   =========================================== */
 
 .footer-inner {
     max-width: var(--max-w);
@@ -92,7 +67,6 @@ body {
     flex-wrap: wrap;
 }
 
-/* Enlaces del footer con íconos */
 .footer-inner .footer-link {
     display: inline-flex;
     align-items: center;
@@ -108,10 +82,7 @@ body {
     display: block;
 }
 
-/* ===========================================
-   MENÚ DESPLEGABLE DE USUARIO
-   =========================================== */
-
+/* Menú desplegable */
 .menuDesplegable {
     display: none;
     position: absolute;
@@ -125,7 +96,6 @@ body {
     width: 180px;
 }
 
-/* Opciones individuales del menú */
 .opcionMenu {
     display: block;
     width: 100%;
@@ -141,79 +111,7 @@ body {
     background-color: #f3f3f3;
 }
 
-/* ===========================================
-   ESTILOS DE USUARIO
-   =========================================== */
-
-/* Información del usuario en el header */
-.user-info {
-    font-size: 24px;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, #ff6b6b, #ffb347);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-/* Botón de notificaciones */
-#btnNotification {
-    width: 32px;
-    height: 32px;
-    transition: transform 0.3s ease;
-}
-
-/* ===========================================
-   ANIMACIONES
-   =========================================== */
-
-/* Animación de campana (wiggle) */
-@keyframes bell-wiggle {
-    0% {
-        transform: rotate(0deg);
-    }
-    15% {
-        transform: rotate(-16deg);
-    }
-    30% {
-        transform: rotate(12deg);
-    }
-    45% {
-        transform: rotate(-8deg);
-    }
-    60% {
-        transform: rotate(5deg);
-    }
-    75% {
-        transform: rotate(-2deg);
-    }
-    100% {
-        transform: rotate(0deg);
-    }
-}
-
-/* Clase para aplicar animación de campana */
-.bell-hint {
-    animation: bell-wiggle 700ms ease-in-out;
-    filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
-}
-
-/* Animación de fondo rodante */
-@keyframes fondoRodillo {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: -400px 0;
-    }
-}
-
-/* ===========================================
-   RESPONSIVE DESIGN
-   =========================================== */
-
-/* Tablets y dispositivos medianos */
+/* Responsive */
 @media (max-width: 768px) {
     .header-inner {
         flex-wrap: wrap;
@@ -235,14 +133,79 @@ body {
     }
 }
 
-/* Móviles pequeños */
 @media (max-width: 480px) {
-    #cuerpo {
-        padding: 0;
-    }
-
     .footer-inner {
         flex-direction: column;
         align-items: center;
     }
 }
+@keyframes bell-wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    15% {
+        transform: rotate(-16deg);
+    }
+
+    30% {
+        transform: rotate(12deg);
+    }
+
+    45% {
+        transform: rotate(-8deg);
+    }
+
+    60% {
+        transform: rotate(5deg);
+    }
+
+    75% {
+        transform: rotate(-2deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.bell-hint {
+    animation: bell-wiggle 700ms ease-in-out;
+    filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
+}
+.user-info {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b, #ffb347);
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
+    
+}
+#btnNotification {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+@keyframes fondoRodillo {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: -400px 0;
+        /* ajusta según el tamaño del patrón */
+    }
+}
+
+html,
+body {
+    background-image: url('/public/assets/pe1.png');
+    background-size: 400px 200px;
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-attachment: fixed;
+    animation: fondoRodillo 10s linear infinite; }

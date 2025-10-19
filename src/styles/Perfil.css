@@ -1,19 +1,13 @@
-/**
- * @file Perfil.css
- * @description Estilos para la página de perfil de usuario con menú lateral y tarjeta de información
- * @version 1.0.0
- */
+/* ==============================
+   PANTALLA DE CARGA
+============================== */
+/* Contenedor principal del loader (pantalla de carga) */
 
-/* ===================================================================
-   LAYOUT PRINCIPAL
-   =================================================================== */
-
-/**
- * Contenedor principal con layout horizontal
- */
+/* Contenedor principal del cuerpo */
 #cuerpo {
     display: flex;
     flex-direction: row;
+    /* 👈 define orden de izquierda a derecha */
     flex-wrap: nowrap;
     width: 100%;
     height: 100vh;
@@ -22,19 +16,12 @@
     padding: 0;
 }
 
-/* ===================================================================
-   MENÚ LATERAL
-   =================================================================== */
-
-/**
- * Menú lateral con efecto glass morphism rojizo
- * Ocupa 20% del ancho con mínimo de 250px
- */
 #divMenuLateral {
     margin-top: 50px;
     flex: 0 0 20%;
     border-radius: 12px;
     min-width: 250px;
+    /* efecto glass con tinte rojizo para integrar el tema */
     background: rgba(63, 30, 34, 0.20);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
@@ -43,22 +30,36 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    /* empieza desde arriba */
     align-items: center;
     padding: 10px;
     padding-top: 70px;
+    /* ajusta manualmente la altura de los botones */
     box-sizing: border-box;
     height: 79vh;
+    /* el glass llega hasta la mitad de la pantalla */
     min-height: 320px;
 }
 
-/**
- * Botones del menú lateral (estado normal)
- */
+/* Si la pantalla es pequeña, dejar que el menu sea auto (no ocupar 50vh) */
+@media (max-width: 768px) {
+    #divMenuLateral {
+        height: auto;
+        min-width: 0;
+        padding-top: 20px;
+        background: transparent;
+        /* en móvil preferimos transparencia simple */
+        box-shadow: none;
+        border: none;
+    }
+}
+
+/* Botones menú lateral */
 .botonesPerfil {
     width: 100%;
     padding: 12px;
     margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     background-color: #EC221F;
     color: white;
@@ -66,20 +67,18 @@
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 20px;
 }
 
 .botonesPerfil:hover {
     opacity: 0.8;
 }
 
-/**
- * Botones del menú lateral (estado seleccionado)
- */
 .botonesPerfilSelec {
     width: 100%;
     padding: 12px;
     margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
     background-color: #B20C05;
     color: white;
@@ -87,17 +86,13 @@
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 20px;
 }
 
-/* ===================================================================
-   ÁREA DE INFORMACIÓN
-   =================================================================== */
-
-/**
- * Contenedor principal de información (lado derecho)
- */
+/* Contenedor info usuario */
 #divInfoUser {
     flex: 1;
+    /* ocupa el resto del espacio */
     padding: 20px;
     background-size: cover;
     background-position: center;
@@ -107,15 +102,15 @@
     align-items: center;
 }
 
-/**
- * Tarjeta de perfil con efecto glass
- * Contiene información del usuario y foto
- */
+/* Contenedor de info sesión más grande */
+/* Contenedor principal que alberga la tarjeta de perfil */
 #contenedorInfoSesion {
     width: 100%;
     max-width: 1000px;
+    /* aumentado para tener una tarjeta más ancha */
     border-radius: 28px;
-    padding: 36px;
+    padding: 36px 36px;
+    /* un poco más de espacio interno */
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -123,39 +118,33 @@
     height: auto;
     margin-top: 20px;
     min-height: 580px;
+    /* mayor altura mínima */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
     background: rgba(255, 255, 255, 0.2);
     -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
 }
 
-/* ===================================================================
-   INFORMACIÓN DEL USUARIO
-   =================================================================== */
-
-/**
- * Contenedor de los campos de información (lado izquierdo)
- */
+/* Ajuste interno de info usuario */
+/* Área que contiene los campos de información (izquierda) */
 #contenedorInfo {
     flex: 2.6;
     padding-right: 10px;
 }
 
-/**
- * Título de la sección de información
- */
 #tituloInfo {
     font-size: 1.95rem;
     font-weight: 800;
     margin-bottom: 12px;
     color: #0f1720;
+    /* color más oscuro para mejor contraste */
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/**
- * Fila del título con botón de editar
- */
+/* Fila de título + botón editar */
 #tituloInfoRow {
     display: flex;
     align-items: center;
@@ -164,53 +153,26 @@
     margin-bottom: 10px;
 }
 
-/* ===================================================================
-   BOTONES DE EDICIÓN
-   =================================================================== */
-
-/**
- * Botón de editar perfil (verde)
- */
 .btnEditarPerfil {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #22c55e;
+    background: #22c55e; /* verde */
     color: white;
     border: none;
     border-radius: 10px;
     padding: 8px 14px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
 }
 
-.btnEditarPerfil:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-}
+.btnEditarPerfil:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.22); }
+.btnEditarPerfil:active { transform: translateY(0); opacity: .9; }
+.btnEditarPerfil .iconLapiz { display: block; }
 
-.btnEditarPerfil:active {
-    transform: translateY(0);
-    opacity: 0.9;
-}
-
-.btnEditarPerfil .iconLapiz {
-    display: block;
-}
-
-/**
- * Contenedor de acciones (Guardar/Cancelar)
- */
-.accionesEditarPerfil {
-    display: flex;
-    gap: 8px;
-}
-
-/**
- * Botón de guardar cambios (verde oscuro)
- */
+.accionesEditarPerfil { display: flex; gap: 8px; }
 .btnGuardarPerfil {
     background: #16a34a;
     color: #fff;
@@ -219,16 +181,9 @@
     padding: 8px 14px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
 }
-
-.btnGuardarPerfil:hover {
-    filter: brightness(1.05);
-}
-
-/**
- * Botón de cancelar edición (gris)
- */
+.btnGuardarPerfil:hover { filter: brightness(1.05); }
 .btnCancelarPerfil {
     background: #e5e7eb;
     color: #111827;
@@ -239,33 +194,22 @@
     cursor: pointer;
 }
 
-/* ===================================================================
-   CAMPOS DE DATOS
-   =================================================================== */
-
-/**
- * Fila de dato individual (etiqueta + valor)
- */
 .datoUsuarioRow {
     display: flex;
     margin-bottom: 14px;
     align-items: center;
 }
 
-/**
- * Etiqueta del campo (Nombre, Edad, etc.)
- */
 .info {
     font-weight: 800;
     width: 100px;
     color: #0b1216;
+    /* más oscuro */
     letter-spacing: 0.2px;
 }
 
-/**
- * Campos de información con efecto glass
- * Aplica a: nombre, edad, peso, altura, email
- */
+/* Estilo de los campos que imitan inputs (parecen cuadros con borde y fondo blanco) */
+/* Campos con efecto glass (semirretransparente + blur) */
 .spNombre,
 .spAge,
 .spWeight,
@@ -274,20 +218,21 @@
     margin-left: 12px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.2);
+    /* fondo translúcido */
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
+    /* efecto blur del fondo */
     border: 1px solid rgba(255, 255, 255, 0.3);
+    /* borde claro sobre el glass */
     font-size: 16px;
     flex: 1;
     padding: 12px 16px;
     color: #111;
+    /* texto oscuro para buena lectura */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
 }
 
-/**
- * Efecto hover de los campos
- */
 .spNombre:hover,
 .spAge:hover,
 .spWeight:hover,
@@ -297,9 +242,7 @@
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
 }
 
-/**
- * Estado de solo lectura (no editable)
- */
+/* Estado de solo lectura dentro de edición */
 .spReadonly {
     opacity: 0.8;
     cursor: not-allowed;
@@ -310,9 +253,28 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-/**
- * Inputs reales dentro de los spans
- */
+/* Si hay inputs reales dentro, que hereden el estilo glass y mantengan legibilidad */
+#contenedorInfo input[type="text"],
+#contenedorInfo input[type="email"],
+#contenedorInfo input[type="number"] {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    /* ya está el glass en el contenedor */
+    font-size: 16px;
+    color: #111;
+    padding: 0;
+    /* evitar padding duplicado si el input está dentro de un span estilizado */
+}
+
+/* foco accesible para inputs */
+#contenedorInfo input[type="text"]:focus,
+#contenedorInfo input[type="email"]:focus {
+    box-shadow: 0 6px 18px rgba(147, 21, 37, 0.12);
+}
+
+/* Si se usan inputs reales dentro de los spans, también darles estilo similar */
 #contenedorInfo input[type="text"],
 #contenedorInfo input[type="email"],
 #contenedorInfo input[type="number"] {
@@ -321,52 +283,35 @@
     outline: none;
     background: transparent;
     font-size: 16px;
-    color: #111;
-    padding: 0;
+    color: #222;
 }
 
-/**
- * Foco accesible para inputs
- */
-#contenedorInfo input[type="text"]:focus,
-#contenedorInfo input[type="email"]:focus {
-    box-shadow: 0 6px 18px rgba(147, 21, 37, 0.12);
-}
-
-/* ===================================================================
-   FOTO Y BOTONES DE SESIÓN
-   =================================================================== */
-
-/**
- * Contenedores de foto de perfil y botones de sesión (lado derecho)
- */
-#contenedorCerrarSesion,
-#contenedorBorrarCuenta {
+/* Contenedor cerrar sesión */
+/* Área derecha: foto de perfil y botón cerrar sesión */
+#contenedorCerrarSesion,#contenedorBorrarCuenta {
     flex: 1 1 260px;
+    /* más ancho para mantener proporciones con la tarjeta agrandada */
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 8px;
 }
 
-/**
- * Imagen de perfil circular
- */
+/* Contenedor circular para la imagen del usuario. URL vacía para que el usuario la rellene más tarde */
 #imagenUser {
     width: 320px;
+    /* agrandada */
     height: 300px;
-    /* Asegurar que use public */
+    /* usar la imagen del directorio public */
     background-image: url("/Imagenes/Login_Perfil/fotoperfilusuario.png");
     background-size: cover;
     background-position: center;
     margin-bottom: 12px;
 }
 
-/**
- * Botones de cerrar sesión y borrar cuenta con gradiente rojo
- */
-#cerrarSesion,
-#borrarCuenta {
+/* Botón cerrar sesión estilizado */
+/* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
+#cerrarSesion ,#borrarCuenta {
     width: 75%;
     padding: 12px 18px;
     font-size: 16px;
@@ -379,46 +324,16 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-
-/**
- * Espaciado superior para botón de borrar cuenta
- */
 #borrarCuenta {
     margin-top: 110%;
 }
-
-/**
- * Efecto hover de los botones de sesión
- */
-#cerrarSesion:hover,
-#borrarCuenta:hover {
+#cerrarSesion:hover,#borrarCuenta:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
-/* ===================================================================
-   RESPONSIVE DESIGN
-   =================================================================== */
-
-/**
- * Pantallas pequeñas: layout en columna
- */
+/* Media queries para pantallas pequeñas */
 @media (max-width: 768px) {
-    /**
-     * Menú lateral: transparente y sin efectos glass en móvil
-     */
-    #divMenuLateral {
-        height: auto;
-        min-width: 0;
-        padding-top: 20px;
-        background: transparent;
-        box-shadow: none;
-        border: none;
-    }
-
-    /**
-     * Layout vertical
-     */
     #cuerpo {
         flex-direction: column;
     }
@@ -429,17 +344,13 @@
         flex: none;
     }
 
-    /**
-     * Tarjeta de perfil en columna
-     */
     #contenedorInfoSesion {
         flex-direction: column;
         align-items: center;
     }
 
     #contenedorInfo,
-    #contenedorCerrarSesion,
-    #contenedorBorrarCuenta {
+    #contenedorCerrarSesion,#contenedorBorrarCuenta {
         width: 100%;
         margin-bottom: 20px;
     }

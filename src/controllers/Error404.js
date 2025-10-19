@@ -1,10 +1,3 @@
-/**
- * Error404.js - Controlador de redirección para páginas no encontradas
- * 
- * Valida que la ruta actual sea válida y redirige a error404.html si no lo es
- * No se ejecuta si la aplicación React está montada (el enrutador de React maneja el 404)
- */
-
 (()=>{
     // Si el elemento #root existe, la app React está montada y debe controlar el 404
     if (typeof document !== 'undefined' && document.getElementById && document.getElementById('root')) {
@@ -12,24 +5,20 @@
         return;
     }
 
-    /**
-     * Lista de rutas HTML válidas en la aplicación
-     * @constant {string[]}
-     */
     const rutasValidas = [
-        'index.html',
-        'home.html',
-        'perfil.html',
-        'dietas.html',
-        'alimentos.html',
-        'calendario.html',
-        'tipsParaTuDieta.html',
-        'login.html',
-        'CrearCuenta.html',
-        'CrearDieta.html',
-        'error404.html',
-        'Pruebas.html',
-        'base.html'
+            'index.html',
+            'home.html',
+            'perfil.html',
+            'dietas.html',
+            'alimentos.html',
+            'calendario.html',
+            'tipsParaTuDieta.html',
+            'login.html',
+            'CrearCuenta.html',
+            'CrearDieta.html',
+            'error404.html',
+            'Pruebas.html',
+            'base.html'
     ].map(r => r.toLowerCase());
 
     // Obtener último segmento sin extensión y sin query/hash, normalizar a minúsculas
@@ -37,23 +26,17 @@
     rutaActual = rutaActual.split('?')[0].split('#')[0].toLowerCase();
 
     // Si la ruta está vacía (root '/') tratar como index.html
-    if (!rutaActual || rutaActual === '') {
-        rutaActual = 'index.html';
-    }
+    if (!rutaActual || rutaActual === '') rutaActual = 'index.html';
 
     // Si la ruta es 'home' o 'home.html' tratar como index.html (alias)
-    if (rutaActual === 'home' || rutaActual === 'home.html') {
-        rutaActual = 'index.html';
-    }
+    if (rutaActual === 'home' || rutaActual === 'home.html') rutaActual = 'index.html';
 
     // Si no tiene extensión .html, añadirla
-    if (!rutaActual.endsWith('.html')) {
-        rutaActual += '.html';
-    }
+    if (!rutaActual.endsWith('.html')) rutaActual += '.html';
 
     // Redirigir solo si no es válida
     if (!rutasValidas.includes(rutaActual)) {
-        // Usa ruta relativa para no depender de un path absoluto del repo
-        window.location.href = '/frontEnd/src/pages/error404.html';
+            // Usa ruta relativa para no depender de un path absoluto del repo
+            window.location.href = '/frontEnd/src/pages/error404.html';
     }
 })();

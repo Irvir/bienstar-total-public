@@ -26,32 +26,59 @@ import React, { useState } from "react";
  */
 export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
   const [form, setForm] = useState({
-    id: alimento.id,
+    id: alimento.id || "",
+    id_alimento: alimento.id_alimento || "",
     nombre: alimento.nombre || "",
-    protein: alimento.protein || "",
-    total_lipid: alimento.total_lipid || "",
-    carbohydrate: alimento.carbohydrate || "",
-    energy: alimento.energy || "",
-    total_sugars: alimento.total_sugars || "",
-    calcium: alimento.calcium || "",
-    iron: alimento.iron || "",
-    sodium: alimento.sodium || "",
-    cholesterol: alimento.cholesterol || "",
-    image: alimento.image || "",
+    image_url: alimento.image_url || "",
+    categoria: alimento.categoria || "",
+    Energia: alimento.Energia || "",
+    Humedad: alimento.Humedad || "",
+    Cenizas: alimento.Cenizas || "",
+    Proteinas: alimento.Proteinas || "",
+    H_de_C_disp: alimento.H_de_C_disp || "",
+    Azucares_totales: alimento.Azucares_totales || "",
+    Fibra_dietetica_total: alimento.Fibra_dietetica_total || "",
+    Lipidos_totales: alimento.Lipidos_totales || "",
+    Ac_grasos_totales: alimento.Ac_grasos_totales || "",
+    Ac_grasos_poliinsat: alimento.Ac_grasos_poliinsat || "",
+    Ac_grasos_trans: alimento.Ac_grasos_trans || "",
+    Colesterol: alimento.Colesterol || "",
+    Vitamina_A: alimento.Vitamina_A || "",
+    Vitamina_C: alimento.Vitamina_C || "",
+    Vitamina_D: alimento.Vitamina_D || "",
+    Vitamina_E: alimento.Vitamina_E || "",
+    Vitamina_K: alimento.Vitamina_K || "",
+    Vitamina_B1: alimento.Vitamina_B1 || "",
+    Vitamina_B2: alimento.Vitamina_B2 || "",
+    Niacina: alimento.Niacina || "",
+    Vitamina_B6: alimento.Vitamina_B6 || "",
+    Ac_pantotenico: alimento.Ac_pantotenico || "",
+    Vitamina_B12: alimento.Vitamina_B12 || "",
+    Folatos: alimento.Folatos || "",
+    Sodio: alimento.Sodio || "",
+    Potasio: alimento.Potasio || "",
+    Calcio: alimento.Calcio || "",
+    Fosforo: alimento.Fosforo || "",
+    Magnesio: alimento.Magnesio || "",
+    Hierro: alimento.Hierro || "",
+    Zinc: alimento.Zinc || "",
+    Cobre: alimento.Cobre || "",
+    Selenio: alimento.Selenio || "",
+    estado: alimento.estado || "",
   });
+
   const [imageFile, setImageFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFile = (e) => {
     const f = e.target.files?.[0];
     if (f) {
       setImageFile(f);
-      // preview via URL (optional)
-      setForm(prev => ({ ...prev, imagePreview: URL.createObjectURL(f) }));
+      setForm((prev) => ({ ...prev, imagePreview: URL.createObjectURL(f) }));
     }
   };
 
@@ -62,66 +89,78 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
     onSave(payload);
   };
 
-  return (
-    <div className="modal-overlay" onClick={(ev) => ev.target.className === "modal-overlay" && onClose()}>
-      <div className="modal-editar admin-modal">
-        <button className="modal-close" onClick={onClose}>&times;</button>
+  const camposNutricionales = [
+    "Energia", "Humedad", "Cenizas", "Proteinas", "H_de_C_disp", "Azucares_totales", 
+    "Fibra_dietetica_total", "Lipidos_totales", "Ac_grasos_totales", "Ac_grasos_poliinsat", 
+    "Ac_grasos_trans", "Colesterol", "Vitamina_A", "Vitamina_C", "Vitamina_D", "Vitamina_E", 
+    "Vitamina_K", "Vitamina_B1", "Vitamina_B2", "Niacina", "Vitamina_B6", "Ac_pantotenico", 
+    "Vitamina_B12", "Folatos", "Sodio", "Potasio", "Calcio", "Fosforo", "Magnesio", 
+    "Hierro", "Zinc", "Cobre", "Selenio"
+  ];
 
+  return (
+    <div
+      className="modal-overlay"
+      onClick={(ev) => ev.target.className === "modal-overlay" && onClose()}
+    >
+      <div className="modal-editar admin-modal">
+        <button className="modal-close" onClick={onClose}>
+          &times;
+        </button>
         <h2>Editar alimento</h2>
 
         <form onSubmit={submit} className="modal-form">
           <label>Nombre</label>
           <input name="nombre" value={form.nombre} onChange={handleChange} />
 
-          <div className="grid-dos">
-            <div>
-              <label>Energy (kcal)</label>
-              <input name="energy" value={form.energy} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Proteína (g)</label>
-              <input name="protein" value={form.protein} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Grasa total (g)</label>
-              <input name="total_lipid" value={form.total_lipid} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Carbohidratos (g)</label>
-              <input name="carbohydrate" value={form.carbohydrate} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Azúcares (g)</label>
-              <input name="total_sugars" value={form.total_sugars} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Calcio (mg)</label>
-              <input name="calcium" value={form.calcium} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Hierro (mg)</label>
-              <input name="iron" value={form.iron} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Sodio (mg)</label>
-              <input name="sodium" value={form.sodium} onChange={handleChange} />
-            </div>
-            <div>
-              <label>Colesterol (mg)</label>
-              <input name="cholesterol" value={form.cholesterol} onChange={handleChange} />
-            </div>
-          </div>
+          <label>Categoría</label>
+          <input name="categoria" value={form.categoria} onChange={handleChange} />
 
           <label>Imagen (URL o subir archivo)</label>
-          <input name="image" placeholder="URL de imagen" value={form.image} onChange={handleChange} />
+          <input
+            name="image_url"
+            placeholder="URL de imagen"
+            value={form.image_url}
+            onChange={handleChange}
+          />
           <div className="file-row">
             <input type="file" accept="image/*" onChange={handleFile} />
-            {form.imagePreview ? <img src={form.imagePreview} alt="preview" className="preview" /> : (form.image && <img src={form.image} alt="current" className="preview" />)}
+            {form.imagePreview ? (
+              <img src={form.imagePreview} alt="preview" className="preview" />
+            ) : (
+              form.image_url && <img src={form.image_url} alt="current" className="preview" />
+            )}
+          </div>
+
+          {/* Grilla de 3 columnas para campos nutricionales */}
+          <div
+            className="grid-nutricional"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(6, 1fr)", 
+              gap: "12px",
+            }}
+          >
+            {camposNutricionales.map((campo) => (
+              <div key={campo}>
+                <label>{campo.replace(/_/g, " ")}</label>
+                <input
+                  name={campo}
+                  value={form[campo]}
+                  onChange={handleChange}
+                  type={campo === "estado" ? "text" : "number"}
+                />
+              </div>
+            ))}
           </div>
 
           <div className="modal-buttons">
-            <button type="button" className="btn-cancel" onClick={onClose}>Cancelar</button>
-            <button type="submit" className="btn-save">Guardar</button>
+            <button type="button" className="btn-cancel" onClick={onClose}>
+              Cancelar
+            </button>
+            <button type="submit" className="btn-save">
+              Guardar
+            </button>
           </div>
         </form>
       </div>

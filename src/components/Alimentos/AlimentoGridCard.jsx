@@ -1,49 +1,26 @@
-/**
- * @file AlimentoGridCard.jsx
- * @description Tarjeta individual de alimento en la galería
- * 
- * Funcionalidades principales:
- * - Muestra imagen del alimento con lazy loading
- * - Fallback a placeholder si la imagen falla
- * - Muestra nombre del alimento
- * - Clickeable para abrir modal de detalle
- */
-
 import React, { useState } from "react";
+import { API_BASE } from "../shared/apiBase";
 
-/**
- * Componente AlimentoGridCard
- * Tarjeta de alimento con imagen y nombre
- * 
- * @param {Object} props - Propiedades del componente
- * @param {Object} props.item - Datos del alimento
- * @param {string} props.item.id - ID del alimento
- * @param {string} props.item.name - Nombre del alimento
- * @param {string} props.item.image - URL de la imagen
- * @param {Function} props.onClick - Función a ejecutar al hacer clic
- * @returns {JSX.Element} Tarjeta de alimento
- */
 export default function AlimentoGridCard({ item, onClick }) {
-  // Estado de la imagen con fallback a placeholder
-  const initial = item.image || item.img || "/Imagenes/placeholder.png";
-  const [src, setSrc] = useState(initial);
-  
-  /**
-   * Maneja error de carga de imagen
-   * Cambia a placeholder cuando falla la carga
-   */
-  const handleError = () => setSrc("/Imagenes/placeholder.png");
+  // Preferencia para los distintos nombres de campo que puede tener la imagen,
+  // según distintas versiones históricas del backend y del frontend.
+  // Siempre se intenta devolver una URL absoluta.
+  // Si no hay imagen, se devuelve la del placeholder.
+  const pickImage = () => {
+    const candidate = item.image_url || item.image || item.img || item.url || null;
+    if (!candidate) return `${API_BASE}/uploads/placeholder.png`;
+    if (/^https?:\/\//i.test(candidate)) return candidate;
+    if (candidate.startsWith("/")) return `${API_BASE}${candidate}`;
+    return `${API_BASE}/uploads/${candidate}`;
+  };
+
+  const [src, setSrc] = useState(pickImage());
+  const handleError = () => setSrc(`${API_BASE}/uploads/placeholder.png`);
 
   return (
     <div className="cuadro" onClick={() => onClick?.(item)}>
       <button className="botonAlimento">
-        <img 
-          src={src} 
-          id="imgAlimento" 
-          alt={item.name || item.nombre} 
-          loading="lazy" 
-          onError={handleError} 
-        />
+        <img src={src} id="imgAlimento" alt={item.name || item.nombre} loading="lazy" onError={handleError} />
         <br />
         <p className="nombre" data-alimento-id={item.id}>
           {item.name || item.nombre}

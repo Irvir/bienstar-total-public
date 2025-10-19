@@ -1,13 +1,3 @@
-/**
- * @file style.css
- * @description Estilos generales para layout y botones de navegación principal
- * @version 1.0.0
- */
-
-/* ===================================================================
-   LAYOUT GENERAL
-   =================================================================== */
-
 html, body {
     height: 100%;
     margin: 0;
@@ -20,22 +10,16 @@ html, body {
     background-color: white;
 }
 
-/* ===== Header y Footer ===== */
 #encabezado, #pie {
     background-color: #931525;
     width: 100%;   
     height: 8%;   
 }
 
-/* ===== Cuerpo Principal ===== */
 #cuerpo {
     width: 100%;   
     height: 84%;   
 }
-
-/* ===================================================================
-   CONTENEDORES Y SECCIONES
-   =================================================================== */
 
 #contenedores {
     width: 50%;
@@ -52,10 +36,6 @@ html, body {
     width: 100%;
     height: 33.3%;
 }
-
-/* ===================================================================
-   COMPONENTES DE NAVEGACIÓN
-   =================================================================== */
 
 .logo {
     width: 10%;
@@ -75,13 +55,6 @@ html, body {
     float: left;
 }
 
-/* ===================================================================
-   BOTONES DE MENÚ
-   =================================================================== */
-
-/**
- * Botón de menú normal
- */
 .btnMenu {
     width: 33%;
     height: 100%;
@@ -95,9 +68,6 @@ html, body {
     opacity: 0.8;
 }
 
-/**
- * Botón de menú seleccionado
- */
 .btnMenuSelec {
     width: 33.3%;
     height: 100%;
@@ -112,21 +82,19 @@ html, body {
     opacity: 0.8;
 }
 
-/**
- * Botón principal con imagen de fondo
- */
 .btn1 {
-    width: 100%;
-    height: 100%;
-    border: none;
-    color: white;
-    font-size: 18px;
+    width: 100%;                     /* ancho del botón */
+    height: 100%;                     /* alto del botón */
+    border: none;                     /* sin borde */
+    color: white;                     /* color del texto */
+    font-size: 18px;                  /* tamaño de la fuente */
     font-weight: bold;
     cursor: pointer;
-    background-image: url("Imagenes/index/CrearHorarioSemanal.png");
-    background-size: cover;
-    background-position: center;
-    box-shadow: 2px 4px 8px rgba(0,0,0,0.4);
+    background-image: url("Imagenes/index/CrearHorarioSemanal.png");  /* aquí tu imagen */
+    background-size: cover;           /* ajusta la imagen al tamaño del botón */
+    background-position: center;      /* centra la imagen */
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4); /* sombra para que resalte */
+    /* Crear ajustes de texto */
 }
 
 .btn1:hover {

@@ -1,52 +1,35 @@
-/**
- * @file Login.css
- * @description Estilos para la página de inicio de sesión
- * 
- * Contenido:
- * - Fondo de pantalla completa
- * - Contenedor centrado con efecto glass
- * - Inputs con backdrop-filter
- * - Botones con gradientes
- * - Animación de carga (bounce)
- * - Efectos hover con brillo
- * - Media queries responsive
- */
-
-/* ===========================================
-   LAYOUT PRINCIPAL
-   =========================================== */
-
-/* Fondo principal - pantalla completa sin scroll */
+/* Fondo principal ocupa toda la pantalla sin scroll */
 .login-page .fondoLogin {
     background-size: cover;
     background-position: center;
     width: 100%;
     height: 100vh;
+    /* usa la altura exacta de la ventana */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    /* evita que se genere scroll */
     padding: 0;
+    /* quita márgenes extra */
     margin: 0;
 }
 
-/* Contenedor centrado del formulario */
+/* Contenedor centrado */
 .login-page #contenedorLoginAsist {
     width: 100%;
     max-width: 400px;
     height: auto;
+    /* no fijo al 100% */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* ===========================================
-   CAJA DE LOGIN
-   =========================================== */
-
-/* Contenedor principal con efecto glass */
+/* Caja del login */
 .login-page #contenedorLogin {
     width: 100%;
+    /* efecto glass */
     background: rgba(255, 255, 255, 0.16);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
@@ -56,23 +39,19 @@
     border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
-/* Imagen de perfil superior */
+/* Imagen superior */
 .login-page #contenedorLoginFoto {
     width: 60%;
     margin: 0 auto 20px auto;
     aspect-ratio: 1 / 1;
-    /* Ruta desde public para Vite */
-    background-image: url("/Imagenes/Login_Perfil/fotoperfilusuario.png");
+    /* usar la imagen roja por defecto */
+    background-image: url("../../Imagenes/Login_Perfil/fotoperfilusuario.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-/* ===========================================
-   INPUTS
-   =========================================== */
-
-/* Campos de texto y contraseña */
+/* Inputs */
 .login-page input[type="text"],
 .login-page input[type="password"] {
     width: 90%;
@@ -81,19 +60,20 @@
     display: block;
     font-size: 16px;
     border-radius: 10px;
+    /* aumentar ligeramente la opacidad para contraste */
     background: rgba(228, 226, 226, 0.22);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.28);
     color: #0b1216;
+    /* texto oscuro claro y legible */
     text-align: left;
+    /* alinear a la izquierda facilita lectura */
     padding-left: 18px;
     transition: all 0.25s ease;
-    box-shadow: inset 0 1px 0 rgba(240, 235, 235, 0.04), 
-                0 6px 18px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 1px 0 rgba(240, 235, 235, 0.04), 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
-/* Estado focus de inputs */
 .login-page input[type="text"]:focus,
 .login-page input[type="password"]:focus {
     outline: none;
@@ -101,11 +81,7 @@
     border-color: rgba(147, 21, 37, 0.35);
 }
 
-/* ===========================================
-   BOTONES
-   =========================================== */
-
-/* Botón principal de login */
+/* Botones */
 .login-page .login-container button {
     width: 80%;
     padding: 12px 14px;
@@ -117,32 +93,110 @@
     font-weight: bold;
     font-size: 16px;
     margin: auto;
+    /* centrar */
     display: block;
     transition: all 0.28s ease;
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1;
 }
 
-/* Botón de crear cuenta con gradiente diferente */
 .login-page .btnCrearCuenta {
     background: linear-gradient(135deg, #ff7e5f, #feb47b);
 }
 
-/* Hover en botones */
-.login-page .login-container button:hover,
-#botonIngresar:hover,
-.btnCrearCuenta:hover {
+.login-page .login-container button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    background-color: #d42c3c;
 }
 
-/* ===========================================
-   EFECTOS VISUALES
-   =========================================== */
+/* --- MEDIA QUERIES --- */
+@media (max-width: 768px) {
+    .login-page #contenedorLoginAsist {
+        max-width: 90%;
+    }
 
-/* Efecto de brillo interno en botones */
+    .login-page #contenedorLoginFoto {
+        width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-page #contenedorLoginAsist {
+        max-width: 100%;
+    }
+
+    .login-page #contenedorLogin {
+        border-radius: 15px;
+        padding: 15px;
+    }
+
+    .login-page #contenedorLoginFoto {
+        width: 40%;
+    }
+
+    .login-page .login-container button {
+        width: 100%;
+    }
+}
+
+/* Animación de carga */
+#loading-animation {
+    display: none;
+    /* Oculto al inicio */
+    margin-top: 10px;
+    text-align: center;
+}
+
+#loading-animation span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+    background-color: #931525;
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+}
+
+#loading-animation span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+#loading-animation span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#botonIngresar,
+.btnCrearCuenta {
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+#botonIngresar:hover,
+.btnCrearCuenta:hover {
+    background-color: #d42c3c;
+    /* tono más claro al pasar */
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    /* brillo suave */
+    transform: translateY(-2px);
+    /* levanta ligeramente */
+}
+
+/* Efecto de brillo interno */
 #botonIngresar::after,
 .btnCrearCuenta::after {
     content: "";
@@ -161,82 +215,4 @@
 #botonIngresar:hover::after,
 .btnCrearCuenta:hover::after {
     opacity: 1;
-}
-
-/* ===========================================
-   ANIMACIÓN DE CARGA
-   =========================================== */
-
-/* Contenedor de animación de carga */
-#loading-animation {
-    display: none;
-    margin-top: 10px;
-    text-align: center;
-}
-
-/* Puntos animados */
-#loading-animation span {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    margin: 0 3px;
-    background-color: #931525;
-    border-radius: 50%;
-    animation: bounce 1.2s infinite;
-}
-
-/* Delays para efecto escalonado */
-#loading-animation span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-#loading-animation span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-/* Animación de rebote */
-@keyframes bounce {
-    0%, 80%, 100% {
-        transform: scale(0);
-        opacity: 0.5;
-    }
-    40% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* ===========================================
-   RESPONSIVE DESIGN
-   =========================================== */
-
-/* Tablets y dispositivos medianos */
-@media (max-width: 768px) {
-    .login-page #contenedorLoginAsist {
-        max-width: 90%;
-    }
-
-    .login-page #contenedorLoginFoto {
-        width: 50%;
-    }
-}
-
-/* Móviles pequeños */
-@media (max-width: 480px) {
-    .login-page #contenedorLoginAsist {
-        max-width: 100%;
-    }
-
-    .login-page #contenedorLogin {
-        border-radius: 15px;
-        padding: 15px;
-    }
-
-    .login-page #contenedorLoginFoto {
-        width: 40%;
-    }
-
-    .login-page .login-container button {
-        width: 100%;
-    }
 }

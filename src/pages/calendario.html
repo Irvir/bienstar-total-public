@@ -1,10 +1,3 @@
-<!--
-/**
- * @file calendario.html
- * @description Página de calendario para visualizar eventos y fechas importantes
- * @version 1.0.0
- */
--->
 <!DOCTYPE html>
 <html lang="en">
 <script src="/frontEnd/src/controllers/Error404.js"></script>
@@ -12,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
-    
     <!-- CSS Global -->
+
     <link rel="stylesheet" href="Base.css">
     <link rel="stylesheet" href="/src/styles/Pie.css">
     <!-- CSS Específico -->
@@ -21,8 +14,6 @@
 </head>
 <body>
     <div id="contenedorPrincipal">
-        
-        <!-- ===== Encabezado de Navegación ===== -->
         <div id="encabezado">
             <div class="header-inner">
                 <div class="logo">
@@ -35,124 +26,7 @@
                     <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                     <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
                     <button class="btnMenuNoti">
-                        <img src="/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
-                    </button>
-                </div>
-                <div class="login">
-                    <div style="float: left; height: 100%; width: 75%;">
-                        <button class="btnPerfilView" id="btnPerfilView">
-                            <span class="nameUser">Nombre de Usuario</span>
-                        </button>
-                    </div>
-                    <!-- Menú desplegable de perfil -->
-                    <div id="menuDesplegable" class="menuDesplegable">
-                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
-                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
-                    </div>
-                    <!-- Imagen Usuario -->
-                    <div style="float: left; width: 10%; height: 100%;">
-                        <img src="/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
-                            style="cursor:pointer;">
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <script>
-            /**
-             * Manejo del menú desplegable de perfil
-             */
-            document.addEventListener("DOMContentLoaded", () => {
-                const btnPerfilView = document.getElementById("btnPerfilView");
-                const menuDesplegable = document.getElementById("menuDesplegable");
-                const logoutButton = document.getElementById("logoutButton");
-                const fotoUsuario = document.getElementById("fotoUsuario");
-
-                // Configuración inicial del menú desplegable
-                menuDesplegable.style.position = "absolute";
-                menuDesplegable.style.top = "8%";
-                menuDesplegable.style.right = "8%";
-                menuDesplegable.style.display = "none";
-                menuDesplegable.style.width = "10%";
-
-                // Toggle del menú
-                function toggleMenu() {
-                    menuDesplegable.style.display = (menuDesplegable.style.display === "block") ? "none" : "block";
-                }
-
-                btnPerfilView.addEventListener("click", toggleMenu);
-
-                // Cerrar sesión
-                logoutButton.addEventListener("click", () => {
-                    localStorage.removeItem("usuario");
-                    window.location.href = "login.html";
-                });
-
-                // Click en foto de usuario
-                fotoUsuario.addEventListener("click", () => {
-                    window.location.href = "login.html";
-                });
-
-                // Cerrar menú al hacer clic fuera
-                document.addEventListener("click", (event) => {
-                    if (!btnPerfilView.contains(event.target) &&
-                        !menuDesplegable.contains(event.target) &&
-                        !fotoUsuario.contains(event.target)) {
-                        menuDesplegable.style.display = "none";
-                    }
-                });
-            });
-        </script>
-        
-        <!-- ===== Contenido Principal ===== -->
-        <div id="cuerpo">
-            <!-- Aquí va el contenido del calendario -->
-        </div>
-        
-        <!-- ===== Pie de Página ===== -->
-        <div id="pie">
-            <div class="footer-inner">
-                <button class="instaBoton"></button>
-                <button class="faceBoton"></button>
-                <button class="youTubeBoton"></button>
-                <button class="whatsBoton"></button>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        /**
-         * Cargar nombre de usuario desde localStorage
-         */
-        document.addEventListener("DOMContentLoaded", () => {
-            const usuarioGuardado = localStorage.getItem("usuario");
-
-            if (usuarioGuardado) {
-                const usuario = JSON.parse(usuarioGuardado);
-                const nameUserSpan = document.querySelector(".nameUser");
-                if (nameUserSpan) {
-                    nameUserSpan.textContent = usuario.name;
-                }
-            }
-        });
-    </script>
-</body>
-</html>
-<body>
-    <div id="contenedorPrincipal">
-        <div id="encabezado">
-            <div class="header-inner">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
-                    </a>
-                </div>
-                <div class="menúBotones">
-                    <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
-                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
-                    <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
-                    <button class="btnMenuNoti">
-                        <img src="/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
                 <div class="login">
@@ -168,7 +42,7 @@
                     </div>
                     <!-- Imagen Usuario -->
                     <div style="float: left; width: 10%; height: 100%;">
-                        <img src="/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
                             style="cursor:pointer;">
                     </div>
                 </div>

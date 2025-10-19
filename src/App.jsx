@@ -1,6 +1,4 @@
 import React, { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
-
 import Home from './components/Home';
 import Error404 from './components/Error404';
 import Login from './components/Login.jsx';
@@ -9,26 +7,70 @@ import CrearDieta from './components/CrearDieta.jsx';
 import Alimentos from './components/Alimentos.jsx';
 import Perfil from './components/Perfil.jsx';
 import Admin from './components/Admin.jsx';
+import CrearAlimento from './components/CrearAlimento.jsx';
 
-const Dietas = React.lazy(() => import('./components/Dietas.jsx'));
 
 export default function App() {
-  return (
-    <Suspense fallback={<div>Cargando...</div>}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-  <Route path="/home" element={<Home />} />
-        <Route path="/crear-cuenta" element={<CrearCuenta />} />
-        <Route path="/crearcuenta" element={<CrearCuenta />} />
-        <Route path="/crear-dieta" element={<CrearDieta />} />
-        <Route path="/creardieta" element={<CrearDieta />} />
-        <Route path="/alimentos" element={<Alimentos />} />
-        <Route path="/dietas" element={<Dietas />} />
-        <Route path="/perfil" element={<Perfil />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </Suspense>
-  );
+  const raw = window.location.pathname.split('/').pop() || '';
+  const currentPath = raw.toLowerCase();
+
+  // Treat root, index.html and home/home.html as the main page
+  if (!currentPath || currentPath === 'index.html' || currentPath === 'home' || currentPath === 'home.html') {
+    return <Home />;
+  }
+
+  // If explicitly navigating to the static 404 html, show React 404 too
+  if (currentPath === 'error404.html' || currentPath === 'error404') {
+    return <Error404 />;
+  }
+
+  // Login route
+  if (currentPath === 'login' || currentPath === 'login.html') {
+    return <Login />;
+  }
+  // CrearCuenta route (accept hyphenated and non-hyphenated variants)
+  if (
+    currentPath === 'crearcuenta' ||
+    currentPath === 'crearcuenta.html' ||
+    currentPath === 'crear-cuenta' ||
+    currentPath === 'crear-cuenta.html'
+  ) {
+    return <CrearCuenta />;
+  }
+  if(currentPath === 'creardieta' ||
+     currentPath === 'creardieta.html' ||
+     currentPath === 'crear-dieta' ||
+     currentPath === 'crear-dieta.html') {
+    return (
+        <CrearDieta />
+    );
+  }
+
+  // Alimentos route
+  if (currentPath === 'alimentos' || currentPath === 'alimentos.html') {
+    return <Alimentos />;
+  }
+  // Dietas route
+  if (currentPath === 'dietas' || currentPath === 'dietas.html') {
+    // Lazy load Dietas component
+    const Dietas = React.lazy(() => import('./components/Dietas.jsx'));
+    return (
+      <Suspense fallback={<div>Cargando...</div>}>
+        <Dietas />
+      </Suspense>
+    );
+  }
+  if (currentPath === 'perfil' || currentPath === 'perfil.html') {
+    return <Perfil />;
+  }
+  if (currentPath === 'admin' || currentPath === 'admin.html') {
+    return <Admin />;
+  }
+  if (currentPath === 'crear-alimento' || currentPath === 'crear-alimento.html') {
+    return <CrearAlimento />;
+  }
+
+
+  // Default: render 404 for any unknown path
+  return <Error404 />;
 }

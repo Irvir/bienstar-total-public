@@ -6,8 +6,7 @@ import withAuth from "../components/withAuth";
 import AdminAlimentoCard from "./Admin/AdminAlimentoCard";
 import ModalEditarAlimento from "./Admin/ModalEditarAlimento";
 import "../styles/Admin.css";
-import { API_BASE } from "../shared/apiBase";
-import "../styles/Base.css";
+import { API_BASE } from "../components/shared/apiBase";
 
 // Importar el sistema de notificaciones
 import "../controllers/notify.js";
@@ -71,18 +70,22 @@ function AdminAlimentos() {
         });
         if (!uploadRes.ok) throw new Error();
         const uploadJson = await uploadRes.json();
-        formDataObj.image = uploadJson.url;
+        // server returns { image_url: '/uploads/...' }
+        formDataObj.image_url = uploadJson.image_url || uploadJson.url || uploadJson.image || null;
       }
-
       const putRes = await fetch(`${API_BASE}/admin/foods/${formDataObj.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formDataObj),
       });
 
-      if (!putRes.ok) throw new Error();
-      const updated = await putRes.json();
-      setAlimentos(prev => prev.map(a => (a.id === updated.id ? updated : a)));
+      if (!putRes.ok) {
+        const txt = await putRes.text().catch(() => "");
+        throw new Error(`PUT failed: ${putRes.status} ${txt}`);
+      }
+
+      // The server's PUT returns a simple message; refresh the listing to reflect changes
+      await fetchListado();
       window.notify?.("Cambios guardados correctamente", { type: "success" });
       setModalAlimento(null);
     } catch {

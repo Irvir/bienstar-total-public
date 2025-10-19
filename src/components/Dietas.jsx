@@ -1,73 +1,28 @@
-/**
- * Dietas.jsx - Componente de visualización de dietas semanales
- * 
- * Funcionalidades:
- * - Visualización de la dieta completa de la semana
- * - Agrupación por día y tipo de comida
- * - Menú desplegable de usuario
- * - Navegación con loader
- * - Asegura que el usuario tenga una dieta personal
- */
-
 import React, { useEffect, useState } from "react";
-import { API_BASE } from "../shared/apiBase";
-import "../styles/Base.css";
 import "../styles/Dietas.css";
 import withAuth from "../components/withAuth";
 
 import Encabezado from "./Encabezado";
 import Pie from "./Pie";
-import Loader from "./Loader.jsx";
-import "../styles/Pie.css";
+import Loader from "./Loader.jsx"; // Loader global
+import "../styles/Pie.css"; // estilos del pie de página
 
-/**
- * Componente principal de visualización de dietas
- * 
- * @returns {JSX.Element} Página completa con la dieta semanal
- */
 function Dietas() {
-    // ===== ESTADO =====
-    
-    /** @type {Object} Dieta agrupada por día */
     const [dietByDay, setDietByDay] = useState({});
-    
-    /** @type {boolean} Estado del loader */
     const [loading, setLoading] = useState(false);
 
-    // ===== PROTECCIÓN DE SESIÓN =====
-    
-    /**
-     * Redirige al login si no hay usuario logueado
-     */
+    // ===== Redirección si no hay usuario =====
     useEffect(() => {
-        if (!localStorage.getItem("usuario")) {
-            window.location.href = "/login";
-        }
+        if (!localStorage.getItem("usuario")) window.location.href = "/login";
     }, []);
 
-    // ===== NAVEGACIÓN =====
-    
-    /**
-     * Muestra el loader y redirige a otra página
-     * 
-     * @param {string} url - URL de destino
-     */
+    // ===== Loader + redirección =====
     const showLoaderAndRedirect = (url) => {
         setLoading(true);
         setTimeout(() => (window.location.href = url), 700);
     };
 
-    // ===== MENÚ DE USUARIO =====
-    
-    /**
-     * Efecto 2: Configuración del menú desplegable de usuario
-     * - Posiciona el menú en la esquina superior derecha
-     * - Configura eventos de clic para abrir/cerrar menú
-     * - Detecta clics fuera del menú para cerrarlo automáticamente
-     * - Maneja el logout limpiando localStorage
-     * - Redirige al perfil al hacer clic en foto de usuario
-     * - Limpia event listeners al desmontar para evitar fugas de memoria
-     */
+    // ===== Mostrar nombre del usuario y menú desplegable =====
     useEffect(() => {
         const btnPerfilView = document.getElementById("btnPerfilView");
         const menuDesplegable = document.getElementById("menuDesplegable");
@@ -114,12 +69,7 @@ function Dietas() {
         };
     }, []);
 
-    /**
-     * Efecto 3: Mostrar nombre del usuario en el encabezado
-     * - Recupera el usuario desde localStorage
-     * - Parsea el JSON y extrae el nombre
-     * - Actualiza el span con clase 'nameUser' en el DOM
-     */
+    // ===== Mostrar nombre del usuario =====
     useEffect(() => {
         const usuarioGuardado = localStorage.getItem("usuario");
         if (usuarioGuardado) {
@@ -129,15 +79,7 @@ function Dietas() {
         }
     }, []);
 
-    /**
-     * Efecto 4: Cargar la dieta semanal desde el backend
-     * - Obtiene el usuario de localStorage y valida id_diet
-     * - Si no tiene dieta (id_diet=1), crea una nueva mediante /ensure-diet
-     * - Llama a /get-diet para obtener todas las comidas de la semana
-     * - Agrupa los datos por día y tipo de comida
-     * - Actualiza el estado dietByDay con la estructura:
-     *   { 1: { desayuno: [...], almuerzo: [...] }, 2: {...}, ... }
-     */
+    // ===== Cargar dieta desde backend =====
     useEffect(() => {
         async function loadDiet() {
             try {
@@ -147,7 +89,7 @@ function Dietas() {
 
                 // Asegurar id_diet válido
                 if (!user.id_diet || user.id_diet === 1) {
-                    const ensure = await fetch(`${API_BASE}/ensure-diet`, {
+                    const ensure = await fetch("http://localhost:3001/ensure-diet", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ user_id: user.id })
@@ -161,7 +103,7 @@ function Dietas() {
                     }
                 }
 
-                const res = await fetch(`${API_BASE}/get-diet?id_diet=${user.id_diet}`);
+                const res = await fetch(`http://localhost:3001/get-diet?id_diet=${user.id_diet}`);
                 if (!res.ok) return;
                 const rows = await res.json(); // [{dia, tipo_comida, alimento}]
 
@@ -179,23 +121,18 @@ function Dietas() {
         loadDiet();
     }, []);
 
-    // ===========================================
-    // RENDER - Renderizado del componente
-    // ===========================================
+    // ===== Render =====
     return (
         <div id="contenedorPrincipal" className="dietas-page">
             <Encabezado activePage="dietas" onNavigate={showLoaderAndRedirect} />
 
             <main id="cuerpo" className="dietas-main">
-                {/* Tabla de dieta semanal - 7 columnas (una por día) */}
                 <div className="tabla-dieta">
+                
 
-                    {/* Generar columna para cada día de la semana */}
                     {["LUNES","MARTES","MIÉRCOLES","JUEVES","VIERNES","SÁBADO","DOMINGO"].map((diaNombre, i) => {
-                        const diaNum = i + 1; // 1-7 (Lunes a Domingo)
-                        const meals = dietByDay[diaNum] || {}; // Comidas de ese día
-                        
-                        // Orden de renderizado de las comidas del día
+                        const diaNum = i + 1;
+                        const meals = dietByDay[diaNum] || {};
                         const order = ["breakfast","lunch","dinner","snack","snack2"];
                         const labels = {
                             breakfast:"DESAYUNO",
@@ -204,23 +141,21 @@ function Dietas() {
                             snack:"SNACK",
                             snack2:"SNACK 2"
                         };
-                        
                         return (
                             <div className={`columna ${diaNombre.toLowerCase()}`} data-dia={diaNum} key={i}>
                                 <div className="titulo">{diaNombre}</div>
                                 <div className="celda">
-                                    {/* Renderizar cada tipo de comida */}
                                     {order.map((tipo) => (
                                         <div key={tipo} className="bloque-comida">
-                                            <div className="titulo-comida">{labels[tipo]}</div>
-                                            {meals[tipo]?.length > 0 ? (
-                                                <ul className="lista-comida">
-                                                    {meals[tipo].map((al, idx) => <li key={idx}>{al}</li>)}
-                                                </ul>
-                                            ) : (
-                                                <p className="lista-vacia">—</p>
-                                            )}
-                                        </div>
+                                        <div className="titulo-comida">{labels[tipo]}</div>
+                                        {meals[tipo]?.length > 0 ? (
+                                          <ul className="lista-comida">
+                                            {meals[tipo].map((al, idx) => <li key={idx}>{al}</li>)}
+                                          </ul>
+                                        ) : (
+                                          <p className="lista-vacia">—</p>
+                                        )}
+                                      </div>
                                     ))}
                                 </div>
                             </div>
@@ -228,7 +163,6 @@ function Dietas() {
                     })}
                 </div>
 
-                {/* Botón para editar la dieta */}
                 <button
                     type="button"
                     id="BtnCrearCuenta"
@@ -246,8 +180,4 @@ function Dietas() {
     );
 }
 
-// Exportar con HOC de autenticación
-// requireAuth: true requiere que el usuario esté logueado
-const DietasWithAuth = withAuth(Dietas, { requireAuth: true });
-DietasWithAuth.displayName = 'DietasWithAuth';
-export default DietasWithAuth;
+export default withAuth(Dietas, { requireAuth: true });
