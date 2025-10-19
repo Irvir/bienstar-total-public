@@ -89,7 +89,14 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
     onSave(payload);
   };
 
-  // Campos reagrupados más abajo en secciones para mejor UX
+  const camposNutricionales = [
+    "Energia", "Humedad", "Cenizas", "Proteinas", "H_de_C_disp", "Azucares_totales", 
+    "Fibra_dietetica_total", "Lipidos_totales", "Ac_grasos_totales", "Ac_grasos_poliinsat", 
+    "Ac_grasos_trans", "Colesterol", "Vitamina_A", "Vitamina_C", "Vitamina_D", "Vitamina_E", 
+    "Vitamina_K", "Vitamina_B1", "Vitamina_B2", "Niacina", "Vitamina_B6", "Ac_pantotenico", 
+    "Vitamina_B12", "Folatos", "Sodio", "Potasio", "Calcio", "Fosforo", "Magnesio", 
+    "Hierro", "Zinc", "Cobre", "Selenio"
+  ];
 
   return (
     <div
@@ -103,90 +110,48 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
         <h2>Editar alimento</h2>
 
         <form onSubmit={submit} className="modal-form">
-          {/* General */}
-          <div className="modal-section">
-            <div className="modal-section-header">General</div>
-            <div className="modal-section-grid cols-2">
-              <div>
-                <label>Nombre</label>
-                <input name="nombre" value={form.nombre} onChange={handleChange} />
-              </div>
-              <div>
-                <label>Categoría</label>
-                <input name="categoria" value={form.categoria} onChange={handleChange} />
-              </div>
-              <div className="cols-2-span">
-                <label>Imagen (URL o subir archivo)</label>
+          <label>Nombre</label>
+          <input name="nombre" value={form.nombre} onChange={handleChange} />
+
+          <label>Categoría</label>
+          <input name="categoria" value={form.categoria} onChange={handleChange} />
+
+          <label>Imagen (URL o subir archivo)</label>
+          <input
+            name="image_url"
+            placeholder="URL de imagen"
+            value={form.image_url}
+            onChange={handleChange}
+          />
+          <div className="file-row">
+            <input type="file" accept="image/*" onChange={handleFile} />
+            {form.imagePreview ? (
+              <img src={form.imagePreview} alt="preview" className="preview" />
+            ) : (
+              form.image_url && <img src={form.image_url} alt="current" className="preview" />
+            )}
+          </div>
+
+          {/* Grilla de 3 columnas para campos nutricionales */}
+          <div
+            className="grid-nutricional"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(6, 1fr)", 
+              gap: "12px",
+            }}
+          >
+            {camposNutricionales.map((campo) => (
+              <div key={campo}>
+                <label>{campo.replace(/_/g, " ")}</label>
                 <input
-                  name="image_url"
-                  placeholder="URL de imagen"
-                  value={form.image_url}
+                  name={campo}
+                  value={form[campo]}
                   onChange={handleChange}
+                  type={campo === "estado" ? "text" : "number"}
                 />
-                <div className="file-row">
-                  <input type="file" accept="image/*" onChange={handleFile} />
-                  {form.imagePreview ? (
-                    <img src={form.imagePreview} alt="preview" className="preview" />
-                  ) : (
-                    form.image_url && <img src={form.image_url} alt="current" className="preview" />
-                  )}
-                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Macros */}
-          <div className="modal-section">
-            <div className="modal-section-header">Macros</div>
-            <div className="modal-section-grid cols-3">
-              {[
-                "Proteinas",
-                "H_de_C_disp",
-                "Azucares_totales",
-                "Fibra_dietetica_total",
-                "Lipidos_totales",
-              ].map((campo) => (
-                <div key={campo}>
-                  <label>{campo.replace(/_/g, " ")}</label>
-                  <input name={campo} value={form[campo]} onChange={handleChange} type="number" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Grasas */}
-          <div className="modal-section">
-            <div className="modal-section-header">Grasas</div>
-            <div className="modal-section-grid cols-3">
-              {[
-                "Ac_grasos_totales",
-                "Ac_grasos_poliinsat",
-                "Ac_grasos_trans",
-                "Colesterol",
-              ].map((campo) => (
-                <div key={campo}>
-                  <label>{campo.replace(/_/g, " ")}</label>
-                  <input name={campo} value={form[campo]} onChange={handleChange} type="number" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Micronutrientes */}
-          <div className="modal-section">
-            <div className="modal-section-header">Micronutrientes</div>
-            <div className="modal-section-grid cols-4">
-              {[
-                "Energia","Humedad","Cenizas",
-                "Vitamina_A","Vitamina_C","Vitamina_D","Vitamina_E","Vitamina_K","Vitamina_B1","Vitamina_B2","Niacina","Vitamina_B6","Ac_pantotenico","Vitamina_B12","Folatos",
-                "Sodio","Potasio","Calcio","Fosforo","Magnesio","Hierro","Zinc","Cobre","Selenio"
-              ].map((campo) => (
-                <div key={campo}>
-                  <label>{campo.replace(/_/g, " ")}</label>
-                  <input name={campo} value={form[campo]} onChange={handleChange} type="number" />
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
 
           <div className="modal-buttons">

@@ -13,7 +13,6 @@ import "../controllers/notify.js";
 
 function AdminAlimentos() {
   const [alimentos, setAlimentos] = useState([]);
-  const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [activePage, setActivePage] = useState("admin-alimentos");
   const [modalAlimento, setModalAlimento] = useState(null);
@@ -111,24 +110,6 @@ function AdminAlimentos() {
           <h1>Admin — Gestión de Alimentos</h1>
           {error && <div className="admin-error">{error}</div>}
 
-          {/* Filtro de búsqueda similar a Alimentos */}
-          <div id="contenedorFiltro" style={{
-            width: "100%", maxWidth: 1200, margin: "1rem auto", display: "flex", alignItems: "center", justifyContent: "center", gap: ".5rem",
-            borderRadius: 20, backgroundColor: "lightgray", padding: ".5rem"
-          }}>
-            <div id="lupe" />
-            <div className="filtro-input-wrap" style={{ flex: 1 }}>
-              <input
-                type="text"
-                id="filtro"
-                placeholder="Buscar alimento..."
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                style={{ width: "100%", height: 40, borderRadius: 20, border: "1px solid #ccc", textAlign: "center", fontSize: 16 }}
-              />
-            </div>
-          </div>
-
           <div className="admin-controls">
             <button className="btn-primary" onClick={fetchListado}>
               Refrescar
@@ -142,9 +123,7 @@ function AdminAlimentos() {
           </div>
 
           <div className="admin-lista">
-            {alimentos
-              .filter(a => a.nombre?.toLowerCase().includes(filter.toLowerCase()))
-              .map((a) => (
+            {alimentos.map((a) => (
               <AdminAlimentoCard
                 key={a.id}
                 alimento={a}
@@ -171,6 +150,6 @@ function AdminAlimentos() {
   );
 }
 
-// Exportar con autenticación requerida y rol admin
-const AdminAlimentosProtected = withAuth(AdminAlimentos, { requireAuth: true, requireAdmin: true });
+// Exportar con autenticación requerida
+const AdminAlimentosProtected = withAuth(AdminAlimentos, { requireAuth: true });
 export default AdminAlimentosProtected;

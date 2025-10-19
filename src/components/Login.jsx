@@ -63,13 +63,9 @@ function Login() {
       if (emailNormalized === "admin2025@bienstartotal.food") {
         const adminUser = {
           id: "admin2025",
-          nombre: "Administrador",
           name: "Administrador",
           email: emailNormalized,
           id_diet: null,
-          id_perfil: 1,
-          is_admin: true,
-          role: "admin",
         };
         localStorage.setItem("usuario", JSON.stringify(adminUser));
         // Muestra notificacion del Admin
@@ -95,22 +91,18 @@ function Login() {
       const result = await response.json();
 
       if (response.ok) {
-        // Normalizar usuario y garantizar flags de admin si aplica
-        const user = result.user || {};
-        const emailNorm = (user.email || "").trim().toLowerCase();
-        const esAdminHeur =
-          (emailNorm === "admin@bienstartotal.food" || emailNorm === "admin2025@bienstartotal.food") ||
+        localStorage.setItem("usuario", JSON.stringify(result.user));
+
+        // 🔍 Verificación de usuario administrador
+        const user = result.user;
+        const esAdmin =
+          (user.email &&
+            (user.email.trim().toLowerCase() === "admin@bienstartotal.food" ||
+             user.email.trim().toLowerCase() === "admin2025@bienstartotal.food")) ||
           (user.name && user.name.trim().toLowerCase() === "admin") ||
           (String(user.id) === "6");
 
-        const id_perfil = user.id_perfil ?? (esAdminHeur ? 1 : null);
-        const is_admin = (user.is_admin ?? (id_perfil === 1)) || esAdminHeur;
-        const role = user.role ?? (is_admin ? "admin" : "user");
-
-        const normalizedUser = { ...user, id_perfil, is_admin, role };
-        localStorage.setItem("usuario", JSON.stringify(normalizedUser));
-
-        if (is_admin) {
+        if (esAdmin) {
           notifyThenRedirect(
             "Bienvenido Administrador",
             { type: "success", duration: 1500 },

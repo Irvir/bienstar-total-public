@@ -117,17 +117,12 @@
     border-radius: 14px;
     padding: 20px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-    /* Make long forms scroll inside the modal */
-    max-height: 88vh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
 }
 
 .modal-close {
-    position: sticky;
-    float: right;
-    right: 0;
-    top: 0;
+    position: absolute;
+    right: 18px;
+    top: 18px;
     background: transparent;
     border: none;
     font-size: 22px;
@@ -139,16 +134,6 @@
     margin-top: 10px;
     font-weight: 600;
     color: #333;
-}
-
-/* Keep modal title visible while scrolling */
-.admin-modal h2 {
-    position: sticky;
-    top: 0;
-    background: rgba(255,255,255,0.96);
-    padding: 8px 0;
-    margin: -8px 0 8px 0;
-    z-index: 1;
 }
 
 .modal-form input {
@@ -186,14 +171,6 @@
     gap: 10px;
     justify-content: flex-end;
     margin-top: 14px;
-    /* Stick to bottom of scrollable modal */
-    position: sticky;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(2px);
-    border-top: 1px solid #eee;
-    padding: 10px 0;
-    z-index: 2;
 }
 
 .btn-cancel {
@@ -210,41 +187,6 @@
     border: none;
     padding: 8px 12px;
     border-radius: 8px;
-}
-
-/* Grouped modal sections similar to Alimentos modal presentation */
-.modal-section {
-    background: #fafafa;
-    border: 1px solid #eee;
-    padding: 12px;
-    border-radius: 10px;
-    margin-top: 12px;
-}
-
-.modal-section-header {
-    font-weight: 700;
-    color: #b30000;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.modal-section-grid {
-    display: grid;
-    gap: 10px 12px;
-}
-.modal-section-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-.modal-section-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.modal-section-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-
-.cols-2-span { grid-column: 1 / -1; }
-
-@media (max-width: 900px) {
-    .modal-section-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 600px) {
-    .modal-section-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
-    .modal-section-grid.cols-2 { grid-template-columns: 1fr; }
 }
 /* Contenedor principal */
 .admin-contenedor {

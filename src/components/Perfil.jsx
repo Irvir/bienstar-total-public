@@ -69,22 +69,12 @@ function Perfil() {
         }
     };
 
-    // Detección robusta de admin: flags + heurísticas por compatibilidad
-    const emailNorm = (usuario?.email || '').trim().toLowerCase();
-    const heurEsAdmin =
-        emailNorm === 'admin@bienstartotal.food' ||
-        emailNorm === 'admin2025@bienstartotal.food' ||
-        (usuario?.name && usuario.name.trim().toLowerCase() === 'admin') ||
-        String(usuario?.id) === '6';
-
-    const isAdmin = !!usuario?.is_admin || usuario?.role === 'admin' || usuario?.id_perfil === 1 || heurEsAdmin;
-
     return (
         <div id="contenedorPrincipal" className="perfil-page">
             <Encabezado activePage="perfil" onNavigate={showLoaderAndRedirect} />
 
             <div id="cuerpo">
-                <MenuLateral showLoaderAndRedirect={showLoaderAndRedirect} isAdmin={isAdmin} />
+                <MenuLateral showLoaderAndRedirect={showLoaderAndRedirect} />
                 <div id="divInfoUser">
                 <ContenedorInfo
                     usuario={usuario}
