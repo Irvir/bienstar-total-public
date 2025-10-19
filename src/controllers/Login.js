@@ -24,23 +24,30 @@ document.getElementById("LoginForm").addEventListener("submit", async function(e
 
       if (response.ok) {
           // Guardar usuario en localStorage
-                    // Normalize returned user to include actividad_fisica and alergias
-                    const u = result.user || {};
-                    const usuarioToStore = {
-                        id: u.id,
-                        nombre: u.nombre || u.name || null,
-                        email: u.email,
-                        altura: u.altura || null,
-                        peso: u.peso || null,
-                        edad: u.edad || null,
-                        actividad_fisica: u.actividad_fisica || u.nivelActividad || null,
-                        sexo: u.sexo || null,
-                        id_dieta: u.id_dieta || u.id_diet || null,
-                        alergias: Array.isArray(u.alergias) ? u.alergias : (u.alergias ? [u.alergias] : []),
-                        otrasAlergias: u.otrasAlergias || null,
-                    };
+          // Normalize returned user to include actividad_fisica y alergias, y rol admin
+          const u = result.user || {};
+          const id_perfil = u.id_perfil ?? null;
+          const is_admin = u.is_admin ?? (id_perfil === 1);
+          const role = u.role ?? (is_admin ? 'admin' : 'user');
 
-                    localStorage.setItem("usuario", JSON.stringify(usuarioToStore));
+          const usuarioToStore = {
+              id: u.id,
+              nombre: u.nombre || u.name || null,
+              email: u.email,
+              altura: u.altura || null,
+              peso: u.peso || null,
+              edad: u.edad || null,
+              actividad_fisica: u.actividad_fisica || u.nivelActividad || null,
+              sexo: u.sexo || null,
+              id_dieta: u.id_dieta || u.id_diet || null,
+              alergias: Array.isArray(u.alergias) ? u.alergias : (u.alergias ? [u.alergias] : []),
+              otrasAlergias: u.otrasAlergias || null,
+              id_perfil,
+              is_admin,
+              role,
+          };
+
+          localStorage.setItem("usuario", JSON.stringify(usuarioToStore));
 
           // Mostrar notificación de login exitoso
           if (window.notify) {

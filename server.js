@@ -23,11 +23,47 @@ const DB_CONFIG = {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Pool de conexiones
-const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
+// Pool de conexiones (con keep-alive y timeouts para conexiones remotas/free tier)
+const pool = mysql.createPool({
+  ...DB_CONFIG,
+  connectionLimit: 10,
+  waitForConnections: true,
+  queueLimit: 0,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0,
+  connectTimeout: 15000,
+});
+
+// Ping periódico para evitar cierre por inactividad en hosting gratuito
+setInterval(() => {
+  pool.query('SELECT 1').catch(() => {});
+}, 5 * 60 * 1000);
 
 // --- Servir imágenes ---
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+// --- Utilidades de imagen en la nube para alimentos (fallback) ---
+function normalizeQuery(name) {
+  return String(name || "").trim().toLowerCase()
+    .replace(/\s+/g, "+")
+    .replace(/[^a-z0-9+áéíóúñü-]/gi, "");
+}
+
+function unsplashSourceUrl(name, { width = 400, height = 400, category = "food" } = {}) {
+  const q = normalizeQuery(name);
+  return `https://source.unsplash.com/featured/${width}x${height}/?${category}${q ? "," + q : ""}`;
+}
+
+function loremFlickrUrl(name, { width = 400, height = 400, category = "food" } = {}) {
+  const q = normalizeQuery(name).replace(/\+/g, ",");
+  return `https://loremflickr.com/${width}/${height}/${category}${q ? "," + q : ""}`;
+}
+
+function cloudImageUrl(name, opts = {}) {
+  const provider = (process.env.CLOUD_IMAGE_PROVIDER || "unsplash").toLowerCase();
+  if (provider === "loremflickr") return loremFlickrUrl(name, opts);
+  return unsplashSourceUrl(name, opts);
+}
 
 // --- Multer: subida de imágenes ---
 const storage = multer.diskStorage({
@@ -101,10 +137,34 @@ app.post("/admin/foods/upload-image", upload.single("image"), (req, res) => {
 app.get("/admin/foods", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM alimento");
+
+    const persist = String(process.env.PERSIST_CLOUD_IMAGE || "0") === "1";
+    const updates = [];
+
     const normalized = rows.map(r => {
-      const image = r.image_url || null;
+      let image = r.image_url || null;
+      if (!image) {
+        // fallback de foto desde la nube en base al nombre
+        const cloud = cloudImageUrl(r.nombre || r.name, { width: 300, height: 300 });
+        image = cloud || null;
+        if (persist && cloud) {
+          updates.push({ id: r.id, url: cloud });
+        }
+      }
       return { ...r, image_url: image };
     });
+
+    // Persistir en DB si está habilitado
+    if (persist && updates.length) {
+      try {
+        for (const u of updates) {
+          await pool.query("UPDATE alimento SET image_url = ? WHERE id = ?", [u.url, u.id]);
+        }
+      } catch (e) {
+        console.warn("No se pudo persistir image_url de fallback:", e.message);
+      }
+    }
+
     res.json(normalized);
   } catch (err) {
     console.error(err);
@@ -303,6 +363,11 @@ app.post("/login", async (req, res) => {
     const [alRows] = await pool.query("SELECT nombre FROM categoria_alergico WHERE id_usuario = ?", [usuario.id]);
     const alergias = alRows.map(r => r.nombre);
 
+    // Derivar rol/is_admin a partir de id_perfil (convención: 1 = admin, 2 = usuario)
+    const id_perfil = usuario.id_perfil || null;
+    const is_admin = id_perfil === 1;
+    const role = is_admin ? 'admin' : 'user';
+
     res.json({
       message: "Login exitoso",
       user: {
@@ -316,7 +381,10 @@ app.post("/login", async (req, res) => {
         actividad_fisica: usuario.actividad_fisica || usuario.nivelActividad || null,
         sexo: usuario.sexo,
         alergias,
-        otrasAlergias: usuario.otrasAlergias || null
+        otrasAlergias: usuario.otrasAlergias || null,
+        id_perfil,
+        is_admin,
+        role
       }
     });
   } catch (err) {
@@ -516,18 +584,19 @@ app.post("/ensure-diet", async (req, res) => {
     if (!user_id && !email) return res.status(400).json({ message: "Falta user_id o email" });
 
     const where = user_id ? ["id = ?", user_id] : ["email = ?", email];
-  const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM usuario WHERE ${where[0]} LIMIT 1`, [where[1]]);
+    const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM usuario WHERE ${where[0]} LIMIT 1`, [where[1]]);
     if (uRows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
 
     const u = uRows[0];
     let id_dieta = u.id_dieta;
 
     if (!id_dieta || id_dieta === 1) {
-      const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
+      // Crear en tabla 'dieta' con columna 'nombre'
+      const [dietInsert] = await pool.query("INSERT INTO dieta (nombre) VALUES (?)", [
         `Dieta de ${u.nombre || u.email}`
       ]);
       id_dieta = dietInsert.insertId;
-      await pool.query("UPDATE user SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
+      await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
     }
 
     res.json({ id_dieta });
@@ -544,7 +613,20 @@ app.get("/food/:id", async (req, res) => {
     const id = req.params.id;
     const [rows] = await pool.query("SELECT * FROM alimento WHERE id = ?", [id]);
     if (rows.length === 0) return res.status(404).json({ message: "Alimento no encontrado" });
-    res.json(rows[0]);
+    const r = rows[0];
+    let image = r.image_url || null;
+    if (!image) {
+      image = cloudImageUrl(r.nombre || r.name, { width: 600, height: 400 });
+      // Persistir opcionalmente
+      if (String(process.env.PERSIST_CLOUD_IMAGE || "0") === "1" && image) {
+        try {
+          await pool.query("UPDATE alimento SET image_url = ? WHERE id = ?", [image, id]);
+        } catch (e) {
+          console.warn("Persistencia image_url fallback falló:", e.message);
+        }
+      }
+    }
+    res.json({ ...r, image_url: image });
   } catch (err) {
     console.error("/food/:id error:", err);
     res.status(500).json({ error: "Error servidor" });

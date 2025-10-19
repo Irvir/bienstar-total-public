@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { foodToTwemojiSvg } from "./shared/foodEmojiMap";
+import cloudImageUrl from "./shared/cloudImage";
 import "../styles/Alimentos.css";
 import "../styles/Base.css";
 
@@ -44,9 +46,11 @@ export default function Alimentos() {
   const openModal = async (item) => {
     setModalOpen(true);
     setLoading(true);
+    const cloud = cloudImageUrl(item.nombre || item.name, { width: 600, height: 400 });
+    const vector = foodToTwemojiSvg(item.nombre || item.name);
     setModalData({
       name: item.nombre,
-      img: item.image_url || "",
+      img: item.image_url || cloud || vector || "",
       info: "Cargando..."
     });
 
@@ -54,14 +58,18 @@ export default function Alimentos() {
       const res = await fetch(`http://localhost:3001/food/${item.id}`);
       if (!res.ok) throw new Error("Error de servidor");
       const data = await res.json();
+      const cloud2 = cloudImageUrl(item.nombre || item.name, { width: 600, height: 400 });
+      const vector2 = foodToTwemojiSvg(item.nombre || item.name);
       setModalData({
         name: item.nombre,
-        img: item.image_url || "",
+        img: item.image_url || cloud2 || vector2 || "",
         info: data || null
       });
     } catch (err) {
       console.error("Fetch error:", err);
-      setModalData({ name: item.nombre, img: item.image_url || "", info: null });
+  const cloud3 = cloudImageUrl(item.nombre || item.name, { width: 600, height: 400 });
+  const vector3 = foodToTwemojiSvg(item.nombre || item.name);
+  setModalData({ name: item.nombre, img: item.image_url || cloud3 || vector3 || "", info: null });
     } finally {
       setLoading(false);
     }
@@ -113,7 +121,11 @@ export default function Alimentos() {
             <div className="modal-body">
               <div className="modal-left">
                 {modalData.img ? (
-                  <img src={`http://localhost:3001${modalData.img}`} alt={modalData.name} />
+                  modalData.img.startsWith("http") ? (
+                    <img src={modalData.img} alt={modalData.name} />
+                  ) : (
+                    <img src={`http://localhost:3001${modalData.img}`} alt={modalData.name} />
+                  )
                 ) : (
                   <div className="no-image">Sin imagen</div>
                 )}

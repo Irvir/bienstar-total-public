@@ -1,3 +1,16 @@
+## Imágenes vectoriales automáticas para alimentos
+
+Cuando un alimento no tiene `image_url` definido, el frontend usa un fallback vectorial desde CDN empleando Twemoji (SVG), mapeando nombres comunes (ES) a emojis de comida. Esto evita tener que descargar imágenes manualmente.
+
+- Mapeo: `src/components/shared/foodEmojiMap.js`
+- Uso: `src/components/Alimentos/AlimentoCard.jsx` intenta en orden: `image_url` (o campos similares) → Twemoji SVG → placeholder local.
+
+Puedes extender el mapa agregando palabras clave y codepoints. Referencia de codepoints: https://twemoji.twitter.com/
+
+Alternativas opcionales:
+- Unsplash/Source o Pexels API para fotos realistas: busca por nombre normalizado y cachea la URL.
+- Icon libraries (Heroicons, Phosphor, Material Symbols) para categorías de alimentos.
+
 # BienStar Total — Guía de instalación y ejecución
 
 Este repositorio contiene la aplicación BienStar Total (front-end con Vite + React y un backend Express que usa MySQL). Este README explica cómo preparar el entorno en tu máquina, dependencias, ejecución en desarrollo y recomendaciones para producción.
