@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE } from "../shared/apiBase";
 import "../../styles/Perfil.css";
 
 export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
@@ -81,7 +82,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
     try {
       if (usuario?.id) {
-        const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
+          const res = await fetch(`${API_BASE}/user/${usuario.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),

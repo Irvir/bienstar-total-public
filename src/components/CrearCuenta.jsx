@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/CrearCuenta.css";
 import Encabezado from "./Encabezado";
+import { API_BASE } from "./shared/apiBase";
 import Pie from "./Pie";
 import "../styles/Base.css";
 import "../styles/Pie.css";
@@ -91,7 +92,7 @@ import withAuth from "../components/withAuth";
                                   validateField(id, value);
                                   if (id === "email" && !errors.email && value) {
                                     try {
-                                      const res = await fetch("http://localhost:3001/checkEmail", {
+                                      const res = await fetch(`${API_BASE}/checkEmail`, {
                                         method: "POST",
                                         headers: { "Content-Type": "application/json" },
                                         body: JSON.stringify({ email: value }),
@@ -108,7 +109,7 @@ import withAuth from "../components/withAuth";
                                   e.preventDefault();
                                   setLoading(true);
                                   try {
-                                    const res = await fetch("http://localhost:3001/registrar", {
+                                    const res = await fetch(`${API_BASE}/registrar`, {
                                       method: "POST",
                                       headers: { "Content-Type": "application/json" },
                                       body: JSON.stringify(formData),

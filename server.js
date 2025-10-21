@@ -5,19 +5,52 @@ import mysql from "mysql2/promise";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import multer from "multer";
+import dotenv from 'dotenv';
+
+// Load .env into process.env
+dotenv.config();
 
 const app = express();
-app.use(cors());
+const router = express.Router();
+
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://bienstar-total-public.vercel.app'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  optionsSuccessStatus: 204
+}));
+
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  next();
+});
+
 app.use(express.json());
 
-// --- Configuración de DB ---
+// --- Configuración de DB (desde .env) ---
 const DB_CONFIG = {
-  host: "sql10.freesqldatabase.com",
-  user: "sql10801474",
-  password: "gfkLZVNqE6",
-  database: "sql10801474",
-  port: 3306
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT)
 };
+
 
 // Archivo y directorio actual
 const __filename = fileURLToPath(import.meta.url);
@@ -112,6 +145,9 @@ app.get("/admin/foods", async (req, res) => {
   }
 });
 
+// Montar el router de admin en /admin para exponer rutas como /admin/users
+app.use('/admin', router);
+
 // --- PUT actualizar alimento ---
 app.put("/admin/foods/:id", async (req, res) => {
   try {
@@ -169,7 +205,74 @@ app.put("/admin/foods/:id", async (req, res) => {
     res.status(500).json({ error: "Error al actualizar alimento" });
   }
 });
+// === Obtener todas las cuentas ===
+router.get("/users", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        id, nombre, email, password, altura, peso, edad, 
+        actividad_fisica, sexo, id_perfil, id_dieta, estado
+      FROM usuario
+      ORDER BY id ASC
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error al obtener usuarios:", err);
+    res.status(500).json({ message: "Error al obtener usuarios" });
+  }
+});
 
+// === Crear cuenta ===
+router.post("/users", async (req, res) => {
+  try {
+    const {
+      nombre, email, password, altura, peso, edad,
+      actividad_fisica, sexo, id_perfil, id_dieta
+    } = req.body;
+
+    const [result] = await pool.query(`
+      INSERT INTO usuario 
+        (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo')
+    `, [nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta]);
+
+    res.json({ id: result.insertId, message: "Usuario creado correctamente" });
+  } catch (err) {
+    console.error("Error al crear usuario:", err);
+    res.status(500).json({ message: "Error al crear usuario" });
+  }
+});
+
+// === Actualizar cuenta ===
+router.patch("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const campos = req.body;
+
+    // Construir dinámicamente los SETs
+    const setStr = Object.keys(campos).map(c => `${c} = ?`).join(", ");
+    const values = Object.values(campos);
+
+    await pool.query(`UPDATE usuario SET ${setStr} WHERE id = ?`, [...values, id]);
+
+    res.json({ message: "Usuario actualizado correctamente" });
+  } catch (err) {
+    console.error("Error al actualizar usuario:", err);
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+});
+
+// === Inactivar cuenta ===
+router.post("/user/:id/deactivate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("UPDATE usuario SET estado = 'inactivo' WHERE id = ?", [id]);
+    res.json({ message: "Usuario inactivado correctamente" });
+  } catch (err) {
+    console.error("Error al inactivar usuario:", err);
+    res.status(500).json({ message: "Error al inactivar usuario" });
+  }
+});
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 

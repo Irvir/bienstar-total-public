@@ -3,6 +3,7 @@ import "../styles/Alimentos.css";
 import "../styles/Base.css";
 
 import Encabezado from "./Encabezado";
+import { API_BASE } from "./shared/apiBase";
 import Pie from "./Pie";
 import Filtro from "./Alimentos/Filtro";
 import ContenedorAlimentos from "./Alimentos/ContenedorAlimentos";
@@ -27,7 +28,7 @@ export default function Alimentos() {
     const fetchAlimentos = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:3001/admin/foods");
+  const res = await fetch(`${API_BASE}/admin/foods`);
         if (!res.ok) throw new Error("Error al obtener alimentos");
         const data = await res.json();
         setAlimentos(Array.isArray(data) ? data : []); // ⬅️ asegurar que sea array
@@ -51,7 +52,7 @@ export default function Alimentos() {
     });
 
     try {
-      const res = await fetch(`http://localhost:3001/food/${item.id}`);
+  const res = await fetch(`${API_BASE}/food/${item.id}`);
       if (!res.ok) throw new Error("Error de servidor");
       const data = await res.json();
       setModalData({
@@ -113,7 +114,7 @@ export default function Alimentos() {
             <div className="modal-body">
               <div className="modal-left">
                 {modalData.img ? (
-                  <img src={`http://localhost:3001${modalData.img}`} alt={modalData.name} />
+                  <img src={`${API_BASE}${modalData.img}`} alt={modalData.name} />
                 ) : (
                   <div className="no-image">Sin imagen</div>
                 )}

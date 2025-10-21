@@ -101,7 +101,8 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
   try {
     // Verificar si el correo ya existe
-  const checkEmail = await fetch("http://localhost:3001/checkEmail", {
+  const API_BASE = (window.API_BASE || 'http://localhost:3001');
+  const checkEmail = await fetch(`${API_BASE}/checkEmail`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: data.email })
@@ -115,7 +116,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     }
 
     // Registrar cuenta
-  const response = await fetch("http://localhost:3001/registrar", {
+  const response = await fetch(`${API_BASE}/registrar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -139,7 +140,7 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       // Esperar a que el mensaje se muestre antes de continuar
       setTimeout(async () => {
         // Auto-login
-  const loginRes = await fetch("http://localhost:3001/login", {
+  const loginRes = await fetch(`${API_BASE}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: data.email, password: data.password })

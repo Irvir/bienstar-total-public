@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import "../styles/Encabezado.css";
 
 export default function Encabezado({ activePage, onNavigate }) {
-  const [userName, setUserName] = useState("Invitado");
+  // Forzar que el nombre mostrado sea siempre 'administrador' según solicitud
+  const [userName, setUserName] = useState("Administrador");
 
+  // Mantener el efecto original como respaldo en caso de necesitarse más info
   useEffect(() => {
+    // No sobreescribimos el nombre; dejamos siempre 'administrador'.
+    // Si en el futuro se desea volver a mostrar el nombre real, se puede
+    // descomentar y adaptar la lógica siguiente.
+    /*
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
       try {
@@ -14,6 +20,7 @@ export default function Encabezado({ activePage, onNavigate }) {
         console.warn("Usuario inválido en localStorage", e);
       }
     }
+    */
   }, []);
   useEffect(() => {
     const bell = document.getElementById("btnNotification");

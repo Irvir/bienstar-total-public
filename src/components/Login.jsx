@@ -4,6 +4,7 @@ import Pie from "./Pie";
 import Encabezado from "./Encabezado";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
+import { API_BASE } from "./shared/apiBase";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -82,7 +83,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/login", {
+  const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

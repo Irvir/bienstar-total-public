@@ -9,7 +9,7 @@ body {
     background-repeat: repeat;
     background-position: center center;
     background-attachment: fixed; 
-    background-image: url('/public/assets/pe1.png');
+    background-color: #fff2e2;
 }
 
 :root {
@@ -206,7 +206,6 @@ html { font-size: 14px; }
 
 html,
 body {
-    background-image: url('/public/assets/pe1.png');
     background-size: 400px 200px;
     background-repeat: repeat;
     background-position: 0 0;

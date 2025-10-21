@@ -1,5 +1,5 @@
 <html lang="en">
-<script src="/frontEnd/src/controllers/Error404.js"></script>
+<script src="./frontEnd/src/controllers/Error404.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -11,13 +11,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <!-- CSS Global -->
     <link rel="stylesheet" href="Base.css">
-    <link rel="stylesheet" href="/src/styles/Pie.css">
+    <link rel="stylesheet" href="./src/styles/Pie.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="Admin.css">
 </head>
 
 <body>
-    <script src="/frontEnd/src/controllers/loader.js"></script>
+    <script src="./frontEnd/src/controllers/loader.js"></script>
     <div id="contenedorPrincipal">
 
         <!-- Encabezado -->
@@ -33,7 +33,7 @@
                     <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
                     <button class="btnMenu" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
                     <button class="btnMenuNoti">
-                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                        <img src="./frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
                 <div class="login">
@@ -47,7 +47,7 @@
                     <!-- Imagen de usuario  -->
                     <div style="float: left; width: 10%; height: 100%;" onclick="showLoaderAndRedirect('login.html')">
                         <!--Animación de carga--->
-                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                        <img src="./frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
                             style="cursor:pointer;">
                     </div>
                 </div>
@@ -116,7 +116,7 @@
     </div>
     <button id="btnAgregarAlimento" onclick="showLoaderAndRedirect('crearAlimento.html')">+</button>
 
-    <script src="/frontEnd/src/controllers/gestionAlimentos.js"></script>
+    <script src="./frontEnd/src/controllers/gestionAlimentos.js"></script>
     <div id="loader">
         <span class="loader-text">Cargando</span>
         <div class="loader-dots"></div>

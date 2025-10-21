@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Perfil.css";
 import Encabezado from "./Encabezado";
+import { API_BASE } from "./shared/apiBase";
 import Pie from "./Pie";
 import "../styles/Base.css";
 import ContenedorInfo from "./Perfil/contenedorInfo";
@@ -39,7 +40,7 @@ function Perfil() {
       
         setLoading(true);
         try {
-          const res = await fetch(`http://localhost:3001/user/${usuario.id}`, { method: "DELETE" });
+          const res = await fetch(`${API_BASE}/user/${usuario.id}`, { method: "DELETE" });
           if (!res.ok) throw new Error("Error al eliminar la cuenta");
       
           localStorage.removeItem("usuario");

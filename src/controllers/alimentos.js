@@ -20,8 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
       modalNombre.textContent = nombreElem.textContent;
       modalInfo.textContent = "Cargando...";
 
-      // Buscar info del alimento
-      fetch(`http://localhost:3001/food/${id}`)
+  // Buscar info del alimento
+  const API_BASE = (window.API_BASE || 'http://localhost:3001');
+  fetch(`${API_BASE}/food/${id}`)
         .then(res => {
           if (!res.ok) throw new Error("Error en la respuesta del servidor");
           return res.json();
