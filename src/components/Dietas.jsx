@@ -3,6 +3,7 @@ import "../styles/Dietas.css";
 import withAuth from "../components/withAuth";
 
 import Encabezado from "./Encabezado";
+import { API_BASE } from "./shared/apiBase";
 import Pie from "./Pie";
 import Loader from "./Loader.jsx"; // Loader global
 import "../styles/Pie.css"; // estilos del pie de página
@@ -89,7 +90,7 @@ function Dietas() {
 
                 // Asegurar id_diet válido
                 if (!user.id_diet || user.id_diet === 1) {
-                    const ensure = await fetch("http://localhost:3001/ensure-diet", {
+                    const ensure = await fetch(`${API_BASE}/ensure-diet`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ user_id: user.id })
@@ -103,7 +104,7 @@ function Dietas() {
                     }
                 }
 
-                const res = await fetch(`http://localhost:3001/get-diet?id_diet=${user.id_diet}`);
+                const res = await fetch(`${API_BASE}/get-diet?id_diet=${user.id_diet}`);
                 if (!res.ok) return;
                 const rows = await res.json(); // [{dia, tipo_comida, alimento}]
 
@@ -163,13 +164,29 @@ function Dietas() {
                     })}
                 </div>
 
-                <button
-                    type="button"
-                    id="BtnCrearCuenta"
-                    onClick={() => showLoaderAndRedirect("/crear-dieta")}
-                >
-                    Editar Dieta
-                </button>
+                {/* Mostrar botón de edición solo si el perfil es Doctor (id_perfil === 2) */}
+                {(() => {
+                    try {
+                        const rawUser = localStorage.getItem("usuario");
+                        if (!rawUser) return null;
+                        const user = JSON.parse(rawUser);
+                        // Si id_perfil es 2, permitimos editar; en caso contrario, solo ver
+                        if (user?.id_perfil === 2) {
+                            return (
+                                <button
+                                    type="button"
+                                    id="BtnCrearCuenta"
+                                    onClick={() => showLoaderAndRedirect("/crear-dieta")}
+                                >
+                                    Editar Dieta
+                                </button>
+                            );
+                        }
+                    } catch (e) {
+                        console.warn('No se pudo determinar id_perfil del usuario:', e);
+                    }
+                    return null;
+                })()}
             </main>
 
             <Pie />

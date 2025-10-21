@@ -39,7 +39,8 @@ function actualizarInfoSeleccion() {
 // ================== BUSCAR ALIMENTOS ==================
 async function buscarAlimentos(query) {
     try {
-    const res = await fetch('http://localhost:3001/food-search?q=' + encodeURIComponent(query));
+    const API_BASE = (window.API_BASE || 'http://localhost:3001');
+    const res = await fetch(`${API_BASE}/food-search?q=` + encodeURIComponent(query));
         if (!res.ok) return [];
         return await res.json();
     } catch (e) {
@@ -194,7 +195,7 @@ async function agregarAlimento(id, name, dia, tipoComida) {
     const id_diet = usuario?.id_diet ?? 1;
 
     try {
-    const res = await fetch("http://localhost:3001/save-diet", {
+    const res = await fetch(`${API_BASE}/save-diet`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -227,7 +228,7 @@ async function cargarDietaDelDia(dia) {
     const id_diet = usuario?.id_diet ?? 1;
 
     try {
-    const res = await fetch(`http://localhost:3001/get-diet?id_diet=${id_diet}`);
+    const res = await fetch(`${API_BASE}/get-diet?id_diet=${id_diet}`);
         if (!res.ok) throw new Error("No se pudo cargar la dieta");
 
         const dieta = await res.json();
@@ -272,6 +273,8 @@ function actualizarEncabezadoDia(dia) {
 }
 
 // ================== GUARDAR Y BORRAR ==================
+/*
+// Función legacy no utilizada en React - comentada para evitar errores ESLint
 async function guardarDieta() {
     if (alimentosSeleccionados.length === 0) {
         if (window.notify) window.notify('No hay alimentos seleccionados.', { type: 'warning' });
@@ -282,7 +285,7 @@ async function guardarDieta() {
     const id_diet = usuario?.id_diet ?? 1;
 
     try {
-    const res = await fetch('http://localhost:3001/save-diet', {
+    const res = await fetch(`${API_BASE}/save-diet`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_diet, meals: alimentosSeleccionados })
@@ -301,14 +304,14 @@ async function guardarDieta() {
     else alert('Error de conexión.');
     }
 }
+*/
 
 async function eliminarAlimento(id, dia, tipoComida) {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     const id_diet = usuario?.id_diet ?? 1;
-    console.log("Eliminar:", { id_diet, id, dia, tipoComida });
 
     try {
-    const res = await fetch("http://localhost:3001/delete-diet-item", {
+    const res = await fetch(`${API_BASE}/delete-diet-item`, {
             method: "POST", // CAMBIADO de DELETE a POST
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id_diet, id_food: id, dia, tipoComida })
@@ -343,7 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const rawUser = localStorage.getItem("usuario");
         if (rawUser) {
             const u = JSON.parse(rawUser);
-            const resp = await fetch("http://localhost:3001/ensure-diet", {
+            const resp = await fetch(`${API_BASE}/ensure-diet`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ user_id: u.id })
@@ -366,7 +369,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ✅ Buscar alimentos iniciales
     const alimentos = await buscarAlimentos("");
-    console.log("Alimentos al cargar:", alimentos);
 
     renderResultados(alimentos);
 
@@ -404,7 +406,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const id_diet = u?.id_diet ?? 1;
             const diaActual = document.getElementById('dia')?.value || diaSeleccionado || 1;
             try {
-                const resp = await fetch('http://localhost:3001/clear-day', {
+                const resp = await fetch(`${API_BASE}/clear-day`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id_diet, dia: Number(diaActual) })

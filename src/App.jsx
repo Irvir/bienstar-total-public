@@ -8,6 +8,7 @@ import Alimentos from './components/Alimentos.jsx';
 import Perfil from './components/Perfil.jsx';
 import Admin from './components/Admin.jsx';
 import CrearAlimento from './components/CrearAlimento.jsx';
+import Cuentas from './components/Cuentas.jsx';
 
 
 export default function App() {
@@ -69,7 +70,9 @@ export default function App() {
   if (currentPath === 'crear-alimento' || currentPath === 'crear-alimento.html') {
     return <CrearAlimento />;
   }
-
+  if (currentPath === 'cuentas' || currentPath === 'cuentas.html') {
+    return <Cuentas />;
+  }
 
   // Default: render 404 for any unknown path
   return <Error404 />;

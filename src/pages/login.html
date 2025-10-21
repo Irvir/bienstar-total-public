@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="/frontEnd/src/controllers/Error404.js"></script>
+<script src="./frontEnd/src/controllers/Error404.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BienStarTotal</title>
     <!-- CSS Global -->
     <link rel="stylesheet" href="Base.css">
-    <link rel="stylesheet" href="/src/styles/Pie.css">
+    <link rel="stylesheet" href="./src/styles/Pie.css">
     <!-- CSS Específico -->
     <link rel="stylesheet" href="Login.css">
 
@@ -28,7 +28,7 @@
             <div class="header-inner">
                 <div class="logo">
                     <a href="index.html">
-                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                        <img src="./../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
                     </a>
                 </div>
                 <div class="menúBotones">
@@ -36,7 +36,7 @@
                     <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
                     <button class="btnMenu" onclick="window.location.href='dietas.html'">Dietas</button>
                     <button class="btnMenuNoti">
-                        <img src="/frontEnd/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                        <img src="./Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
                     </button>
                 </div>
                 <div class="login">
@@ -48,7 +48,7 @@
         
                     <!-- Imagen Usuario -->
                     <div style="float: left; width: 10%; height: 100%;">
-                        <img src="/frontEnd/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                        <img src="./Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
                             style="cursor:pointer;" onclick="window.location.href='login.html'">
                     </div>
                 </div>
@@ -134,10 +134,10 @@
                 });
             });
         </script>
-        <script src="/frontEnd/src/controllers/notify.js"></script>
+    <script src="./frontEnd/src/controllers/notify.js"></script>
 
-        <!-- Cargar tu Login.js real que maneja el login y animación -->
-        <script src="/frontEnd/src/controllers/Login.js"></script>
+    <!-- Cargar tu Login.js real que maneja el login y animación -->
+    <script src="./frontEnd/src/controllers/Login.js"></script>
 
     </div>
 </body>

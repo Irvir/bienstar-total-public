@@ -5,19 +5,52 @@ import mysql from "mysql2/promise";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import multer from "multer";
+import dotenv from 'dotenv';
+
+// Load .env into process.env
+dotenv.config();
 
 const app = express();
-app.use(cors());
+const router = express.Router();
+
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://bienstar-total-public.vercel.app'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.indexOf(origin) !== -1) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  optionsSuccessStatus: 204
+}));
+
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  next();
+});
+
 app.use(express.json());
 
-// --- Configuración de DB ---
+// --- Configuración de DB (desde .env) ---
 const DB_CONFIG = {
-  host: "sql10.freesqldatabase.com",
-  user: "sql10801474",
-  password: "gfkLZVNqE6",
-  database: "sql10801474",
-  port: 3306
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT)
 };
+
 
 // Archivo y directorio actual
 const __filename = fileURLToPath(import.meta.url);
@@ -112,6 +145,9 @@ app.get("/admin/foods", async (req, res) => {
   }
 });
 
+// Montar el router de admin en /admin para exponer rutas como /admin/users
+app.use('/admin', router);
+
 // --- PUT actualizar alimento ---
 app.put("/admin/foods/:id", async (req, res) => {
   try {
@@ -169,7 +205,74 @@ app.put("/admin/foods/:id", async (req, res) => {
     res.status(500).json({ error: "Error al actualizar alimento" });
   }
 });
+// === Obtener todas las cuentas ===
+router.get("/users", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        id, nombre, email, password, altura, peso, edad, 
+        actividad_fisica, sexo, id_perfil, id_dieta, estado
+      FROM usuario
+      ORDER BY id ASC
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error al obtener usuarios:", err);
+    res.status(500).json({ message: "Error al obtener usuarios" });
+  }
+});
 
+// === Crear cuenta ===
+router.post("/users", async (req, res) => {
+  try {
+    const {
+      nombre, email, password, altura, peso, edad,
+      actividad_fisica, sexo, id_perfil, id_dieta
+    } = req.body;
+
+    const [result] = await pool.query(`
+      INSERT INTO usuario 
+        (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo')
+    `, [nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta]);
+
+    res.json({ id: result.insertId, message: "Usuario creado correctamente" });
+  } catch (err) {
+    console.error("Error al crear usuario:", err);
+    res.status(500).json({ message: "Error al crear usuario" });
+  }
+});
+
+// === Actualizar cuenta ===
+router.patch("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const campos = req.body;
+
+    // Construir dinámicamente los SETs
+    const setStr = Object.keys(campos).map(c => `${c} = ?`).join(", ");
+    const values = Object.values(campos);
+
+    await pool.query(`UPDATE usuario SET ${setStr} WHERE id = ?`, [...values, id]);
+
+    res.json({ message: "Usuario actualizado correctamente" });
+  } catch (err) {
+    console.error("Error al actualizar usuario:", err);
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+});
+
+// === Inactivar cuenta ===
+router.post("/user/:id/deactivate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("UPDATE usuario SET estado = 'inactivo' WHERE id = ?", [id]);
+    res.json({ message: "Usuario inactivado correctamente" });
+  } catch (err) {
+    console.error("Error al inactivar usuario:", err);
+    res.status(500).json({ message: "Error al inactivar usuario" });
+  }
+});
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 
@@ -212,7 +315,7 @@ app.post("/checkEmail", async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: "Falta email" });
 
-    const [rows] = await pool.query("SELECT id FROM user WHERE email = ?", [email]);
+  const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
     res.json({ exists: rows.length > 0 });
   } catch (err) {
     console.error("/checkEmail error:", err);
@@ -299,6 +402,10 @@ app.post("/login", async (req, res) => {
       usuario.id_diet = newDietId;
     }
 
+    // Obtener alergias desde la tabla categoria_alergico
+    const [alRows] = await pool.query("SELECT nombre FROM categoria_alergico WHERE id_usuario = ?", [usuario.id]);
+    const alergias = alRows.map(r => r.nombre);
+
     res.json({
       message: "Login exitoso",
       user: {
@@ -308,11 +415,11 @@ app.post("/login", async (req, res) => {
         altura: usuario.altura,
         peso: usuario.peso,
         edad: usuario.edad,
-        id_dieta: usuario.id_dieta,
-        nivelActividad: usuario.nivelActividad,
+        id_dieta: usuario.id_diet || usuario.id_dieta,
+        actividad_fisica: usuario.actividad_fisica || usuario.nivelActividad || null,
         sexo: usuario.sexo,
-        alergias: usuario.alergias,
-        otrasAlergias: usuario.otrasAlergias
+        alergias,
+        otrasAlergias: usuario.otrasAlergias || null
       }
     });
   } catch (err) {
@@ -487,11 +594,17 @@ app.get("/user/:id", async (req, res) => {
     const { id } = req.params;
     //id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado
     const [rows] = await pool.query(
-      "SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM user WHERE id = ?",
+      "SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM usuario WHERE id = ?",
       [id]
     );
     if (rows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
-    res.json(rows[0]);
+    const user = rows[0];
+
+    // Traer alergias del usuario
+    const [alRows] = await pool.query("SELECT nombre FROM categoria_alergico WHERE id_usuario = ?", [id]);
+    const alergias = alRows.map(r => r.nombre);
+
+    res.json({ ...user, alergias });
   } catch (err) {
     console.error("GET /user/:id error:", err);
     res.status(500).json({ message: "Error servidor" });
@@ -506,7 +619,7 @@ app.post("/ensure-diet", async (req, res) => {
     if (!user_id && !email) return res.status(400).json({ message: "Falta user_id o email" });
 
     const where = user_id ? ["id = ?", user_id] : ["email = ?", email];
-    const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM user WHERE ${where[0]} LIMIT 1`, [where[1]]);
+  const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM usuario WHERE ${where[0]} LIMIT 1`, [where[1]]);
     if (uRows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
 
     const u = uRows[0];

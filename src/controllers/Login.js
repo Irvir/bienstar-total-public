@@ -14,7 +14,8 @@ document.getElementById("LoginForm").addEventListener("submit", async function(e
   }
 
   try {
-    const response = await fetch("http://localhost:3001/login", {
+    const API_BASE = (window.API_BASE || 'http://localhost:3001');
+    const response = await fetch(`${API_BASE}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
@@ -24,7 +25,23 @@ document.getElementById("LoginForm").addEventListener("submit", async function(e
 
       if (response.ok) {
           // Guardar usuario en localStorage
-          localStorage.setItem("usuario", JSON.stringify(result.user));
+                    // Normalize returned user to include actividad_fisica and alergias
+                    const u = result.user || {};
+                    const usuarioToStore = {
+                        id: u.id,
+                        nombre: u.nombre || u.name || null,
+                        email: u.email,
+                        altura: u.altura || null,
+                        peso: u.peso || null,
+                        edad: u.edad || null,
+                        actividad_fisica: u.actividad_fisica || u.nivelActividad || null,
+                        sexo: u.sexo || null,
+                        id_dieta: u.id_dieta || u.id_diet || null,
+                        alergias: Array.isArray(u.alergias) ? u.alergias : (u.alergias ? [u.alergias] : []),
+                        otrasAlergias: u.otrasAlergias || null,
+                    };
+
+                    localStorage.setItem("usuario", JSON.stringify(usuarioToStore));
 
           // Mostrar notificación de login exitoso
           if (window.notify) {

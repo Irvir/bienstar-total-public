@@ -20,7 +20,7 @@
 }
 
 .error404-page h1 {
-    font-size: 8rem;
+    font-size: 3.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -52,7 +52,7 @@
 /* Responsive */
 @media (max-width: 600px) {
     .error404-page h1 {
-        font-size: 5rem;
+        font-size: 2.5rem;
     }
 
     .error404-page h2 {
