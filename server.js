@@ -273,6 +273,18 @@ router.post("/user/:id/deactivate", async (req, res) => {
     res.status(500).json({ message: "Error al inactivar usuario" });
   }
 });
+
+// === Activar cuenta ===
+router.post("/user/:id/activate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("UPDATE usuario SET estado = 'activo' WHERE id = ?", [id]);
+    res.json({ message: "Usuario activado correctamente" });
+  } catch (err) {
+    console.error("Error al activar usuario:", err);
+    res.status(500).json({ message: "Error al activar usuario" });
+  }
+});
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 

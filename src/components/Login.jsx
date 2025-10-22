@@ -9,23 +9,12 @@ import { API_BASE } from "./shared/apiBase";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("Invitado");
   const [activePage, setActivePage] = useState("login");
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
 
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      try {
-        const usuario = JSON.parse(usuarioGuardado);
-        if (usuario?.name) setUserName(usuario.name);
-      } catch (e) {
-        console.warn("Usuario inválido", e);
-      }
-    }
-
     const currentPage = window.location.pathname.split("/").pop() || "login";
     setActivePage(currentPage.replace(".html", "").toLowerCase());
   }, []);
@@ -188,7 +177,7 @@ function Login() {
                   />
                   <br />
                   <br />
-                  <button type="submit" id="botonIngresar">
+                  <button type="submit" id="botonIngresar" className="btn btn-primary btn-block">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
 
@@ -196,7 +185,7 @@ function Login() {
                   <br />
                   <button
                     type="button"
-                    className="btnCrearCuenta"
+                    className="btn btn-secondary btn-block btnCrearCuenta"
                     onClick={() => showLoaderAndRedirect("/crear-cuenta")}
                   >
                     Crear Cuenta
@@ -215,4 +204,5 @@ function Login() {
   );
 }
 
-export default withAuth(Login, { requireAuth: false });
+const LoginWithAuth = withAuth(Login, { requireAuth: false });
+export default LoginWithAuth;

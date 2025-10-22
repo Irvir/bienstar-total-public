@@ -213,9 +213,15 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
       <div id="contenedorBorrarCuenta">
         <div id="contenedorCerrarSesion">
-        <button id="cerrarSesion" onClick={handleCerrarSesion}>CERRAR SESIÓN</button>
-      </div>
-        <button id="borrarCuenta" onClick={handleBorrarCuenta}>BORRAR CUENTA</button>
+          <button id="cerrarSesion" className="perfil-btn perfil-btn--secondary" onClick={handleCerrarSesion} aria-label="Cerrar sesión">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" fill="currentColor"/></svg>
+            <span>CERRAR SESIÓN</span>
+          </button>
+        </div>
+        <button id="borrarCuenta" className="perfil-btn perfil-btn--danger" onClick={handleBorrarCuenta} aria-label="Borrar cuenta">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 3v1H4v2h16V4h-5V3H9zm1 5v9h2V8H10zM6 8v9h2V8H6zm10 0v9h2V8h-2z" fill="currentColor"/></svg>
+          <span>BORRAR CUENTA</span>
+        </button>
       </div>
     </div>
   );

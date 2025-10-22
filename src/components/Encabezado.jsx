@@ -2,25 +2,40 @@ import React, { useEffect, useState } from "react";
 import "../styles/Encabezado.css";
 
 export default function Encabezado({ activePage, onNavigate }) {
-  // Forzar que el nombre mostrado sea siempre 'administrador' según solicitud
-  const [userName, setUserName] = useState("Administrador");
+  // Mostrar 'Iniciar sesión' cuando no hay usuario autenticado
+  const [userName, setUserName] = useState("Iniciar sesión");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Mantener el efecto original como respaldo en caso de necesitarse más info
-  useEffect(() => {
-    // No sobreescribimos el nombre; dejamos siempre 'administrador'.
-    // Si en el futuro se desea volver a mostrar el nombre real, se puede
-    // descomentar y adaptar la lógica siguiente.
-    
+  const readUserFromStorage = () => {
     const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      try {
-        const usuario = JSON.parse(usuarioGuardado);
-        if (usuario?.nombre) setUserName(usuario.nombre);
-      } catch (e) {
-        console.warn("Usuario inválido en localStorage", e);
-      }
+    if (!usuarioGuardado) {
+      setUserName("Iniciar sesión");
+      setIsAuthenticated(false);
+      return null;
     }
-  
+    try {
+      const usuario = JSON.parse(usuarioGuardado);
+      const nombre = usuario?.nombre || usuario?.name || usuario?.usuario || null;
+      setUserName(nombre || "Iniciar sesión");
+      setIsAuthenticated(Boolean(nombre || usuario));
+      return usuario;
+    } catch (e) {
+      console.warn("Usuario inválido en localStorage", e);
+      setUserName("Iniciar sesión");
+      setIsAuthenticated(false);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    // leer inicialmente
+    readUserFromStorage();
+    // actualizar si localStorage cambia (otra pestaña) o si app actualiza storage
+    const onStorage = (e) => {
+      if (e.key === "usuario") readUserFromStorage();
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
   useEffect(() => {
     const bell = document.getElementById("btnNotification");
@@ -42,11 +57,14 @@ export default function Encabezado({ activePage, onNavigate }) {
 
 
   function handlePerfilClick() {
-    const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      onNavigate("/perfil");
+    // comprobar en el momento del click por si el estado cambio
+    readUserFromStorage();
+    const dest = isAuthenticated ? "/perfil" : "/login";
+    if (typeof onNavigate === "function") {
+      onNavigate(dest);
     } else {
-      onNavigate("/login");
+      // fallback por si el header se usa sin prop onNavigate
+      window.location.href = dest;
     }
   }
 
