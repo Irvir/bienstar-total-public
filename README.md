@@ -28,6 +28,10 @@ Estas son las dependencias usadas por el proyecto (ya aparecen en `package.json`
 - dev: vite, @vitejs/plugin-react, eslint, gh-pages (opcional)
 
 Para instalarlas (desde la raíz del repo):
+```powershell
+npm install express mysql12 cors bcrypt multer dotenv
+```
+
 
 ```powershell
 npm install
