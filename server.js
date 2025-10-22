@@ -327,9 +327,27 @@ app.post("/checkEmail", async (req, res) => {
 // Nueva arquitectura: id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta
 app.post("/registrar", async (req, res) => {
   try {
-    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias } = req.body;
+    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias, recaptchaToken } = req.body;
     const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
+
+    // Verify recaptcha token
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '';
+    if (!recaptchaToken || !RECAPTCHA_SECRET) {
+      return res.status(400).json({ message: 'Falta verificación de captcha' });
+    }
+    try {
+      const r = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
+      });
+      const rr = await r.json();
+      if (!rr.success) return res.status(400).json({ message: 'Captcha inválido', details: rr });
+    } catch (e) {
+      console.error('Recaptcha verify error', e);
+      return res.status(500).json({ message: 'Error al verificar captcha' });
+    }
 
     const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
     if (rows.length) return res.status(400).json({ message: "El correo ya está registrado" });
