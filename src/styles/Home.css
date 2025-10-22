@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
-        font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 /* ==============================
@@ -26,6 +26,7 @@ body {
     justify-content: center;
     flex-direction: column;
 }
+
 /* Texto principal del loader */
 .loader-text {
     font-size: 1.25rem;
@@ -131,8 +132,8 @@ body {
 .btn1 {
     background-image: url("/public/Imagenes/Home/Crear_Horario.png");
     background-size: 100% 100% !important;
-        background-repeat: no-repeat;
-        background-position: center;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .btn2 {
@@ -150,17 +151,21 @@ body {
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
-    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
+    flex: 0 0 30% !important;
+    /* ancho fijo dentro de flex */
 }
-    /* 🔹 Ajusta este valor según lo que necesites */
+
+/* 🔹 Ajusta este valor según lo que necesites */
 
 .btn5 {
-    background-image: url("/public/Imagenes/Home/Tips_Dieta2.png");
+    background-image: url("/public/Imagenes/Home/Tips_Dieta4.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
-    flex: 0 0 30% !important; /* ancho fijo dentro de flex */
+    flex: 0 0 30% !important;
+    /* ancho fijo dentro de flex */
 }
+
 .contenedorIzq button:hover,
 .contenedorDer button:hover {
     opacity: 0.8;
@@ -200,6 +205,7 @@ body {
         font-size: 2vw;
     }
 }
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -216,6 +222,7 @@ body {
 .contenedorDer button {
     animation: fadeInUp 0.6s ease forwards;
 }
+
 .botonera {
     display: flex;
     flex-wrap: wrap;
@@ -223,6 +230,7 @@ body {
     align-items: stretch;
     gap: 1rem;
     padding: 2rem;
+    padding-left: 180px;
 }
 
 .botonera button {
@@ -240,10 +248,12 @@ body {
     font-size: 1.4vw;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .botonera button:hover {
     transform: scale(1.08);
     box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.5);
 }
+
 /* 🔴 Resaltado más intenso para botones */
 .botonera button {
     border: 3px solid #f5f5f5;

@@ -1,6 +1,6 @@
 /* Encabezado con estilo plomizo y efecto glass */
 #encabezado {
-    background:#fff2e2;
+    background: #fff2e2;
     /* tono plomizo translúcido */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -45,6 +45,7 @@
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
+    margin-left: 150px;
 }
 
 /* Enlaces de menú */
@@ -279,4 +280,37 @@
 .bell-hint {
     animation: bell-wiggle 700ms ease-in-out;
     filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
+}
+
+/* Mejoras responsivas adicionales para tablets y tamaños intermedios */
+@media (max-width: 1024px) {
+    .header-inner {
+        padding: 0 1rem;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .menúBotones,
+    .menu-botones {
+        width: 100%;
+        order: 2;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .login {
+        order: 3;
+        margin-top: 6px;
+    }
+
+    .logo {
+        order: 1;
+        flex: 0 0 auto;
+    }
+
+    .btnMenu,
+    .btnMenuSelec {
+        font-size: clamp(13px, 1.8vw, 16px);
+        padding: 0.35rem 0.75rem;
+    }
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE } from "../shared/apiBase";
 import "../../styles/Perfil.css";
 
 export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
@@ -26,10 +25,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         actividad_fisica: usuario.actividad_fisica || "",
         sexo: usuario.sexo || "",
         email: usuario.email || "",
-        // store alergias as a comma-separated string in the edit form
-        alergias: Array.isArray(usuario.alergias)
-          ? (usuario.alergias.length ? usuario.alergias.join(', ') : '')
-          : (usuario.alergias || ""),
+        alergias: usuario.alergias || "",
       });
     }
   }, [usuario]);
@@ -74,40 +70,36 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
       altura: form.altura === "" ? null : Number(form.altura < 10 ? form.altura * 100 : form.altura),
       actividad_fisica: form.actividad_fisica,
       sexo: form.sexo,
-      // convert comma-separated string into array for the API
-      alergias: (typeof form.alergias === 'string' && form.alergias.trim() !== '')
-        ? form.alergias.split(',').map(s => s.trim()).filter(Boolean)
-        : [],
+      alergias: form.alergias,
     };
 
     try {
       if (usuario?.id) {
-          const res = await fetch(`${API_BASE}/user/${usuario.id}`, {
+        const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
         if (res.ok) {
-            const data = await res.json();
-            const updatedUser = data.usuario; // extraemos solo la propiedad usuario
-            onActualizarUsuario?.(updatedUser);
-          
-            setForm({
-                nombre: updatedUser.nombre || "",
-                edad: updatedUser.edad ?? "",
-                peso: updatedUser.peso ?? "",
-                altura: updatedUser.altura ?? "",
-                actividad_fisica: updatedUser.actividad_fisica || "",
-                sexo: updatedUser.sexo || "",
-                email: updatedUser.email || "",
-                // updatedUser.alergias comes as an array from the server; convert to string for the form
-                alergias: Array.isArray(updatedUser.alergias) ? (updatedUser.alergias.length ? updatedUser.alergias.join(', ') : '') : (updatedUser.alergias || ""),
-              });
-              
-            window.notify?.("Perfil actualizado", { type: "success" });
-            setEditMode(false);
-          } else {
+          const data = await res.json();
+          const updatedUser = data.usuario; // extraemos solo la propiedad usuario
+          onActualizarUsuario?.(updatedUser);
+
+          setForm({
+            nombre: updatedUser.nombre || "",
+            edad: updatedUser.edad ?? "",
+            peso: updatedUser.peso ?? "",
+            altura: updatedUser.altura ?? "",
+            actividad_fisica: updatedUser.actividad_fisica || "",
+            sexo: updatedUser.sexo || "",
+            email: updatedUser.email || "",
+            alergias: updatedUser.alergias || "",
+          });
+
+          window.notify?.("Perfil actualizado", { type: "success" });
+          setEditMode(false);
+        } else {
           const err = await res.json().catch(() => ({}));
           window.notify?.(err.message || "No se pudo actualizar", { type: "error" });
         }
@@ -211,11 +203,32 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         </div>
       </div>
 
-      <div id="contenedorBorrarCuenta">
-        <div id="contenedorCerrarSesion">
+      <div id="contenedorCerrarSesion">
         <button id="cerrarSesion" onClick={handleCerrarSesion}>CERRAR SESIÓN</button>
       </div>
-        <button id="borrarCuenta" onClick={handleBorrarCuenta}>BORRAR CUENTA</button>
+
+      <div id="contenedorBorrarCuenta">
+        <button
+          id="borrarCuenta"
+          onClick={() => {
+            if (typeof window.notifyConfirm === 'function') {
+              window.notifyConfirm(
+                '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
+                { type: 'error', duration: 0 },
+                async () => {
+                  // reproducir sonido y ejecutar la eliminación
+                  await handleBorrarCuenta();
+                },
+                () => {
+                  // cancelado
+                }
+              );
+            } else {
+              // fallback: si no existe notifyConfirm, ejecutar directamente (equivalente al comportamiento previo)
+              handleBorrarCuenta();
+            }
+          }}
+        >BORRAR CUENTA</button>
       </div>
     </div>
   );

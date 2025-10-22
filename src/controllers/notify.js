@@ -5,10 +5,10 @@
   const CONTAINER_ID = 'toastContainer';
   function notifyThenRedirect(message, opts, redirectUrl, setLoading) {
     const { duration = 3000, type = "info" } = opts || {};
-  
+
     if (window.notify) {
       window.notify(message, { type, duration });
-  
+
       setTimeout(() => {
         if (setLoading) setLoading(true);
         setTimeout(() => {
@@ -22,12 +22,12 @@
       }, 700);
     }
   }
-  
+
   function playSound(type = 'info') {
     try {
       let soundPath = '/public/Sonidos/Notification.mp3';
       if (type === 'error') soundPath = '/public/Sonidos/NotificationError.mp3';
-  
+
       const audio = new Audio(soundPath);
       audio.volume = type === 'error' ? 0.6 : 0.5;
       audio.play().catch((err) => {
@@ -119,27 +119,27 @@
     style.textContent = css;
     document.head.appendChild(style);
   }
- 
+
   function getContainer() {
-      let el = document.getElementById(CONTAINER_ID);
-      if (!el) {
-        el = document.createElement('div');
-        el.id = CONTAINER_ID;
-        el.className = 'toast-container';
-        document.body.appendChild(el);
-      }
+    let el = document.getElementById(CONTAINER_ID);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = CONTAINER_ID;
+      el.className = 'toast-container';
+      document.body.appendChild(el);
+    }
 
-      el.style.position = 'fixed';
-      el.style.left = '50%';
-      el.style.top = '10%';
-      el.style.transform = 'translateX(-50%)';
-      el.style.zIndex = '9999';
-      el.style.display = 'flex';
-      el.style.flexDirection = 'column';
-      el.style.alignItems = 'center';
-      el.style.gap = '8px';
+    el.style.position = 'fixed';
+    el.style.left = '50%';
+    el.style.top = '10%';
+    el.style.transform = 'translateX(-50%)';
+    el.style.zIndex = '9999';
+    el.style.display = 'flex';
+    el.style.flexDirection = 'column';
+    el.style.alignItems = 'center';
+    el.style.gap = '8px';
 
-      return el;
+    return el;
   }
 
   function notify(message, opts) {
@@ -152,19 +152,19 @@
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
 
-try {
-  const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
-  if (bell) {
-    bell.classList.remove('bell-hint');
-    void bell.offsetWidth; // Reinicia animación
-    bell.classList.add('bell-hint');
-    setTimeout(() => bell.classList.remove('bell-hint'), 800);
+    try {
+      const bell = document.querySelector('.btnMenuNoti') || document.getElementById('btnNotification');
+      if (bell) {
+        bell.classList.remove('bell-hint');
+        void bell.offsetWidth; // Reinicia animación
+        bell.classList.add('bell-hint');
+        setTimeout(() => bell.classList.remove('bell-hint'), 800);
 
-    
-    bell.style.position = ''; // Se mantiene su posición natural
-    bell.style.transition = ''; // No transición extra
-  }
-} catch (_) {}
+
+        bell.style.position = ''; // Se mantiene su posición natural
+        bell.style.transition = ''; // No transición extra
+      }
+    } catch (_) { }
 
     // Contenido del toast
     const span = document.createElement('span');
@@ -192,8 +192,95 @@ try {
     hideTimer = setTimeout(dismiss, duration);
     return { dismiss };
   }
+
+  // notifyConfirm: muestra mensaje con botones Confirmar / Cancelar.
+  // No reproduce sonido al mostrarse. Reproduce sonido solo cuando el usuario
+  // pulsa Confirmar (antes de llamar onConfirm), según la petición del usuario.
+  function notifyConfirm(message, opts, onConfirm, onCancel) {
+    const { type = 'warning', duration = 0 } = opts || {};
+    injectStyles();
+    const container = getContainer();
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+
+    const span = document.createElement('span');
+    span.className = 'toast-message';
+    span.textContent = message;
+
+    // actions container
+    const actions = document.createElement('div');
+    actions.style.display = 'flex';
+    actions.style.gap = '8px';
+    actions.style.marginTop = '8px';
+
+    const btnConfirm = document.createElement('button');
+    btnConfirm.textContent = 'Confirmar';
+    btnConfirm.className = 'toast-action-confirm';
+    btnConfirm.style.padding = '8px 12px';
+    btnConfirm.style.borderRadius = '8px';
+    btnConfirm.style.border = 'none';
+    btnConfirm.style.cursor = 'pointer';
+    btnConfirm.style.fontWeight = '700';
+    btnConfirm.style.background = 'linear-gradient(135deg,#b91c1c,#ef4444)';
+    btnConfirm.style.color = '#fff';
+
+    const btnCancel = document.createElement('button');
+    btnCancel.textContent = 'Cancelar';
+    btnCancel.className = 'toast-action-cancel';
+    btnCancel.style.padding = '8px 12px';
+    btnCancel.style.borderRadius = '8px';
+    btnCancel.style.border = 'none';
+    btnCancel.style.cursor = 'pointer';
+    btnCancel.style.background = 'rgba(255,255,255,0.12)';
+    btnCancel.style.color = '#fff';
+
+    actions.appendChild(btnConfirm);
+    actions.appendChild(btnCancel);
+
+    const row = document.createElement('div');
+    row.className = 'toast-row';
+    row.style.flexDirection = 'column';
+    row.style.alignItems = 'stretch';
+    row.appendChild(span);
+    row.appendChild(actions);
+
+    toast.appendChild(row);
+    container.appendChild(toast);
+
+    function dismiss() {
+      toast.style.animation = 'toast-out 150ms ease-in forwards';
+      setTimeout(() => toast.remove(), 180);
+    }
+
+    btnConfirm.addEventListener('click', async () => {
+      try {
+        // reproducir sonido justo antes de invocar el callback de confirmación
+        try { playSound(type); } catch (e) { /* ignore */ }
+        if (typeof onConfirm === 'function') await onConfirm();
+      } catch (e) {
+        console.error('Error en onConfirm:', e);
+      }
+      dismiss();
+    });
+
+    btnCancel.addEventListener('click', () => {
+      try {
+        if (typeof onCancel === 'function') onCancel();
+      } catch (e) {
+        console.error('Error en onCancel:', e);
+      }
+      dismiss();
+    });
+
+    if (duration && duration > 0) setTimeout(dismiss, duration);
+
+    return { dismiss };
+  }
+
   window.notifyThenRedirect = notifyThenRedirect;
 
   window.notify = notify;
+  window.notifyConfirm = notifyConfirm;
 
 })();
