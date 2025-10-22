@@ -37,12 +37,16 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
             )}
 
             {/* Opciones visibles siempre para admins (y también accesibles para otros si quieres) */}
-            <button className="botonesPerfil" id="btnAlimentos" onClick={() => showLoaderAndRedirect("/admin")}>
-                CRUD ALIMENTOS
-            </button>
-            <button className="botonesPerfil" id="btnCuentas" onClick={() => showLoaderAndRedirect("/cuentas")}>
-                GESTIÓN DE CUENTAS
-            </button>
+            {isAdmin && (
+                <>
+                    <button className="botonesPerfil" id="btnAlimentos" onClick={() => showLoaderAndRedirect("/admin")}>
+                        CRUD ALIMENTOS
+                    </button>
+                    <button className="botonesPerfil" id="btnCuentas" onClick={() => showLoaderAndRedirect("/cuentas")}>
+                        GESTIÓN DE CUENTAS
+                    </button>
+                </>
+            )}
         </div>
     );
 }

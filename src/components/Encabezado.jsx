@@ -10,7 +10,7 @@ export default function Encabezado({ activePage, onNavigate }) {
     // No sobreescribimos el nombre; dejamos siempre 'administrador'.
     // Si en el futuro se desea volver a mostrar el nombre real, se puede
     // descomentar y adaptar la lógica siguiente.
-    /*
+    
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
       try {
@@ -20,7 +20,7 @@ export default function Encabezado({ activePage, onNavigate }) {
         console.warn("Usuario inválido en localStorage", e);
       }
     }
-    */
+  
   }, []);
   useEffect(() => {
     const bell = document.getElementById("btnNotification");

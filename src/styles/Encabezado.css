@@ -45,6 +45,8 @@
     justify-content: center;
     gap: 1rem;
     flex-wrap: wrap;
+    /* Margen izquierdo para separar del logo */
+    margin-left: 6rem;
 }
 
 /* Enlaces de menú */

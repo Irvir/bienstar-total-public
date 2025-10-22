@@ -17,7 +17,7 @@
 }
 
 #divMenuLateral {
-    margin-top: 50px;
+    margin-top: 40px;
     flex: 0 0 20%;
     border-radius: 12px;
     min-width: 250px;
@@ -38,7 +38,7 @@
     box-sizing: border-box;
     height: 79vh;
     /* el glass llega hasta la mitad de la pantalla */
-    min-height: 320px;
+    max-height: 58vh;
 }
 
 /* Si la pantalla es pequeña, dejar que el menu sea auto (no ocupar 50vh) */
@@ -117,7 +117,6 @@
     align-items: center;
     height: auto;
     margin-top: 20px;
-    min-height: 580px;
     /* mayor altura mínima */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
     background: rgba(255, 255, 255, 0.2);
@@ -125,6 +124,7 @@
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    max-height: 80vh;
 
 }
 
