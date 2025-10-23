@@ -16,13 +16,23 @@ const router = express.Router();
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
+  'http://localhost:4000',
+  'http://127.0.0.1:4000',
   'https://bienstar-total-public.vercel.app'
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
+    // Allow non-browser requests (no origin)
     if (!origin) return callback(null, true);
+
+    // Exact whitelist
     if (ALLOWED_ORIGINS.indexOf(origin) !== -1) return callback(null, true);
+
+    // Allow localhost / 127.0.0.1 on any port during development
+    const localhostPattern = /^https?:\/\/(?:localhost|127\.0\.0\.1)(:\d+)?$/i;
+    if (localhostPattern.test(origin)) return callback(null, true);
+
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
@@ -32,7 +42,8 @@ app.use(cors({
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin && ALLOWED_ORIGINS.indexOf(origin) !== -1) {
+  const localhostPattern = /^https?:\/\/(?:localhost|127\.0\.0\.1)(:\d+)?$/i;
+  if (origin && (ALLOWED_ORIGINS.indexOf(origin) !== -1 || localhostPattern.test(origin))) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
