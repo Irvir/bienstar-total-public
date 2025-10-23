@@ -31,8 +31,7 @@ html { font-size: 14px; }
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    /* ❌ Elimina esta línea */
-    /* background-color: white; */
+   
     position: relative;
     z-index: 10;
 }

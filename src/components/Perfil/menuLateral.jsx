@@ -14,9 +14,9 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
     // Determinar si es admin (misma heurística que en Login.jsx)
     const isAdmin = (() => {
         if (!usuario) return false;
-        const email = (usuario.email || "").toString().trim().toLowerCase();
+        const email = (usuario.email || usuario.emailAddress || "").toString().trim().toLowerCase();
         const name = (usuario.name || usuario.nombre || "").toString().trim().toLowerCase();
-        const idStr = String(usuario.id || usuario.id_usuario || usuario.id_usuario || "");
+        const idStr = String(usuario.id || usuario.id_usuario || "");
         return (
             (email === "admin@bienstartotal.food" || email === "admin2025@bienstartotal.food") ||
             (name === "admin" || name === "administrador") ||
@@ -37,12 +37,16 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
             )}
 
             {/* Opciones visibles siempre para admins (y también accesibles para otros si quieres) */}
-            <button className="botonesPerfil" id="btnAlimentos" onClick={() => showLoaderAndRedirect("/admin")}>
-                CRUD ALIMENTOS
-            </button>
-            <button className="botonesPerfil" id="btnCuentas" onClick={() => showLoaderAndRedirect("/cuentas")}>
-                GESTIÓN DE CUENTAS
-            </button>
+            {isAdmin && (
+                <>
+                    <button className="botonesPerfil" id="btnAlimentos" onClick={() => showLoaderAndRedirect("/admin")}>
+                        CRUD ALIMENTOS
+                    </button>
+                    <button className="botonesPerfil" id="btnCuentas" onClick={() => showLoaderAndRedirect("/cuentas")}>
+                        GESTIÓN DE CUENTAS
+                    </button>
+                </>
+            )}
         </div>
     );
 }

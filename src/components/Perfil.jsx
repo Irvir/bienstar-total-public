@@ -34,28 +34,29 @@ function Perfil() {
         showLoaderAndRedirect("/login");
     };
 
-    // Borrar Cuenta (ejecuta la petición al servidor). No muestra confirm nativo aquí;
-    // el control de confirmación se hace en la UI (notifyConfirm) para evitar el dialogo nativo.
+    // Borrar Cuenta
     const handleBorrarCuenta = async () => {
+        if (!confirm("¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.")) return;
+      
         setLoading(true);
         try {
-            const res = await fetch(`${API_BASE}/user/${usuario.id}`, { method: "DELETE" });
-            if (!res.ok) throw new Error("Error al eliminar la cuenta");
-
-            localStorage.removeItem("usuario");
-            window.notify?.("Cuenta borrada correctamente", { type: "success" });
-
-            setTimeout(() => {
-                window.location.href = "/"; // ✅ redirige a Home.jsx
-            }, 800);
+          const res = await fetch(`${API_BASE}/user/${usuario.id}`, { method: "DELETE" });
+          if (!res.ok) throw new Error("Error al eliminar la cuenta");
+      
+          localStorage.removeItem("usuario");
+          window.notify?.("Cuenta borrada correctamente", { type: "success" });
+      
+          setTimeout(() => {
+            window.location.href = "/"; // ✅ redirige a Home.jsx
+          }, 800);
         } catch (err) {
-            console.error(err);
-            window.notify?.("Error al borrar la cuenta", { type: "error" });
+          console.error(err);
+          window.notify?.("Error al borrar la cuenta", { type: "error" });
         } finally {
-            setLoading(false);
+          setLoading(false);
         }
-    };
-
+      };
+      
 
     if (!usuario) return null;
 
@@ -76,11 +77,11 @@ function Perfil() {
             <div id="cuerpo">
                 <MenuLateral showLoaderAndRedirect={showLoaderAndRedirect} />
                 <div id="divInfoUser">
-                    <ContenedorInfo
-                        usuario={usuario}
-                        handleCerrarSesion={handleCerrarSesion}
-                        handleBorrarCuenta={handleBorrarCuenta}
-                        onActualizarUsuario={onActualizarUsuario}
+                <ContenedorInfo
+                    usuario={usuario}
+                    handleCerrarSesion={handleCerrarSesion}
+                    handleBorrarCuenta={handleBorrarCuenta}
+                    onActualizarUsuario={onActualizarUsuario}
                     />
 
                 </div>
