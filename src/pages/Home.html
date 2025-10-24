@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="Base.css">
+    <link rel="stylesheet" href="./src/styles/Pie.css">
+    <!-- CSS Específico -->
+    <link rel="stylesheet" href="Index.css">
+</head>
+<body>
+    <div id="contenedorPrincipal">
+        <!-- Encabezado -->
+        <header id="encabezado">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="./Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+
+                <div class="menúBotones">
+                    <button class="btnMenuSelec" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                    <button class="btnMenu" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
+                    <button class="btnMenuNoti" title="Notificaciones">
+                        <img src="./Imagenes/Login_Perfil/Notificacion.png" id="btnNotification" alt="Notificaciones" onclick="alert('No tienes notificaciones nuevas.')" />
+                    </button>
+                </div>
+
+                <div class="login">
+                    <div class="login-left" onclick="showLoaderAndRedirect('/login')">
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
+                    </div>
+                    <div class="login-avatar" onclick="showLoaderAndRedirect('/login')">
+                        <img src="./Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario" class="cursor-pointer" />
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Cuerpo -->
+        <main id="cuerpo">
+            <div class="contenedorIzq">
+                <button class="btn1" onclick="showLoaderAndRedirect('CrearDieta.html')">Crear horario semanal</button>
+                <button class="btn2" onclick="showLoaderAndRedirect('dietas.html')">Dietas</button>
+            </div>
+            <div class="contenedorDer">
+                <button className="btn3" class="btn3" onclick="showLoaderAndRedirect('calendario.html')">Calendario</button>
+                <button class="btn4" onclick="showLoaderAndRedirect('alimentos.html')">Alimentos</button>
+                <button class="btn5" onclick="showLoaderAndRedirect('tipsParaTuDieta.html')">Tips para tu dieta</button>
+            </div>
+        </main>
+
+        <!-- Pie de página -->
+        <footer id="pie">
+            <div class="footer-inner">
+                <a href="#" class="footer-link" title="Instagram"><img src="./Imagenes/Pie_Pagina/InstaLogo.png" alt="Instagram" /></a>
+                <a href="#" class="footer-link" title="Facebook"><img src="./Imagenes/Pie_Pagina/FaceLogo.png" alt="Facebook" /></a>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" class="footer-link" title="YouTube"><img src="/Imagenes/Pie_Pagina/YouTubeLogo.png" alt="YouTube" /></a>
+                <a href="#" class="footer-link" title="WhatsApp"><img src="/Imagenes/Pie_Pagina/WhatsLogo.png" alt="WhatsApp" /></a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader">
+        <span class="loader-text">Cargando</span>
+        <div class="loader-dots">
+            <img src="./assets/fruta1.png" alt="Fruta1" />
+            <img src="./assets/fruta2.png" alt="Fruta2" />
+            <img src="./assets/fruta3.png" alt="Fruta3" />
+        </div>
+    </div>
+
+    <script>
+        // small helper to show loader briefly and then redirect
+        function showLoaderAndRedirect(url) {
+            const loader = document.getElementById('loader');
+            if (loader) loader.style.display = 'flex';
+            setTimeout(function(){ window.location.href = url; }, 600);
+        }
+
+        // fill username from localStorage
+        document.addEventListener('DOMContentLoaded', function(){
+            try {
+                const usuarioGuardado = localStorage.getItem('usuario');
+                if (usuarioGuardado) {
+                    const usuario = JSON.parse(usuarioGuardado);
+                    if (usuario && usuario.name) {
+                        var span = document.querySelector('.nameUser');
+                        if (span) span.textContent = usuario.name;
+                    }
+                }
+            } catch(e){ console.warn('usuario inválido', e); }
+
+            // Active menu highlighting
+            var currentPage = window.location.pathname.split('/').pop().toLowerCase();
+            if (!currentPage) currentPage = 'index.html';
+            var btnInicio = document.querySelector("button[onclick*='index.html']");
+            var btnAlimentos = document.querySelector("button[onclick*='alimentos.html']");
+            var btnDietas = document.querySelector("button[onclick*='dietas.html']");
+            [btnInicio, btnAlimentos, btnDietas].forEach(function(btn){ if (btn){ btn.classList.remove('btnMenuSelec'); btn.classList.add('btnMenu'); } });
+            if (currentPage === 'index.html' || currentPage === 'home.html' || currentPage === 'home') {
+                if (btnInicio) btnInicio.classList.add('btnMenuSelec');
+            } else if (currentPage === 'alimentos.html') {
+                if (btnAlimentos) btnAlimentos.classList.add('btnMenuSelec');
+            } else if (currentPage === 'dietas.html') {
+                if (btnDietas) btnDietas.classList.add('btnMenuSelec');
+            }
+        });
+    </script>
+</body>
+</html>

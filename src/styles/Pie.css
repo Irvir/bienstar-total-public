@@ -1,0 +1,171 @@
+/* Footer con estilo plomizo y efecto glass */
+#pie {
+    background:#fff1e2;;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 0px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    color: #fff2e2;
+}
+/* Contenedor interno */
+.footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Enlaces del footer con animación y encuadre */
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(32px, 6vw, 48px);
+    height: clamp(32px, 6vw, 48px);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 12px;
+    padding: 0;
+    /* elimina espacio interno */
+    line-height: 0;
+    /* evita espacio vertical extra */
+    overflow: hidden;
+    /* asegura que la imagen no se desborde */
+}
+
+/* Estilo para Instagram */
+.footer-link.ig {
+    width: clamp(40px, 7vw, 80px) !important;
+    height: clamp(40px, 7vw, 80px) !important;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    /*Bajar margin superior para alinear con otros íconos */
+    margin-top: -14px;
+}
+
+.footer-link.ig:hover {
+    transform: scale(0.75);
+    box-shadow: 0 0 10px rgba(193, 53, 132, 0.5), 0 0 18px rgba(225, 48, 108, 0.3);
+}
+
+/* Estilo para YouTube */
+.footer-link.yt {
+    width: clamp(30px, 9vw, 55px) !important;
+    height: clamp(30px, 9vw, 55px) !important;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.footer-link.yt:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(255, 0, 0, 0.6), 0 0 24px rgba(255, 0, 0, 0.3);
+}
+
+/* Imagen dentro del enlace */
+.footer-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* asegura que se encuadre sin distorsión */
+    display: block;
+    vertical-align: middle;
+    /* elimina espacio fantasma debajo de img */
+}
+/* Footer con efecto glass tipo perfil */
+#pie {
+    background: rgba(255, 255, 255, 0.15);
+    /* translúcido */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 28px;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    color: #111;
+    /* texto oscuro para contraste */
+}
+
+/* Contenedor interno centrado */
+.footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Enlaces del footer con hover */
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(32px, 6vw, 48px);
+    height: clamp(32px, 6vw, 48px);
+    transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    padding: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.footer-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* ===============================
+   Footer estilo glass (transparente)
+=============================== */
+#pie {
+    position: relative;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    /* translúcido */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 28px;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    color: #111;
+    z-index: 10; }
+/* Contenedor interno del footer */
+.footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Enlaces del footer */
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(32px, 6vw, 48px);
+    height: clamp(32px, 6vw, 48px);
+    transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.footer-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

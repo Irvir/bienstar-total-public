@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/frontEnd/src/controllers/Error404.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BienStarTotal</title>
+    <!--Fuentes Titulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Fuente para textos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Base.css">
+    <!-- Footer styles moved out of Base.css -->
+    <link rel="stylesheet" href="/src/styles/Pie.css">
+    <link rel="stylesheet" href="CrearDieta.css">
+</head>
+
+<body>
+    <div id="contenedorPrincipal">
+
+        <!-- ENCABEZADO -->
+        <div id="encabezado">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="../../Imagenes/Login_Perfil/Logo.png" alt="Logo BienStarTotal" class="logoImg">
+                    </a>
+                </div>
+                <div class="menúBotones">
+                    <button class="btnMenu" onclick="window.location.href='index.html'">Inicio</button>
+                    <button class="btnMenu" onclick="window.location.href='alimentos.html'">Alimentos</button>
+                    <button class="btnMenuSelec" onclick="window.location.href='dietas.html'">Dietas</button>
+                    <button class="btnMenuNoti">
+                        <img src="/Imagenes/Login_Perfil/Notificacion.png" id="btnNotification">
+                    </button>
+                </div>
+                <div class="login">
+                    <div style="float: left; height: 100%; width: 75%;">
+                        <button class="btnPerfilView" id="btnPerfilView">
+                            <span class="nameUser">Nombre de Usuario</span>
+                        </button>
+                    </div>
+                    <!-- Menú desplegable -->
+                    <div id="menuDesplegable" class="menuDesplegable">
+                        <button class="opcionMenu" onclick="window.location.href='perfil.html'">Ver Perfil</button>
+                        <button class="opcionMenu" id="logoutButton">Cerrar Sesión</button>
+                    </div>
+                    <!-- Imagen Usuario -->
+                    <div style="float: left; width: 10%; height: 100%;">
+                        <img src="/Imagenes/Login_Perfil/UserPerfil.png" id="fotoUsuario" alt="Foto de Usuario"
+                            style="cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUERPO -->
+        <div id="cuerpo">
+            <!-- Izquierda: Crear Dieta -->
+            <div id="formContainer">
+                <div id="crearDieta">
+                    <h2 id="diaSeleccionado">Dieta del Día <span id="diaSeleccionadoTexto">–</span></h2>
+                    <div id="resumenDieta"></div>
+                    <div class="barraDivisora"></div>
+
+
+                    <div id="botones">
+                        <div class="grupoSelector" style="margin-right:12px;">
+                            <div class="etiqueta">DÍA</div>
+                            <div class="selector">
+                                <select id="dia" class="selectDia">
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miércoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sábado</option>
+                                    <option value="7">Domingo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="btnBorrarDieta">Borrar Todo</button>
+                        <button id="btnSalir">Salir</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Derecha: Filtro -->
+            <div id="filtroContainer">
+                <div id="contenedorFiltro">
+                    <div id="lupe"></div>
+                    <div style="flex:1">
+                        <input type="text" id="filtro" placeholder="Buscar alimento...">
+                    </div>
+                </div>
+                <div id="resultadosFiltro" class="resultadosFiltro"></div>
+            </div>
+        </div>
+
+        <!-- PIE -->
+        <div id="pie">
+            <div class="footer-inner">
+                <button class="instaBoton"></button>
+                <button class="faceBoton"></button>
+                <button class="youTubeBoton"></button>
+                <button class="whatsBoton"></button>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        // Guard de sesión (antes de mostrar la página)
+        (function(){
+          try {
+            if (!localStorage.getItem('usuario')) {
+              window.location.href = 'login.html';
+            }
+          } catch(e) {
+            window.location.href = 'login.html';
+          }
+        })();
+        </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioGuardado = localStorage.getItem("usuario");
+
+            if (usuarioGuardado) {
+                const usuario = JSON.parse(usuarioGuardado);
+                const nameUserSpan = document.querySelector(".nameUser");
+                if (nameUserSpan) {
+                    nameUserSpan.textContent = usuario.name;
+                }
+            }
+
+            // Al clickar el icono de usuario, ir a esta pestaña (CrearDieta)
+            const fotoUsuario = document.getElementById("fotoUsuario");
+            if (fotoUsuario) {
+                fotoUsuario.addEventListener('click', () => {
+                    window.location.href = 'perfil.html';
+                });
+            }
+        });
+    </script>
+    <script src="/frontEnd/src/controllers/notify.js"></script>
+    <script src="/frontEnd/src/controllers/CrearDieta.js"></script>
+</body>
+
+</html>
