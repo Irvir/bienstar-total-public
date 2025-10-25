@@ -35,7 +35,7 @@ Nuevas dependencias añadidas en esta rama / cambios recientes:
 
 Dependencias principales (resumen):
 
-- Backend: express, mysql2, cors, bcrypt, multer, dotenv
+- Backend: express, mysql2, cors, bcrypt, multer, dotenv, cookie
 - Frontend: react, react-dom, react-router-dom, firebase, react-google-recaptcha-v3
 - Dev: vite, @vitejs/plugin-react, eslint, gh-pages (opcional)
 
@@ -44,7 +44,7 @@ Instalación rápida (desde la raíz del repo)
 Ejecuta este comando en una terminal (cmd.exe o PowerShell) para instalar las dependencias necesarias de una sola vez:
 
 ```powershell
-npm install express mysql2 cors bcrypt multer dotenv react react-dom react-router-dom firebase react-google-recaptcha-v3 && npm install --save-dev vite @vitejs/plugin-react @eslint/js eslint eslint-plugin-react-hooks eslint-plugin-react-refresh gh-pages globals
+npm install express mysql2 cors bcrypt multer dotenv react react-dom react-router-dom firebase react-google-recaptcha-v3 && npm install --save-dev vite @vitejs/plugin-react @eslint/js eslint eslint-plugin-react-hooks eslint-plugin-react-refresh gh-pages globals cookie
 ```
 
 Si prefieres usar `npm install` simple (ya lee `package.json`) también funciona, pero el comando anterior garantiza que tengas todas las dependencias nuevas listadas aquí instaladas inmediatamente.

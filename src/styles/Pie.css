@@ -11,6 +11,7 @@
     align-items: center;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     color: #fff2e2;
+    z-index: 10;
 }
 /* Contenedor interno */
 .footer-inner {
@@ -121,6 +122,20 @@
     height: 100%;
     object-fit: cover;
     display: block;
+}
+/* Asegurar que el widget de reCAPTCHA quede por encima del pie
+   SOLO dentro de la página de crear cuenta (.crear-cuenta-page) */
+.crear-cuenta-page .recaptcha-wrapper,
+.crear-cuenta-page .g-recaptcha,
+.crear-cuenta-page .rc-anchor,
+.crear-cuenta-page .grecaptcha-badge {
+    position: relative !important;
+    z-index: 99999 !important;
+}
+
+/* Mantener el footer detrás del captcha */
+#pie {
+    z-index: 10;
 }
 /* ===============================
    Footer estilo glass (transparente)
