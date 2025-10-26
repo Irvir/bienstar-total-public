@@ -17,7 +17,7 @@
 }
 
 #divMenuLateral {
-    margin-top: 50px;
+    margin-top: 40px;
     flex: 0 0 20%;
     border-radius: 12px;
     min-width: 250px;
@@ -38,7 +38,7 @@
     box-sizing: border-box;
     height: 79vh;
     /* el glass llega hasta la mitad de la pantalla */
-    min-height: 320px;
+    max-height: 58vh;
 }
 
 /* Si la pantalla es pequeña, dejar que el menu sea auto (no ocupar 50vh) */
@@ -117,7 +117,6 @@
     align-items: center;
     height: auto;
     margin-top: 20px;
-    min-height: 580px;
     /* mayor altura mínima */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
     background: rgba(255, 255, 255, 0.2);
@@ -125,6 +124,7 @@
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    max-height: 80vh;
 
 }
 
@@ -132,21 +132,13 @@
 /* Área que contiene los campos de información (izquierda) */
 #contenedorInfo {
     flex: 2.6;
-    padding-bottom: 45px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* centrar horizontalmente todos los elementos */
-    text-align: left;
-    /* centrar texto dentro de los elementos */
-    font-size: 22px;
-
+    padding-right: 10px;
 }
 
 #tituloInfo {
     font-size: 1.95rem;
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     color: #0f1720;
     /* color más oscuro para mejor contraste */
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -222,26 +214,17 @@
 }
 
 .datoUsuarioRow {
-    /* Grid con columna fija para etiqueta + columna flexible para el valor
-       asegura que todas las etiquetas empiecen en el mismo X */
-    display: grid;
-    grid-template-columns: auto 1fr;
-    /* columna de etiqueta automática para que el valor quede justo después */
-    align-items: center;
-    gap: 12px;
+    display: flex;
     margin-bottom: 14px;
-    width: 100%;
+    align-items: center;
 }
 
 .info {
     font-weight: 800;
+    width: 100px;
     color: #0b1216;
+    /* más oscuro */
     letter-spacing: 0.2px;
-    font-size: clamp(15px, 1.6vw, 20px);
-    justify-self: start;
-    /* etiqueta alineada al inicio de su celda */
-    text-align: left;
-    padding-right: 6px;
 }
 
 /* Estilo de los campos que imitan inputs (parecen cuadros con borde y fondo blanco) */
@@ -251,21 +234,22 @@
 .spWeight,
 .spHeight,
 .spEmail {
-    margin: 0 auto;
-    /* centrar internamente */
+    margin-left: 12px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.2);
+    /* fondo translúcido */
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
+    /* efecto blur del fondo */
     border: 1px solid rgba(255, 255, 255, 0.3);
-    font-size: clamp(14px, 1.1vw, 18px);
-    /* crecer con el ancho, no tanto verticalmente */
-    width: 100%;
-    max-width: 560px;
-    /* mantener consistencia entre filas */
+    /* borde claro sobre el glass */
+    font-size: 16px;
+    flex: 1;
     padding: 12px 16px;
     color: #111;
+    /* texto oscuro para buena lectura */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
 }
 
 .spNombre:hover,
@@ -275,35 +259,6 @@
 .spEmail:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
-}
-
-/* En pantallas anchas, alinear etiquetas y campos en fila para que queden perfectamente alineados */
-@media (min-width: 992px) {
-    .datoUsuarioRow {
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .info {
-        /* quitar ancho fijo para que la etiqueta no cree un gran espacio */
-        text-align: left;
-        margin-right: 8px;
-        font-size: clamp(16px, 1.1vw, 20px);
-        justify-self: start;
-    }
-
-    .spNombre,
-    .spAge,
-    .spWeight,
-    .spHeight,
-    .spEmail {
-        width: auto;
-        flex: 0 1 420px;
-        /* ancho consistente en desktop */
-        max-width: 520px;
-    }
 }
 
 /* Estado de solo lectura dentro de edición */
@@ -354,7 +309,7 @@
 /* Área derecha: foto de perfil y botón cerrar sesión */
 #contenedorCerrarSesion,
 #contenedorBorrarCuenta {
-    flex: 1 1 260px;
+    flex: 1 1 150px;
     /* más ancho para mantener proporciones con la tarjeta agrandada */
     display: flex;
     flex-direction: column;
@@ -376,35 +331,65 @@
 
 /* Botón cerrar sesión estilizado */
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
-#cerrarSesion,
-#borrarCuenta {
-    width: 75%;
+/* Shared perfil button base */
+.perfil-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     padding: 12px 18px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
-    color: #fff;
-    background: linear-gradient(180deg, #D33B3B, #B20C05);
-    border: none;
     border-radius: 12px;
+    border: none;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 8px 22px rgba(2, 6, 23, 0.08);
+    transition: transform .16s ease, box-shadow .16s ease, opacity .12s ease
 }
 
-#borrarCuenta,
-#cerrarSesion {
-    /* Usar margin-top:auto para que el botón se empuje hacia el fondo del contenedor
-       y align-self para controlar la alineación horizontal */
-    margin-top: auto;
-    margin-right: 0;
-    align-self: center;
-    /* centrar dentro de su contenedor por defecto */
+.perfil-btn svg {
+    display: block
 }
 
-#cerrarSesion:hover,
-#borrarCuenta:hover {
+/* Secondary action (logout) */
+.perfil-btn--secondary {
+    background: linear-gradient(180deg, #f3f4f6, #e9eef2);
+    color: #111;
+    border: 1px solid rgba(15, 23, 42, 0.06)
+}
+
+.perfil-btn--secondary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.10)
+}
+
+/* Danger action (delete account) */
+.perfil-btn--danger {
+    background: linear-gradient(180deg, #D33B3B, #B20C05);
+    color: #fff
+}
+
+.perfil-btn--danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(195, 30, 45, 0.16)
+}
+
+/* Make container layout clear and stacked on small screens */
+#contenedorBorrarCuenta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center
+}
+
+@media (max-width:768px) {
+    #contenedorBorrarCuenta {
+        flex-direction: column
+    }
+
+    .perfil-btn {
+        width: 100%;
+        justify-content: center
+    }
 }
 
 /* Media queries para pantallas pequeñas */
@@ -430,36 +415,4 @@
         width: 100%;
         margin-bottom: 20px;
     }
-
-    /* Ajustes específicos para los botones en pantallas pequeñas */
-    #borrarCuenta,
-    #cerrarSesion {
-        width: 90%;
-        padding: 10px 14px;
-        margin-top: 12px;
-        /* espacio entre imagen y botones en móvil */
-        align-self: center;
-    }
-}
-
-/* En desktop queremos que los botones se muestren debajo del bloque de info (ocupen toda la fila) */
-@media (min-width: 992px) {
-    #contenedorInfoSesion {
-        flex-wrap: wrap;
-        /* permitir que los hijos bajen a la siguiente línea */
-        align-items: flex-start;
-    }
-
-    /* Hacer que el área de botones ocupe toda la fila y se centre */
-    #contenedorCerrarSesion,
-    #contenedorBorrarCuenta {
-        flex: 0 0 100%;
-        display: flex;
-        justify-content: center;
-        margin-top: 18px;
-        order: 2;
-        /* aparecer después de #contenedorInfo */
-    }
-
-
 }

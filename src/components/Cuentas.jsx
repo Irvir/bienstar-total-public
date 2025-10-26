@@ -116,7 +116,7 @@ export default function Cuentas() {
 
 	return (
 		<div id="contenedorPrincipal" className="admin-cuentas-page">
-			<Encabezado activePage="admin" onNavigate={(u)=>{window.location.href=u}} />
+			<Encabezado activePage="admin" onNavigate={(u) => { window.location.href = u }} />
 
 			<main id="cuerpo">
 				<div className="admin-header">
@@ -129,35 +129,35 @@ export default function Cuentas() {
 						<div className="grid-2">
 							<div>
 								<label>Nombre</label>
-								<input value={form.nombre} onChange={e=>setForm({...form,nombre:e.target.value})} required />
+								<input value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
 							</div>
 							<div>
 								<label>Email</label>
-								<input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required />
+								<input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
 							</div>
 						</div>
 						<div className="grid-3">
 							<div>
-								<label>Contraseña {editing?"(dejar vacío para no cambiar)":""}</label>
-								<input type="password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} />
+								<label>Contraseña {editing ? "(dejar vacío para no cambiar)" : ""}</label>
+								<input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
 							</div>
 							<div>
 								<label>Edad</label>
-								<input type="number" value={form.edad} onChange={e=>setForm({...form,edad:e.target.value})} />
+								<input type="number" value={form.edad} onChange={e => setForm({ ...form, edad: e.target.value })} />
 							</div>
 							<div>
 								<label>Peso (kg)</label>
-								<input type="number" step="any" value={form.peso} onChange={e=>setForm({...form,peso:e.target.value})} />
+								<input type="number" step="any" value={form.peso} onChange={e => setForm({ ...form, peso: e.target.value })} />
 							</div>
 						</div>
 						<div className="grid-2">
 							<div>
 								<label>Altura (cm)</label>
-								<input type="number" value={form.altura} onChange={e=>setForm({...form,altura:e.target.value})} />
+								<input type="number" value={form.altura} onChange={e => setForm({ ...form, altura: e.target.value })} />
 							</div>
 							<div>
 								<label>Sexo</label>
-								<select value={form.sexo} onChange={e=>setForm({...form,sexo:e.target.value})}>
+								<select value={form.sexo} onChange={e => setForm({ ...form, sexo: e.target.value })}>
 									<option value="">--</option>
 									<option value="masculino">Masculino</option>
 									<option value="femenino">Femenino</option>
@@ -167,7 +167,7 @@ export default function Cuentas() {
 						</div>
 
 						<div className="form-actions">
-							<button type="submit" className="btn-primary">{editing?"Guardar cambios":"Crear cuenta"}</button>
+							<button type="submit" className="btn-primary">{editing ? "Guardar cambios" : "Crear cuenta"}</button>
 							<button type="button" className="btn-secondary" onClick={resetForm}>Cancelar</button>
 						</div>
 					</form>
@@ -175,7 +175,7 @@ export default function Cuentas() {
 
 				<section className="admin-list">
 					<div className="list-header">
-						<input placeholder="Buscar por nombre o email" value={filter} onChange={e=>setFilter(e.target.value)} />
+						<input placeholder="Buscar por nombre o email" value={filter} onChange={e => setFilter(e.target.value)} />
 					</div>
 
 					<table className="table">
@@ -194,7 +194,7 @@ export default function Cuentas() {
 						</thead>
 						<tbody>
 							{visible.map(c => (
-								<tr key={c.id} className={c.estado==='inactivo'? 'row-inactivo':''}>
+								<tr key={c.id} className={c.estado === 'inactivo' ? 'row-inactivo' : ''}>
 									<td>{c.id}</td>
 									<td>{c.nombre || c.name}</td>
 									<td>{c.email}</td>
@@ -204,8 +204,8 @@ export default function Cuentas() {
 									<td>{c.peso ?? '-'}</td>
 									<td>{c.altura ?? '-'}</td>
 									<td>
-										<button onClick={()=>onEditClick(c)}>Editar</button>
-										<button onClick={()=>softDelete(c)} className="btn-danger">Inactivar</button>
+										<button onClick={() => onEditClick(c)}>Editar</button>
+										<button onClick={() => softDelete(c)} className="btn-danger">Inactivar</button>
 									</td>
 								</tr>
 							))}

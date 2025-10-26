@@ -13,6 +13,7 @@
  */
 
 import React, { useState } from "react";
+import "../../styles/Admin.css";
 
 /**
  * Componente ModalEditarAlimento

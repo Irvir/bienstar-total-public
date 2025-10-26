@@ -510,9 +510,23 @@ app.get("/admin/foods", async (req, res) => {
   }
 });
 
+// === Activar cuenta ===
+router.post("/user/:id/activate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query("UPDATE usuario SET estado = 'activo' WHERE id = ?", [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
+    res.json({ message: "Usuario activado correctamente" });
+  } catch (err) {
+    console.error("Error al activar usuario:", err);
+    res.status(500).json({ message: "Error al activar usuario" });
+  }
+});
 
-// Eliminar Usuario
+// Desactivar usuario
 // Marcar usuario como inactivo (en vez de eliminarlo)
 app.delete("/user/:id", async (req, res) => {
   try {

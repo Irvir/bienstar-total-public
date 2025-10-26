@@ -66,7 +66,7 @@ export default function AdminAlimentoCard({ alimento, onEditar, onEliminar }) {
         <div><b>Azúcares totales:</b> {alimento.Azucares_totales ?? "-"} g</div>
         <div><b>Fibra dietética total:</b> {alimento.Fibra_dietetica_total ?? "-"} g</div>
         <div><b>Lípidos totales:</b> {alimento.Lipidos_totales ?? "-"} g.......</div>
-    
+
 
       </div>
       <div className="admin-actions">

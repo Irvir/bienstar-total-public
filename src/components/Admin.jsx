@@ -28,9 +28,11 @@ function AdminAlimentos() {
     try {
       const res = await fetch(`${API_BASE}/admin/foods`);
       const contentType = res.headers.get("content-type");
+
       if (!res.ok || !contentType?.includes("application/json")) {
         throw new Error("Respuesta no válida del servidor");
       }
+
       const data = await res.json();
       setAlimentos(data);
     } catch {
@@ -41,7 +43,7 @@ function AdminAlimentos() {
   }
 
   const handleEliminar = async (id, nombre) => {
-    if (!confirm(`¿Eliminar "${nombre}" de la base de datos?`)) return;
+    if (!confirm(`¿Eliminar "${nombre}" de la base de datos?"`)) return;
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/admin/foods/${id}`, { method: "DELETE" });
@@ -64,15 +66,17 @@ function AdminAlimentos() {
       if (formDataObj.imageFile) {
         const fd = new FormData();
         fd.append("image", formDataObj.imageFile);
+
         const uploadRes = await fetch(`${API_BASE}/admin/foods/upload-image`, {
           method: "POST",
           body: fd,
         });
         if (!uploadRes.ok) throw new Error();
+
         const uploadJson = await uploadRes.json();
-        // server returns { image_url: '/uploads/...' }
         formDataObj.image_url = uploadJson.image_url || uploadJson.url || uploadJson.image || null;
       }
+
       const putRes = await fetch(`${API_BASE}/admin/foods/${formDataObj.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -84,7 +88,6 @@ function AdminAlimentos() {
         throw new Error(`PUT failed: ${putRes.status} ${txt}`);
       }
 
-      // The server's PUT returns a simple message; refresh the listing to reflect changes
       await fetchListado();
       window.notify?.("Cambios guardados correctamente", { type: "success" });
       setModalAlimento(null);
@@ -135,21 +138,20 @@ function AdminAlimentos() {
         </main>
 
         <Pie />
+
+        {modalAlimento && (
+          <ModalEditarAlimento
+            alimento={modalAlimento}
+            onClose={handleCerrarModal}
+            onSave={handleGuardar}
+          />
+        )}
       </div>
 
       <Loader visible={loading} />
-
-      {modalAlimento && (
-        <ModalEditarAlimento
-          alimento={modalAlimento}
-          onClose={handleCerrarModal}
-          onSave={handleGuardar}
-        />
-      )}
     </div>
   );
 }
 
-// Exportar con autenticación requerida
 const AdminAlimentosProtected = withAuth(AdminAlimentos, { requireAuth: true });
 export default AdminAlimentosProtected;

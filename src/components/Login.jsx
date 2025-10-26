@@ -61,7 +61,7 @@ function Login() {
 
     setLoading(true);
 
-    // Shortcut: if the admin2025 email is used, treat as admin locally and redirect
+    // Atajo para admin2025
     try {
       const emailNormalized = (email || "").trim().toLowerCase();
       if (emailNormalized === "admin2025@bienstartotal.food") {
@@ -229,13 +229,12 @@ function Login() {
                     required
                   />
                   <br />
-                  <br />
                   <button type="submit" id="botonIngresar">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
 
                   <br />
-                  <br />
+
                   <button
                     type="button"
                     className="btnCrearCuenta"
