@@ -1,29 +1,30 @@
 // config.js
-// Runtime-configurable API base for vanilla JS controllers
-// Update this if your backend base URL changes (e.g., reverse proxy or production URL)
-// If an env (build-time) or runtime embed sets window.API_BASE, keep it.
-// Otherwise, when deployed on a host (like Vercel) default to the current origin
-// (so API calls will target the same domain). During local development we keep
-// the common backend fallback at http://localhost:3001.
-// Allow build-time override via VITE_API_BASE injected at build time (optional)
+// API base configurable en tiempo de ejecución para controladores JS "vanilla"
+// Actualiza esto si cambia la URL base de tu backend (por ejemplo, proxy inverso o URL de producción)
+// Si existe una variable en runtime (window.API_BASE), se mantiene.
+// De lo contrario, cuando se despliega en un host (como Vercel), se usa por defecto el origen actual
+// (para que las llamadas API apunten al mismo dominio). Durante el desarrollo local
+// se mantiene un backend local por defecto en http://localhost:3001.
+// También se permite sobreescribir en tiempo de build mediante VITE_API_BASE (opcional).
+
 if (!window.API_BASE) {
 	try {
 		const origin = window.location && window.location.origin;
 
-		// Preferred: when deploying frontend and backend together (same origin), use origin.
-		// During local development (origin contains 'localhost' or '127.0.0.1'), default to the local backend.
+		// Preferido: si frontend y backend se despliegan juntos (mismo origen), usar origin.
+		// Durante el desarrollo local (origin contiene 'localhost' o '127.0.0.1'), usar backend local.
 		const isLocal = origin && (/localhost|127\.0\.0\.1/).test(origin);
 
-		// Known production host for this project on Vercel
+		// Host conocido de producción en Vercel para este proyecto
 		const VERCEL_HOST = 'https://bienstar-total-public.vercel.app';
 
 		if (isLocal) {
 			window.API_BASE = 'http://localhost:3001';
 		} else if (origin === VERCEL_HOST || (origin && origin.includes('vercel.app'))) {
-			// If running on Vercel (or similar), assume backend is same origin unless overridden
+			// Si se está ejecutando en Vercel (o similar), asumir que el backend está en el mismo origen
 			window.API_BASE = origin;
 		} else {
-			// Generic case: use origin if available, else fallback to localhost (safe)
+			// Caso genérico: usar origin si está disponible, sino fallback a localhost (seguro)
 			window.API_BASE = origin || 'http://localhost:3001';
 		}
 	} catch (e) {
@@ -31,8 +32,8 @@ if (!window.API_BASE) {
 	}
 }
 
-// ASSET_BASE: used by any non-bundled pages to compute relative asset paths.
-// For most cases Vite already outputs assets with relative paths when base='./'.
+// ASSET_BASE: se usa para páginas que no están empaquetadas (non-bundled) para calcular rutas relativas de assets.
+// En la mayoría de los casos, Vite ya genera assets con rutas relativas cuando base='./'.
 if (!window.ASSET_BASE) {
 	try {
 		const origin = window.location && window.location.origin;
@@ -42,5 +43,3 @@ if (!window.ASSET_BASE) {
 	}
 }
 
-// Notes: You can override at runtime by setting window.API_BASE or window.ASSET_BASE
-// before this file executes (e.g., in a server template or a wrapper script).

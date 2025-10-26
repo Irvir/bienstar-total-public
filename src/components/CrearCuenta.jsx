@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/CrearCuenta.css";
 import Encabezado from "./Encabezado";
 import { API_BASE } from "./shared/apiBase";
@@ -7,13 +7,9 @@ import "../styles/Base.css";
 import "../styles/Pie.css";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import ReCAPTCHA from "react-google-recaptcha";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 function CrearCuentaInner() {
-  const captchaRef = useRef(null);
-  const [captchaToken, setCaptchaToken] = useState(null);
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   const [activePage, setActivePage] = useState("crearcuenta");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -30,13 +26,13 @@ function CrearCuentaInner() {
     sexo: "",
   });
 
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   useEffect(() => {
     const currentPage = window.location.pathname.split("/").pop() || "crearcuenta";
     setActivePage(currentPage);
   }, []);
-  // Nota: añadimos un reCAPTCHA visible (v2) más abajo en el formulario
 
-  
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => (window.location.href = url), 700);
@@ -112,30 +108,30 @@ function CrearCuentaInner() {
     }
   };
 
-  const handleCaptchaChange = (token) => {
-    setCaptchaToken(token);
-  };
-
-  const handleCaptchaExpired = () => {
-    setCaptchaToken(null);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!executeRecaptcha) {
+      window.notify?.("reCAPTCHA no cargó correctamente", { type: "error" });
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Requiere token del reCAPTCHA visible
-      if (!captchaToken) {
-        window.notify?.("Por favor complete el reCAPTCHA", { type: "error" });
+      const recaptchaToken = await executeRecaptcha("crear_cuenta");
+
+      // Validación final antes de enviar
+      if (Object.keys(errors).length > 0) {
+        window.notify?.("Corrija los errores del formulario", { type: "error" });
         setLoading(false);
         return;
       }
 
-      // Enviar el token al backend
       const res = await fetch(`${API_BASE}/registrar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken: captchaToken }),
+        body: JSON.stringify({ ...formData, recaptchaToken }),
       });
 
       const data = await res.json();
@@ -162,7 +158,7 @@ function CrearCuentaInner() {
           <div id="contenedorLogin2">
             <div className="contenedorLoginDatosUser">
               <form id="CrearCuentaForm" onSubmit={handleSubmit}>
-                <h2 className="contendorLoginFotoCrearUserAsist" style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: "0 0 8px 0" }}>
+                <h2 style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: "0 0 8px 0" }}>
                   Rellene los datos solicitados:
                 </h2>
 
@@ -270,11 +266,6 @@ function CrearCuentaInner() {
                   {errors.password && <div className="error-text">{errors.password}</div>}
                 </div>
 
-                {/* reCAPTCHA visible - siempre mostrado */}
-                <div className="recaptcha-wrapper" style={{ margin: "12px 0" }}>
-                  <ReCAPTCHA ref={captchaRef} sitekey={siteKey} onChange={handleCaptchaChange} onExpired={handleCaptchaExpired} />
-                </div>
-
                 <div className="botonesGroup">
                   <button type="submit" className="buttonCrearIniciarSesion" disabled={loading || Object.keys(errors).length > 0}>
                     {loading ? "Registrando..." : "Crear Cuenta"}
@@ -294,7 +285,7 @@ function CrearCuentaInner() {
   );
 }
 
-// ✅ Envolver todo con el Provider de reCAPTCHA v3
+// ✅ Provider de reCAPTCHA v3
 function CrearCuenta() {
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   return (

@@ -19,6 +19,7 @@ const app = initializeApp(firebaseConfig);
 
 // 🔐 Autenticación
 export const auth = getAuth(app);
+
 export const googleProvider = new GoogleAuthProvider();
 
 // 📊 Analytics (solo si el navegador lo soporta)

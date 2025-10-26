@@ -294,16 +294,17 @@ function validarRegistro(email, password, height, weight, age) {
   // si vino en metros -> cm
   if (height < 10) height = height * 100;
 
-  const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
-  if (!regexEmail.test(email)) errores.push("El correo debe contener letras y números válidos.");
-  if (email && email.length > 50) errores.push("El correo no puede superar los 50 caracteres.");
+  // Email: usar una validación más permisiva y estándar (no exigir dígitos en el correo)
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regexEmail.test(String(email || ''))) errores.push("El correo tiene un formato inválido.");
+  if (email && String(email).length > 50) errores.push("El correo no puede superar los 50 caracteres.");
 
   const regexPass = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
-  if (!regexPass.test(password)) errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
+  if (!regexPass.test(String(password || ''))) errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
 
-  if (age <= 15 || age >= 100) errores.push("La edad debe ser mayor a 15 y no puede superar los 100.");
-  if (weight <= 30 || weight >= 170) errores.push("El peso debe ser mayor a 30kg y no puede superar los 170kg.");
-  if (height <= 80 || height >= 250) errores.push("La altura debe ser mayor a 80 cm y no puede superar los 2,50m.");
+  if (isNaN(age) || age <= 15 || age >= 100) errores.push("La edad debe ser mayor a 15 y no puede superar los 100.");
+  if (isNaN(weight) || weight <= 30 || weight >= 170) errores.push("El peso debe ser mayor a 30kg y no puede superar los 170kg.");
+  if (isNaN(height) || height <= 80 || height >= 250) errores.push("La altura debe ser mayor a 80 cm y no puede superar los 2,50m.");
 
   return errores;
 }
@@ -326,8 +327,18 @@ app.post("/checkEmail", async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: "Falta email" });
 
-  const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
-    res.json({ exists: rows.length > 0 });
+    // Validar formato básico antes de consultar la base
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(String(email))) return res.status(400).json({ error: "Formato de email inválido" });
+
+    // Intentar consultar la base de datos
+    try {
+      const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
+      return res.json({ exists: rows.length > 0 });
+    } catch (dbErr) {
+      console.error("DB error en /checkEmail:", dbErr);
+      return res.status(500).json({ error: "Error al verificar email en la base de datos" });
+    }
   } catch (err) {
     console.error("/checkEmail error:", err);
     res.status(500).json({ error: "Error servidor" });
@@ -342,22 +353,25 @@ app.post("/registrar", async (req, res) => {
     const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
 
-    // Verify recaptcha token
+    // Verify recaptcha token only if secret configured (skip in local dev)
     const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '';
-    if (!recaptchaToken || !RECAPTCHA_SECRET) {
-      return res.status(400).json({ message: 'Falta verificación de captcha' });
-    }
-    try {
-      const r = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
-      });
-      const rr = await r.json();
-      if (!rr.success) return res.status(400).json({ message: 'Captcha inválido', details: rr });
-    } catch (e) {
-      console.error('Recaptcha verify error', e);
-      return res.status(500).json({ message: 'Error al verificar captcha' });
+    if (RECAPTCHA_SECRET) {
+      if (!recaptchaToken) return res.status(400).json({ message: 'Falta verificación de captcha' });
+      try {
+        const r = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
+        });
+        const rr = await r.json();
+        if (!rr.success) return res.status(400).json({ message: 'Captcha inválido', details: rr });
+      } catch (e) {
+        console.error('Recaptcha verify error', e);
+        return res.status(500).json({ message: 'Error al verificar captcha' });
+      }
+    } else {
+      // No secret configured -> likely dev environment. Skip recaptcha verification but log a warning.
+      console.warn('RECAPTCHA_SECRET no configurado; se omite verificación de captcha (entorno local)');
     }
 
     const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
