@@ -1,9 +1,19 @@
 {
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*",
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/public/(.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(.*)",
       "dest": "/index.html"
     }
   ]
 }
-
