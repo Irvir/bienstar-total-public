@@ -30,8 +30,39 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
     }
   }, [usuario]);
 
-  const startEdit = () => setEditMode(true);
-  const cancelEdit = () => setEditMode(false);
+  const startEdit = () => {
+    // Inicializar el formulario con los datos actuales del usuario
+    if (usuario) {
+      setForm({
+        nombre: usuario.nombre || "",
+        edad: usuario.edad ?? "",
+        peso: usuario.peso ?? "",
+        altura: usuario.altura ?? "",
+        actividad_fisica: usuario.actividad_fisica || "",
+        sexo: usuario.sexo || "",
+        email: usuario.email || "",
+        alergias: usuario.alergias || "",
+      });
+    }
+    setEditMode(true);
+  };
+
+  const cancelEdit = () => {
+    // Restaurar valores del formulario desde el usuario y salir del modo edición
+    if (usuario) {
+      setForm({
+        nombre: usuario.nombre || "",
+        edad: usuario.edad ?? "",
+        peso: usuario.peso ?? "",
+        altura: usuario.altura ?? "",
+        actividad_fisica: usuario.actividad_fisica || "",
+        sexo: usuario.sexo || "",
+        email: usuario.email || "",
+        alergias: usuario.alergias || "",
+      });
+    }
+    setEditMode(false);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

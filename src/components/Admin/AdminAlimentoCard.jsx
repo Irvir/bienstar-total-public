@@ -70,8 +70,15 @@ export default function AdminAlimentoCard({ alimento, onEditar, onEliminar }) {
 
       </div>
       <div className="admin-actions">
-        <button onClick={() => onEditar(alimento)}>Editar</button>
-        <button onClick={() => onEliminar(alimento.id, alimento.nombre)}>Eliminar</button>
+        <button className="action-btn action-btn--outline" title="Editar alimento" onClick={() => onEditar(alimento)} aria-label={`Editar ${alimento.nombre}`}>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="currentColor"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
+          <span className="sr-only">Editar</span>
+        </button>
+
+        <button className="action-btn action-btn--danger action-btn--small" title="Eliminar alimento" onClick={() => onEliminar(alimento.id, alimento.nombre)} aria-label={`Eliminar ${alimento.nombre}`}>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 3v1H4v2h16V4h-5V3H9zm1 5v9h2V8H10zM6 8v9h2V8H6zm10 0v9h2V8h-2z" fill="currentColor"/></svg>
+          <span className="sr-only">Eliminar</span>
+        </button>
       </div>
     </div>
   );

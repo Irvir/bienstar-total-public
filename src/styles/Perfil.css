@@ -317,37 +317,51 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Si hay inputs reales dentro, que hereden el estilo glass y mantengan legibilidad */
+/* Inputs en el formulario de edición: apariencia base y resaltado al enfocar.
+    IMPORTANTE: mantenemos la fuente y el tamaño de letra tal como están para preservar el diseño.
+*/
 #contenedorInfo input[type="text"],
 #contenedorInfo input[type="email"],
-#contenedorInfo input[type="number"] {
+#contenedorInfo input[type="number"],
+#contenedorInfo textarea {
     width: 100%;
-    border: none;
+    border: 1px solid rgba(255,255,255,0.06); /* subtle border by default */
     outline: none;
-    background: transparent;
-    /* ya está el glass en el contenedor */
-    font-size: 16px;
+    background: transparent; /* inherit the glass card behind */
+    /* keep the project's chosen font-size untouched */
     color: #111;
-    padding: 0;
-    /* evitar padding duplicado si el input está dentro de un span estilizado */
+    padding: 10px 12px; /* comfortable typing area */
+    border-radius: 10px;
+    transition: box-shadow 180ms ease, border 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
-/* foco accesible para inputs */
-#contenedorInfo input[type="text"]:focus,
-#contenedorInfo input[type="email"]:focus {
-    box-shadow: 0 6px 18px rgba(147, 21, 37, 0.12);
+/* Resaltado más fuerte al escribir (focus) — NO cambia la fuente ni el tamaño */
+#contenedorInfo input:focus,
+#contenedorInfo textarea:focus,
+#contenedorInfo input:focus-visible,
+#contenedorInfo textarea:focus-visible {
+    box-shadow: 0 12px 30px rgba(147, 21, 37, 0.22);
+    border: 1px solid rgba(147, 21, 37, 0.95);
+    background: rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
 }
 
-/* Si se usan inputs reales dentro de los spans, también darles estilo similar */
-#contenedorInfo input[type="text"],
-#contenedorInfo input[type="email"],
-#contenedorInfo input[type="number"] {
-    width: 100%;
-    border: none;
-    outline: none;
+/* color del placeholder (contraste) */
+#contenedorInfo input::placeholder,
+#contenedorInfo textarea::placeholder {
+    color: rgba(11, 18, 22, 0.45);
+}
+
+/* los inputs readonly se mantienen visualmente sutiles */
+#contenedorInfo input[readonly],
+#contenedorInfo input[disabled],
+#contenedorInfo textarea[readonly],
+#contenedorInfo textarea[disabled] {
     background: transparent;
-    font-size: 16px;
-    color: #222;
+    color: #111;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 /* Contenedor cerrar sesión */
