@@ -1,8 +1,13 @@
 {
+  "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
+    { 
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
@@ -18,5 +23,13 @@
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "DB_HOST": "sql10.freesqldatabase.com",
+    "DB_USER": "sql10804585",
+    "DB_PASSWORD": "YUdQg31RKf",
+    "DB_NAME": "sql10804585",
+    "DB_PORT": "3306",
+    "NODE_ENV": "production"
+  }
 }
