@@ -130,24 +130,24 @@ body {
 
 /* Fondos de los botones */
 .btn1 {
-    background-image: url("/public/Imagenes/Home/Crear_Horario.png");
+    background-image: url("/Imagenes/Home/Crear_Horario.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 .btn2 {
-    background-image: url("/public/Imagenes/Home/Dietas.png");
+    background-image: url("/Imagenes/Home/Dietas.png");
     font-size: 3vw;
 }
 
 .btn3 {
-    background-image: url("/public/Imagenes/Home/Calendario.png");
+    background-image: url("/Imagenes/Home/Calendario.png");
     font-size: 3vw;
 }
 
 .btn4 {
-    background-image: url("/public/Imagenes/Home/Alimentos2.png");
+    background-image: url("/Imagenes/Home/Alimentos2.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
@@ -158,7 +158,7 @@ body {
 /* 🔹 Ajusta este valor según lo que necesites */
 
 .btn5 {
-    background-image: url("/public/Imagenes/Home/Tips_Dieta4.png");
+    background-image: url("/Imagenes/Home/Tips_Dieta4.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
