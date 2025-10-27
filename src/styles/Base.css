@@ -113,17 +113,65 @@ html { font-size: 14px; }
     background-color: #f3f3f3;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Responsive Design System */
+/* Móviles pequeños */
+@media (max-width: 320px) {
+    html { 
+        font-size: 12px; 
+    }
+    
+    #cuerpo {
+        padding: 0.5rem;
+    }
+
+    .header-inner {
+        padding: 0.5rem;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Móviles medianos */
+@media (min-width: 321px) and (max-width: 375px) {
+    html { 
+        font-size: 13px; 
+    }
+    
+    #cuerpo {
+        padding: 0.6rem;
+    }
+}
+
+/* Móviles grandes */
+@media (min-width: 376px) and (max-width: 480px) {
+    html { 
+        font-size: 14px; 
+    }
+    
+    .footer-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+/* Tablets pequeñas */
+@media (min-width: 481px) and (max-width: 768px) {
     .header-inner {
         flex-wrap: wrap;
         justify-content: center;
+        padding: 0.8rem;
     }
 
     .menúBotones {
         order: 3;
         width: 100%;
         flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
     }
 
     .login {
@@ -133,12 +181,56 @@ html { font-size: 14px; }
     #cuerpo {
         padding: 0.8rem;
     }
+
+    .user-info {
+        font-size: 18px;
+        padding: 4px 10px;
+    }
 }
 
-@media (max-width: 480px) {
+/* Tablets grandes */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #cuerpo {
+        padding: 1rem;
+    }
+
+    .header-inner {
+        padding: 0 1rem;
+    }
+}
+
+/* Laptops y escritorios pequeños */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    html { 
+        font-size: 15px; 
+    }
+
+    #cuerpo {
+        padding: 1.2rem;
+    }
+}
+
+/* Escritorios grandes */
+@media (min-width: 1367px) {
+    html { 
+        font-size: 16px; 
+    }
+
+    #cuerpo {
+        padding: 1.5rem;
+    }
+
+    .header-inner,
     .footer-inner {
-        flex-direction: column;
-        align-items: center;
+        max-width: 1400px;
+    }
+}
+
+/* Orientación específica para dispositivos móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+    #cuerpo {
+        min-height: 100%;
+        height: auto;
     }
 }
 @keyframes bell-wiggle {
