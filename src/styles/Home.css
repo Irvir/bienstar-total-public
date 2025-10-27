@@ -130,7 +130,7 @@ body {
 
 /* Fondos de los botones */
 .btn1 {
-    background-image: url("/Imagenes/Home/Crear_Horario.png");
+    background-image: url("@images/Home/Crear_Horario.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
