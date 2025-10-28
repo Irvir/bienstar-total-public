@@ -20,7 +20,7 @@ const ALLOWED_ORIGINS = [
   'http://127.0.0.1:4000',
   'https://bienstar-total-public.vercel.app',
   "https://bienstar-total-public-ite6.vercel.app",
-  
+
 
 ];
 
@@ -352,7 +352,7 @@ app.post("/checkEmail", async (req, res) => {
 // Nueva arquitectura: id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta
 app.post("/registrar", async (req, res) => {
   try {
-    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias, recaptchaToken } = req.body;
+    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias, recaptchaToken, id_perfil } = req.body;
     const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
 
@@ -384,11 +384,13 @@ app.post("/registrar", async (req, res) => {
     const newDietId = dietInsert.insertId;
 
     const hash = await bcrypt.hash(password, 10);
+    // Si viene id_perfil desde el admin (Cuentas.jsx)(esperado 3 = Doctor). Si no, default 2 = Paciente.
+    const perfil = [2,3].includes(Number(id_perfil)) ? Number(id_perfil) : 2;
     const [userInsert] = await pool.query(
       `INSERT INTO usuario 
       (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, email, hash, altura, peso, edad, nivelActividad, sexo, 2, newDietId, "activo"]
+      [nombre, email, hash, altura, peso, edad, nivelActividad, sexo, perfil, newDietId, "activo"]
     );
 
     const newUserId = userInsert.insertId;
@@ -462,6 +464,7 @@ app.post("/login", async (req, res) => {
         altura: usuario.altura,
         peso: usuario.peso,
         edad: usuario.edad,
+        id_perfil: usuario.id_perfil,
         id_dieta: usuario.id_dieta,
         actividad_fisica: usuario.actividad_fisica || usuario.nivelActividad || null,
         sexo: usuario.sexo,

@@ -14,6 +14,7 @@ function Dietas() {
     const [selecting, setSelecting] = useState(false);
 
     const usuarioActual = useMemo(() => {
+
         try {
             const raw = localStorage.getItem("usuario");
             return raw ? JSON.parse(raw) : null;
@@ -108,7 +109,6 @@ function Dietas() {
                         const data = await ensure.json();
                         const ensuredId = data?.id_dieta;
                         if (ensuredId) {
-                            // Guardamos ambas claves por compatibilidad
                             user.id_dieta = ensuredId;
                             user.id_diet = ensuredId;
                             localStorage.setItem("usuario", JSON.stringify(user));
@@ -159,7 +159,7 @@ function Dietas() {
             return;
         }
 
-        // 🔹 Resolver nombre del paciente
+        //Nombre paciente
         let nombrePaciente = null;
         try {
             const usersRes = await fetch(`${API_BASE}/admin/users`);
@@ -174,7 +174,7 @@ function Dietas() {
             console.warn("No se pudo obtener nombre del paciente:", e);
         }
 
-        // 🔹 Guardar en localStorage para CrearDieta
+        // Guardar en localStorage para CrearDieta
         localStorage.setItem(
             "dietTarget",
             JSON.stringify({ email: emailSeleccion, id_dieta, nombre: nombrePaciente })
@@ -233,8 +233,9 @@ function Dietas() {
                     })}
                 </div>
 
-                {/* 🔹 Mostrar botón para todos los usuarios (antes solo doctores) */}
-                {usuarioActual && (
+                {/* Mostrar botón solo para doctores (id_perfil === 3) */}
+                
+                {usuarioActual?.id_perfil === 3 && (
                     <button
                         type="button"
                         id="BtnAsignarDieta"
@@ -251,7 +252,6 @@ function Dietas() {
             <Pie />
             <Loader visible={loading} />
 
-            {/* 🔹 Modal visible si showSelectUserModal = true */}
             {showSelectUserModal && (
                 <div className="modal-overlay" role="dialog" aria-modal="true">
                     <div className="modal-card">
