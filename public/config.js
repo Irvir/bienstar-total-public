@@ -21,7 +21,14 @@ if (!window.API_BASE) {
 			window.API_BASE = 'http://localhost:3001';
 		} else if (origin === VERCEL_HOST || (origin && origin.includes('vercel.app'))) {
 			// If running on Vercel (or similar), assume backend is same origin unless overridden
-			window.API_BASE = origin;
+			// BUT: if the build embedded a localhost API_BASE (dev build), override it at runtime
+			// to point to the deployed backend (Render) to avoid needing an immediate rebuild.
+			const RENDER_BACKEND = 'https://bienstar-total-public-1-i05q.onrender.com';
+			if (window.API_BASE && (window.API_BASE.includes('localhost') || window.API_BASE.includes('127.0.0.1'))) {
+				window.API_BASE = RENDER_BACKEND;
+			} else {
+				window.API_BASE = origin;
+			}
 		} else {
 			// Generic case: use origin if available, else fallback to localhost (safe)
 			window.API_BASE = origin || 'http://localhost:3001';
