@@ -18,7 +18,10 @@ const ALLOWED_ORIGINS = [
   'http://127.0.0.1:5173',
   'http://localhost:4000',
   'http://127.0.0.1:4000',
-  'https://bienstar-total-public.vercel.app'
+  'https://bienstar-total-public.vercel.app',
+  "https://bienstar-total-public-ite6.vercel.app",
+  
+
 ];
 
 app.use(cors({
