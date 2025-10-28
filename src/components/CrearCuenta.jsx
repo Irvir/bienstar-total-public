@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../styles/CrearCuenta.css";
 import Encabezado from "./Encabezado";
 import { API_BASE } from "./shared/apiBase";
@@ -7,10 +7,13 @@ import "../styles/Base.css";
 import "../styles/Pie.css";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function CrearCuentaInner() {
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const captchaRef = useRef(null);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   const [activePage, setActivePage] = useState("crearcuenta");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -31,19 +34,7 @@ function CrearCuentaInner() {
     const currentPage = window.location.pathname.split("/").pop() || "crearcuenta";
     setActivePage(currentPage);
   }, []);
-  useEffect(() => {
-    const testRecaptcha = async () => {
-      if (!executeRecaptcha) {
-        console.warn("reCAPTCHA aún no está listo");
-        return;
-      }
-      const token = await executeRecaptcha("test_action");
-      console.log("✅ Token reCAPTCHA generado:", token);
-    };
-
-    // Ejecuta el test solo una vez al montar
-    testRecaptcha();
-  }, [executeRecaptcha]);
+  // Nota: añadimos un reCAPTCHA visible (v2) más abajo en el formulario
 
   
   const showLoaderAndRedirect = (url) => {
@@ -121,24 +112,30 @@ function CrearCuentaInner() {
     }
   };
 
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
+
+  const handleCaptchaExpired = () => {
+    setCaptchaToken(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (!executeRecaptcha) {
-        window.notify?.("reCAPTCHA no está listo aún", { type: "error" });
+      // Requiere token del reCAPTCHA visible
+      if (!captchaToken) {
+        window.notify?.("Por favor complete el reCAPTCHA", { type: "error" });
         setLoading(false);
         return;
       }
 
-      // ✅ Obtener token invisible
-      const token = await executeRecaptcha("crear_cuenta");
-
-      // ✅ Enviar el token al backend
+      // Enviar el token al backend
       const res = await fetch(`${API_BASE}/registrar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken: token }),
+        body: JSON.stringify({ ...formData, recaptchaToken: captchaToken }),
       });
 
       const data = await res.json();
@@ -271,6 +268,11 @@ function CrearCuentaInner() {
                   Contraseña:<br />
                   <input id="password" type="password" value={formData.password} onChange={handleChange} onBlur={handleBlur} placeholder="Contraseña" required />
                   {errors.password && <div className="error-text">{errors.password}</div>}
+                </div>
+
+                {/* reCAPTCHA visible - siempre mostrado */}
+                <div className="recaptcha-wrapper" style={{ margin: "12px 0" }}>
+                  <ReCAPTCHA ref={captchaRef} sitekey={siteKey} onChange={handleCaptchaChange} onExpired={handleCaptchaExpired} />
                 </div>
 
                 <div className="botonesGroup">

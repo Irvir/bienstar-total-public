@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE } from "../shared/apiBase";
 import "../../styles/Perfil.css";
 
 export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
@@ -26,16 +25,44 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         actividad_fisica: usuario.actividad_fisica || "",
         sexo: usuario.sexo || "",
         email: usuario.email || "",
-        // store alergias as a comma-separated string in the edit form
-        alergias: Array.isArray(usuario.alergias)
-          ? (usuario.alergias.length ? usuario.alergias.join(', ') : '')
-          : (usuario.alergias || ""),
+        alergias: usuario.alergias || "",
       });
     }
   }, [usuario]);
 
-  const startEdit = () => setEditMode(true);
-  const cancelEdit = () => setEditMode(false);
+  const startEdit = () => {
+    // Inicializar el formulario con los datos actuales del usuario
+    if (usuario) {
+      setForm({
+        nombre: usuario.nombre || "",
+        edad: usuario.edad ?? "",
+        peso: usuario.peso ?? "",
+        altura: usuario.altura ?? "",
+        actividad_fisica: usuario.actividad_fisica || "",
+        sexo: usuario.sexo || "",
+        email: usuario.email || "",
+        alergias: usuario.alergias || "",
+      });
+    }
+    setEditMode(true);
+  };
+
+  const cancelEdit = () => {
+    // Restaurar valores del formulario desde el usuario y salir del modo edición
+    if (usuario) {
+      setForm({
+        nombre: usuario.nombre || "",
+        edad: usuario.edad ?? "",
+        peso: usuario.peso ?? "",
+        altura: usuario.altura ?? "",
+        actividad_fisica: usuario.actividad_fisica || "",
+        sexo: usuario.sexo || "",
+        email: usuario.email || "",
+        alergias: usuario.alergias || "",
+      });
+    }
+    setEditMode(false);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,40 +101,36 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
       altura: form.altura === "" ? null : Number(form.altura < 10 ? form.altura * 100 : form.altura),
       actividad_fisica: form.actividad_fisica,
       sexo: form.sexo,
-      // convert comma-separated string into array for the API
-      alergias: (typeof form.alergias === 'string' && form.alergias.trim() !== '')
-        ? form.alergias.split(',').map(s => s.trim()).filter(Boolean)
-        : [],
+      alergias: form.alergias,
     };
 
     try {
       if (usuario?.id) {
-          const res = await fetch(`${API_BASE}/user/${usuario.id}`, {
+        const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
         if (res.ok) {
-            const data = await res.json();
-            const updatedUser = data.usuario; // extraemos solo la propiedad usuario
-            onActualizarUsuario?.(updatedUser);
-          
-            setForm({
-                nombre: updatedUser.nombre || "",
-                edad: updatedUser.edad ?? "",
-                peso: updatedUser.peso ?? "",
-                altura: updatedUser.altura ?? "",
-                actividad_fisica: updatedUser.actividad_fisica || "",
-                sexo: updatedUser.sexo || "",
-                email: updatedUser.email || "",
-                // updatedUser.alergias comes as an array from the server; convert to string for the form
-                alergias: Array.isArray(updatedUser.alergias) ? (updatedUser.alergias.length ? updatedUser.alergias.join(', ') : '') : (updatedUser.alergias || ""),
-              });
-              
-            window.notify?.("Perfil actualizado", { type: "success" });
-            setEditMode(false);
-          } else {
+          const data = await res.json();
+          const updatedUser = data.usuario; // extraemos solo la propiedad usuario
+          onActualizarUsuario?.(updatedUser);
+
+          setForm({
+            nombre: updatedUser.nombre || "",
+            edad: updatedUser.edad ?? "",
+            peso: updatedUser.peso ?? "",
+            altura: updatedUser.altura ?? "",
+            actividad_fisica: updatedUser.actividad_fisica || "",
+            sexo: updatedUser.sexo || "",
+            email: updatedUser.email || "",
+            alergias: updatedUser.alergias || "",
+          });
+
+          window.notify?.("Perfil actualizado", { type: "success" });
+          setEditMode(false);
+        } else {
           const err = await res.json().catch(() => ({}));
           window.notify?.(err.message || "No se pudo actualizar", { type: "error" });
         }
@@ -211,17 +234,32 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         </div>
       </div>
 
+      <div id="contenedorCerrarSesion">
+        <button id="cerrarSesion" onClick={handleCerrarSesion}>CERRAR SESIÓN</button>
+      </div>
+
       <div id="contenedorBorrarCuenta">
-        <div id="contenedorCerrarSesion">
-          <button id="cerrarSesion" className="perfil-btn perfil-btn--secondary" onClick={handleCerrarSesion} aria-label="Cerrar sesión">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z" fill="currentColor"/></svg>
-            <span>CERRAR SESIÓN</span>
-          </button>
-        </div>
-        <button id="borrarCuenta" className="perfil-btn perfil-btn--danger" onClick={handleBorrarCuenta} aria-label="Borrar cuenta">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 3v1H4v2h16V4h-5V3H9zm1 5v9h2V8H10zM6 8v9h2V8H6zm10 0v9h2V8h-2z" fill="currentColor"/></svg>
-          <span>BORRAR CUENTA</span>
-        </button>
+        <button
+          id="borrarCuenta"
+          onClick={() => {
+            if (typeof window.notifyConfirm === 'function') {
+              window.notifyConfirm(
+                '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
+                { type: 'error', duration: 0 },
+                async () => {
+                  // reproducir sonido y ejecutar la eliminación
+                  await handleBorrarCuenta();
+                },
+                () => {
+                  // cancelado
+                }
+              );
+            } else {
+              // fallback: si no existe notifyConfirm, ejecutar directamente (equivalente al comportamiento previo)
+              handleBorrarCuenta();
+            }
+          }}
+        >BORRAR CUENTA</button>
       </div>
     </div>
   );

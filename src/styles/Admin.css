@@ -50,6 +50,20 @@
 .admin-card .action-btn--small{padding:6px 8px;font-size:0.85rem}
 .admin-card .action-btn svg{width:18px;height:18px}
 
+/* Compat: botones simples dentro de <div class="admin-actions"> */
+.admin-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.admin-actions button{
+    padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);
+    background:linear-gradient(180deg,#fff,#fbfbfd);cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    font-weight:600;color:var(--accent-strong);transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
+}
+.admin-actions button:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(2,6,23,0.06)}
+.admin-actions button:active{transform:translateY(0)}
+
+/* variantes por posición: 1 = editar, 2 = eliminar */
+.admin-actions button:nth-child(1){background:linear-gradient(180deg,#E6F6FF,#D1EEFF);color:#064B78;border-color:rgba(10,116,195,0.12)}
+.admin-actions button:nth-child(2){background:linear-gradient(180deg,#FFECEC,#FFD1D1);color:#7A1C1C;border-color:rgba(192,57,43,0.10)}
+
 /* modal (keep existing behavior but modernized) */
 .modal-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.5);z-index:2000}
 .admin-modal{width:92%;max-width:880px;background:var(--card);border-radius:14px;padding:20px;box-shadow:0 18px 60px rgba(2,6,23,0.14)}
@@ -62,6 +76,27 @@
 .modal-buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
 .btn-cancel{background:#f3f4f6;color:#333;border:none;padding:8px 12px;border-radius:8px}
 .btn-save{background:linear-gradient(180deg,#0A74C3,#055a9a);color:white;border:none;padding:8px 12px;border-radius:8px}
+
+/* Styles for the editar modal: group fields and responsive grids */
+.modal-editar h2{margin:0 0 12px 0;font-family:Montserrat, sans-serif;color:var(--accent-strong)}
+.nutri-section{margin-top:12px;display:block;gap:16px}
+.nutri-section__title{font-size:1rem;margin:12px 0 8px;color:var(--accent-strong);font-weight:700}
+.nutri-grid{display:grid;gap:10px;margin-bottom:8px}
+.nutri-grid--macros{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.nutri-grid--vitamins{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.nutri-grid--minerals{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.nutri-grid--otros{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.nutri-item label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:6px}
+.nutri-item input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #e6e6e6}
+
+/* Make the modal form scrollable on small screens if many fields */
+.modal-form{max-height:65vh;overflow:auto;padding-right:6px}
+
+@media(max-width:720px){
+    .nutri-grid--macros{grid-template-columns:repeat(2,1fr)}
+    .nutri-grid--vitamins{grid-template-columns:repeat(2,1fr)}
+    .nutri-grid--minerals{grid-template-columns:repeat(2,1fr)}
+}
 
 /* responsive tweaks */
 @media(max-width:920px){

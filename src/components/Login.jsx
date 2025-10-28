@@ -5,6 +5,9 @@ import Encabezado from "./Encabezado";
 import Loader from "./Loader.jsx";
 import withAuth from "../components/withAuth";
 import { API_BASE } from "./shared/apiBase";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../controllers/firebase.js";
+
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -70,6 +73,17 @@ function Login() {
     } catch (err) {
       console.warn("Error admin shortcut check", err);
     }
+    const handleLogin = () => {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          const user = result.user;
+          console.log("Usuario logueado:", user);
+          // Aquí puedes guardar el usuario en estado o redirigir
+        })
+        .catch((error) => {
+          console.error("Error al iniciar sesión:", error);
+        });
+    };
 
     try {
   const response = await fetch(`${API_BASE}/login`, {
@@ -140,6 +154,34 @@ function Login() {
       setLoading(false);
     }
   };
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log("Usuario logueado con Google:", user);
+
+      // Puedes guardar al usuario en localStorage (igual que con el login normal)
+      const googleUser = {
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      };
+      localStorage.setItem("usuario", JSON.stringify(googleUser));
+
+      // Redirige o muestra mensaje
+      notifyThenRedirect(
+        `Bienvenido ${user.displayName}`,
+        { type: "success", duration: 1500 },
+        "/",
+        setLoading
+      );
+    } catch (error) {
+      console.error("Error al iniciar sesión con Google:", error);
+      window.notify("Error al iniciar sesión con Google", { type: "error" });
+    }
+  };
+
 
   return (
     <div className="login-page">
@@ -190,6 +232,12 @@ function Login() {
                   >
                     Crear Cuenta
                   </button>
+                  <br />
+                  <button onClick={handleGoogleLogin}>
+                    Iniciar sesión con Google
+                  </button>
+
+
                 </form>
               </div>
             </div>

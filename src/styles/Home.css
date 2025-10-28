@@ -1,16 +1,14 @@
-html,
 body {
     height: 100%;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
-        font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 /* ==============================
-   PANTALLA DE CARGA
+    PANTALLA DE CARGA (Mantengo tu código original)
 ============================== */
-/* Contenedor principal del loader (pantalla de carga) */
 #loader {
     display: none;
     /* Solo esta línea */
@@ -26,7 +24,7 @@ body {
     justify-content: center;
     flex-direction: column;
 }
-/* Texto principal del loader */
+
 .loader-text {
     font-size: 1.25rem;
     /* Tamaño del texto */
@@ -40,7 +38,6 @@ body {
     flex-direction: column;
 }
 
-/* Contenedor de las imágenes de frutas animadas */
 .loader-dots {
     display: inline-flex;
     align-items: center;
@@ -55,7 +52,6 @@ body {
 
 }
 
-/* Estilo de las imágenes de frutas */
 .loader-dots img {
     width: 35px;
     height: 35px;
@@ -63,7 +59,6 @@ body {
     animation: fruitDots 1.5s infinite;
 }
 
-/* Delay para que aparezcan una por una */
 .loader-dots img:nth-child(1) {
     animation-delay: 0s;
 }
@@ -76,7 +71,6 @@ body {
     animation-delay: 0.6s;
 }
 
-/* Animación de las frutas */
 @keyframes fruitDots {
 
     0%,
@@ -93,7 +87,7 @@ body {
 }
 
 /* ==============================
-   CUERPO PRINCIPAL
+    CUERPO PRINCIPAL (Mantengo tu código original)
 ============================== */
 #cuerpo {
     display: flex;
@@ -131,8 +125,8 @@ body {
 .btn1 {
     background-image: url("/public/Imagenes/Home/Crear_Horario.png");
     background-size: 100% 100% !important;
-        background-repeat: no-repeat;
-        background-position: center;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .btn2 {
@@ -151,22 +145,27 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     flex: 0 0 30% !important;
+    /* ancho fijo dentro de flex */
 }
 
 .btn5 {
-    background-image: url("/public/Imagenes/Home/Tips_Dieta2.png");
+    background-image: url("/public/Imagenes/Home/Tips_Dieta4.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
-    flex: 0 0 30% !important; 
+    flex: 0 0 30% !important;
+    /* ancho fijo dentro de flex */
 }
+
+/* ⚠️ ELIMINÉ ESTOS HOVER QUE ESTABAN DUPLICADOS y eran muy genéricos
 .contenedorIzq button:hover,
 .contenedorDer button:hover {
     opacity: 0.8;
 }
+*/
 
 /* ==============================
-   RESPONSIVO
+    RESPONSIVO (Mantengo tu código original)
 ============================== */
 @media (max-width: 768px) {
 
@@ -199,6 +198,7 @@ body {
         font-size: 2vw;
     }
 }
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -215,6 +215,10 @@ body {
 .contenedorDer button {
     animation: fadeInUp 0.6s ease forwards;
 }
+
+/* ==============================
+    ESTILOS DE LA BOTONERA PRINCIPAL (MEJORADOS)
+============================== */
 .botonera {
     display: flex;
     flex-wrap: wrap;
@@ -222,61 +226,59 @@ body {
     align-items: stretch;
     gap: 1rem;
     padding: 2rem;
+    padding-left: 180px; /* Mantengo tu padding específico */
 }
 
+/* Propiedades generales de los botones dentro de .botonera */
 .botonera button {
     flex: 1 1 calc(33.333% - 1rem);
     min-height: 160px;
     min-width: 260px;
-    border: none;
     border-radius: 50px;
     color: white;
     font-weight: bold;
     cursor: pointer;
     background-size: cover;
     background-position: center;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
     font-size: 1.4vw;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.botonera button:hover {
-    transform: scale(1.08);
-    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.5);
-}
-/* 🔴 Resaltado más intenso para botones */
-.botonera button {
-    border: 3px solid #f5f5f5;
-    /* rojo vibrante */
-    box-shadow: 2px 4px 8px rgba(214, 40, 40, 0.6);
-    /* sombra con tinte rojo */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 3px solid transparent; /* base transparente */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
+    animation: fadeInUp 0.6s ease forwards;
 }
 
-/* 🔴 Efecto hover más llamativo */
+/* Hover general (sombra y elevación) */
 .botonera button:hover {
-    transform: scale(1.08);
-    box-shadow: 4px 6px 14px rgba(214, 40, 40, 0.8);
-    /* sombra más intensa */
-    border-color: #ff0000;
-    /* rojo puro al pasar el mouse */
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* ✨ Animación de resplandor (opcional) */
+.botonera button:active {
+    transform: scale(1.02) translateY(1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
 @keyframes glowPulse {
-    0% {
-        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
-    }
-
-    50% {
-        box-shadow: 0 0 15px rgba(214, 40, 40, 0.9);
-    }
-
-    100% {
-        box-shadow: 0 0 5px rgba(214, 40, 40, 0.5);
-    }
+    0% { box-shadow: 0 0 5px rgba(82,74,77,0.5); }
+    50% { box-shadow: 0 0 20px rgba(82,74,77,0.9); }
+    100% { box-shadow: 0 0 5px rgba(82,74,77,0.5); }
 }
 
 .botonera button:focus {
+    transform: scale(1.05);
     animation: glowPulse 1.5s infinite;
     outline: none;
 }
+
+/* BORDE Y HOVER ESPECÍFICOS: mayor especificidad para evitar ser sobreescritos */
+.botonera button.btn1 { border-color: #92b8d0; }
+.botonera button.btn2 { border-color: #9cd484; }
+.botonera button.btn3 { border-color: #659a9e; }
+.botonera button.btn4 { border-color: #3b6d40; }
+.botonera button.btn5 { border-color: #42b7b5; }
+
+.botonera button.btn1:hover { border-color: #4c87ac; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(76,135,172,0.7); }
+.botonera button.btn2:hover { border-color: #70c451; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(112,196,81,0.7); }
+.botonera button.btn3:hover { border-color: #45787b; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(69,120,123,0.7); }
+.botonera button.btn4:hover { border-color: #2a522d; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(42,82,45,0.7); }
+.botonera button.btn5:hover { border-color: #279e9c; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(39,158,156,0.7); }

@@ -26,12 +26,28 @@ Estas son las dependencias usadas por el proyecto (ya aparecen en `package.json`
 - runtime (backend): express, mysql2, cors, bcrypt
 - front-end: react, react-dom, react-router-dom, vite
 - dev: vite, @vitejs/plugin-react, eslint, gh-pages (opcional)
+Nuevas dependencias añadidas en esta rama / cambios recientes:
 
-Para instalarlas (desde la raíz del repo):
+- dotenv — para cargar variables de entorno en el servidor (backend)
+- firebase — utilidades de Firebase (autenticación con Google vía popup)
+- react-google-recaptcha-v3 — reCAPTCHA v3 client-side (token invisible)
+- multer — subida de archivos en backend (imagenes)
+
+Dependencias principales (resumen):
+
+- Backend: express, mysql2, cors, bcrypt, multer, dotenv, cookie
+- Frontend: react, react-dom, react-router-dom, firebase, react-google-recaptcha-v3
+- Dev: vite, @vitejs/plugin-react, eslint, gh-pages (opcional)
+
+Instalación rápida (desde la raíz del repo)
+
+Ejecuta este comando en una terminal (cmd.exe o PowerShell) para instalar las dependencias necesarias de una sola vez:
 
 ```powershell
-npm install
+npm install express mysql2 cors bcrypt multer dotenv react react-dom react-router-dom firebase react-google-recaptcha-v3 && npm install --save-dev vite @vitejs/plugin-react @eslint/js eslint eslint-plugin-react-hooks eslint-plugin-react-refresh gh-pages globals cookie
 ```
+
+Si prefieres usar `npm install` simple (ya lee `package.json`) también funciona, pero el comando anterior garantiza que tengas todas las dependencias nuevas listadas aquí instaladas inmediatamente.
 
 ---
 
