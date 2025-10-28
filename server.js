@@ -13,43 +13,64 @@ dotenv.config();
 const app = express();
 const router = express.Router();
 
+// Configure allowed origins. Keep a small whitelist but allow any vercel.app subdomain
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:4000',
   'http://127.0.0.1:4000',
-  'https://bienstar-total-public.vercel.app',
-  'https://bienstar-total-public-danieliwis-sama.vercel.app',
-  'https://bienstar-total-public-rho.vercel.app'
+  'https://bienstar-total-public.vercel.app'
 ];
 
-app.use(cors({
+// CORS middleware: allow localhost, any *.vercel.app (preview domains) and explicit whitelist
+const corsOptions = {
   origin: (origin, callback) => {
-    // Allow non-browser requests (no origin)
+    // Allow server-to-server or curl requests with no origin
     if (!origin) return callback(null, true);
 
-    // Exact whitelist
+    // Allow localhost / 127.0.0.1 on any port during development
+    const localhostPattern = /^https?:\/\/((localhost|127\.0\.0\.1))(\:\d+)?$/i;
+    if (localhostPattern.test(origin)) return callback(null, true);
+
+    // Allow any vercel preview / production domain
+    try {
+      const url = new URL(origin);
+      if (url.hostname && url.hostname.endsWith('.vercel.app')) return callback(null, true);
+    } catch (e) {
+      // ignore
+    }
+
+    // Exact whitelist (fallback)
     if (ALLOWED_ORIGINS.indexOf(origin) !== -1) return callback(null, true);
 
-    // Allow localhost / 127.0.0.1 on any port during development
-    const localhostPattern = /^https?:\/\/(?:localhost|127\.0\.0\.1)(:\d+)?$/i;
-    if (localhostPattern.test(origin)) return callback(null, true);
+    // Optionally allow a domain provided via env (useful for dynamic deploys)
+    if (process.env.ALLOWED_ORIGIN && origin === process.env.ALLOWED_ORIGIN) return callback(null, true);
 
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   optionsSuccessStatus: 204
-}));
+};
 
+app.use(cors(corsOptions));
 
+// Explicitly handle preflight OPTIONS for all routes to ensure CORS headers are present
+app.options('*', cors(corsOptions));
+
+// Add common CORS headers (in case some other middleware/path returns early)
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  const localhostPattern = /^https?:\/\/(?:localhost|127\.0\.0\.1)(:\d+)?$/i;
-  if (origin && (ALLOWED_ORIGINS.indexOf(origin) !== -1 || localhostPattern.test(origin))) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+  if (origin) {
+    // allow vercel subdomains and localhost via the same logic above
+    const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+    if (localhostPattern.test(origin) || origin.endsWith('.vercel.app') || ALLOWED_ORIGINS.indexOf(origin) !== -1 || (process.env.ALLOWED_ORIGIN && origin === process.env.ALLOWED_ORIGIN)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
