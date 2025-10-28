@@ -1006,12 +1006,17 @@ app.post("/delete-diet-item", async (req, res) => {
 
 
 // --- Servir frontend en producción ---
-if (process.env.NODE_ENV === "production") {
+/**
+ * if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "dist")));
-  app.get(/^\/(?!admin).*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
-  });
-}
+  app.get(/^\/(?!admin).*///, (req, res) => {
+    //res.sendFile(path.join(__dirname, "dist", "index.html"));
+  //});
+//}
+/*/*/
+  
+
+
 // --- Iniciar servidor ---
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
