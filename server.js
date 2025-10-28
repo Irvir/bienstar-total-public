@@ -52,25 +52,32 @@ const corsOptions = {
   optionsSuccessStatus: 204
 };
 
+// Aplicar CORS a todas las rutas y manejar preflight automáticamente
 app.use(cors(corsOptions));
 
-// Explicitly handle preflight OPTIONS for all routes to ensure CORS headers are present
-app.options('*', cors(corsOptions));
-
-// Add common CORS headers (in case some other middleware/path returns early)
+// Middleware para asegurar headers CORS en todas las respuestas
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (origin) {
-    // allow vercel subdomains and localhost via the same logic above
-    const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
-    if (localhostPattern.test(origin) || origin.endsWith('.vercel.app') || ALLOWED_ORIGINS.indexOf(origin) !== -1 || (process.env.ALLOWED_ORIGIN && origin === process.env.ALLOWED_ORIGIN)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-      res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Allow localhost / 127.0.0.1 on any port during development
+  const localhostPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+  const isAllowed = !origin || // permitir sin origen (ej: Postman)
+    localhostPattern.test(origin) || // localhost/127.0.0.1
+    origin.endsWith('.vercel.app') || // dominios de vercel
+    ALLOWED_ORIGINS.includes(origin) || // lista exacta
+    (process.env.ALLOWED_ORIGIN && origin === process.env.ALLOWED_ORIGIN); // env opcional
+
+  if (isAllowed) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    
+    // Handle preflight
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
     }
   }
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
