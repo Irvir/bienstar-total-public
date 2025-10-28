@@ -11,6 +11,7 @@ import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recapt
 
 function CrearCuentaInner() {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const [recaptchaReady, setRecaptchaReady] = useState(false);
   const [activePage, setActivePage] = useState("crearcuenta");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -35,14 +36,28 @@ function CrearCuentaInner() {
     const testRecaptcha = async () => {
       if (!executeRecaptcha) {
         console.warn("reCAPTCHA aún no está listo");
+        setRecaptchaReady(false);
         return;
       }
-      const token = await executeRecaptcha("test_action");
-      console.log("✅ Token reCAPTCHA generado:", token);
+      // Indicar que ya está listo para uso real
+      setRecaptchaReady(true);
+
+      // Test opcional: no es necesario en producción, pero ayuda a depurar
+      try {
+        const token = await executeRecaptcha("test_action");
+        console.log("✅ Token reCAPTCHA generado:", token);
+      } catch (e) {
+        console.warn('Error generando token de prueba reCAPTCHA', e);
+      }
     };
 
     // Ejecuta el test solo una vez al montar
     testRecaptcha();
+  }, [executeRecaptcha]);
+
+  // Asegurarnos de actualizar el estado cuando executeRecaptcha cambie
+  useEffect(() => {
+    setRecaptchaReady(!!executeRecaptcha);
   }, [executeRecaptcha]);
 
   
@@ -274,9 +289,19 @@ function CrearCuentaInner() {
                 </div>
 
                 <div className="botonesGroup">
-                  <button type="submit" className="buttonCrearIniciarSesion" disabled={loading || Object.keys(errors).length > 0}>
+                  <button
+                    type="submit"
+                    className="buttonCrearIniciarSesion"
+                    disabled={loading || Object.keys(errors).length > 0 || !recaptchaReady}
+                    title={!recaptchaReady ? 'reCAPTCHA cargando, espere...' : undefined}
+                  >
                     {loading ? "Registrando..." : "Crear Cuenta"}
                   </button>
+                  {!recaptchaReady && (
+                    <div style={{ marginTop: 8, color: '#d97706', fontSize: 13 }}>
+                      reCAPTCHA cargando, espere un momento antes de enviar.
+                    </div>
+                  )}
                   <button type="button" className="buttonCrearIniciarSesion" onClick={() => showLoaderAndRedirect("/login")}>
                     Iniciar Sesión
                   </button>

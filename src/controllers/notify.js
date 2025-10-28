@@ -25,8 +25,10 @@
 
   function playSound(type = 'info') {
     try {
-      let soundPath = '/public/Sonidos/Notification.mp3';
-      if (type === 'error') soundPath = '/public/Sonidos/NotificationError.mp3';
+      // En producción Vite sirve los archivos de `public/` en la raíz del sitio,
+      // por lo que no debemos incluir "public" en la ruta.
+      let soundPath = '/Sonidos/Notification.mp3';
+      if (type === 'error') soundPath = '/Sonidos/NotificationError.mp3';
 
       const audio = new Audio(soundPath);
       audio.volume = type === 'error' ? 0.6 : 0.5;
