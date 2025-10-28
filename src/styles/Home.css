@@ -226,7 +226,7 @@ body {
     align-items: stretch;
     gap: 1rem;
     padding: 2rem;
-    padding-left: 180px; /* Mantengo tu padding específico */
+    padding-left: 6%; /* Mantengo tu padding específico */
 }
 
 /* Propiedades generales de los botones dentro de .botonera */

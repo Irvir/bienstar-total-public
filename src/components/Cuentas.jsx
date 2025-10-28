@@ -70,7 +70,7 @@ export default function Cuentas() {
 			} else {
 				// create: force id_perfil = 3 (Doctor), and no alergias
 				const payload = { ...form, id_perfil: 3, alergias: [] };
-				const res = await fetch(`${API_BASE}/admin/users`, {
+				const res = await fetch(`${API_BASE}/registrar`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(payload),
