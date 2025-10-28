@@ -678,11 +678,11 @@ app.post("/ensure-diet", async (req, res) => {
     let id_dieta = u.id_dieta;
 
     if (!id_dieta || id_dieta === 1) {
-      const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
+      const [dietInsert] = await pool.query("INSERT INTO dieta (nombre) VALUES (?)", [
         `Dieta de ${u.nombre || u.email}`
       ]);
       id_dieta = dietInsert.insertId;
-      await pool.query("UPDATE user SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
+      await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
     }
 
     res.json({ id_dieta });
@@ -940,7 +940,7 @@ app.post("/clear-day", async (req, res) => {
 
     // Buscar el día
     const [dayRows] = await pool.query(
-      "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
+      "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
       [idDietNum, diaNum]
     );
     if (dayRows.length === 0) {
@@ -950,19 +950,19 @@ app.post("/clear-day", async (req, res) => {
     const id_day = dayRows[0].id;
 
     // Buscar comidas del día
-    const [mealRows] = await pool.query("SELECT id FROM meal WHERE id_day = ?", [id_day]);
+    const [mealRows] = await pool.query("SELECT id FROM comida WHERE id_dia = ?", [id_day]);
 
     if (mealRows.length > 0) {
       const mealIds = mealRows.map(r => r.id);
 
       // Inactivar alimentos relacionados
       await pool.query(
-        `UPDATE meal_food SET estado = 'inactivo' WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`,
+        `UPDATE comida_alimento SET estado = 'inactivo' WHERE id_comida IN (${mealIds.map(() => '?').join(',')})`,
         mealIds
       );
 
       // Inactivar comidas
-      await pool.query("UPDATE meal SET estado = 'inactivo' WHERE id_day = ?", [id_day]);
+      await pool.query("UPDATE comida SET estado = 'inactivo' WHERE id_dia = ?", [id_day]);
     }
 
     res.json({ success: true, message: "Día inactivado correctamente" });
@@ -984,7 +984,7 @@ app.post("/delete-diet-item", async (req, res) => {
 
     // Buscar el día
     const [dayRows] = await pool.query(
-      "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
+      "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
       [idDietNum, diaNum]
     );
     if (dayRows.length === 0) {
@@ -993,9 +993,9 @@ app.post("/delete-diet-item", async (req, res) => {
 
     const id_day = dayRows[0].id;
 
-    // Buscar la comida (meal)
+    // Buscar la comida
     const [mealRows] = await pool.query(
-      "SELECT id FROM meal WHERE id_day = ? AND type = ?",
+      "SELECT id FROM comida WHERE id_dia = ? AND tipo = ?",
       [id_day, tipoComida]
     );
     if (mealRows.length === 0) {
@@ -1006,7 +1006,7 @@ app.post("/delete-diet-item", async (req, res) => {
 
     // Verificar si el alimento existe
     const [checkRows] = await pool.query(
-      "SELECT * FROM meal_food WHERE id_meal = ? AND id_food = ? AND estado = 'activo'",
+      "SELECT * FROM comida_alimento WHERE id_comida = ? AND id_alimento = ? AND estado = 'activo'",
       [id_meal, idFoodNum]
     );
     if (checkRows.length === 0) {
@@ -1015,7 +1015,7 @@ app.post("/delete-diet-item", async (req, res) => {
 
     // Inactivar el alimento
     await pool.query(
-      "UPDATE meal_food SET estado = 'inactivo' WHERE id_meal = ? AND id_food = ?",
+      "UPDATE comida_alimento SET estado = 'inactivo' WHERE id_comida = ? AND id_alimento = ?",
       [id_meal, idFoodNum]
     );
 
@@ -1028,14 +1028,13 @@ app.post("/delete-diet-item", async (req, res) => {
 
 
 // --- Servir frontend en producción ---
-/**
- * if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "dist")));
-  app.get(/^\/(?!admin).*///, (req, res) => {
-    //res.sendFile(path.join(__dirname, "dist", "index.html"));
-  //});
-//}
-/*/*/
+// NOTA: En producción se sirve separado en Vercel
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "dist")));
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "dist", "index.html"));
+//   });
+// }
   
 
 
