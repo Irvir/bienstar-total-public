@@ -7,8 +7,9 @@ import withAuth from "../components/withAuth";
 import { API_BASE } from "./shared/apiBase";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../controllers/firebase.js";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
-function Login() {
+function LoginInner() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("Invitado");
@@ -16,6 +17,8 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("usuario");
@@ -68,6 +71,8 @@ function Login() {
     setLoading(true);
 
     try {
+    
+
       const emailNormalized = email.trim().toLowerCase();
 
       // Atajo para admin2025
@@ -157,6 +162,8 @@ function Login() {
     }
   };
 
+
+
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -169,6 +176,27 @@ function Login() {
         photoURL: user.photoURL,
       };
       localStorage.setItem("usuario", JSON.stringify(googleUser));
+
+      // Generar token reCAPTCHA al crear/iniciar sesión con Google y enviarlo a la consola
+      try {
+        if (executeRecaptcha) {
+          const token = await executeRecaptcha("google_signup");
+          console.log("reCAPTCHA token (google signup):", token);
+        } else if (window.grecaptcha && window.grecaptcha.execute) {
+          // fallback si por alguna razón el provider no está disponible
+          try {
+            await new Promise((res) => window.grecaptcha.ready(res));
+            const fallbackToken = await window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY || "", { action: "google_signup" });
+            console.log("reCAPTCHA token (google signup fallback):", fallbackToken);
+          } catch (ferr) {
+            console.warn("No se pudo generar token reCAPTCHA en fallback:", ferr);
+          }
+        } else {
+          console.warn("executeRecaptcha no disponible; no se generó token reCAPTCHA para Google signup");
+        }
+      } catch (e) {
+        console.warn("Error al generar token reCAPTCHA tras login con Google:", e);
+      }
 
       // 🔹 Imprimir si es doctor (id_perfil = 3)
       if (googleUser.id_perfil === 3) {
@@ -208,6 +236,7 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
+                  {/* No mostramos ni generamos manualmente el token en la UI por seguridad. */}
                   <input
                     type="password"
                     placeholder="Contraseña"
@@ -221,6 +250,10 @@ function Login() {
                   <button type="submit" id="botonIngresar">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
+
+                  <br />
+
+                  {/* Token no mostrado en UI (ya no se guarda en estado). */}
 
                   <br />
 
@@ -246,6 +279,16 @@ function Login() {
 
       <Loader visible={loading} />
     </div>
+  );
+}
+
+// Provider wrapper para reCAPTCHA v3
+function Login() {
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={siteKey}>
+      <LoginInner />
+    </GoogleReCaptchaProvider>
   );
 }
 
