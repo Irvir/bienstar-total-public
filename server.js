@@ -85,220 +85,13 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
-// --- POST crear alimento ---
-app.post("/admin/foods", async (req, res) => {
-  try {
-    const {
-      nombre,
-      Energia,
-      Humedad,
-      Cenizas,
-      Proteinas,
-      H_de_C_disp,
-      Azucares_totales,
-      Fibra_dietetica_total,
-      Lipidos_totales,
-      Ac_grasos_totales,
-      Ac_grasos_poliinsat,
-      Ac_grasos_trans,
-      Colesterol,
-      Vitamina_A,
-      Vitamina_C,
-      Vitamina_D,
-      Vitamina_E,
-      Vitamina_K,
-      Vitamina_B1,
-      Vitamina_B2 ,
-      Niacina,
-      Vitamina_B6,
-      Ac_pantotenico,
-      Vitamina_B12,
-      Folatos,
-      Sodio,
-      Potasio,
-      Calcio,
-      Fosforo,
-      Magnesio,
-      Hierro,
-      Zinc,
-      Cobre,
-      Selenio
-    } = req.body;
-
-    const [result] = await pool.query(
-      `INSERT INTO alimento (nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio]
-    );
-
-    res.json({ message: "Alimento creado correctamente", id: result.insertId });
-  } catch (err) {
-    console.error("POST /admin/foods error:", err);
-    res.status(500).json({ error: "Error al crear alimento" });
-  }
-});
-
-// --- Ruta subir imagen ---
-app.post("/admin/foods/upload-image", upload.single("image"), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No se subió la imagen" });
-  res.json({ image_url: `/uploads/${req.file.filename}` });
-});
-
-// --- GET todos los alimentos con image_url ---
-app.get("/admin/foods", async (req, res) => {
-  try {
-    const [rows] = await pool.query("SELECT * FROM alimento");
-    const normalized = rows.map(r => {
-      const image = r.image_url || null;
-      return { ...r, image_url: image };
-    });
-    res.json(normalized);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error al obtener alimentos" });
-  }
-});
-
 // Montar el router de admin en /admin para exponer rutas como /admin/users
 app.use('/admin', router);
 
-// --- PUT actualizar alimento ---
-app.put("/admin/foods/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const {
-      nombre,
-      Energia,
-      Humedad,
-      Cenizas,
-      Proteinas,
-      H_de_C_disp,
-      Azucares_totales,
-      Fibra_dietetica_total,
-      Lipidos_totales,
-      Ac_grasos_totales,
-      Ac_grasos_poliinsat,
-      Ac_grasos_trans,
-      Colesterol,
-      Vitamina_A,
-      Vitamina_C,
-      Vitamina_D,
-      Vitamina_E,
-      Vitamina_K,
-      Vitamina_B1,
-      Vitamina_B2 ,
-      Niacina,
-      Vitamina_B6,
-      Ac_pantotenico,
-      Vitamina_B12,
-      Folatos,
-      Sodio,
-      Potasio,
-      Calcio,
-      Fosforo,
-      Magnesio,
-      Hierro,
-      Zinc,
-      Cobre,
-      Selenio,
-      image_url
-    } = req.body;
+// =========================
+// === Utilidades / Validaciones ===
+// =========================
 
-    const [result] = await pool.query(
-      `UPDATE alimento SET 
-         nombre = ?, Energia = ?, Humedad = ?, Cenizas = ?, Proteinas = ?, H_de_C_disp = ?, Azucares_totales = ?, Fibra_dietetica_total = ?, Lipidos_totales = ?, Ac_grasos_totales = ?, Ac_grasos_poliinsat = ?, Ac_grasos_trans = ?, Colesterol = ?, Vitamina_A = ?, Vitamina_C = ?, Vitamina_D = ?, Vitamina_E = ?, Vitamina_K = ?, Vitamina_B1 = ?, Vitamina_B2 = ?, Niacina = ?, Vitamina_B6 = ?, Ac_pantotenico = ?, Vitamina_B12 = ?, Folatos = ?, Sodio = ?, Potasio = ?, Calcio = ?, Fosforo = ?, Magnesio = ?, Hierro = ?, Zinc = ?, Cobre = ?, Selenio = ?, image_url = ?
-       WHERE id = ?`,
-      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio, image_url, id]
-    );
-
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Alimento no encontrado" });
-
-    res.json({ message: "Alimento actualizado correctamente" });
-  } catch (err) {
-    console.error("/admin/foods/:id PUT error:", err);
-    res.status(500).json({ error: "Error al actualizar alimento" });
-  }
-});
-// === Obtener todas las cuentas ===
-router.get("/users", async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT 
-        id, nombre, email, password, altura, peso, edad, 
-        actividad_fisica, sexo, id_perfil, id_dieta, estado
-      FROM usuario
-      ORDER BY id ASC
-    `);
-    res.json(rows);
-  } catch (err) {
-    console.error("Error al obtener usuarios:", err);
-    res.status(500).json({ message: "Error al obtener usuarios" });
-  }
-});
-
-// === Crear cuenta ===
-router.post("/users", async (req, res) => {
-  try {
-    const {
-      nombre, email, password, altura, peso, edad,
-      actividad_fisica, sexo, id_perfil, id_dieta
-    } = req.body;
-
-    const [result] = await pool.query(`
-      INSERT INTO usuario 
-        (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo')
-    `, [nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta]);
-
-    res.json({ id: result.insertId, message: "Usuario creado correctamente" });
-  } catch (err) {
-    console.error("Error al crear usuario:", err);
-    res.status(500).json({ message: "Error al crear usuario" });
-  }
-});
-
-// === Actualizar cuenta ===
-router.patch("/user/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const campos = req.body;
-
-    // Construir dinámicamente los SETs
-    const setStr = Object.keys(campos).map(c => `${c} = ?`).join(", ");
-    const values = Object.values(campos);
-
-    await pool.query(`UPDATE usuario SET ${setStr} WHERE id = ?`, [...values, id]);
-
-    res.json({ message: "Usuario actualizado correctamente" });
-  } catch (err) {
-    console.error("Error al actualizar usuario:", err);
-    res.status(500).json({ message: "Error al actualizar usuario" });
-  }
-});
-
-// === Inactivar cuenta ===
-router.post("/user/:id/deactivate", async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query("UPDATE usuario SET estado = 'inactivo' WHERE id = ?", [id]);
-    res.json({ message: "Usuario inactivado correctamente" });
-  } catch (err) {
-    console.error("Error al inactivar usuario:", err);
-    res.status(500).json({ message: "Error al inactivar usuario" });
-  }
-});
-
-// === Activar cuenta ===
-router.post("/user/:id/activate", async (req, res) => {
-  try {
-    const { id } = req.params;
-    await pool.query("UPDATE usuario SET estado = 'activo' WHERE id = ?", [id]);
-    res.json({ message: "Usuario activado correctamente" });
-  } catch (err) {
-    console.error("Error al activar usuario:", err);
-    res.status(500).json({ message: "Error al activar usuario" });
-  }
-});
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 
@@ -323,6 +116,7 @@ function validarRegistro(email, password, height, weight, age) {
 
   return errores;
 }
+
 /*
 
 // Ruta de prueba
@@ -336,6 +130,7 @@ app.get("/test-db", async (req, res) => {
   }
 });
 */
+
 // Check email
 app.post("/checkEmail", async (req, res) => {
   try {
@@ -359,6 +154,10 @@ app.post("/checkEmail", async (req, res) => {
     res.status(500).json({ error: "Error servidor" });
   }
 });
+
+// =========================
+// === Auth / Registro / Login / Captcha ===
+// =========================
 
 // Registro de cuentas - crear cuenta
 // Nueva arquitectura: id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta
@@ -452,6 +251,420 @@ app.post('/verify-captcha', async (req, res) => {
     res.status(500).json({ error: 'Error verificando captcha' });
   }
 });
+
+// =========================
+// === Auth: Login ===
+// =========================
+
+// Login
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res.status(400).json({ message: "Falta email o password" });
+
+    const [rows] = await pool.query("SELECT * FROM usuario WHERE email = ?", [email]);
+    if (rows.length === 0)
+      return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+
+    const usuario = rows[0];
+
+    // Nuevo: verificar si el usuario está inactivo
+    if (usuario.estado === "inactivo") {
+      return res.status(403).json({ message: "Tu cuenta está inactiva. Contacta al administrador." });
+    }
+
+    const ok = await bcrypt.compare(password, usuario.password);
+    if (!ok)
+      return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+
+    // Crear dieta si no tiene una (usar id_dieta del esquema correcto)
+    if (!usuario.id_dieta || usuario.id_dieta === 1) {
+      const [dietInsert] = await pool.query(
+        "INSERT INTO dieta (nombre) VALUES (?)",
+        [`Dieta de ${usuario.nombre || usuario.email}`]
+      );
+      const newDietId = dietInsert.insertId;
+      await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [newDietId, usuario.id]);
+      // Reflejar en el objeto en memoria para esta respuesta
+      usuario.id_dieta = newDietId;
+    }
+
+    // Obtener alergias desde la tabla categoria_alergico
+    const [alRows] = await pool.query("SELECT nombre FROM categoria_alergico WHERE id_usuario = ?", [usuario.id]);
+    const alergias = alRows.map(r => r.nombre);
+
+    res.json({
+      message: "Login exitoso",
+      user: {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        email: usuario.email,
+        altura: usuario.altura,
+        peso: usuario.peso,
+        edad: usuario.edad,
+        id_perfil: usuario.id_perfil,
+        id_dieta: usuario.id_dieta,
+        actividad_fisica: usuario.actividad_fisica || usuario.nivelActividad || null,
+        sexo: usuario.sexo,
+        alergias,
+        otrasAlergias: usuario.otrasAlergias || null
+      }
+    });
+  } catch (err) {
+    console.error("/login error:", err);
+    res.status(500).json({ error: "Error servidor login" });
+  }
+});
+
+// Reactivar Usuario (forma alternativa)
+app.patch("/user/:id/activar", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await pool.query(
+      "UPDATE usuario SET estado = 'activo' WHERE id = ?",
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json({ message: "Usuario reactivado correctamente" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error al reactivar usuario" });
+  }
+});
+app.post("/admin/foods", async (req, res) => {
+  try {
+    const {
+      nombre,
+      Energia,
+      Humedad,
+      Cenizas,
+      Proteinas,
+      H_de_C_disp,
+      Azucares_totales,
+      Fibra_dietetica_total,
+      Lipidos_totales,
+      Ac_grasos_totales,
+      Ac_grasos_poliinsat,
+      Ac_grasos_trans,
+      Colesterol,
+      Vitamina_A,
+      Vitamina_C,
+      Vitamina_D,
+      Vitamina_E,
+      Vitamina_K,
+      Vitamina_B1,
+      Vitamina_B2 ,
+      Niacina,
+      Vitamina_B6,
+      Ac_pantotenico,
+      Vitamina_B12,
+      Folatos,
+      Sodio,
+      Potasio,
+      Calcio,
+      Fosforo,
+      Magnesio,
+      Hierro,
+      Zinc,
+      Cobre,
+      Selenio
+    } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO alimento (nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio]
+    );
+
+    res.json({ message: "Alimento creado correctamente", id: result.insertId });
+  } catch (err) {
+    console.error("POST /admin/foods error:", err);
+    res.status(500).json({ error: "Error al crear alimento" });
+  }
+});
+
+// --- Ruta subir imagen ---
+app.post("/admin/foods/upload-image", upload.single("image"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No se subió la imagen" });
+  res.json({ image_url: `/uploads/${req.file.filename}` });
+});
+
+
+// --- PUT actualizar alimento ---
+app.put("/admin/foods/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      nombre,
+      Energia,
+      Humedad,
+      Cenizas,
+      Proteinas,
+      H_de_C_disp,
+      Azucares_totales,
+      Fibra_dietetica_total,
+      Lipidos_totales,
+      Ac_grasos_totales,
+      Ac_grasos_poliinsat,
+      Ac_grasos_trans,
+      Colesterol,
+      Vitamina_A,
+      Vitamina_C,
+      Vitamina_D,
+      Vitamina_E,
+      Vitamina_K,
+      Vitamina_B1,
+      Vitamina_B2 ,
+      Niacina,
+      Vitamina_B6,
+      Ac_pantotenico,
+      Vitamina_B12,
+      Folatos,
+      Sodio,
+      Potasio,
+      Calcio,
+      Fosforo,
+      Magnesio,
+      Hierro,
+      Zinc,
+      Cobre,
+      Selenio,
+      image_url
+    } = req.body;
+
+    const [result] = await pool.query(
+      `UPDATE alimento SET 
+         nombre = ?, Energia = ?, Humedad = ?, Cenizas = ?, Proteinas = ?, H_de_C_disp = ?, Azucares_totales = ?, Fibra_dietetica_total = ?, Lipidos_totales = ?, Ac_grasos_totales = ?, Ac_grasos_poliinsat = ?, Ac_grasos_trans = ?, Colesterol = ?, Vitamina_A = ?, Vitamina_C = ?, Vitamina_D = ?, Vitamina_E = ?, Vitamina_K = ?, Vitamina_B1 = ?, Vitamina_B2 = ?, Niacina = ?, Vitamina_B6 = ?, Ac_pantotenico = ?, Vitamina_B12 = ?, Folatos = ?, Sodio = ?, Potasio = ?, Calcio = ?, Fosforo = ?, Magnesio = ?, Hierro = ?, Zinc = ?, Cobre = ?, Selenio = ?, image_url = ?
+       WHERE id = ?`,
+      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio, image_url, id]
+    );
+
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Alimento no encontrado" });
+
+    res.json({ message: "Alimento actualizado correctamente" });
+  } catch (err) {
+    console.error("/admin/foods/:id PUT error:", err);
+    res.status(500).json({ error: "Error al actualizar alimento" });
+  }
+});
+// === Obtener todas las cuentas ===
+router.get("/users", async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        id, nombre, email, password, altura, peso, edad, 
+        actividad_fisica, sexo, id_perfil, id_dieta, estado
+      FROM usuario
+      ORDER BY id ASC
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error al obtener usuarios:", err);
+    res.status(500).json({ message: "Error al obtener usuarios" });
+  }
+});
+
+// =========================
+// === Utilidades / Validaciones ===
+// =========================
+
+// === Crear cuenta ===
+router.post("/users", async (req, res) => {
+  try {
+    const {
+      nombre, email, password, altura, peso, edad,
+      actividad_fisica, sexo, id_perfil, id_dieta
+    } = req.body;
+
+    const [result] = await pool.query(`
+      INSERT INTO usuario 
+        (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo')
+    `, [nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta]);
+
+    res.json({ id: result.insertId, message: "Usuario creado correctamente" });
+  } catch (err) {
+    console.error("Error al crear usuario:", err);
+    res.status(500).json({ message: "Error al crear usuario" });
+  }
+});
+
+// === Actualizar cuenta ===
+router.patch("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const campos = req.body;
+
+    // Construir dinámicamente los SETs
+    const setStr = Object.keys(campos).map(c => `${c} = ?`).join(", ");
+    const values = Object.values(campos);
+
+    await pool.query(`UPDATE usuario SET ${setStr} WHERE id = ?`, [...values, id]);
+
+    res.json({ message: "Usuario actualizado correctamente" });
+  } catch (err) {
+    console.error("Error al actualizar usuario:", err);
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+});
+
+// === Inactivar cuenta ===
+router.post("/user/:id/deactivate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("UPDATE usuario SET estado = 'inactivo' WHERE id = ?", [id]);
+    res.json({ message: "Usuario inactivado correctamente" });
+  } catch (err) {
+    console.error("Error al inactivar usuario:", err);
+    res.status(500).json({ message: "Error al inactivar usuario" });
+  }
+});
+// Utilidades definidas arriba — evito repetir funciones aquí.
+/*
+
+// Ruta de prueba
+/*
+// Ruta de prueba
+app.get("/test-db", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT 1 + 1 AS solution");
+    res.json({ result: rows[0].solution });
+  } catch (err) {
+    console.error("test-db error:", err);
+    res.status(500).json({ error: "DB error" });
+  }
+});
+*/
+// Check email
+app.post("/checkEmail", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: "Falta email" });
+
+    // Validar formato básico antes de consultar la base
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(String(email))) return res.status(400).json({ error: "Formato de email inválido" });
+
+    // Intentar consultar la base de datos
+    try {
+      const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
+      return res.json({ exists: rows.length > 0 });
+    } catch (dbErr) {
+      console.error("DB error en /checkEmail:", dbErr);
+      return res.status(500).json({ error: "Error al verificar email en la base de datos" });
+    }
+  } catch (err) {
+    console.error("/checkEmail error:", err);
+    res.status(500).json({ error: "Error servidor" });
+  }
+});
+
+// =========================
+// === Auth / Registro / Login / Captcha ===
+// =========================
+
+// Registro de cuentas - crear cuenta
+// Nueva arquitectura: id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta
+app.post("/registrar", async (req, res) => {
+  try {
+    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias, recaptchaToken, id_perfil } = req.body;
+    const errores = validarRegistro(email, password, altura, peso, edad);
+    if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
+
+    // Verify recaptcha token only if secret configured (skip in local dev)
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '';
+    if (RECAPTCHA_SECRET) {
+      if (!recaptchaToken) return res.status(400).json({ message: 'Falta verificación de captcha' });
+      try {
+        const r = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
+        });
+        const rr = await r.json();
+        if (!rr.success) return res.status(400).json({ message: 'Captcha inválido', details: rr });
+      } catch (e) {
+        console.error('Recaptcha verify error', e);
+        return res.status(500).json({ message: 'Error al verificar captcha' });
+      }
+    } else {
+      // No secret configured -> likely dev environment. Skip recaptcha verification but log a warning.
+      console.warn('RECAPTCHA_SECRET no configurado; se omite verificación de captcha (entorno local)');
+    }
+
+    const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
+    if (rows.length) return res.status(400).json({ message: "El correo ya está registrado" });
+
+    const [dietInsert] = await pool.query("INSERT INTO dieta (nombre) VALUES (?)", [`Dieta de ${nombre || email}`]);
+    const newDietId = dietInsert.insertId;
+
+    const hash = await bcrypt.hash(password, 10);
+    // Si viene id_perfil desde el admin (Cuentas.jsx)(esperado 3 = Doctor). Si no, default 2 = Paciente.
+    const perfil = [2,3].includes(Number(id_perfil)) ? Number(id_perfil) : 2;
+    const [userInsert] = await pool.query(
+      `INSERT INTO usuario 
+      (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, email, hash, altura, peso, edad, nivelActividad, sexo, perfil, newDietId, "activo"]
+    );
+
+    const newUserId = userInsert.insertId;
+
+    //Guardar alergias múltiples
+    if (Array.isArray(alergias)) {
+      for (const alergia of alergias) {
+        if (alergia !== "ninguna") {
+          await pool.query("INSERT INTO categoria_alergico (id_usuario, nombre) VALUES (?, ?)", [newUserId, alergia]);
+        }
+      }
+    }
+
+    // 🔹 Guardar otras alergias personalizadas
+    if (otrasAlergias && otrasAlergias.trim() !== "") {
+      await pool.query("INSERT INTO categoria_alergico (id_usuario, nombre) VALUES (?, ?)", [newUserId, otrasAlergias.trim()]);
+    }
+
+    res.json({ message: "Usuario registrado exitosamente" });
+  } catch (err) {
+    console.error("/registrar error:", err);
+    res.status(500).json({ error: "Error servidor registro" });
+  }
+});
+
+// Endpoint de ayuda para depuración: verifica un token de reCAPTCHA con Google
+// POST /verify-captcha { token: string }
+app.post('/verify-captcha', async (req, res) => {
+  try {
+    const { token } = req.body || {};
+    if (!token) return res.status(400).json({ error: 'Falta token' });
+
+    // Usar secret configurado en el servidor; en dev fallback a la clave de prueba de Google
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+
+    const r = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}`
+    });
+
+    const data = await r.json();
+    // Devolver tal cual la respuesta de Google para depuración
+    res.json({ ok: true, verification: data });
+  } catch (err) {
+    console.error('/verify-captcha error:', err);
+    res.status(500).json({ error: 'Error verificando captcha' });
+  }
+});
+
+// =========================
+// === Auth: Login ===
+// =========================
 
 
 // Login
@@ -553,6 +766,10 @@ app.get("/admin/foods", async (req, res) => {
     res.status(500).json({ error: "Error al obtener alimentos" });
   }
 });
+
+// =========================
+// === Usuarios (CRUD / estado) ===
+// =========================
 
 // === Activar cuenta ===
 router.post("/user/:id/activate", async (req, res) => {
@@ -898,6 +1115,10 @@ app.get("/get-diet", async (req, res) => {
     res.status(500).json({ message: "Error al obtener dieta" });
   }
 });
+
+// =========================
+// === Dietas / Comidas ===
+// =========================
 
 
 
