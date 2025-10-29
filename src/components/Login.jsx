@@ -12,7 +12,6 @@ import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recapt
 function LoginInner() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("Invitado");
   const [activePage, setActivePage] = useState("login");
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef(null);
@@ -21,23 +20,6 @@ function LoginInner() {
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      try {
-        const usuario = JSON.parse(usuarioGuardado);
-        if (usuario?.name) setUserName(usuario.name);
-
-        // Si es doctor (id_perfil === 3), imprimir datos
-        if (usuario?.id_perfil === 3) {
-          console.log("=== Usuario Doctor ===");
-          console.log(usuario);
-        }
-        console.log(usuario);
-      } catch (e) {
-        console.warn("Usuario inválido", e);
-      }
-    }
-
     const currentPage = window.location.pathname.split("/").pop() || "login";
     setActivePage(currentPage.replace(".html", "").toLowerCase());
   }, []);
@@ -247,7 +229,8 @@ function LoginInner() {
                     required
                   />
                   <br />
-                  <button type="submit" id="botonIngresar">
+                  <br />
+                  <button type="submit" id="botonIngresar" className="btn btn-primary btn-block">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
 
@@ -259,13 +242,19 @@ function LoginInner() {
 
                   <button
                     type="button"
-                    className="btnCrearCuenta"
+                    className="btn btn-secondary btn-block btnCrearCuenta"
                     onClick={() => showLoaderAndRedirect("/crear-cuenta")}
                   >
                     Crear Cuenta
                   </button>
                   <br />
-                  <button type="button" onClick={handleGoogleLogin}>
+                  <button
+                    type="button"
+                    className="btn btn-google"
+                    onClick={handleGoogleLogin}
+                    aria-label="Iniciar sesión con Google"
+                  >
+                    <span className="btn-google__icon" aria-hidden="true">G</span>
                     Iniciar sesión con Google
                   </button>
                 </form>
@@ -282,14 +271,5 @@ function LoginInner() {
   );
 }
 
-// Provider wrapper para reCAPTCHA v3
-function Login() {
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={siteKey}>
-      <LoginInner />
-    </GoogleReCaptchaProvider>
-  );
-}
-
-export default withAuth(Login, { requireAuth: false });
+const LoginWithAuth = withAuth(Login, { requireAuth: false });
+export default LoginWithAuth;
