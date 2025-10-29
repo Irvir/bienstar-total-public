@@ -333,13 +333,7 @@ function CrearDieta() {
             <Encabezado activePage="dietas" onNavigate={navigateWithLoader} />
 
             <div id="cuerpo">
-                {usuario?.id_perfil === 3 && dietTarget?.email && (
-                    <div className="doctor-banner">
-                            Editando dieta de: <strong>{targetName || dietTarget.email}</strong>
-                        <div style={{ flex: 1 }} />
-                        <button className="btn-change-user" onClick={() => { localStorage.removeItem("dietTarget"); navigateWithLoader("/dietas"); }}>Cambiar usuario</button>
-                    </div>
-                )}
+                
                 {/* IZQUIERDA */}
                 <CrearDietaForm
                     dietaAgrupada={dietaAgrupada}
