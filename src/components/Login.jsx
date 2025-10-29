@@ -233,7 +233,13 @@ function Login() {
                     Crear Cuenta
                   </button>
                   <br />
-                  <button onClick={handleGoogleLogin}>
+                  <button
+                    type="button"
+                    className="btn btn-google"
+                    onClick={handleGoogleLogin}
+                    aria-label="Iniciar sesión con Google"
+                  >
+                    <span className="btn-google__icon" aria-hidden="true">G</span>
                     Iniciar sesión con Google
                   </button>
 
