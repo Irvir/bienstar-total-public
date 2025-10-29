@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import multer from "multer";
 import dotenv from 'dotenv';
 
-// Cargar variables de entorno desde .env
+// Load .env into process.env
 dotenv.config();
 
 const app = express();
@@ -368,7 +368,7 @@ app.post("/registrar", async (req, res) => {
     const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
 
-    // Verificar token de recaptcha solo si está configurado el secret (saltar en dev local)
+    // Verify recaptcha token only if secret configured (skip in local dev)
     const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '';
     if (RECAPTCHA_SECRET) {
       if (!recaptchaToken) return res.status(400).json({ message: 'Falta verificación de captcha' });
@@ -385,6 +385,7 @@ app.post("/registrar", async (req, res) => {
         return res.status(500).json({ message: 'Error al verificar captcha' });
       }
     } else {
+      // No secret configured -> likely dev environment. Skip recaptcha verification but log a warning.
       console.warn('RECAPTCHA_SECRET no configurado; se omite verificación de captcha (entorno local)');
     }
 

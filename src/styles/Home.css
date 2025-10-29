@@ -130,7 +130,11 @@ body {
 }
 
 .btn2 {
-    background-image: url("/public/Imagenes/Home/Dietas.png");
+    background-image: url("/public/Imagenes/Home/Dieta.svg");
+    background-size: 70% 100% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #5adb91;
     font-size: 3vw;
 }
 
@@ -140,7 +144,7 @@ body {
 }
 
 .btn4 {
-    background-image: url("/public/Imagenes/Home/Alimentos2.png");
+    background-image: url("/public/Imagenes/Home/Alimentos.svg");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
@@ -149,11 +153,12 @@ body {
 }
 
 .btn5 {
-    background-image: url("/public/Imagenes/Home/Tips_Dieta4.png");
+    background-image: url("/public/Imagenes/Home/Recomendacion.svg");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
     flex: 0 0 30% !important;
+    background-color: #fff6e9;
     /* ancho fijo dentro de flex */
 }
 
@@ -275,10 +280,10 @@ body {
 .botonera button.btn2 { border-color: #9cd484; }
 .botonera button.btn3 { border-color: #659a9e; }
 .botonera button.btn4 { border-color: #3b6d40; }
-.botonera button.btn5 { border-color: #42b7b5; }
+.botonera button.btn5 { border-color: #de5f30; }
 
 .botonera button.btn1:hover { border-color: #4c87ac; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(76,135,172,0.7); }
 .botonera button.btn2:hover { border-color: #70c451; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(112,196,81,0.7); }
 .botonera button.btn3:hover { border-color: #45787b; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(69,120,123,0.7); }
 .botonera button.btn4:hover { border-color: #2a522d; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(42,82,45,0.7); }
-.botonera button.btn5:hover { border-color: #279e9c; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(39,158,156,0.7); }
+.botonera button.btn5:hover { border-color: #de5f30; box-shadow: 0 12px 20px rgba(0,0,0,0.3), 0 0 20px rgba(222,95,48,0.7); }

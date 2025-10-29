@@ -74,6 +74,7 @@ function LoginInner() {
         );
         return;
       }
+   
 
       // Login normal con API
       const response = await fetch(`${API_BASE}/login`, {
@@ -93,8 +94,14 @@ function LoginInner() {
           localStorage.removeItem("dietTarget");
         }
 
-        // 🔹 Imprimir usuario si es doctor
+        //  Imprimir usuario si es doctor
         if (usuario.id_perfil === 3) {
+          notifyThenRedirect(
+            "Bienvenido Doctor",
+            { type: "success", duration: 1500 },
+            "/",
+            setLoading
+          );
           console.log("=== Usuario Doctor ===");
           console.log(usuario);
         }
@@ -180,7 +187,7 @@ function LoginInner() {
         console.warn("Error al generar token reCAPTCHA tras login con Google:", e);
       }
 
-      // 🔹 Imprimir si es doctor (id_perfil = 3)
+      //  Imprimir si es doctor (id_perfil = 3)
       if (googleUser.id_perfil === 3) {
         console.log("=== Usuario Doctor (Google) ===");
         console.log(googleUser);
@@ -271,5 +278,5 @@ function LoginInner() {
   );
 }
 
-const LoginWithAuth = withAuth(Login, { requireAuth: false });
+const LoginWithAuth = withAuth(LoginInner, { requireAuth: false });
 export default LoginWithAuth;
