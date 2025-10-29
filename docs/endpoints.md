@@ -21,7 +21,6 @@
   - Query: ninguno
   - Respuesta: array de alimentos (JSON)
   - Errores: 500 si falla la consulta.
-    <img width="986" height="673" alt="Getadminusers" src="https://github.com/user-attachments/assets/c93db4b2-7ed5-4b54-a417-43154acf3aa0" />
 
 - PUT `/admin/foods/:id`
   - Qué hace: Actualiza el alimento con id `:id` con los campos enviados en el body (incluye `image_url`).
@@ -36,7 +35,6 @@
 - GET `/admin/users`  (definido como `router.get('/users')`)
   - Qué hace: Devuelve todas las cuentas de la tabla `usuario` con campos básicos (id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado).
   - Respuesta: array de usuarios
-  <img width="986" height="673" alt="Getadminusers" src="https://github.com/user-attachments/assets/f6a05ca0-8a61-430d-b608-db359d489075" />
 
 - POST `/admin/users`  (definido como `router.post('/users')`)
   - Qué hace: Crea un usuario (registro directo en tabla `usuario`) con estado `activo`.
@@ -76,14 +74,12 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Flujo importante: crea una dieta por defecto, hashea la contraseña (bcrypt), guarda usuario y guarda alergias en `categoria_alergico`.
   - Respuesta: { message: "Usuario registrado exitosamente" }
   - Errores: 400 si validación falla (se devuelve array `errores`), 500 en error servidor
-    <img width="791" height="692" alt="postregistrar" src="https://github.com/user-attachments/assets/11dab6ad-e965-4020-91be-898dee602ed9" />
 
 - POST `/login`
   - Qué hace: Login de usuario; valida email/password contra la DB (bcrypt). Devuelve datos básicos de usuario y lista de alergias.
   - Body: { email, password }
   - Respuesta: { message: "Login exitoso", user: { id, nombre, email, altura, peso, edad, id_dieta, actividad_fisica, sexo, alergias, otrasAlergias } }
   - Códigos: 400 si faltan credenciales, 401 si credenciales inválidas, 403 si usuario inactivo
-    <img width="742" height="747" alt="Postlogin" src="https://github.com/user-attachments/assets/6b96b2bd-44f1-4175-aa88-239efdda52d6" />
 
 - PATCH `/user/:id/activar`
   - Qué hace: (ruta en `app`) Reactiva un usuario (cambia `estado` a `activo`).
@@ -122,7 +118,6 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
 
 - GET `/admin/foods`  (segunda definición en el archivo)
   - Nota: el fichero contiene dos definiciones de `GET /admin/foods`. Una devuelve rows y normaliza `image_url`; la otra hace un mapeo adicional para normalizar distintos campos de imagen (`image`, `imagen`, `image_url`, `path`). Revisa cuál queda activa tras ejecutar el archivo (la última definición sobrescribe la anterior).
-    <img width="837" height="726" alt="Getadminfoods" src="https://github.com/user-attachments/assets/7aaa8614-467c-4617-bdfc-77ca9e483142" />
 
 
 ## Dietas / plan de comidas
@@ -131,7 +126,6 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Qué hace: Devuelve la dieta (días, comidas, alimentos y cantidad) para `id_dieta` (por defecto `1` si no se pasa).
   - Query: `id_dieta` (recomendado)
   - Respuesta: array con { dia, tipo_comida, alimento, cantidad }
-    <img width="635" height="736" alt="getdiet" src="https://github.com/user-attachments/assets/443a5ff2-8e15-41f0-a4ff-7753b2c5b41b" />
 
 - POST `/save-diet`
   - Qué hace: Recibe `{ id_dieta, comidas }` donde `comidas` es array con { id (id_alimento), dia, tipoComida, cantidad }. Crea días/comidas si no existen y añade (o actualiza) las entradas en la relación comida_alimento. Usa transacciones por cada request.
