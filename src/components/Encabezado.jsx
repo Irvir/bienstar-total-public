@@ -19,8 +19,21 @@ export default function Encabezado({ activePage, onNavigate }) {
       }
       try {
         const usuario = JSON.parse(raw);
-        const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
-        setUserName(name);
+        // Si el usuario es doctor y hay un paciente seleccionado (dietTarget), mostrar su nombre/email
+        try {
+          const targetRaw = localStorage.getItem("dietTarget");
+          const target = targetRaw ? JSON.parse(targetRaw) : null;
+          if (usuario?.id_perfil === 3 && (target?.nombre || target?.email)) {
+            const display = target.nombre || target.email;
+            setUserName(display);
+          } else {
+            const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
+            setUserName(name);
+          }
+        } catch {
+          const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
+          setUserName(name);
+        }
         setIsLogged(true);
       } catch (e) {
         console.warn("Usuario inválido en localStorage", e);
@@ -33,7 +46,7 @@ export default function Encabezado({ activePage, onNavigate }) {
 
     // Also listen for storage events from other tabs
     const onStorage = (e) => {
-      if (e.key === 'usuario' || e.key === 'Usuario') refreshUserFromStorage();
+      if (e.key === 'usuario' || e.key === 'Usuario' || e.key === 'dietTarget') refreshUserFromStorage();
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
@@ -127,6 +140,8 @@ export default function Encabezado({ activePage, onNavigate }) {
   function handleSignOut(e) {
     e.stopPropagation();
     localStorage.removeItem('usuario');
+    // Limpiar también cualquier selección de paciente previa
+    try { localStorage.removeItem('dietTarget'); } catch {}
     setUserName('Invitado');
     setIsLogged(false);
     // If Google One Tap was used, revoke it client-side (best effort)
