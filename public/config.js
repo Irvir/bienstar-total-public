@@ -1,20 +1,10 @@
-// config.js
-// Runtime-configurable API base for vanilla JS controllers
-// Update this if your backend base URL changes (e.g., reverse proxy or production URL)
-// If an env (build-time) or runtime embed sets window.API_BASE, keep it.
-// Otherwise, when deployed on a host (like Vercel) default to the current origin
-// (so API calls will target the same domain). During local development we keep
-// the common backend fallback at http://localhost:3001.
-// Allow build-time override via VITE_API_BASE injected at build time (optional)
+
 if (!window.API_BASE) {
 	try {
 		const origin = window.location && window.location.origin;
 
-		// Preferred: when deploying frontend and backend together (same origin), use origin.
-		// During local development (origin contains 'localhost' or '127.0.0.1'), default to the local backend.
 		const isLocal = origin && (/localhost|127\.0\.0\.1/).test(origin);
-
-		// Known production host for this project on Vercel
+		
 		const VERCEL_HOST = 'https://bienstar-total-public.vercel.app';
 
 		if (isLocal) {

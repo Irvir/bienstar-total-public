@@ -1,3 +1,18 @@
+# 🌿 BienStarTotal
+
+## 🌿 Proyecto BienStarTotal
+📌 **Descripción**:  
+Sistema integral destinado a facilitar el trabajo de nutricionistas y profesionales del área de salud, ofreciendo una plataforma especializada para la creación de dietas y planes alimenticios personalizados para los usuarios. Además, permite a cualquier usuario común buscar información detallada de alimentos, incluyendo macronutrientes, micronutrientes y datos de referencia provenientes del INTA (Instituto de Nutrición y Tecnología de los Alimentos). Busca proporcionar una experiencia sencilla, rápida y cómoda tanto para profesionales como para usuarios finales.  
+
+🎯 **Objetivo**:  
+Ofrecer a los médicos, nutricionistas y profesionales del área de salud una herramienta especializada para crear dietas y planes alimenticios personalizados para los usuarios.  
+Para los usuarios finales, el sistema proporciona información detallada de alimentos y permite la búsqueda de productos de forma sencilla, ayudando a tomar decisiones informadas sobre su alimentación. Esto responde a la necesidad de contar con una alternativa más accesible y moderna frente al uso de Excel u otros softwares no gratuitos.  
+
+🛠️👑 **Martin Droguett** → `Irvir` *(Backend)*  
+🎨 **Daniel Gutiérrez** → `Danieliwis-Sama` *(QA & Testing)*  
+⚙️ **Danilo Ponce** → `DaniloP76253` *(Frontend)*  
+📝🔍 **Paulo Silva** → `paulosilvaobando12-design` *(Lider Técnico)*  
+
 # BienStar Total — Guía de instalación y ejecución
 
 Este repositorio contiene la aplicación BienStar Total (front-end con Vite + React y un backend Express que usa MySQL). Este README explica cómo preparar el entorno en tu máquina, dependencias, ejecución en desarrollo y recomendaciones para producción.

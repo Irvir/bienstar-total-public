@@ -18,7 +18,10 @@ const ALLOWED_ORIGINS = [
   'http://127.0.0.1:5173',
   'http://localhost:4000',
   'http://127.0.0.1:4000',
-  'https://bienstar-total-public.vercel.app'
+  'https://bienstar-total-public.vercel.app',
+  "https://bienstar-total-public-ite6.vercel.app",
+
+
 ];
 
 app.use(cors({
@@ -306,16 +309,17 @@ function validarRegistro(email, password, height, weight, age) {
   // si vino en metros -> cm
   if (height < 10) height = height * 100;
 
-  const regexEmail = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@._-]+$/;
-  if (!regexEmail.test(email)) errores.push("El correo debe contener letras y números válidos.");
-  if (email && email.length > 50) errores.push("El correo no puede superar los 50 caracteres.");
+  // Email: usar una validación más permisiva y estándar (no exigir dígitos en el correo)
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regexEmail.test(String(email || ''))) errores.push("El correo tiene un formato inválido.");
+  if (email && String(email).length > 50) errores.push("El correo no puede superar los 50 caracteres.");
 
   const regexPass = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
-  if (!regexPass.test(password)) errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
+  if (!regexPass.test(String(password || ''))) errores.push("La contraseña debe tener al menos 6 caracteres, incluir letras y números.");
 
-  if (age <= 15 || age >= 100) errores.push("La edad debe ser mayor a 15 y no puede superar los 100.");
-  if (weight <= 30 || weight >= 170) errores.push("El peso debe ser mayor a 30kg y no puede superar los 170kg.");
-  if (height <= 80 || height >= 250) errores.push("La altura debe ser mayor a 80 cm y no puede superar los 2,50m.");
+  if (isNaN(age) || age <= 15 || age >= 100) errores.push("La edad debe ser mayor a 15 y no puede superar los 100.");
+  if (isNaN(weight) || weight <= 30 || weight >= 170) errores.push("El peso debe ser mayor a 30kg y no puede superar los 170kg.");
+  if (isNaN(height) || height <= 80 || height >= 250) errores.push("La altura debe ser mayor a 80 cm y no puede superar los 2,50m.");
 
   return errores;
 }
@@ -338,8 +342,18 @@ app.post("/checkEmail", async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: "Falta email" });
 
-  const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
-    res.json({ exists: rows.length > 0 });
+    // Validar formato básico antes de consultar la base
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(String(email))) return res.status(400).json({ error: "Formato de email inválido" });
+
+    // Intentar consultar la base de datos
+    try {
+      const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
+      return res.json({ exists: rows.length > 0 });
+    } catch (dbErr) {
+      console.error("DB error en /checkEmail:", dbErr);
+      return res.status(500).json({ error: "Error al verificar email en la base de datos" });
+    }
   } catch (err) {
     console.error("/checkEmail error:", err);
     res.status(500).json({ error: "Error servidor" });
@@ -350,26 +364,29 @@ app.post("/checkEmail", async (req, res) => {
 // Nueva arquitectura: id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta
 app.post("/registrar", async (req, res) => {
   try {
-    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias, recaptchaToken } = req.body;
+    const { nombre, email, password, altura, peso, edad, nivelActividad, sexo, alergias, otrasAlergias, recaptchaToken, id_perfil } = req.body;
     const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
 
-    // Verify recaptcha token
+    // Verify recaptcha token only if secret configured (skip in local dev)
     const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '';
-    if (!recaptchaToken || !RECAPTCHA_SECRET) {
-      return res.status(400).json({ message: 'Falta verificación de captcha' });
-    }
-    try {
-      const r = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
-      });
-      const rr = await r.json();
-      if (!rr.success) return res.status(400).json({ message: 'Captcha inválido', details: rr });
-    } catch (e) {
-      console.error('Recaptcha verify error', e);
-      return res.status(500).json({ message: 'Error al verificar captcha' });
+    if (RECAPTCHA_SECRET) {
+      if (!recaptchaToken) return res.status(400).json({ message: 'Falta verificación de captcha' });
+      try {
+        const r = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
+        });
+        const rr = await r.json();
+        if (!rr.success) return res.status(400).json({ message: 'Captcha inválido', details: rr });
+      } catch (e) {
+        console.error('Recaptcha verify error', e);
+        return res.status(500).json({ message: 'Error al verificar captcha' });
+      }
+    } else {
+      // No secret configured -> likely dev environment. Skip recaptcha verification but log a warning.
+      console.warn('RECAPTCHA_SECRET no configurado; se omite verificación de captcha (entorno local)');
     }
 
     const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
@@ -379,11 +396,13 @@ app.post("/registrar", async (req, res) => {
     const newDietId = dietInsert.insertId;
 
     const hash = await bcrypt.hash(password, 10);
+    // Si viene id_perfil desde el admin (Cuentas.jsx)(esperado 3 = Doctor). Si no, default 2 = Paciente.
+    const perfil = [2,3].includes(Number(id_perfil)) ? Number(id_perfil) : 2;
     const [userInsert] = await pool.query(
       `INSERT INTO usuario 
       (nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, email, hash, altura, peso, edad, nivelActividad, sexo, 2, newDietId, "activo"]
+      [nombre, email, hash, altura, peso, edad, nivelActividad, sexo, perfil, newDietId, "activo"]
     );
 
     const newUserId = userInsert.insertId;
@@ -406,6 +425,31 @@ app.post("/registrar", async (req, res) => {
   } catch (err) {
     console.error("/registrar error:", err);
     res.status(500).json({ error: "Error servidor registro" });
+  }
+});
+
+// Endpoint de ayuda para depuración: verifica un token de reCAPTCHA con Google
+// POST /verify-captcha { token: string }
+app.post('/verify-captcha', async (req, res) => {
+  try {
+    const { token } = req.body || {};
+    if (!token) return res.status(400).json({ error: 'Falta token' });
+
+    // Usar secret configurado en el servidor; en dev fallback a la clave de prueba de Google
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+
+    const r = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}`
+    });
+
+    const data = await r.json();
+    // Devolver tal cual la respuesta de Google para depuración
+    res.json({ ok: true, verification: data });
+  } catch (err) {
+    console.error('/verify-captcha error:', err);
+    res.status(500).json({ error: 'Error verificando captcha' });
   }
 });
 
@@ -432,15 +476,16 @@ app.post("/login", async (req, res) => {
     if (!ok)
       return res.status(401).json({ message: "Correo o contraseña incorrectos" });
 
-    // Crear dieta si no tiene una
-    if (!usuario.id_diet || usuario.id_diet === 1) {
+    // Crear dieta si no tiene una (usar id_dieta del esquema correcto)
+    if (!usuario.id_dieta || usuario.id_dieta === 1) {
       const [dietInsert] = await pool.query(
         "INSERT INTO dieta (nombre) VALUES (?)",
         [`Dieta de ${usuario.nombre || usuario.email}`]
       );
       const newDietId = dietInsert.insertId;
       await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [newDietId, usuario.id]);
-      usuario.id_diet = newDietId;
+      // Reflejar en el objeto en memoria para esta respuesta
+      usuario.id_dieta = newDietId;
     }
 
     // Obtener alergias desde la tabla categoria_alergico
@@ -456,7 +501,8 @@ app.post("/login", async (req, res) => {
         altura: usuario.altura,
         peso: usuario.peso,
         edad: usuario.edad,
-        id_dieta: usuario.id_diet || usuario.id_dieta,
+        id_perfil: usuario.id_perfil,
+        id_dieta: usuario.id_dieta,
         actividad_fisica: usuario.actividad_fisica || usuario.nivelActividad || null,
         sexo: usuario.sexo,
         alergias,
@@ -508,9 +554,23 @@ app.get("/admin/foods", async (req, res) => {
   }
 });
 
+// === Activar cuenta ===
+router.post("/user/:id/activate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query("UPDATE usuario SET estado = 'activo' WHERE id = ?", [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
+    res.json({ message: "Usuario activado correctamente" });
+  } catch (err) {
+    console.error("Error al activar usuario:", err);
+    res.status(500).json({ message: "Error al activar usuario" });
+  }
+});
 
-// Eliminar Usuario
+// Desactivar usuario
 // Marcar usuario como inactivo (en vez de eliminarlo)
 app.delete("/user/:id", async (req, res) => {
   try {
@@ -656,22 +716,25 @@ app.get("/user/:id", async (req, res) => {
 // Asegurar dieta personal para un usuario 
 app.post("/ensure-diet", async (req, res) => {
   try {
-    const { user_id, email } = req.body || {};
-    if (!user_id && !email) return res.status(400).json({ message: "Falta user_id o email" });
+    const { email } = req.body || {};
+    if (!email) return res.status(400).json({ message: "Falta email" });
 
-    const where = user_id ? ["id = ?", user_id] : ["email = ?", email];
-  const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM usuario WHERE ${where[0]} LIMIT 1`, [where[1]]);
+    const where = email ? ["email = ?", email] : [];
+    const [uRows] = await pool.query(`SELECT id, nombre, email, id_dieta FROM usuario WHERE ${where[0]} LIMIT 1`, [where[1]]);
     if (uRows.length === 0) return res.status(404).json({ message: "Usuario no encontrado" });
 
     const u = uRows[0];
     let id_dieta = u.id_dieta;
 
     if (!id_dieta || id_dieta === 1) {
-      const [dietInsert] = await pool.query("INSERT INTO diet (name) VALUES (?)", [
-        `Dieta de ${u.nombre || u.email}`
-      ]);
+      // Crear registro en la tabla 'dieta' (esquema español)
+      const [dietInsert] = await pool.query(
+        "INSERT INTO dieta (nombre) VALUES (?)",
+        [`Dieta de ${u.nombre || u.email}`]
+      );
       id_dieta = dietInsert.insertId;
-      await pool.query("UPDATE user SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
+      // Actualizar el usuario en la tabla 'usuario'
+      await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
     }
 
     res.json({ id_dieta });
@@ -807,7 +870,7 @@ app.get("/food-search", async (req, res) => {
 //Obtener la dieta completa con días, comidas y alimentos
 app.get("/get-diet", async (req, res) => {
   try {
-    const id_dieta = parseInt(req.query.id_dieta || "1", 10); // Por defecto dieta 1
+    const id_dieta = parseInt(req.query.id_dieta); // Por defecto dieta 1
     if (!id_dieta) return res.status(400).json({ message: "Falta id_dieta" });
 
     const [rows] = await pool.query(
@@ -920,41 +983,60 @@ app.post("/save-diet", async (req, res) => {
 // Borrar todas las comidas de un día específico de la dieta
 // Inactivar todas las comidas y alimentos de un día específico de la dieta
 app.post("/clear-day", async (req, res) => {
+  // Aceptar ambos nombres de parámetros por compatibilidad: id_dieta | id_diet
   try {
-    const { id_diet, dia } = req.body || {};
-    const idDietNum = Number(id_diet);
+    const { id_dieta, id_diet, dia } = req.body || {};
+    const idDietaNum = Number(id_dieta || id_diet);
     const diaNum = Number(dia);
-    if (!idDietNum || !diaNum)
+    if (!idDietaNum || !diaNum) {
       return res.status(400).json({ message: "Faltan parámetros" });
-
-    // Buscar el día
-    const [dayRows] = await pool.query(
-      "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
-      [idDietNum, diaNum]
-    );
-    if (dayRows.length === 0) {
-      return res.json({ success: true, message: "No había registros para ese día" });
     }
 
-    const id_day = dayRows[0].id;
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
 
-    // Buscar comidas del día
-    const [mealRows] = await pool.query("SELECT id FROM meal WHERE id_day = ?", [id_day]);
-
-    if (mealRows.length > 0) {
-      const mealIds = mealRows.map(r => r.id);
-
-      // Inactivar alimentos relacionados
-      await pool.query(
-        `UPDATE meal_food SET estado = 'inactivo' WHERE id_meal IN (${mealIds.map(() => '?').join(',')})`,
-        mealIds
+      // Buscar el día en esquema español
+      const [diaRows] = await connection.query(
+        "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
+        [idDietaNum, diaNum]
       );
 
-      // Inactivar comidas
-      await pool.query("UPDATE meal SET estado = 'inactivo' WHERE id_day = ?", [id_day]);
-    }
+      if (diaRows.length === 0) {
+        await connection.commit();
+        return res.json({ success: true, message: "No había registros para ese día" });
+      }
 
-    res.json({ success: true, message: "Día inactivado correctamente" });
+      const id_dia = diaRows[0].id;
+
+      // Buscar comidas del día
+      const [comidaRows] = await connection.query(
+        "SELECT id FROM comida WHERE id_dia = ?",
+        [id_dia]
+      );
+
+      if (comidaRows.length > 0) {
+        const comidaIds = comidaRows.map(r => r.id);
+
+        // Borrar alimentos relacionados (relación N:M)
+        await connection.query(
+          `DELETE FROM comida_alimento WHERE id_comida IN (${comidaIds.map(() => '?').join(',')})`,
+          comidaIds
+        );
+
+        // Borrar comidas del día
+        await connection.query("DELETE FROM comida WHERE id_dia = ?", [id_dia]);
+      }
+
+      await connection.commit();
+      res.json({ success: true, message: "Día limpiado correctamente" });
+    } catch (e) {
+      await connection.rollback();
+      console.error("/clear-day tx error:", e);
+      res.status(500).json({ message: "Error interno" });
+    } finally {
+      connection.release();
+    }
   } catch (err) {
     console.error("/clear-day error:", err);
     res.status(500).json({ message: "Error interno" });
@@ -964,53 +1046,53 @@ app.post("/clear-day", async (req, res) => {
 // Borrar un alimento específico de una comida en un día específico de la dieta
 // Inactivar un alimento específico de una comida en un día específico de la dieta
 app.post("/delete-diet-item", async (req, res) => {
+  // Acepta id_dieta|id_diet e id_alimento|id_food para compatibilidad
   try {
-    const { id_diet, id_food, dia, tipoComida } = req.body;
+    const { id_dieta, id_diet, id_alimento, id_food, dia, tipoComida } = req.body || {};
 
-    const idDietNum = Number(id_diet);
-    const idFoodNum = Number(id_food);
+    const idDietaNum = Number(id_dieta || id_diet);
+    const idAlimentoNum = Number(id_alimento || id_food);
     const diaNum = Number(dia);
 
-    // Buscar el día
-    const [dayRows] = await pool.query(
-      "SELECT id FROM day WHERE id_diet = ? AND number_day = ?",
-      [idDietNum, diaNum]
+    if (!idDietaNum || !idAlimentoNum || !diaNum || !tipoComida) {
+      return res.status(400).json({ error: "Faltan parámetros" });
+    }
+
+    // Buscar el día (esquema español)
+    const [diaRows] = await pool.query(
+      "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
+      [idDietaNum, diaNum]
     );
-    if (dayRows.length === 0) {
+    if (diaRows.length === 0) {
       return res.status(404).json({ error: "Día no encontrado en la dieta" });
     }
 
-    const id_day = dayRows[0].id;
+    const id_dia = diaRows[0].id;
 
-    // Buscar la comida (meal)
-    const [mealRows] = await pool.query(
-      "SELECT id FROM meal WHERE id_day = ? AND type = ?",
-      [id_day, tipoComida]
+    // Buscar la comida
+    const [comidaRows] = await pool.query(
+      "SELECT id FROM comida WHERE id_dia = ? AND tipo = ?",
+      [id_dia, tipoComida]
     );
-    if (mealRows.length === 0) {
+    if (comidaRows.length === 0) {
       return res.status(404).json({ error: "Comida no encontrada en ese día" });
     }
 
-    const id_meal = mealRows[0].id;
+    const id_comida = comidaRows[0].id;
 
-    // Verificar si el alimento existe
-    const [checkRows] = await pool.query(
-      "SELECT * FROM meal_food WHERE id_meal = ? AND id_food = ? AND estado = 'activo'",
-      [id_meal, idFoodNum]
+    // Eliminar el alimento de la relación
+    const [delResult] = await pool.query(
+      "DELETE FROM comida_alimento WHERE id_comida = ? AND id_alimento = ?",
+      [id_comida, idAlimentoNum]
     );
-    if (checkRows.length === 0) {
-      return res.status(404).json({ error: "El alimento no está activo en esa comida" });
+
+    if (delResult.affectedRows === 0) {
+      return res.status(404).json({ error: "El alimento no estaba asociado a esa comida" });
     }
 
-    // Inactivar el alimento
-    await pool.query(
-      "UPDATE meal_food SET estado = 'inactivo' WHERE id_meal = ? AND id_food = ?",
-      [id_meal, idFoodNum]
-    );
-
-    res.json({ success: true, message: "Alimento inactivado correctamente" });
+    res.json({ success: true, message: "Alimento eliminado correctamente" });
   } catch (err) {
-    console.error("Error al inactivar alimento:", err);
+    console.error("/delete-diet-item error:", err);
     res.status(500).json({ error: "Error interno" });
   }
 });
