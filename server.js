@@ -342,17 +342,20 @@ app.post("/checkEmail", async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: "Falta email" });
 
-    // Validar formato básico antes de consultar la base
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRe.test(String(email))) return res.status(400).json({ error: "Formato de email inválido" });
+    if (!emailRe.test(String(email))) {
+      return res.status(400).json({ error: "Formato de email inválido" });
+    }
 
-    // Intentar consultar la base de datos
-    try {
-      const [rows] = await pool.query("SELECT id FROM usuario WHERE email = ?", [email]);
-      return res.json({ exists: rows.length > 0 });
-    } catch (dbErr) {
-      console.error("DB error en /checkEmail:", dbErr);
-      return res.status(500).json({ error: "Error al verificar email en la base de datos" });
+    const [rows] = await pool.query(
+      "SELECT id, nombre AS name, email, id_perfil FROM usuario WHERE email = ?",
+      [email]
+    );
+
+    if (rows.length > 0) {
+      return res.json({ exists: true, user: rows[0] });
+    } else {
+      return res.json({ exists: false });
     }
   } catch (err) {
     console.error("/checkEmail error:", err);

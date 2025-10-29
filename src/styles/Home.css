@@ -131,7 +131,7 @@ body {
 
 .btn2 {
     background-image: url("/public/Imagenes/Home/Dieta.svg");
-    background-size: 70% 100% !important;
+    background-size: 60% 80% !important;
     background-repeat: no-repeat;
     background-position: center;
     background-color: #5adb91;
@@ -141,15 +141,18 @@ body {
 .btn3 {
     background-image: url("/public/Imagenes/Home/Calendario.png");
     font-size: 3vw;
+    background-size: 80% 100% !important;
+    background-repeat: no-repeat;
+    background-color: #699e9b;
 }
 
 .btn4 {
     background-image: url("/public/Imagenes/Home/Alimentos.svg");
-    background-size: 100% 100% !important;
+    background-size: 80% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
     flex: 0 0 30% !important;
-    /* ancho fijo dentro de flex */
+    background-color: #f8eedb;
 }
 
 .btn5 {

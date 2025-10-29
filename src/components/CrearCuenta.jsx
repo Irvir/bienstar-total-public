@@ -140,7 +140,30 @@ function CrearCuentaInner() {
         else window.notify(data.message || "Error al registrar", { type: "error" });
       } else {
         window.notify(data.message || "Registro exitoso", { type: "success" });
-        setTimeout(() => (window.location.href = "/login"), 2500);
+        // Intentar loguear automáticamente al usuario recién creado
+        try {
+          const loginRes = await fetch(`${API_BASE}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: formData.email, password: formData.password }),
+          });
+          const loginData = await loginRes.json();
+          if (loginRes.ok && loginData.user) {
+            localStorage.setItem("usuario", JSON.stringify(loginData.user));
+            // limpiar dietTarget si no es doctor
+            if (!loginData.user || loginData.user.id_perfil !== 3) {
+              localStorage.removeItem("dietTarget");
+            }
+            // Redirigir al home
+            setTimeout(() => (window.location.href = "/"), 1000);
+          } else {
+            // Si el login automático falla, redirigir a login para que el usuario inicie sesión manualmente
+            setTimeout(() => (window.location.href = "/login"), 1500);
+          }
+        } catch (err) {
+          console.warn("Auto-login falló:", err);
+          setTimeout(() => (window.location.href = "/login"), 1500);
+        }
       }
     } catch (err) {
       console.error(err);
