@@ -287,6 +287,18 @@ router.post("/user/:id/deactivate", async (req, res) => {
     res.status(500).json({ message: "Error al inactivar usuario" });
   }
 });
+
+// === Activar cuenta ===
+router.post("/user/:id/activate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("UPDATE usuario SET estado = 'activo' WHERE id = ?", [id]);
+    res.json({ message: "Usuario activado correctamente" });
+  } catch (err) {
+    console.error("Error al activar usuario:", err);
+    res.status(500).json({ message: "Error al activar usuario" });
+  }
+});
 function validarRegistro(email, password, height, weight, age) {
   const errores = [];
 
@@ -412,6 +424,31 @@ app.post("/registrar", async (req, res) => {
   } catch (err) {
     console.error("/registrar error:", err);
     res.status(500).json({ error: "Error servidor registro" });
+  }
+});
+
+// Endpoint de ayuda para depuración: verifica un token de reCAPTCHA con Google
+// POST /verify-captcha { token: string }
+app.post('/verify-captcha', async (req, res) => {
+  try {
+    const { token } = req.body || {};
+    if (!token) return res.status(400).json({ error: 'Falta token' });
+
+    // Usar secret configurado en el servidor; en dev fallback a la clave de prueba de Google
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+
+    const r = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(token)}`
+    });
+
+    const data = await r.json();
+    // Devolver tal cual la respuesta de Google para depuración
+    res.json({ ok: true, verification: data });
+  } catch (err) {
+    console.error('/verify-captcha error:', err);
+    res.status(500).json({ error: 'Error verificando captcha' });
   }
 });
 

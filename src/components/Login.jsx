@@ -7,34 +7,19 @@ import withAuth from "../components/withAuth";
 import { API_BASE } from "./shared/apiBase";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../controllers/firebase.js";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
-function Login() {
+function LoginInner() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userName, setUserName] = useState("Invitado");
   const [activePage, setActivePage] = useState("login");
   const [loading, setLoading] = useState(false);
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
-    if (usuarioGuardado) {
-      try {
-        const usuario = JSON.parse(usuarioGuardado);
-        if (usuario?.name) setUserName(usuario.name);
-
-        // Si es doctor (id_perfil === 3), imprimir datos
-        if (usuario?.id_perfil === 3) {
-          console.log("=== Usuario Doctor ===");
-          console.log(usuario);
-        }
-        console.log(usuario);
-      } catch (e) {
-        console.warn("Usuario inválido", e);
-      }
-    }
-
     const currentPage = window.location.pathname.split("/").pop() || "login";
     setActivePage(currentPage.replace(".html", "").toLowerCase());
   }, []);
@@ -68,6 +53,8 @@ function Login() {
     setLoading(true);
 
     try {
+    
+
       const emailNormalized = email.trim().toLowerCase();
 
       // Atajo para admin2025
@@ -157,6 +144,8 @@ function Login() {
     }
   };
 
+
+
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -169,6 +158,27 @@ function Login() {
         photoURL: user.photoURL,
       };
       localStorage.setItem("usuario", JSON.stringify(googleUser));
+
+      // Generar token reCAPTCHA al crear/iniciar sesión con Google y enviarlo a la consola
+      try {
+        if (executeRecaptcha) {
+          const token = await executeRecaptcha("google_signup");
+          console.log("reCAPTCHA token (google signup):", token);
+        } else if (window.grecaptcha && window.grecaptcha.execute) {
+          // fallback si por alguna razón el provider no está disponible
+          try {
+            await new Promise((res) => window.grecaptcha.ready(res));
+            const fallbackToken = await window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY || "", { action: "google_signup" });
+            console.log("reCAPTCHA token (google signup fallback):", fallbackToken);
+          } catch (ferr) {
+            console.warn("No se pudo generar token reCAPTCHA en fallback:", ferr);
+          }
+        } else {
+          console.warn("executeRecaptcha no disponible; no se generó token reCAPTCHA para Google signup");
+        }
+      } catch (e) {
+        console.warn("Error al generar token reCAPTCHA tras login con Google:", e);
+      }
 
       // 🔹 Imprimir si es doctor (id_perfil = 3)
       if (googleUser.id_perfil === 3) {
@@ -208,6 +218,7 @@ function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
+                  {/* No mostramos ni generamos manualmente el token en la UI por seguridad. */}
                   <input
                     type="password"
                     placeholder="Contraseña"
@@ -218,21 +229,32 @@ function Login() {
                     required
                   />
                   <br />
-                  <button type="submit" id="botonIngresar">
+                  <br />
+                  <button type="submit" id="botonIngresar" className="btn btn-primary btn-block">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
 
                   <br />
 
+                  {/* Token no mostrado en UI (ya no se guarda en estado). */}
+
+                  <br />
+
                   <button
                     type="button"
-                    className="btnCrearCuenta"
+                    className="btn btn-secondary btn-block btnCrearCuenta"
                     onClick={() => showLoaderAndRedirect("/crear-cuenta")}
                   >
                     Crear Cuenta
                   </button>
                   <br />
-                  <button type="button" onClick={handleGoogleLogin}>
+                  <button
+                    type="button"
+                    className="btn btn-google"
+                    onClick={handleGoogleLogin}
+                    aria-label="Iniciar sesión con Google"
+                  >
+                    <span className="btn-google__icon" aria-hidden="true">G</span>
                     Iniciar sesión con Google
                   </button>
                 </form>
@@ -249,4 +271,5 @@ function Login() {
   );
 }
 
-export default withAuth(Login, { requireAuth: false });
+const LoginWithAuth = withAuth(Login, { requireAuth: false });
+export default LoginWithAuth;
