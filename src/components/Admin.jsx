@@ -58,6 +58,7 @@ function AdminAlimentos() {
   const handleAbrirEditar = (alimento) => setModalAlimento(alimento);
   const handleCerrarModal = () => setModalAlimento(null);
 
+  // Manejar guardar cambios desde el modal
   const handleGuardar = async (formDataObj) => {
     setLoading(true);
     try {
@@ -70,7 +71,7 @@ function AdminAlimentos() {
         });
         if (!uploadRes.ok) throw new Error();
         const uploadJson = await uploadRes.json();
-        // server returns { image_url: '/uploads/...' }
+        // server retorna { image_url: '/uploads/...' }
         formDataObj.image_url = uploadJson.image_url || uploadJson.url || uploadJson.image || null;
       }
       const putRes = await fetch(`${API_BASE}/admin/foods/${formDataObj.id}`, {
@@ -84,7 +85,7 @@ function AdminAlimentos() {
         throw new Error(`PUT failed: ${putRes.status} ${txt}`);
       }
 
-      // The server's PUT returns a simple message; refresh the listing to reflect changes
+      // El servidor retorna un mensaje simple; refrescar la lista para reflejar los cambios
       await fetchListado();
       window.notify?.("Cambios guardados correctamente", { type: "success" });
       setModalAlimento(null);

@@ -85,58 +85,7 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
-// --- POST crear alimento ---
-app.post("/admin/foods", async (req, res) => {
-  try {
-    const {
-      nombre,
-      Energia,
-      Humedad,
-      Cenizas,
-      Proteinas,
-      H_de_C_disp,
-      Azucares_totales,
-      Fibra_dietetica_total,
-      Lipidos_totales,
-      Ac_grasos_totales,
-      Ac_grasos_poliinsat,
-      Ac_grasos_trans,
-      Colesterol,
-      Vitamina_A,
-      Vitamina_C,
-      Vitamina_D,
-      Vitamina_E,
-      Vitamina_K,
-      Vitamina_B1,
-      Vitamina_B2 ,
-      Niacina,
-      Vitamina_B6,
-      Ac_pantotenico,
-      Vitamina_B12,
-      Folatos,
-      Sodio,
-      Potasio,
-      Calcio,
-      Fosforo,
-      Magnesio,
-      Hierro,
-      Zinc,
-      Cobre,
-      Selenio
-    } = req.body;
 
-    const [result] = await pool.query(
-      `INSERT INTO alimento (nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio]
-    );
-
-    res.json({ message: "Alimento creado correctamente", id: result.insertId });
-  } catch (err) {
-    console.error("POST /admin/foods error:", err);
-    res.status(500).json({ error: "Error al crear alimento" });
-  }
-});
 
 // --- Ruta subir imagen ---
 app.post("/admin/foods/upload-image", upload.single("image"), (req, res) => {
@@ -158,6 +107,110 @@ app.get("/admin/foods", async (req, res) => {
     res.status(500).json({ error: "Error al obtener alimentos" });
   }
 });
+// Crear Alimento
+// --- POST crear alimento ---
+app.post("/admin/foods", async (req, res) => {
+  try {
+    const {
+      image_url,
+      nombre,
+      Energia,
+      Humedad,
+      Cenizas,
+      Proteinas,
+      H_de_C_disp,
+      Azucares_totales,
+      Fibra_dietetica_total,
+      Lipidos_totales,
+      Ac_grasos_totales,
+      Ac_grasos_poliinsat,
+      Ac_grasos_trans,
+      Colesterol,
+      Vitamina_A,
+      Vitamina_C,
+      Vitamina_D,
+      Vitamina_E,
+      Vitamina_K,
+      Vitamina_B1,
+      Vitamina_B2,
+      Niacina,
+      Vitamina_B6,
+      Ac_pantotenico,
+      Vitamina_B12,
+      Folatos,
+      Sodio,
+      Potasio,
+      Calcio,
+      Fosforo,
+      Magnesio,
+      Hierro,
+      Zinc,
+      Cobre,
+      Selenio
+    } = req.body;
+
+    const [result] = await pool.query(
+      `INSERT INTO alimento (
+        image_url, nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp,
+        Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales,
+        Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C,
+        Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina,
+        Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio,
+        Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+      [
+        image_url || null,
+        nombre,
+        Energia,
+        Humedad,
+        Cenizas,
+        Proteinas,
+        H_de_C_disp,
+        Azucares_totales,
+        Fibra_dietetica_total,
+        Lipidos_totales,
+        Ac_grasos_totales,
+        Ac_grasos_poliinsat,
+        Ac_grasos_trans,
+        Colesterol,
+        Vitamina_A,
+        Vitamina_C,
+        Vitamina_D,
+        Vitamina_E,
+        Vitamina_K,
+        Vitamina_B1,
+        Vitamina_B2,
+        Niacina,
+        Vitamina_B6,
+        Ac_pantotenico,
+        Vitamina_B12,
+        Folatos,
+        Sodio,
+        Potasio,
+        Calcio,
+        Fosforo,
+        Magnesio,
+        Hierro,
+        Zinc,
+        Cobre,
+        Selenio
+      ]
+    );
+
+    res.status(201).json({
+      message: "Alimento creado correctamente",
+      id: result.insertId
+    });
+
+  } catch (err) {
+    console.error("/admin/foods POST error:", err);
+    res.status(500).json({ error: "Error al crear el alimento" });
+  }
+});
+
+
+
 
 // Montar el router de admin en /admin para exponer rutas como /admin/users
 app.use('/admin', router);
