@@ -5,7 +5,7 @@
     --accent: #8b2330;
     --accent-strong: #6f0e1a;
     --success: #16a34a;
-    --danger: #c0392b;
+    --danger: #dc3545;
     --radius: 12px;
 }
 
@@ -21,8 +21,12 @@
 .admin-header .title .small-icon{display:inline-block;margin-left:8px;width:22px;height:22px;vertical-align:middle;filter:grayscale(30%);opacity:0.95}
 
 .admin-controls{display:flex;gap:12px;align-items:center}
-.admin-controls .btn-primary{background:linear-gradient(180deg,var(--accent),#6d1b26);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform .12s ease,box-shadow .12s ease}
-.admin-controls .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(15,23,42,0.08)}
+.admin-controls .btn-primary{background:var(--accent-strong);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease}
+.admin-controls .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(15,23,42,0.08);background-color:var(--accent)}
+
+/* Generic primary button on admin page (fallback if not wrapped in .admin-controls) */
+.btn-primary{background:var(--accent-strong);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(15,23,42,0.08);background-color:var(--accent)}
 
 /* quick filters / stats */
 .admin-stats{display:flex;gap:12px;align-items:center}
@@ -41,28 +45,42 @@
 .admin-card-body{flex:1}
 .admin-card-footer{display:flex;gap:8px;margin-top:8px;justify-content:flex-end}
 .btn-accion{padding:8px 10px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-.btn-accion.editar{background:linear-gradient(180deg,#0A74C3,#055a9a);color:#fff}
-.btn-accion.eliminar{background:linear-gradient(180deg,#D33B3B,#B20C05);color:#fff}
+.btn-accion.editar{background:#0A74C3;color:#fff}
+.btn-accion.eliminar{background:#D33B3B;color:#fff}
 
 /* Admin card action buttons use shared admin-actions styles */
 .admin-card .admin-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
-.admin-card .action-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:linear-gradient(180deg,#fff,#fbfbfd);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.admin-card .action-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--accent-strong)}
 .admin-card .action-btn--small{padding:6px 8px;font-size:0.85rem}
 .admin-card .action-btn svg{width:18px;height:18px}
+
+/* Modificadores coherentes con otras páginas */
+.admin-card .action-btn--danger{background:var(--danger);color:#fff;border:none;box-shadow:0 6px 16px rgba(192,57,43,0.12)}
+.admin-card .action-btn--danger:hover{box-shadow:0 10px 28px rgba(192,57,43,0.16)}
+.admin-card .action-btn--outline{background:transparent;border:1px solid var(--success);color:var(--success)}
+.admin-card .action-btn--outline:hover{background:rgba(22,163,74,0.06)}
+
+/* Unscoped variants to ensure buttons elsewhere on the page match too */
+.action-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--accent-strong)}
+.action-btn--small{padding:6px 8px;font-size:0.85rem}
+.action-btn--danger{background:var(--danger);color:#fff;border:none;box-shadow:0 6px 16px rgba(192,57,43,0.12)}
+.action-btn--danger:hover{box-shadow:0 10px 28px rgba(192,57,43,0.16)}
+.action-btn--outline{background:transparent;border:1px solid var(--success);color:var(--success)}
+.action-btn--outline:hover{background:rgba(22,163,74,0.06)}
 
 /* Compat: botones simples dentro de <div class="admin-actions"> */
 .admin-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
 .admin-actions button{
     padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);
-    background:linear-gradient(180deg,#fff,#fbfbfd);cursor:pointer;display:inline-flex;align-items:center;gap:8px;
-    font-weight:600;color:var(--accent-strong);transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
+    background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    font-weight:600;color:var(--accent-strong);transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease,background-color .12s ease;
 }
 .admin-actions button:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(2,6,23,0.06)}
 .admin-actions button:active{transform:translateY(0)}
 
 /* variantes por posición: 1 = editar, 2 = eliminar */
-.admin-actions button:nth-child(1){background:linear-gradient(180deg,#E6F6FF,#D1EEFF);color:#064B78;border-color:rgba(10,116,195,0.12)}
-.admin-actions button:nth-child(2){background:linear-gradient(180deg,#FFECEC,#FFD1D1);color:#7A1C1C;border-color:rgba(192,57,43,0.10)}
+.admin-actions button:nth-child(1){background:#E6F6FF;color:#064B78;border-color:rgba(10,116,195,0.12)}
+.admin-actions button:nth-child(2){background:#FFECEC;color:#7A1C1C;border-color:rgba(192,57,43,0.10)}
 
 /* modal (keep existing behavior but modernized) */
 .modal-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.5);z-index:2000}
@@ -75,7 +93,7 @@
 .preview{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
 .modal-buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
 .btn-cancel{background:#f3f4f6;color:#333;border:none;padding:8px 12px;border-radius:8px}
-.btn-save{background:linear-gradient(180deg,#0A74C3,#055a9a);color:white;border:none;padding:8px 12px;border-radius:8px}
+.btn-save{background:#0A74C3;color:white;border:none;padding:8px 12px;border-radius:8px}
 
 /* Styles for the editar modal: group fields and responsive grids */
 .modal-editar h2{margin:0 0 12px 0;font-family:Montserrat, sans-serif;color:var(--accent-strong)}
