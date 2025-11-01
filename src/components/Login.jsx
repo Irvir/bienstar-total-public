@@ -17,6 +17,7 @@ function LoginInner() {
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
     const currentPage = window.location.pathname.split("/").pop() || "login";
@@ -73,6 +74,7 @@ function LoginInner() {
         );
         return;
       }
+   
 
       // Login normal con API
       const response = await fetch(`${API_BASE}/login`, {
@@ -92,8 +94,14 @@ function LoginInner() {
           localStorage.removeItem("dietTarget");
         }
 
-        // 🔹 Imprimir usuario si es doctor
+        //  Imprimir usuario si es doctor
         if (usuario.id_perfil === 3) {
+          notifyThenRedirect(
+            "Bienvenido Doctor",
+            { type: "success", duration: 1500 },
+            "/",
+            setLoading
+          );
           console.log("=== Usuario Doctor ===");
           console.log(usuario);
         }
@@ -156,46 +164,53 @@ function LoginInner() {
         email: user.email,
         photoURL: user.photoURL,
       };
-      localStorage.setItem("usuario", JSON.stringify(googleUser));
 
-      // Generar token reCAPTCHA al crear/iniciar sesión con Google y enviarlo a la consola
+      // ===== Verificar si ya existe en la base de datos =====
+      const response = await fetch(`${API_BASE}/checkEmail`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: googleUser.email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.exists) {
+        // Usuario ya registrado → iniciar sesión normal
+        localStorage.setItem("usuario", JSON.stringify(data.user));
+
+        notifyThenRedirect(
+          `Bienvenido ${data.user.name || "usuario"}`,
+          { type: "success", duration: 1500 },
+          "/",
+          setLoading
+        );
+      } else {
+        // Usuario nuevo → redirigir a crear cuenta
+        localStorage.setItem("google_temp_user", JSON.stringify(googleUser));
+
+        notifyThenRedirect(
+          "Cuenta de Google no registrada. Complete su información para crear una cuenta.",
+          { type: "info", duration: 2000 },
+          "/crear-cuenta",
+          setLoading
+        );
+      }
+
+      // ====== reCAPTCHA opcional ======
       try {
         if (executeRecaptcha) {
           const token = await executeRecaptcha("google_signup");
           console.log("reCAPTCHA token (google signup):", token);
-        } else if (window.grecaptcha && window.grecaptcha.execute) {
-          // fallback si por alguna razón el provider no está disponible
-          try {
-            await new Promise((res) => window.grecaptcha.ready(res));
-            const fallbackToken = await window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY || "", { action: "google_signup" });
-            console.log("reCAPTCHA token (google signup fallback):", fallbackToken);
-          } catch (ferr) {
-            console.warn("No se pudo generar token reCAPTCHA en fallback:", ferr);
-          }
-        } else {
-          console.warn("executeRecaptcha no disponible; no se generó token reCAPTCHA para Google signup");
         }
-      } catch (e) {
-        console.warn("Error al generar token reCAPTCHA tras login con Google:", e);
+      } catch (recErr) {
+        console.warn("Error al generar token reCAPTCHA:", recErr);
       }
-
-      // 🔹 Imprimir si es doctor (id_perfil = 3)
-      if (googleUser.id_perfil === 3) {
-        console.log("=== Usuario Doctor (Google) ===");
-        console.log(googleUser);
-      }
-
-      notifyThenRedirect(
-        `Bienvenido ${user.displayName}`,
-        { type: "success", duration: 1500 },
-        "/",
-        setLoading
-      );
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
       window.notify("Error al iniciar sesión con Google", { type: "error" });
     }
   };
+
 
   return (
     <div className="login-page">
@@ -228,17 +243,13 @@ function LoginInner() {
                     required
                   />
                   <br />
-                  <br />
                   <button type="submit" id="botonIngresar" className="btn btn-primary btn-block">
                     {loading ? "Ingresando..." : "Ingresar"}
                   </button>
 
                   <br />
 
-                  {/* Token no mostrado en UI (ya no se guarda en estado). */}
-
-                  <br />
-
+                  
                   <button
                     type="button"
                     className="btn btn-secondary btn-block btnCrearCuenta"

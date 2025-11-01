@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
-// 🔧 Configuración de Firebase (usando variables de entorno de Vite)
+//  Configuración de Firebase (usando variables de entorno de Vite)
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -14,14 +14,14 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// 🚀 Inicializar Firebase
+// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 
-// 🔐 Autenticación
+// Autenticación
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// 📊 Analytics (solo si el navegador lo soporta)
+// Analytics (solo si el navegador lo soporta)
 let analytics = null;
 isSupported().then((yes) => {
     if (yes) analytics = getAnalytics(app);
