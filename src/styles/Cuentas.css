@@ -34,6 +34,9 @@ body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -ap
 .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:0.85rem}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.85rem}
 
+/* Make the Email field full-width in the first row (separate from Nombre) */
+.admin-form form .grid-2:first-of-type > div:nth-child(2){grid-column:1 / -1}
+
 .form-actions{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:0.75rem}
 .form-actions .btn{min-width:140px}
 
@@ -78,7 +81,7 @@ body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -ap
 .row-inactivo{background:linear-gradient(90deg,#fff5f5,#fff);color:#9a9a9a}
 
 .list-header{display:flex;justify-content:flex-end;gap:0.75rem;padding:0.9rem}
-.list-header input{padding:0.55rem 0.75rem;border-radius:10px;border:1px solid rgba(15,23,42,0.06);min-width:220px}
+.list-header input{padding:0.55rem 0.75rem;border-radius:10px;border:1px solid rgba(15,23,42,0.06);min-width:100%}
 
 /* Small screens */
 @media(max-width:700px){

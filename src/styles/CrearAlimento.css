@@ -1,0 +1,140 @@
+/* CrearAlimento.css - estilos para /admin/crear-alimento
+	 Consistente con Base.css y Admin.css */
+
+:root {
+	--ca-accent: var(--primary, #931525);
+	--ca-accent-strong: var(--primary-dark, #6F0E1A);
+	--ca-card: #ffffff;
+	--ca-muted: #6b7280;
+	--ca-border: rgba(2,6,23,0.08);
+	--ca-radius: 14px;
+}
+
+/* Contenedor principal */
+.crear-alimento-container {
+	max-width: 1100px;
+	margin: 18px auto 28px;
+	padding: 0 18px 24px;
+}
+
+/* (eliminado) Migas / accesos rápidos: los links ya existen en otra sección */
+
+/* Título */
+.crear-alimento-container h2 {
+	margin: 6px 0 14px;
+	font-family: Montserrat, system-ui, sans-serif;
+	font-size: 1.6rem;
+	color: var(--ca-accent-strong);
+	letter-spacing: -0.2px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.crear-alimento-container h2::before {
+	content: '';
+	display: inline-block;
+	width: 10px;
+	height: 28px;
+	background: linear-gradient(180deg, var(--ca-accent), var(--ca-accent-strong));
+	border-radius: 6px;
+}
+
+/* Tarjeta del formulario */
+.crear-alimento-form {
+	background: var(--ca-card);
+	border-radius: var(--ca-radius);
+	box-shadow: 0 12px 36px rgba(2,6,23,0.08);
+	border: 1px solid var(--ca-border);
+	padding: 18px;
+	display: grid;
+	gap: 14px;
+}
+
+/* Campo nombre a ancho completo */
+.crear-alimento-form > input[type="text"] {
+	width: 100%;
+	padding: 12px 14px;
+	border-radius: 10px;
+	border: 1px solid #e6e6e6;
+	font-size: 1rem;
+}
+
+/* Grid de nutrientes */
+.nutrients-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 10px;
+}
+
+.nutrients-grid input[type="number"] {
+	width: 100%;
+	padding: 10px 12px;
+	border-radius: 10px;
+	border: 1px solid #e6e6e6;
+	font-size: .95rem;
+}
+
+.crear-alimento-form input:focus {
+	outline: none;
+	border-color: rgba(147,21,37,0.35);
+	box-shadow: 0 0 0 3px rgba(147,21,37,0.08);
+}
+
+/* Archivo e imagen */
+.crear-alimento-form input[type="file"] {
+	border: 1px dashed rgba(2,6,23,0.18);
+	padding: 10px;
+	border-radius: 10px;
+	background: #fafafa;
+}
+
+.image-preview {
+	width: 160px;
+	height: 160px;
+	object-fit: cover;
+	border-radius: 12px;
+	border: 1px solid var(--ca-border);
+	box-shadow: 0 8px 24px rgba(2,6,23,0.08);
+}
+
+/* Botón enviar con look primario */
+.crear-alimento-form button[type="submit"] {
+	align-self: end;
+	justify-self: end;
+	padding: 12px 16px;
+	border-radius: 10px;
+	border: none;
+	color: #fff;
+	background: linear-gradient(135deg, var(--ca-accent), #ff416c);
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: 0 10px 26px rgba(2,6,23,0.10);
+	transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+.crear-alimento-form button[type="submit"]:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 16px 40px rgba(2,6,23,0.12);
+}
+
+.crear-alimento-form button[type="submit"][disabled] {
+	opacity: .7;
+	cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 720px) {
+	.crear-alimento-form {
+		padding: 14px;
+	}
+	.image-preview {
+		width: 120px;
+		height: 120px;
+	}
+}
+
+/* Ayudas de texto y estados */
+.input-hint { font-size: .85rem; color: var(--ca-muted); }
+.is-error { border-color: #dc3545 !important; box-shadow: 0 0 0 3px rgba(220,53,69,0.08) !important; }
+
