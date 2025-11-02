@@ -240,7 +240,7 @@ body {
 
 /* Propiedades generales de los botones dentro de .botonera */
 .botonera button {
-    flex: 1 1 calc(30% - 1rem);
+    flex: 1 1 calc(33.333% - 1rem);
     min-height: 160px;
     min-width: 260px;
     border-radius: 50px;
