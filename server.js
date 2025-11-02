@@ -20,17 +20,27 @@ const ALLOWED_ORIGINS = [
   'https://bienstar-total-public.vercel.app',
   'https://bienstar-total-public-ite6.vercel.app',
   'https://bienstar-total-public.onrender.com',
-  'https://testing-nine-lemon-40.vercel.app' // ✅ tu frontend actual
+  'https://testing-nine-lemon-40.vercel.app',
+  'https://testing-8i367qyxt-irvirs-projects.vercel.app'
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // requests desde herramientas como Postman
+    if (!origin) return callback(null, true); // herramientas como Postman
     if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 200
+}));
+
+app.use(express.json());
+
+// --- RESPONDER preflight OPTIONS globalmente ---
+app.options('*', cors({
+  origin: ALLOWED_ORIGINS,
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
