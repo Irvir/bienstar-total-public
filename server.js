@@ -7,27 +7,33 @@ import bcrypt from "bcrypt";
 import multer from "multer";
 import dotenv from 'dotenv';
 
-// Load .env into process.env
 dotenv.config();
 
 const app = express();
 const router = express.Router();
-const ALLOWED_ORIGINS = [
+
+// Construir lista de orígenes permitidos (por defecto localhost y posibilidad de configurar via env)
+const DEFAULT_ALLOWED = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:4000',
   'http://127.0.0.1:4000',
-  'https://bienstar-total-public.vercel.app',
-  'https://bienstar-total-public-ite6.vercel.app',
-  'https://bienstar-total-public.onrender.com',
-  'https://testing-nine-lemon-40.vercel.app',
-  'https://testing-8i367qyxt-irvirs-projects.vercel.app'
+  'https://bienstar-total-public.onrender.com', 
+  'https://testing-8i367qyxt-irvirs-projects.vercel.app' 
 ];
+const envAllowed = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+const ALLOWED_ORIGINS = Array.from(new Set([...DEFAULT_ALLOWED, ...envAllowed]));
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // herramientas como Postman
+    
+    if (!origin) return callback(null, true);
     if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    // Allow localhost patterns as a fallback
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) return callback(null, true);
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
@@ -37,8 +43,8 @@ app.use(cors({
 app.use(express.json());
 
 // --- RESPONDER preflight OPTIONS globalmente ---
-app.options('*', cors({
-  origin: ALLOWED_ORIGINS,
+app.options('/*', cors({
+  origin: (process.env.ALLOWED_ORIGINS || ALLOWED_ORIGINS),
   credentials: true,
   optionsSuccessStatus: 200
 }));
@@ -1150,8 +1156,37 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
+// Health check for Render and monitoring
+app.get('/health', async (req, res) => {
+  try {
+    // Optionally check DB connectivity quickly
+    await pool.query('SELECT 1');
+    res.json({ ok: true, env: process.env.NODE_ENV || 'development' });
+  } catch (err) {
+    res.status(503).json({ ok: false, error: 'DB unreachable' });
+  }
+});
+
+// Graceful shutdown helper (Render sends SIGTERM on deploys)
+async function shutdown(signal) {
+  console.log(`Received ${signal}. Closing DB pool and exiting...`);
+  try {
+    await pool.end();
+    console.log('DB pool closed');
+  } catch (e) {
+    console.error('Error closing DB pool', e);
+  }
+  process.exit(0);
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
 // --- Iniciar servidor ---
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`Servidor corriendo en puerto ${PORT} (NODE_ENV=${process.env.NODE_ENV || 'development'})`);
+  if ((process.env.ALLOWED_ORIGINS || '').length > 0) {
+    console.log('ALLOWED_ORIGINS from env:', process.env.ALLOWED_ORIGINS);
+  }
 });
