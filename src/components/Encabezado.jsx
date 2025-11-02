@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../styles/Encabezado.css";
 
-// Header: shows account name (or 'Invitado' when not logged in), supports
-// client-side Google Sign-In (Google Identity Services) to populate localStorage.usuario
+
 export default function Encabezado({ activePage, onNavigate }) {
   const [userName, setUserName] = useState("Invitado");
   const [isLogged, setIsLogged] = useState(false);
   const googleBtnRef = useRef(null);
 
-  // Read stored user (if any) and initialize display
   useEffect(() => {
     const refreshUserFromStorage = () => {
       const raw = localStorage.getItem("usuario") || localStorage.getItem("Usuario");
@@ -19,8 +17,21 @@ export default function Encabezado({ activePage, onNavigate }) {
       }
       try {
         const usuario = JSON.parse(raw);
-        const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
-        setUserName(name);
+        // Si el usuario es doctor y hay un paciente seleccionado (dietTarget), mostrar su nombre/email
+        try {
+          const targetRaw = localStorage.getItem("dietTarget");
+          const target = targetRaw ? JSON.parse(targetRaw) : null;
+          if (usuario?.id_perfil === 3 && (target?.nombre || target?.email)) {
+            const display = target.nombre || target.email;
+            setUserName(display);
+          } else {
+            const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
+            setUserName(name);
+          }
+        } catch {
+          const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
+          setUserName(name);
+        }
         setIsLogged(true);
       } catch (e) {
         console.warn("Usuario inválido en localStorage", e);
@@ -31,20 +42,17 @@ export default function Encabezado({ activePage, onNavigate }) {
 
     refreshUserFromStorage();
 
-    // Also listen for storage events from other tabs
     const onStorage = (e) => {
-      if (e.key === 'usuario' || e.key === 'Usuario') refreshUserFromStorage();
+      if (e.key === 'usuario' || e.key === 'Usuario' || e.key === 'dietTarget') refreshUserFromStorage();
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
-  // Google Identity Services integration (client-only): renders a button into googleBtnRef
   useEffect(() => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     if (!clientId) return; // nothing to do if no client id configured
 
-    // Load GSI script if needed
     const loadScript = () => {
       return new Promise((resolve) => {
         if (window.google && window.google.accounts && window.google.accounts.id) return resolve();
@@ -83,9 +91,7 @@ export default function Encabezado({ activePage, onNavigate }) {
           }
         });
 
-        // Render the Google button into the placeholder if not logged
         if (!isLogged && googleBtnRef.current) {
-          // Clear previous children
           googleBtnRef.current.innerHTML = '';
           window.google.accounts.id.renderButton(googleBtnRef.current, { theme: 'outline', size: 'medium' });
         }
@@ -127,6 +133,8 @@ export default function Encabezado({ activePage, onNavigate }) {
   function handleSignOut(e) {
     e.stopPropagation();
     localStorage.removeItem('usuario');
+    // Limpiar también cualquier selección de paciente previa
+    try { localStorage.removeItem('dietTarget'); } catch {}
     setUserName('Invitado');
     setIsLogged(false);
     // If Google One Tap was used, revoke it client-side (best effort)
@@ -165,7 +173,7 @@ export default function Encabezado({ activePage, onNavigate }) {
               className={activePage === "dietas" ? "btnMenuSelec" : "btnMenu"}
               onClick={() => onNavigate("/dietas")}
             >
-              DIETAS
+              DIETA
             </button>
             <button className="btnMenuNoti">
               <img

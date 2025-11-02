@@ -10,8 +10,6 @@ import withAuth from "../components/withAuth";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 function CrearCuentaInner() {
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  const [recaptchaReady, setRecaptchaReady] = useState(false);
   const [activePage, setActivePage] = useState("crearcuenta");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -28,39 +26,13 @@ function CrearCuentaInner() {
     sexo: "",
   });
 
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   useEffect(() => {
     const currentPage = window.location.pathname.split("/").pop() || "crearcuenta";
     setActivePage(currentPage);
   }, []);
-  useEffect(() => {
-    const testRecaptcha = async () => {
-      if (!executeRecaptcha) {
-        console.warn("reCAPTCHA aún no está listo");
-        setRecaptchaReady(false);
-        return;
-      }
-      // Indicar que ya está listo para uso real
-      setRecaptchaReady(true);
 
-      // Test opcional: no es necesario en producción, pero ayuda a depurar
-      try {
-        const token = await executeRecaptcha("test_action");
-        console.log("✅ Token reCAPTCHA generado:", token);
-      } catch (e) {
-        console.warn('Error generando token de prueba reCAPTCHA', e);
-      }
-    };
-
-    // Ejecuta el test solo una vez al montar
-    testRecaptcha();
-  }, [executeRecaptcha]);
-
-  // Asegurarnos de actualizar el estado cuando executeRecaptcha cambie
-  useEffect(() => {
-    setRecaptchaReady(!!executeRecaptcha);
-  }, [executeRecaptcha]);
-
-  
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => (window.location.href = url), 700);
@@ -139,21 +111,27 @@ function CrearCuentaInner() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!executeRecaptcha) {
+      window.notify?.("reCAPTCHA no cargó correctamente", { type: "error" });
+      setLoading(false);
+      return;
+    }
+
     try {
-      if (!executeRecaptcha) {
-        window.notify?.("reCAPTCHA no está listo aún", { type: "error" });
+      const recaptchaToken = await executeRecaptcha("crear_cuenta");
+
+      // Validación final antes de enviar
+      if (Object.keys(errors).length > 0) {
+        window.notify?.("Corrija los errores del formulario", { type: "error" });
         setLoading(false);
         return;
       }
 
-      // ✅ Obtener token invisible
-      const token = await executeRecaptcha("crear_cuenta");
-
-      // ✅ Enviar el token al backend
       const res = await fetch(`${API_BASE}/registrar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken: token }),
+        body: JSON.stringify({ ...formData, recaptchaToken }),
       });
 
       const data = await res.json();
@@ -162,7 +140,30 @@ function CrearCuentaInner() {
         else window.notify(data.message || "Error al registrar", { type: "error" });
       } else {
         window.notify(data.message || "Registro exitoso", { type: "success" });
-        setTimeout(() => (window.location.href = "/login"), 2500);
+        // Intentar loguear automáticamente al usuario recién creado
+        try {
+          const loginRes = await fetch(`${API_BASE}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: formData.email, password: formData.password }),
+          });
+          const loginData = await loginRes.json();
+          if (loginRes.ok && loginData.user) {
+            localStorage.setItem("usuario", JSON.stringify(loginData.user));
+            // limpiar dietTarget si no es doctor
+            if (!loginData.user || loginData.user.id_perfil !== 3) {
+              localStorage.removeItem("dietTarget");
+            }
+            // Redirigir al home
+            setTimeout(() => (window.location.href = "/"), 1000);
+          } else {
+            // Si el login automático falla, redirigir a login para que el usuario inicie sesión manualmente
+            setTimeout(() => (window.location.href = "/login"), 1500);
+          }
+        } catch (err) {
+          console.warn("Auto-login falló:", err);
+          setTimeout(() => (window.location.href = "/login"), 1500);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -180,7 +181,7 @@ function CrearCuentaInner() {
           <div id="contenedorLogin2">
             <div className="contenedorLoginDatosUser">
               <form id="CrearCuentaForm" onSubmit={handleSubmit}>
-                <h2 className="contendorLoginFotoCrearUserAsist" style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: "0 0 8px 0" }}>
+                <h2 style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: "0 0 8px 0" }}>
                   Rellene los datos solicitados:
                 </h2>
 
@@ -289,19 +290,9 @@ function CrearCuentaInner() {
                 </div>
 
                 <div className="botonesGroup">
-                  <button
-                    type="submit"
-                    className="buttonCrearIniciarSesion"
-                    disabled={loading || Object.keys(errors).length > 0 || !recaptchaReady}
-                    title={!recaptchaReady ? 'reCAPTCHA cargando, espere...' : undefined}
-                  >
+                  <button type="submit" className="buttonCrearIniciarSesion" disabled={loading || Object.keys(errors).length > 0}>
                     {loading ? "Registrando..." : "Crear Cuenta"}
                   </button>
-                  {!recaptchaReady && (
-                    <div style={{ marginTop: 8, color: '#d97706', fontSize: 13 }}>
-                      reCAPTCHA cargando, espere un momento antes de enviar.
-                    </div>
-                  )}
                   <button type="button" className="buttonCrearIniciarSesion" onClick={() => showLoaderAndRedirect("/login")}>
                     Iniciar Sesión
                   </button>
@@ -317,7 +308,7 @@ function CrearCuentaInner() {
   );
 }
 
-// ✅ Envolver todo con el Provider de reCAPTCHA v3
+// ✅ Provider de reCAPTCHA v3
 function CrearCuenta() {
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   return (

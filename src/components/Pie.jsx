@@ -8,7 +8,7 @@ export default function Pie() {
           <a href="#" className="footer-link ig" title="Instagram">
             <img src="/Imagenes/Pie_Pagina/igLogo.png" alt="Instagram" />
           </a>
-        
+         
           <a
             href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             target="_blank"

@@ -9,7 +9,7 @@ body {
     background-repeat: repeat;
     background-position: center center;
     background-attachment: fixed; 
-    background-color: #fff2e2;
+    background-color: #f7fff7
 }
 
 :root {
@@ -22,6 +22,42 @@ body {
     --avatar-size-lg: 48px;
     --avatar-size-sm: 32px;
 }
+
+/* --- Clases globales de botones --- */
+.btn {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    box-sizing: border-box;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary), #ff416c);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+}
+
+.btn-secondary {
+    color: #fff;
+    background: linear-gradient(135deg, #931525, #ff416c);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid rgba(147,21,37,0.12);
+}
+
+.btn-block { display:block; width:100%; }
 
 /* Escala global: reduce tamaño base de fuente para hacer la UI más compacta */
 html { font-size: 14px; }
@@ -113,65 +149,17 @@ html { font-size: 14px; }
     background-color: #f3f3f3;
 }
 
-/* Responsive Design System */
-/* Móviles pequeños */
-@media (max-width: 320px) {
-    html { 
-        font-size: 12px; 
-    }
-    
-    #cuerpo {
-        padding: 0.5rem;
-    }
-
-    .header-inner {
-        padding: 0.5rem;
-    }
-
-    .footer-inner {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
-
-/* Móviles medianos */
-@media (min-width: 321px) and (max-width: 375px) {
-    html { 
-        font-size: 13px; 
-    }
-    
-    #cuerpo {
-        padding: 0.6rem;
-    }
-}
-
-/* Móviles grandes */
-@media (min-width: 376px) and (max-width: 480px) {
-    html { 
-        font-size: 14px; 
-    }
-    
-    .footer-inner {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.8rem;
-    }
-}
-
-/* Tablets pequeñas */
-@media (min-width: 481px) and (max-width: 768px) {
+/* Responsive */
+@media (max-width: 768px) {
     .header-inner {
         flex-wrap: wrap;
         justify-content: center;
-        padding: 0.8rem;
     }
 
     .menúBotones {
         order: 3;
         width: 100%;
         flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
     }
 
     .login {
@@ -181,56 +169,12 @@ html { font-size: 14px; }
     #cuerpo {
         padding: 0.8rem;
     }
-
-    .user-info {
-        font-size: 18px;
-        padding: 4px 10px;
-    }
 }
 
-/* Tablets grandes */
-@media (min-width: 769px) and (max-width: 1024px) {
-    #cuerpo {
-        padding: 1rem;
-    }
-
-    .header-inner {
-        padding: 0 1rem;
-    }
-}
-
-/* Laptops y escritorios pequeños */
-@media (min-width: 1025px) and (max-width: 1366px) {
-    html { 
-        font-size: 15px; 
-    }
-
-    #cuerpo {
-        padding: 1.2rem;
-    }
-}
-
-/* Escritorios grandes */
-@media (min-width: 1367px) {
-    html { 
-        font-size: 16px; 
-    }
-
-    #cuerpo {
-        padding: 1.5rem;
-    }
-
-    .header-inner,
+@media (max-width: 480px) {
     .footer-inner {
-        max-width: 1400px;
-    }
-}
-
-/* Orientación específica para dispositivos móviles */
-@media (max-width: 768px) and (orientation: landscape) {
-    #cuerpo {
-        min-height: 100%;
-        height: auto;
+        flex-direction: column;
+        align-items: center;
     }
 }
 @keyframes bell-wiggle {

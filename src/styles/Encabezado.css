@@ -1,6 +1,5 @@
 /* Encabezado con estilo plomizo y efecto glass */
 #encabezado {
-    background: #fff2e2;
     /* tono plomizo translúcido */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -11,7 +10,7 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    color: #fff2e2;
+    color: #f7fff7;
 }
 
 /* Contenedor interno */
@@ -30,6 +29,9 @@
 /* Logo */
 .logo {
     flex: 0 0 auto;
+    /*Alineamiento vertical */
+    align-self: flex-start;
+    margin-top: -2%;
 }
 
 .logoImg {
@@ -306,6 +308,9 @@
     .logo {
         order: 1;
         flex: 0 0 auto;
+        /* Mantener el ajuste en tamaños intermedios */
+        align-self: flex-start;
+        margin-top: -6px;
     }
 
     .btnMenu,

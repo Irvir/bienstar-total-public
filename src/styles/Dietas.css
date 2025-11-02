@@ -39,13 +39,17 @@
 
 /* Tabla de dieta */
 .tabla-dieta {
-    width: 99vw;
+    width: calc(100% + 10px);
     margin: 40px auto 0 auto;
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; 
     min-height: 60vh;
-    margin-left: 40px;
+    padding: 0 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    box-sizing: border-box;
 }
 
 /* Columnas */
@@ -68,6 +72,18 @@
 .columna {
     width: 13vw;
     min-width: 120px;
+}
+
+/* on smaller screens make columns a fixed comfortable width so they don't shrink too much */
+@media (max-width: 1100px) {
+    .columna { width: 200px; min-width: 180px; }
+    .columna-horario { width: 60px; min-width: 50px; }
+}
+
+@media (max-width: 700px) {
+    .tabla-dieta { width: calc(100% - 32px); padding: 0 16px; }
+    .columna { width: 180px; min-width: 160px; }
+    .titulo-comida { font-size: 14px; }
 }
 
 /* Títulos */

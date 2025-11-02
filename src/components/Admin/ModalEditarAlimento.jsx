@@ -89,14 +89,50 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
     onSave(payload);
   };
 
-  const camposNutricionales = [
-    "Energia", "Humedad", "Cenizas", "Proteinas", "H_de_C_disp", "Azucares_totales", 
-    "Fibra_dietetica_total", "Lipidos_totales", "Ac_grasos_totales", "Ac_grasos_poliinsat", 
-    "Ac_grasos_trans", "Colesterol", "Vitamina_A", "Vitamina_C", "Vitamina_D", "Vitamina_E", 
-    "Vitamina_K", "Vitamina_B1", "Vitamina_B2", "Niacina", "Vitamina_B6", "Ac_pantotenico", 
-    "Vitamina_B12", "Folatos", "Sodio", "Potasio", "Calcio", "Fosforo", "Magnesio", 
-    "Hierro", "Zinc", "Cobre", "Selenio"
+  /* Agrupamos los campos nutricionales por categorías para una mejor UI */
+  const macros = [
+    "Energia",
+    "Proteinas",
+    "H_de_C_disp",
+    "Azucares_totales",
+    "Fibra_dietetica_total",
+    "Lipidos_totales",
+    "Ac_grasos_totales",
+    "Ac_grasos_poliinsat",
+    "Ac_grasos_trans",
+    "Colesterol",
   ];
+
+  const vitaminas = [
+    "Vitamina_A",
+    "Vitamina_C",
+    "Vitamina_D",
+    "Vitamina_E",
+    "Vitamina_K",
+    "Vitamina_B1",
+    "Vitamina_B2",
+    "Niacina",
+    "Vitamina_B6",
+    "Ac_pantotenico",
+    "Vitamina_B12",
+    "Folatos",
+  ];
+
+  const minerales = [
+    "Sodio",
+    "Potasio",
+    "Calcio",
+    "Fosforo",
+    "Magnesio",
+    "Hierro",
+    "Zinc",
+    "Cobre",
+    "Selenio",
+  ];
+
+  const otros = ["Humedad", "Cenizas"];
+
+  
 
   return (
     <div
@@ -132,26 +168,75 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
             )}
           </div>
 
-          {/* Grilla de 3 columnas para campos nutricionales */}
-          <div
-            className="grid-nutricional"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(6, 1fr)", 
-              gap: "12px",
-            }}
-          >
-            {camposNutricionales.map((campo) => (
-              <div key={campo}>
-                <label>{campo.replace(/_/g, " ")}</label>
-                <input
-                  name={campo}
-                  value={form[campo]}
-                  onChange={handleChange}
-                  type={campo === "estado" ? "text" : "number"}
-                />
-              </div>
-            ))}
+          {/* Campos agrupados por categorías: macros, vitaminas, minerales */}
+          <div className="nutri-section">
+            <h3 className="nutri-section__title">Macros</h3>
+            <div className="nutri-grid nutri-grid--macros">
+              {macros.map((campo) => (
+                <div className="nutri-item" key={campo}>
+                  <label htmlFor={campo}>{campo.replace(/_/g, " ")}</label>
+                  <input
+                    id={campo}
+                    name={campo}
+                    value={form[campo]}
+                    onChange={handleChange}
+                    type="number"
+                    step="any"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <h3 className="nutri-section__title">Vitaminas</h3>
+            <div className="nutri-grid nutri-grid--vitamins">
+              {vitaminas.map((campo) => (
+                <div className="nutri-item" key={campo}>
+                  <label htmlFor={campo}>{campo.replace(/_/g, " ")}</label>
+                  <input
+                    id={campo}
+                    name={campo}
+                    value={form[campo]}
+                    onChange={handleChange}
+                    type="number"
+                    step="any"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <h3 className="nutri-section__title">Minerales</h3>
+            <div className="nutri-grid nutri-grid--minerals">
+              {minerales.map((campo) => (
+                <div className="nutri-item" key={campo}>
+                  <label htmlFor={campo}>{campo.replace(/_/g, " ")}</label>
+                  <input
+                    id={campo}
+                    name={campo}
+                    value={form[campo]}
+                    onChange={handleChange}
+                    type="number"
+                    step="any"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <h3 className="nutri-section__title">Otros</h3>
+            <div className="nutri-grid nutri-grid--otros">
+              {otros.map((campo) => (
+                <div className="nutri-item" key={campo}>
+                  <label htmlFor={campo}>{campo.replace(/_/g, " ")}</label>
+                  <input
+                    id={campo}
+                    name={campo}
+                    value={form[campo]}
+                    onChange={handleChange}
+                    type="number"
+                    step="any"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="modal-buttons">

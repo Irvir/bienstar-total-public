@@ -3,7 +3,6 @@ import Encabezado from "./Encabezado";
 import Pie from "./Pie";
 import Loader from "./Loader";
 import { API_BASE } from "./shared/apiBase";
-import withAuth from "./withAuth";
 import "../styles/Cuentas.css";
 
 export default function Cuentas() {
@@ -71,7 +70,7 @@ export default function Cuentas() {
 			} else {
 				// create: force id_perfil = 3 (Doctor), and no alergias
 				const payload = { ...form, id_perfil: 3, alergias: [] };
-				const res = await fetch(`${API_BASE}/admin/users`, {
+				const res = await fetch(`${API_BASE}/registrar`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(payload),
@@ -108,6 +107,22 @@ export default function Cuentas() {
 		}
 	}
 
+	async function activateCuenta(cuenta) {
+		if (!confirm(`¿Confirmar activar a ${cuenta.nombre || cuenta.email}?`)) return;
+		setLoading(true);
+		try {
+			const res = await fetch(`${API_BASE}/admin/user/${cuenta.id}/activate`, { method: "POST" });
+			if (!res.ok) throw new Error("No se pudo activar");
+			window.notify?.("Cuenta activada", { type: "success" });
+			await loadCuentas();
+		} catch (err) {
+			console.error(err);
+			window.notify?.("Error al activar cuenta", { type: "error" });
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	const visible = cuentas.filter(c => {
 		if (!filter) return true;
 		const f = filter.toLowerCase();
@@ -119,11 +134,13 @@ export default function Cuentas() {
 			<Encabezado activePage="admin" onNavigate={(u)=>{window.location.href=u}} />
 
 			<main id="cuerpo">
-				<div className="admin-header">
-					<h1>Cuentas (Admin)</h1>
-				</div>
+
+				<div className="admin-cuentas-row">
 
 				<section className="admin-form">
+					<div className="page-title">
+						<h1>Cuentas</h1>
+					</div>
 					<h2>{editing ? `Editar: ${editing.nombre || editing.email}` : "Crear cuenta (Doctor)"}</h2>
 					<form onSubmit={saveCuenta}>
 						<div className="grid-2">
@@ -167,8 +184,8 @@ export default function Cuentas() {
 						</div>
 
 						<div className="form-actions">
-							<button type="submit" className="btn-primary">{editing?"Guardar cambios":"Crear cuenta"}</button>
-							<button type="button" className="btn-secondary" onClick={resetForm}>Cancelar</button>
+							<button type="submit" className="btn btn-primary">{editing?"Guardar cambios":"Crear cuenta"}</button>
+							<button type="button" className="btn btn-secondary" onClick={resetForm}>Cancelar</button>
 						</div>
 					</form>
 				</section>
@@ -178,6 +195,7 @@ export default function Cuentas() {
 						<input placeholder="Buscar por nombre o email" value={filter} onChange={e=>setFilter(e.target.value)} />
 					</div>
 
+					<div className="table-wrapper">
 					<table className="table">
 						<thead>
 							<tr>
@@ -204,14 +222,32 @@ export default function Cuentas() {
 									<td>{c.peso ?? '-'}</td>
 									<td>{c.altura ?? '-'}</td>
 									<td>
-										<button onClick={()=>onEditClick(c)}>Editar</button>
-										<button onClick={()=>softDelete(c)} className="btn-danger">Inactivar</button>
+										<div className="admin-actions">
+											<button className="action-btn action-btn--icon" title="Editar" onClick={()=>onEditClick(c)} aria-label={`Editar ${c.nombre || c.email}`}>
+												<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+													<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="currentColor" />
+													<path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor" />
+												</svg>
+											</button>
+											{c.estado === 'inactivo' ? (
+												<button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
+													Activar
+												</button>
+											) : (
+												<button className="action-btn action-btn--danger action-btn--small" onClick={()=>softDelete(c)} aria-label={`Inactivar ${c.nombre || c.email}`}>
+													Inactivar
+												</button>
+											)}
+										</div>
 									</td>
 								</tr>
 							))}
 						</tbody>
 					</table>
+					</div>
 				</section>
+
+				</div>
 			</main>
 
 			<Pie />

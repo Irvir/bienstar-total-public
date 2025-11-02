@@ -58,6 +58,7 @@ function AdminAlimentos() {
   const handleAbrirEditar = (alimento) => setModalAlimento(alimento);
   const handleCerrarModal = () => setModalAlimento(null);
 
+  // Manejar guardar cambios desde el modal
   const handleGuardar = async (formDataObj) => {
     setLoading(true);
     try {
@@ -70,7 +71,7 @@ function AdminAlimentos() {
         });
         if (!uploadRes.ok) throw new Error();
         const uploadJson = await uploadRes.json();
-        // server returns { image_url: '/uploads/...' }
+        // server retorna { image_url: '/uploads/...' }
         formDataObj.image_url = uploadJson.image_url || uploadJson.url || uploadJson.image || null;
       }
       const putRes = await fetch(`${API_BASE}/admin/foods/${formDataObj.id}`, {
@@ -84,7 +85,7 @@ function AdminAlimentos() {
         throw new Error(`PUT failed: ${putRes.status} ${txt}`);
       }
 
-      // The server's PUT returns a simple message; refresh the listing to reflect changes
+      // El servidor retorna un mensaje simple; refrescar la lista para reflejar los cambios
       await fetchListado();
       window.notify?.("Cambios guardados correctamente", { type: "success" });
       setModalAlimento(null);
@@ -100,27 +101,39 @@ function AdminAlimentos() {
       <div className="admin-contenedor">
         <Encabezado
           activePage={activePage}
-          onNavigate={() => {
+          onNavigate={(dest) => {
+            // permite que Encabezado solicite el destino deseado
             setLoading(true);
-            setTimeout(() => (window.location.href = "/"), 700);
+            setTimeout(() => (window.location.href = dest || "/"), 300);
           }}
         />
 
         <main className="admin-cuerpo">
-          <h1>Admin — Gestión de Alimentos</h1>
-          {error && <div className="admin-error">{error}</div>}
-
-          <div className="admin-controls">
-            <button className="btn-primary" onClick={fetchListado}>
-              Refrescar
-            </button>
-            <button
-              className="btn-primary"
-              onClick={() => (window.location.href = "/admin/crear-alimento")}
-            >
-              Crear alimento
-            </button>
+          <div className="admin-header">
+            <div>
+              <h1 className="title">Admin — Gestión de Alimentos</h1>
+              <div className="admin-subtitle">Lista de alimentos registrados en la base de datos</div>
+            </div>
+            <div className="admin-controls">
+              <div className="admin-stats">
+                <div className="stat">Total: {alimentos.length}</div>
+              </div>
+              <div>
+                <button className="btn-primary" onClick={fetchListado}>
+                  Refrescar
+                </button>
+                <button
+                  className="btn-primary"
+                  onClick={() => (window.location.href = "/admin/crear-alimento")}
+                  style={{ marginLeft: 10 }}
+                >
+                  Crear alimento
+                </button>
+              </div>
+            </div>
           </div>
+
+          {error && <div className="admin-error">{error}</div>}
 
           <div className="admin-lista">
             {alimentos.map((a) => (
