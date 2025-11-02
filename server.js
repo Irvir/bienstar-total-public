@@ -43,7 +43,8 @@ app.use(cors({
 app.use(express.json());
 
 // --- RESPONDER preflight OPTIONS globalmente ---
-app.options('/*', cors({
+// Usar una expresión regular para cubrir todas las rutas (evita problemas con path-to-regexp)
+app.options(/.*/, cors({
   origin: (process.env.ALLOWED_ORIGINS || ALLOWED_ORIGINS),
   credentials: true,
   optionsSuccessStatus: 200
