@@ -14,6 +14,12 @@
       ]
     }
   ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
   "env": {
     "NODE_ENV": "production",
     "VITE_API_BASE": "https://bienstar-total-public.onrender.com"
