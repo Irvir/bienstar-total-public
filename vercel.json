@@ -15,9 +15,12 @@
     }
   ],
   "env": {
-    "NODE_VERSION": "20",
     "NODE_ENV": "production",
     "VITE_API_BASE": "https://bienstar-total-public.onrender.com"
-    
+  },
+  "build": {
+    "env": {
+      "NODE_VERSION": "20"
+    }
   }
 }
