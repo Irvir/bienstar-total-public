@@ -73,6 +73,17 @@ const __dirname = path.dirname(__filename);
 // Pool de conexiones
 const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
 
+// Test de conectividad inicial (no detener el servidor si falla, pero mostrar info)
+(async () => {
+  try {
+    await pool.query('SELECT 1');
+    console.log('✅ DB reachable (connection test OK)');
+  } catch (e) {
+    console.error('⚠️ DB connection test failed:', e.message || e);
+    console.error('Revisa las variables de entorno DB_HOST/DB_USER/DB_PASSWORD/DB_NAME/DB_PORT');
+  }
+})();
+
 // --- Servir imágenes ---
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 
@@ -98,13 +109,20 @@ app.get("/admin/foods", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM alimento");
     const normalized = rows.map(r => {
-      const image = r.image_url || null;
+      // soportar varias posibles columnas de imagen y normalizar la URL
+      const raw = r.image || r.imagen || r.image_url || r.path || null;
+      let image = raw || null;
+      if (image && typeof image === 'string' && !image.startsWith('http') && !image.startsWith('/')) {
+        image = `/Imagenes/Alimentos/${image}`;
+      }
       return { ...r, image_url: image };
     });
     res.json(normalized);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error al obtener alimentos" });
+    console.error("/admin/foods error:", err);
+    const payload = { error: "Error al obtener alimentos" };
+    if (process.env.NODE_ENV !== 'production') payload.details = err.message;
+    res.status(500).json(payload);
   }
 });
 // Crear Alimento
@@ -592,23 +610,7 @@ app.patch("/user/:id/activar", async (req, res) => {
 });
 
 
-app.get("/admin/foods", async (req, res) => {
-  try {
-    const [rows] = await pool.query("SELECT * FROM alimento");
-    const normalized = rows.map(r => {
-      const raw = r.image || r.imagen || r.image_url || r.path || null;
-      let image = raw || null;
-      if (image && typeof image === 'string' && !image.startsWith('http') && !image.startsWith('/')) {
-        image = `/Imagenes/Alimentos/${image}`;
-      }
-      return { ...r, image };
-    });
-    res.json(normalized);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error al obtener alimentos" });
-  }
-});
+
 
 // === Activar cuenta ===
 router.post("/user/:id/activate", async (req, res) => {
