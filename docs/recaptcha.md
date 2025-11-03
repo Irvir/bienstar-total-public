@@ -1,90 +1,183 @@
-# reCAPTCHA v3 — Integración en Bienstar
+# Documentación de la API de reCAPTCHA v3
 
-Este documento explica cómo está integrado reCAPTCHA v3 en el proyecto (cliente + servidor), qué variables de entorno usar, cómo probarlo y ejemplos de verificación.
+## Descripción General
+reCAPTCHA v3 es una solución de Google que ayuda a proteger sitios web contra el tráfico malicioso sin interrumpir la experiencia del usuario. A diferencia de versiones anteriores, reCAPTCHA v3 no requiere interacción visible del usuario, ya que opera de manera invisible en segundo plano y asigna un puntaje basado en la probabilidad de que el tráfico sea humano.
 
-Resumen rápido
-- Cliente: usa `react-google-recaptcha-v3`. El componente `CrearCuenta` envuelve el formulario con `GoogleReCaptchaProvider` y llama a `executeRecaptcha(action)` para obtener un token invisible (v3).
-- Servidor: valida el token enviándolo a `https://www.google.com/recaptcha/api/siteverify` utilizando la `RECAPTCHA_SECRET` (variable de entorno). Si no hay `RECAPTCHA_SECRET` configurado, la verificación se omite (modo dev) y se registra una advertencia.
+## Flujo de Trabajo
+1. **Generación del Token en el Cliente:**
+   - Antes de enviar un formulario, el cliente solicita un token a través de la función `executeRecaptcha(action)`.
+   - Este token se genera en función de una acción específica definida por el desarrollador (por ejemplo, `crear_cuenta`).
 
-Archivos relevantes
-- `src/components/CrearCuenta.jsx` — uso del provider y `executeRecaptcha` antes de enviar `/registrar`.
-- `server.js` — en la ruta `POST /registrar` se verifica `recaptchaToken` (si `RECAPTCHA_SECRET` está configurada). También existe `POST /verify-captcha` para depuración.
-- `.env` / `.env.VITE_RECAPTCHA_SITEKEY` — ejemplo de `VITE_RECAPTCHA_SITE_KEY` de prueba.
-- `postman/bienstar-recaptcha.postman_collection.json` — colección Postman con ejemplos para probar `/registrar` y `/verify-captcha`.
+2. **Envío del Token al Servidor:**
+   - El cliente envía el token generado junto con los datos del formulario al servidor.
 
-Variables de entorno
-- VITE_RECAPTCHA_SITE_KEY — clave pública (site key) para el cliente (se inyecta en el bundle mediante Vite). 
-- RECAPTCHA_SECRET — clave secreta (secret key) usada por el servidor para verificar tokens contra Google. 
+3. **Validación del Token en el Servidor:**
+   - El servidor envía el token a la API de verificación de Google (`https://www.google.com/recaptcha/api/siteverify`) junto con la clave secreta (`RECAPTCHA_SECRET`).
+   - Google responde con un objeto JSON que incluye información como el éxito de la verificación, el puntaje asignado, la acción asociada, y más.
 
-Flujo (resumen)
-1. En el cliente, justo antes de enviar el formulario de registro, se llama a `executeRecaptcha('crear_cuenta')` y se obtiene `recaptchaToken`.
-2. El cliente envía `recaptchaToken` junto con el cuerpo del formulario a `POST /registrar`.
-3. En el servidor, si `RECAPTCHA_SECRET` está configurado, se hace una petición POST a `https://www.google.com/recaptcha/api/siteverify` con `secret` y `response` (el token). El servidor valida `success` (y opcionalmente `score`, `action`, `hostname`).
-4. Si la verificación falla, el servidor responde con error y no crea la cuenta.
+4. **Decisión Basada en la Verificación:**
+   - El servidor evalúa la respuesta de Google y decide si permite o rechaza la solicitud en función de criterios como el puntaje mínimo aceptable y la coincidencia de la acción.
 
-Ejemplo (cliente — patrón usado en el repo)
+## Variables de Entorno
+- **VITE_RECAPTCHA_SITE_KEY:** Clave pública utilizada en el cliente para generar tokens.
+- **RECAPTCHA_SECRET:** Clave secreta utilizada en el servidor para validar tokens con Google.
 
+## Recomendaciones de Implementación
+- **Validación Adicional:**
+  - Verifica que la acción en la respuesta de Google coincida con la acción esperada.
+  - Define un umbral de puntaje (por ejemplo, >= 0.5) para aceptar solicitudes.
+- **Seguridad:**
+  - Nunca incluyas claves secretas en el código fuente. Configúralas como variables de entorno.
+  - Registra eventos con puntajes bajos para monitorear posibles actividades sospechosas.
+- **Entornos de Desarrollo:**
+  - Utiliza claves de prueba proporcionadas por Google para evitar problemas durante el desarrollo.
+
+## Respuesta de la API de Verificación
+La API de Google devuelve un objeto JSON con los siguientes campos principales:
+- **success:** Indica si la verificación fue exitosa.
+- **score:** Puntaje asignado (0.0 a 1.0) que representa la probabilidad de que el tráfico sea humano.
+- **action:** Acción asociada al token.
+- **challenge_ts:** Marca de tiempo de la solicitud.
+- **hostname:** Dominio donde se generó el token.
+
+## Implementación en el Proyecto
+
+En el proyecto **Bienstar Total**, reCAPTCHA v3 se implementa tanto en el cliente como en el servidor. A continuación, se describen los archivos y componentes clave donde se utiliza:
+
+### En el Cliente
+- **Archivo:** `src/components/CrearCuenta.jsx`
+  - Se utiliza el proveedor `GoogleReCaptchaProvider` para envolver el formulario de creación de cuenta.
+  - Antes de enviar el formulario, se llama a `executeRecaptcha('crear_cuenta')` para generar un token asociado a la acción `crear_cuenta`.
+
+### En el Servidor
+- **Archivo:** `server.js`
+  - Ruta `POST /registrar`: Verifica el token enviado desde el cliente utilizando la API de Google.
+  - Ruta `POST /verify-captcha`: Permite depurar y verificar manualmente tokens enviados al servidor.
+
+### Código de Implementación
+
+#### En el Cliente
+**Archivo:** `src/components/CrearCuenta.jsx`
 ```jsx
-// Dentro de CrearCuenta.jsx
-const { executeRecaptcha } = useGoogleReCaptcha();
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
-// antes de enviar
-const recaptchaToken = await executeRecaptcha('crear_cuenta');
-fetch(`${API_BASE}/registrar`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ ...formData, recaptchaToken })
-});
-```
+function CrearCuentaInner() {
+  const { executeRecaptcha } = useGoogleReCaptcha(); 
+  // Hook para ejecutar reCAPTCHA
 
-Ejemplo (servidor — verificación, patrón usado en `server.js`)
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    // Evitar el comportamiento por defecto del formulario
 
-```js
-// server.js: verificar en /registrar
-const r = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  body: `secret=${encodeURIComponent(RECAPTCHA_SECRET)}&response=${encodeURIComponent(recaptchaToken)}`
-});
-const rr = await r.json();
-if (!rr.success) {
-  // rechazar el request
+    if (!executeRecaptcha) {
+      console.error("reCAPTCHA no cargó correctamente"); 
+      // Validar que reCAPTCHA esté disponible
+      return;
+    }
+
+    try {
+      // Ejecutar reCAPTCHA con la acción "crear_cuenta" y obtener el token
+      const recaptchaToken = await executeRecaptcha("crear_cuenta");
+
+      // Enviar el token y los datos del formulario al servidor
+      const response = await fetch("/registrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recaptchaToken, ...formData }),
+      });
+
+      const data = await response.json(); 
+      // Procesar la respuesta del servidor
+      console.log("Registro exitoso", data);
+    } catch (error) {
+      console.error("Error al registrar", error); 
+      // Manejar errores en la solicitud
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Formulario de creación de cuenta */}
+    </form>
+  );
 }
-// Opcional: comprobar rr.score (v3) y rr.action
-```
 
-Notas importantes sobre reCAPTCHA v3
-- reCAPTCHA v3 devuelve un `score` (0.0 a 1.0) que indica probabilidad de tráfico humano. No hay interacción visible para el usuario.
-- Es buena práctica comprobar además `rr.action` (asegurar que coincida con la acción enviada, p.ej. `crear_cuenta`) y usar un umbral de score (p.ej. >= 0.5) para decidir si aceptar o rechazar.
-- Los tokens caducan rápidamente; consúmelos inmediatamente en el servidor.
-
-Testing / depuración
-
-- Claves de prueba (desarrollo): el repo incluye `VITE_RECAPTCHA_SITE_KEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI` en `.env` de ejemplo. Para la verificación en el servidor, `server.js` usa por defecto la clave de prueba `6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe` cuando `RECAPTCHA_SECRET` no está configurada (esto queda en modo depuración).
-- Hay una ruta de ayuda `POST /verify-captcha` que acepta `{ token }` y devuelve la respuesta completa de Google (útil para ver `score`, `action`, `hostname`).
-- Postman: usa la colección `postman/bienstar-recaptcha.postman_collection.json`. Para probar `/registrar` desde Postman necesitas un token real (obtenido desde el frontend) o puedes usar `/verify-captcha` con un token de prueba si usas las claves de prueba.
-
-Buenas prácticas y recomendaciones
-- Configura `RECAPTCHA_SECRET` en tu entorno de producción (never commit secrets). En Render/Heroku/Netlify/Vercel ponla en env vars del servicio.
-- En el servidor: además de comprobar `success`, valida `action` y revisa `score`. Decide un umbral por riesgo (por ejemplo 0.5) y registrar los eventos con score bajo para monitoreo.
-- Evita omitir la verificación en producción. En el repo se permite omitirla cuando no hay `RECAPTCHA_SECRET` (útil para desarrollo local) — asegúrate de configurar la variable en staging/production.
-
-Ejemplo de respuesta de Google (parcial)
-
-```json
-{
-  "success": true,
-  "score": 0.9,
-  "action": "crear_cuenta",
-  "challenge_ts": "2025-11-01T12:34:56Z",
-  "hostname": "tu-dominio.com"
+function CrearCuenta() {
+  return (
+    // Proveedor de reCAPTCHA con la clave pública configurada en las variables de entorno
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.VITE_RECAPTCHA_SITE_KEY}>
+      <CrearCuentaInner />
+    </GoogleReCaptchaProvider>
+  );
 }
 ```
 
-Dónde cambiar la clave del cliente
-- Edita `.env` o `.env.VITE_RECAPTCHA_SITEKEY` (ejemplo en repo). Luego rebuild/deploy: `VITE_RECAPTCHA_SITE_KEY=tu_site_key`
+#### En el Servidor
+**Archivo:** `server.js`
+```javascript
+app.post("/registrar", async (req, res) => {
+  const { recaptchaToken } = req.body;
+   // Obtener el token enviado desde el cliente
 
-¿Quieres que añada un archivo README corto en `docs/` con ejemplos listos para pegar en Postman (variables de entorno y paso a paso)? Puedo crear la colección o actualizar la existente con notas si lo deseas.
+  try {
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
+     // Clave secreta configurada en el servidor
 
-***
-Documentado por el equipo de desarrollo del proyecto — si necesitas, lo adapto para incluir ejemplos concretos de score-threshold y logs.
+    // Verificar el token con la API de Google
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${RECAPTCHA_SECRET}&response=${recaptchaToken}`,
+    });
+
+    const data = await response.json(); 
+    // Procesar la respuesta de Google
+
+    if (!data.success) {
+      // Si la verificación falla, devolver un error al cliente
+      return res.status(400).json({ message: "Fallo en la verificación de reCAPTCHA" });
+    }
+
+    // Continuar con el registro del usuario si la verificación es exitosa
+    res.status(200).json({ message: "Usuario registrado exitosamente" });
+  } catch (error) {
+    console.error("Error al verificar reCAPTCHA", error);
+     // Manejar errores en la verificación
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+
+app.post("/verify-captcha", async (req, res) => {
+  const { token } = req.body; 
+  // Obtener el token enviado desde el cliente
+
+  try {
+    const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
+     // Clave secreta configurada en el servidor
+
+    // Verificar el token con la API de Google
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${RECAPTCHA_SECRET}&response=${token}`,
+    });
+
+    const data = await response.json();
+     // Procesar la respuesta de Google
+    res.json(data);
+     // Devolver la respuesta al cliente para depuración
+  } catch (error) {
+    console.error("Error al verificar token de reCAPTCHA", error); 
+    // Manejar errores en la verificación
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+});
+```
+### Archivos Relacionados
+- **Variables de Entorno:**
+  - `VITE_RECAPTCHA_SITE_KEY`: Configurada en el cliente para generar tokens.
+  - `RECAPTCHA_SECRET`: Configurada en el servidor para validar tokens.
+- **Colección Postman:**
+  - `postman/bienstar-recaptcha.postman_collection.json`: Incluye ejemplos para probar las rutas relacionadas con reCAPTCHA.
+
+---
