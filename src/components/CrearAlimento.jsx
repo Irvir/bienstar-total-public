@@ -152,56 +152,95 @@ const CrearAlimento = () => {
         <>
             <Encabezado activePage="alimentos" onNavigate={showLoaderAndRedirect} />
             <div className="crear-alimento-container">
-                <nav className="crear-alimento-links">
-                    <button className="link-btn" onClick={() => showLoaderAndRedirect('/')}>&larr; Inicio</button>
-                    <button className="link-btn" onClick={() => showLoaderAndRedirect('/alimentos')}>Alimentos</button>
-                    <button className="link-btn" onClick={() => showLoaderAndRedirect('/dietas')}>Dietas</button>
-                    <button className="link-btn" onClick={() => showLoaderAndRedirect('/perfil')}>Perfil</button>
-                </nav>
                 <h2>Crear Alimento</h2>
                 <form onSubmit={handleSubmit} className="crear-alimento-form">
                     <input type="text" name="nombre" placeholder="Nombre" value={form.nombre} onChange={handleChange} required />
 
-                    <div className="nutrients-grid">
-                        <input type="number" step="any" name="Energia" placeholder="Energía (kcal)" value={form.Energia} onChange={handleChange} />
-                        <input type="number" step="any" name="Humedad" placeholder="Humedad (%)" value={form.Humedad} onChange={handleChange} />
-                        <input type="number" step="any" name="Cenizas" placeholder="Cenizas (%)" value={form.Cenizas} onChange={handleChange} />
-                        <input type="number" step="any" name="Proteinas" placeholder="Proteínas (g)" value={form.Proteinas} onChange={handleChange} />
-                        <input type="number" step="any" name="H_de_C_disp" placeholder="H de C disp (g)" value={form.H_de_C_disp} onChange={handleChange} />
-                        <input type="number" step="any" name="Azucares_totales" placeholder="Azúcares totales (g)" value={form.Azucares_totales} onChange={handleChange} />
-                        <input type="number" step="any" name="Fibra_dietetica_total" placeholder="Fibra dietética (g)" value={form.Fibra_dietetica_total} onChange={handleChange} />
-                        <input type="number" step="any" name="Lipidos_totales" placeholder="Lípidos totales (g)" value={form.Lipidos_totales} onChange={handleChange} />
-                        <input type="number" step="any" name="Ac_grasos_totales" placeholder="Ác. grasos totales (g)" value={form.Ac_grasos_totales} onChange={handleChange} />
-                        <input type="number" step="any" name="Ac_grasos_poliinsat" placeholder="Ác. grasos poliinsat (g)" value={form.Ac_grasos_poliinsat} onChange={handleChange} />
-                        <input type="number" step="any" name="Ac_grasos_trans" placeholder="Ác. grasos trans (g)" value={form.Ac_grasos_trans} onChange={handleChange} />
-                        <input type="number" step="any" name="Colesterol" placeholder="Colesterol (mg)" value={form.Colesterol} onChange={handleChange} />
-
-                        <input type="number" step="any" name="Vitamina_A" placeholder="Vitamina A" value={form.Vitamina_A} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_C" placeholder="Vitamina C" value={form.Vitamina_C} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_D" placeholder="Vitamina D" value={form.Vitamina_D} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_E" placeholder="Vitamina E" value={form.Vitamina_E} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_K" placeholder="Vitamina K" value={form.Vitamina_K} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_B1" placeholder="Vitamina B1" value={form.Vitamina_B1} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_B2" placeholder="Vitamina B2" value={form.Vitamina_B2} onChange={handleChange} />
-                        <input type="number" step="any" name="Niacina" placeholder="Niacina" value={form.Niacina} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_B6" placeholder="Vitamina B6" value={form.Vitamina_B6} onChange={handleChange} />
-                        <input type="number" step="any" name="Ac_pantotenico" placeholder="Ác. pantoténico" value={form.Ac_pantotenico} onChange={handleChange} />
-                        <input type="number" step="any" name="Vitamina_B12" placeholder="Vitamina B12" value={form.Vitamina_B12} onChange={handleChange} />
-                        <input type="number" step="any" name="Folatos" placeholder="Folatos" value={form.Folatos} onChange={handleChange} />
-
-                        <input type="number" step="any" name="Sodio" placeholder="Sodio (mg)" value={form.Sodio} onChange={handleChange} />
-                        <input type="number" step="any" name="Potasio" placeholder="Potasio (mg)" value={form.Potasio} onChange={handleChange} />
-                        <input type="number" step="any" name="Calcio" placeholder="Calcio (mg)" value={form.Calcio} onChange={handleChange} />
-                        <input type="number" step="any" name="Fosforo" placeholder="Fósforo (mg)" value={form.Fosforo} onChange={handleChange} />
-                        <input type="number" step="any" name="Magnesio" placeholder="Magnesio (mg)" value={form.Magnesio} onChange={handleChange} />
-                        <input type="number" step="any" name="Hierro" placeholder="Hierro (mg)" value={form.Hierro} onChange={handleChange} />
-                        <input type="number" step="any" name="Zinc" placeholder="Zinc (mg)" value={form.Zinc} onChange={handleChange} />
-                        <input type="number" step="any" name="Cobre" placeholder="Cobre (mg)" value={form.Cobre} onChange={handleChange} />
-                        <input type="number" step="any" name="Selenio" placeholder="Selenio (µg)" value={form.Selenio} onChange={handleChange} />
+                    {/* Imagen */}
+                    <div className="file-row">
+                        <input type="file" accept="image/*" onChange={handleImageChange} />
+                        {imagePreview && <img src={imagePreview} alt="Preview" className="preview image-preview" />}
                     </div>
 
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
-                    {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
+                    {/* Secciones al estilo modalInfo (referencia: modal de editar alimento) */}
+                    <div className="nutri-section">
+                        <h3 className="nutri-section__title">Macros</h3>
+                        <div className="nutri-grid nutri-grid--macros">
+                            {[
+                                ["Energia","Energía (kcal)"],
+                                ["Proteinas","Proteínas (g)"],
+                                ["H_de_C_disp","H de C disp (g)"],
+                                ["Azucares_totales","Azúcares totales (g)"],
+                                ["Fibra_dietetica_total","Fibra dietética (g)"],
+                                ["Lipidos_totales","Lípidos totales (g)"],
+                                ["Ac_grasos_totales","Ác. grasos totales (g)"],
+                                ["Ac_grasos_poliinsat","Ác. grasos poliinsat (g)"],
+                                ["Ac_grasos_trans","Ác. grasos trans (g)"],
+                                ["Colesterol","Colesterol (mg)"]
+                            ].map(([name, label]) => (
+                                <div className="nutri-item" key={name}>
+                                    <label htmlFor={name}>{label}</label>
+                                    <input id={name} type="number" step="any" name={name} value={form[name]} onChange={handleChange} />
+                                </div>
+                            ))}
+                        </div>
+
+                        <h3 className="nutri-section__title">Vitaminas</h3>
+                        <div className="nutri-grid nutri-grid--vitamins">
+                            {[
+                                ["Vitamina_A","Vitamina A"],
+                                ["Vitamina_C","Vitamina C"],
+                                ["Vitamina_D","Vitamina D"],
+                                ["Vitamina_E","Vitamina E"],
+                                ["Vitamina_K","Vitamina K"],
+                                ["Vitamina_B1","Vitamina B1"],
+                                ["Vitamina_B2","Vitamina B2"],
+                                ["Niacina","Niacina"],
+                                ["Vitamina_B6","Vitamina B6"],
+                                ["Ac_pantotenico","Ác. pantoténico"],
+                                ["Vitamina_B12","Vitamina B12"],
+                                ["Folatos","Folatos"]
+                            ].map(([name, label]) => (
+                                <div className="nutri-item" key={name}>
+                                    <label htmlFor={name}>{label}</label>
+                                    <input id={name} type="number" step="any" name={name} value={form[name]} onChange={handleChange} />
+                                </div>
+                            ))}
+                        </div>
+
+                        <h3 className="nutri-section__title">Minerales</h3>
+                        <div className="nutri-grid nutri-grid--minerals">
+                            {[
+                                ["Sodio","Sodio (mg)"],
+                                ["Potasio","Potasio (mg)"],
+                                ["Calcio","Calcio (mg)"],
+                                ["Fosforo","Fósforo (mg)"],
+                                ["Magnesio","Magnesio (mg)"],
+                                ["Hierro","Hierro (mg)"],
+                                ["Zinc","Zinc (mg)"],
+                                ["Cobre","Cobre (mg)"],
+                                ["Selenio","Selenio (µg)"]
+                            ].map(([name, label]) => (
+                                <div className="nutri-item" key={name}>
+                                    <label htmlFor={name}>{label}</label>
+                                    <input id={name} type="number" step="any" name={name} value={form[name]} onChange={handleChange} />
+                                </div>
+                            ))}
+                        </div>
+
+                        <h3 className="nutri-section__title">Otros</h3>
+                        <div className="nutri-grid nutri-grid--otros">
+                            {[
+                                ["Humedad","Humedad (%)"],
+                                ["Cenizas","Cenizas (%)"]
+                            ].map(([name, label]) => (
+                                <div className="nutri-item" key={name}>
+                                    <label htmlFor={name}>{label}</label>
+                                    <input id={name} type="number" step="any" name={name} value={form[name]} onChange={handleChange} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
                     <button type="submit" disabled={loading}>
                         {loading ? "Guardando..." : "Crear Alimento"}
@@ -213,4 +252,5 @@ const CrearAlimento = () => {
     );
 };
 
-export default withAuth(CrearAlimento);
+const CrearAlimentoWithAuth = withAuth(CrearAlimento);
+export default CrearAlimentoWithAuth;

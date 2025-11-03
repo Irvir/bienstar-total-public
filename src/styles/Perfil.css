@@ -392,7 +392,7 @@
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
 #cerrarSesion,
 #borrarCuenta {
-    width: 75%;
+    width: 40%;
     padding: 12px 18px;
     font-size: 16px;
     font-weight: 800;
@@ -476,4 +476,49 @@
     }
 
 
+}
+
+/* ==============================
+   PERFIL: menú horizontal arriba
+   (Solo afecta a la página de perfil usando el wrapper .perfil-page)
+============================== */
+.perfil-page #cuerpo {
+    /* Apilar elementos para que el menú quede arriba del contenido */
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.perfil-page #divMenuLateral {
+    /* Convertir el menú lateral en barra horizontal */
+    margin-top: 3px;
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    height: 50px;
+    min-height: 0;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+}
+
+.perfil-page #divMenuLateral .botonesPerfil,
+.perfil-page #divMenuLateral .botonesPerfilSelec {
+    width: auto;
+    min-width: 160px;
+    margin: 0;
+}
+
+.perfil-page #divInfoUser {
+    /* Deja que el área de info ocupe el resto, debajo del menú */
+    flex: 1 1 auto;
+    padding-top: 8px;
 }
