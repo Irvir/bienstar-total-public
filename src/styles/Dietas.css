@@ -35,6 +35,62 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Botón flotante para asignar/editar dieta (solo visible para doctores) */
+#BtnAsignarDieta {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    padding: 14px 22px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    /* Red gradient to match sitio (uso los mismos tonos que botones existentes) */
+    background: linear-gradient(135deg, #A31621, #d42c3c);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(164, 22, 33, 0.22), 0 4px 10px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    z-index: 1200;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(6px);
+}
+
+#BtnAsignarDieta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(164,22,33,0.28), 0 6px 18px rgba(0,0,0,0.14);
+}
+
+#BtnAsignarDieta:active { transform: translateY(-1px) scale(.995); }
+
+#BtnAsignarDieta:focus {
+    outline: 3px solid rgba(163,22,33,0.18);
+    outline-offset: 4px;
+}
+
+/* Icon inside button via pseudo-element (small dot) */
+#BtnAsignarDieta::before {
+    content: "✏"; /* pencil */
+    display: inline-block;
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+/* Make the button full-width and easier to tap on small screens */
+@media (max-width: 640px) {
+    #BtnAsignarDieta {
+        left: 12px;
+        right: 12px;
+        bottom: 18px;
+        width: auto;
+        justify-content: center;
+        padding: 12px 16px;
+        font-size: 15px;
+    }
+}
+
 
 
 /* Tabla de dieta */

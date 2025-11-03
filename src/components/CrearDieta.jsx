@@ -306,24 +306,60 @@ function CrearDieta() {
     }
 
     // ================== FUNCIÓN PARA RESALTAR NUTRIENTES ==================
-    const obtenerNutrientePrincipal = (alimento) => {
-        const macronutrientes = {
-            protein: parseFloat(alimento.protein) || 0,
-            carbohydrate: parseFloat(alimento.carbohydrate) || 0,
-            total_lipid: parseFloat(alimento.total_lipid) || 0,
+    // Parsear número desde diferentes formatos ("41 kcal", "-", null, "0,5")
+    const parseNumber = (v) => {
+        if (v === null || v === undefined || v === "") return 0;
+        if (typeof v === "number") return v;
+        const s = String(v).replace(/,/g, '.');
+        const m = s.match(/-?\d+(?:\.\d+)?/);
+        return m ? parseFloat(m[0]) : 0;
+    };
+
+    // Normaliza un objeto alimento a campos canónicos usados por la UI
+    const normalizeAlimento = (al) => {
+        if (!al) return {};
+        const caloriesRaw = al.Energia ?? al.Energía ?? al.energia ?? al.calories ?? al.Calories ?? al.kcal ?? null;
+        const calories = parseNumber(caloriesRaw) || null;
+
+        return {
+            // mantener referencias a los campos originales por compatibilidad
+            ...al,
+            // campos canónicos
+            calories: calories !== null ? calories : (al.calories ?? null),
+            proteinas: parseNumber(al.Proteinas ?? al.Proteínas ?? al.protein ?? al.Proteina) || null,
+            carbohidratos_disp: parseNumber(al.H_de_C_disp ?? al["Carbohidratos (disp)"] ?? al.carbohydrate) || null,
+            azucares_totales: parseNumber(al.Azucares_totales ?? al["Azúcares totales"] ?? al.total_sugars) || null,
+            lipidos_totales: parseNumber(al.Lipidos_totales ?? al.Lipidos ?? al.total_lipid) || null,
+            calcio: parseNumber(al.Calcio ?? al.calcium) || null,
+            hierro: parseNumber(al.Hierro ?? al.iron) || null,
+            sodio: parseNumber(al.Sodio ?? al.sodium) || null,
+            colesterol: parseNumber(al.Colesterol ?? al.cholesterol) || null,
         };
-        const micronutrientes = {
-            total_sugars: parseFloat(alimento.total_sugars) || 0,
-            calcium: parseFloat(alimento.calcium) || 0,
-            iron: parseFloat(alimento.iron) || 0,
-            sodium: parseFloat(alimento.sodium) || 0,
-            cholesterol: parseFloat(alimento.cholesterol) || 0,
+    };
+
+    // Detectar nutriente(s) principal(es) a partir del objeto normalizado
+    const obtenerNutrientePrincipal = (alimentoNormalizado) => {
+        if (!alimentoNormalizado) return [];
+        const m = {
+            proteina: alimentoNormalizado.proteinas || 0,
+            carbohidrato: alimentoNormalizado.carbohidratos_disp || 0,
+            grasa: alimentoNormalizado.lipidos_totales || 0,
         };
+        const mm = {
+            azucar: alimentoNormalizado.azucares_totales || 0,
+            calcio: alimentoNormalizado.calcio || 0,
+            hierro: alimentoNormalizado.hierro || 0,
+            sodio: alimentoNormalizado.sodio || 0,
+            colesterol: alimentoNormalizado.colesterol || 0,
+        };
+
         const destacados = [];
-        const maxMacro = Math.max(...Object.values(macronutrientes));
-        if (maxMacro > 0) Object.keys(macronutrientes).forEach(k => macronutrientes[k] === maxMacro && destacados.push(k));
-        const maxMicro = Math.max(...Object.values(micronutrientes));
-        if (maxMicro > 5) Object.keys(micronutrientes).forEach(k => micronutrientes[k] === maxMicro && destacados.push(k));
+        const maxMacro = Math.max(...Object.values(m));
+        if (maxMacro > 0) Object.keys(m).forEach(k => m[k] === maxMacro && destacados.push(k));
+
+        const maxMicro = Math.max(...Object.values(mm));
+        if (maxMicro > 1) Object.keys(mm).forEach(k => mm[k] === maxMicro && destacados.push(k));
+
         return destacados;
     };
 
@@ -333,13 +369,6 @@ function CrearDieta() {
             <Encabezado activePage="dietas" onNavigate={navigateWithLoader} />
 
             <div id="cuerpo">
-                {usuario?.id_perfil === 3 && dietTarget?.email && (
-                    <div className="doctor-banner">
-                            Editando dieta de: <strong>{targetName || dietTarget.email}</strong>
-                        <div style={{ flex: 1 }} />
-                        <button className="btn-change-user" onClick={() => { localStorage.removeItem("dietTarget"); navigateWithLoader("/dietas"); }}>Cambiar usuario</button>
-                    </div>
-                )}
                 {/* IZQUIERDA */}
                 <CrearDietaForm
                     dietaAgrupada={dietaAgrupada}
@@ -360,47 +389,55 @@ function CrearDieta() {
                             onChange={(e) => setFiltro(e.target.value)}
                         />
                     </div>
+                    {usuario?.id_perfil === 3 && dietTarget?.email && (
+                    <div className="doctor-banner">
+                            Editando dieta de: <strong>{targetName || dietTarget.email}</strong>
+                        <div style={{ flex: 1 }} />
+                        <button className="btn-change-user" onClick={() => { localStorage.removeItem("dietTarget"); navigateWithLoader("/dietas"); }}>Cambiar usuario</button>
+                    </div>
+                )}
 
                     <div id="resultadosFiltro" className="resultadosFiltro">
                         {alimentos.map(alimento => {
-                            const nutrientesPrincipales = obtenerNutrientePrincipal(alimento);
+                            const a = normalizeAlimento(alimento);
+                            const nutrientesPrincipales = obtenerNutrientePrincipal(a);
                             return (
                                 <div key={alimento.id} className="alimento-card">
                                     <div className="alimento-info">
                                         <strong>{alimento.nombre}</strong>
                                         <br />
-                                        Calorías: {alimento.calories ?? "-"}
+                                        Calorías: {a.calories ?? "-"}
                                         <div className="nutri-grid">
                                             <div className={nutrientesPrincipales.includes("proteina") ? "nutriente-destacado" : ""}>
-                                                <b>🥩 Proteínas:</b> {alimento.Proteinas ?? "-"} g
+                                                <b>🥩 Proteínas:</b> {a.proteinas ?? "-"} g
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("carbohidrato") ? "nutriente-destacado" : ""}>
-                                                <b>🍞 Carbohidratos:</b> {alimento.H_de_C_disp ?? "-"} g
+                                                <b>🍞 Carbohidratos:</b> {a.carbohidratos_disp ?? "-"} g
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("grasa") ? "nutriente-destacado" : ""}>
-                                                <b>🥑 Grasas:</b> {alimento.Lipidos_totales ?? "-"} g
+                                                <b>🥑 Grasas:</b> {a.lipidos_totales ?? "-"} g
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("azucar") ? "nutriente-destacado" : ""}>
-                                                <b>🍬 Azúcares:</b> {alimento.Azucares_totales ?? "-"} g
+                                                <b>🍬 Azúcares:</b> {a.azucares_totales ?? "-"} g
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("calcio") ? "nutriente-destacado" : ""}>
-                                                <b>🦴 Calcio:</b> {alimento.Calcio ?? "-"} mg
+                                                <b>🦴 Calcio:</b> {a.calcio ?? "-"} mg
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("hierro") ? "nutriente-destacado" : ""}>
-                                                <b>🩸 Hierro:</b> {alimento.Hierro ?? "-"} mg
+                                                <b>🩸 Hierro:</b> {a.hierro ?? "-"} mg
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("sodio") ? "nutriente-destacado" : ""}>
-                                                <b>🧂 Sodio:</b> {alimento.Sodio ?? "-"} mg
+                                                <b>🧂 Sodio:</b> {a.sodio ?? "-"} mg
                                             </div>
 
                                             <div className={nutrientesPrincipales.includes("colesterol") ? "nutriente-destacado" : ""}>
-                                                <b>💊 Colesterol:</b> {alimento.Colesterol ?? "-"} mg
+                                                <b>💊 Colesterol:</b> {a.colesterol ?? "-"} mg
                                             </div>
 
                                         </div>

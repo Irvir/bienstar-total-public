@@ -9,6 +9,7 @@ import Perfil from './components/Perfil.jsx';
 import Admin from './components/Admin.jsx';
 import CrearAlimento from './components/CrearAlimento.jsx';
 import Cuentas from './components/Cuentas.jsx';
+import TipsParaTuDieta from './components/TipsParaTuDieta.jsx';
 
 
 export default function App() {
@@ -72,6 +73,11 @@ export default function App() {
   }
   if (currentPath === 'cuentas' || currentPath === 'cuentas.html') {
     return <Cuentas />;
+  }
+
+  // Tips para tu dieta
+  if (currentPath === 'tipsparatudieta' || currentPath === 'tipsparatudieta.html') {
+    return <TipsParaTuDieta />;
   }
 
   // Default: render 404 for any unknown path
