@@ -9,7 +9,14 @@
     --radius: 12px;
 }
 
-.admin-contenedor{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;max-width:1200px;margin:0 auto;padding:18px}
+.admin-contenedor{
+    font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    /* Usar porcentajes para adaptarse a cualquier ancho de pantalla */
+    width: 96%;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 18px;
+}
 .admin-cuerpo{background:transparent;padding:18px}
 
 .admin-header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}

@@ -98,7 +98,7 @@ function AdminAlimentos() {
 
   return (
     <div className="admin-alimentos-page">
-      <div className="admin-contenedor">
+      <div id="contenedorPrincipal">
         <Encabezado
           activePage={activePage}
           onNavigate={(dest) => {
@@ -108,44 +108,48 @@ function AdminAlimentos() {
           }}
         />
 
-        <main className="admin-cuerpo">
-          <div className="admin-header">
-            <div>
-              <h1 className="title">Admin — Gestión de Alimentos</h1>
-              <div className="admin-subtitle">Lista de alimentos registrados en la base de datos</div>
-            </div>
-            <div className="admin-controls">
-              <div className="admin-stats">
-                <div className="stat">Total: {alimentos.length}</div>
+        <div id="cuerpo">
+          <div className="admin-contenedor">
+            <main className="admin-cuerpo">
+              <div className="admin-header">
+                <div>
+                  <h1 className="title">Admin — Gestión de Alimentos</h1>
+                  <div className="admin-subtitle">Lista de alimentos registrados en la base de datos</div>
+                </div>
+                <div className="admin-controls">
+                  <div className="admin-stats">
+                    <div className="stat">Total: {alimentos.length}</div>
+                  </div>
+                  <div>
+                    <button className="btn-primary" onClick={fetchListado}>
+                      Refrescar
+                    </button>
+                    <button
+                      className="btn-primary"
+                      onClick={() => (window.location.href = "/admin/crear-alimento")}
+                      style={{ marginLeft: 10 }}
+                    >
+                      Crear alimento
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <button className="btn-primary" onClick={fetchListado}>
-                  Refrescar
-                </button>
-                <button
-                  className="btn-primary"
-                  onClick={() => (window.location.href = "/admin/crear-alimento")}
-                  style={{ marginLeft: 10 }}
-                >
-                  Crear alimento
-                </button>
+
+              {error && <div className="admin-error">{error}</div>}
+
+              <div className="admin-lista">
+                {alimentos.map((a) => (
+                  <AdminAlimentoCard
+                    key={a.id}
+                    alimento={a}
+                    onEditar={() => handleAbrirEditar(a)}
+                    onEliminar={() => handleEliminar(a.id, a.nombre)}
+                  />
+                ))}
               </div>
-            </div>
+            </main>
           </div>
-
-          {error && <div className="admin-error">{error}</div>}
-
-          <div className="admin-lista">
-            {alimentos.map((a) => (
-              <AdminAlimentoCard
-                key={a.id}
-                alimento={a}
-                onEditar={() => handleAbrirEditar(a)}
-                onEliminar={() => handleEliminar(a.id, a.nombre)}
-              />
-            ))}
-          </div>
-        </main>
+        </div>
 
         <Pie />
       </div>
