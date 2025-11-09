@@ -175,15 +175,51 @@ function LoginInner() {
       const data = await response.json();
 
       if (response.ok && data.exists) {
-        // Usuario ya registrado → iniciar sesión normal
-        localStorage.setItem("usuario", JSON.stringify(data.user));
-
-        notifyThenRedirect(
-          `Bienvenido ${data.user.name || "usuario"}`,
-          { type: "success", duration: 1500 },
-          "/",
-          setLoading
-        );
+        // Usuario ya registrado → solicitar perfil completo y guardar en localStorage
+        try {
+          // Intentar obtener el perfil completo desde /user/:id
+          const userId = data.user && data.user.id;
+          if (userId) {
+            const userRes = await fetch(`${API_BASE}/user/${userId}`);
+            if (userRes.ok) {
+              const fullUser = await userRes.json();
+              localStorage.setItem("usuario", JSON.stringify(fullUser));
+              notifyThenRedirect(
+                `Bienvenido ${fullUser.nombre || fullUser.name || "usuario"}`,
+                { type: "success", duration: 1500 },
+                "/",
+                setLoading
+              );
+            } else {
+              // Fallback: si no podemos obtener el perfil completo, usar el objeto parcial
+              localStorage.setItem("usuario", JSON.stringify(data.user));
+              notifyThenRedirect(
+                `Bienvenido ${data.user.name || "usuario"}`,
+                { type: "success", duration: 1500 },
+                "/",
+                setLoading
+              );
+            }
+          } else {
+            // Si por alguna razón no viene id, usar el objeto parcial
+            localStorage.setItem("usuario", JSON.stringify(data.user));
+            notifyThenRedirect(
+              `Bienvenido ${data.user.name || "usuario"}`,
+              { type: "success", duration: 1500 },
+              "/",
+              setLoading
+            );
+          }
+        } catch (err) {
+          console.warn("No se pudo obtener perfil completo:", err);
+          localStorage.setItem("usuario", JSON.stringify(data.user));
+          notifyThenRedirect(
+            `Bienvenido ${data.user.name || "usuario"}`,
+            { type: "success", duration: 1500 },
+            "/",
+            setLoading
+          );
+        }
       } else {
         // Usuario nuevo → redirigir a crear cuenta
         localStorage.setItem("google_temp_user", JSON.stringify(googleUser));

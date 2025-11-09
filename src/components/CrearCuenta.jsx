@@ -25,12 +25,27 @@ function CrearCuentaInner() {
     otrasAlergias: "",
     sexo: "",
   });
+  const [emailReadOnly, setEmailReadOnly] = useState(false);
 
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
     const currentPage = window.location.pathname.split("/").pop() || "crearcuenta";
     setActivePage(currentPage);
+    // Si venimos de un inicio con Google (Login.jsx) guardado en localStorage, prefijar el email
+    try {
+      const tmp = localStorage.getItem("google_temp_user");
+      if (tmp) {
+        const g = JSON.parse(tmp);
+        if (g && g.email) {
+          setFormData((p) => ({ ...p, email: String(g.email) }));
+          setEmailReadOnly(true);
+        }
+      }
+    } catch (e) {
+      // no bloquear si falla el parse
+      console.warn("No se pudo leer google_temp_user:", e);
+    }
   }, []);
 
   const showLoaderAndRedirect = (url) => {
@@ -279,7 +294,17 @@ function CrearCuentaInner() {
                 {/* CORREO Y PASSWORD */}
                 <div className="divCorreo">
                   Correo electrónico:<br />
-                  <input id="email" type="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} placeholder="Correo electrónico" required />
+                  <input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Correo electrónico"
+                    required
+                    readOnly={emailReadOnly}
+                    aria-readonly={emailReadOnly}
+                  />
                   {errors.email && <div className="error-text">{errors.email}</div>}
                 </div>
 
