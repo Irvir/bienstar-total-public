@@ -11,6 +11,7 @@ export default function Cuentas() {
 	const [editing, setEditing] = useState(null); // cuenta en edición
 	const [form, setForm] = useState({ nombre: "", email: "", password: "", edad: "", peso: "", altura: "", sexo: "" });
 	const [filter, setFilter] = useState("");
+	const [showExtraCols, setShowExtraCols] = useState(false);
 
 	useEffect(() => {
 		loadCuentas();
@@ -193,10 +194,13 @@ export default function Cuentas() {
 				<section className="admin-list">
 					<div className="list-header">
 						<input placeholder="Buscar por nombre o email" value={filter} onChange={e=>setFilter(e.target.value)} />
+						<button className="btn btn-secondary toggle-columns-btn" onClick={()=>setShowExtraCols(v=>!v)} aria-pressed={showExtraCols} style={{whiteSpace:'nowrap'}}>
+							{showExtraCols? 'Ocultar columnas' : 'Ver más columnas'}
+						</button>
 					</div>
 
 					<div className="table-wrapper">
-					<table className="table">
+					<table className={`table ${showExtraCols ? 'show-extra' : ''}`}>
 						<thead>
 							<tr>
 								<th>ID</th>

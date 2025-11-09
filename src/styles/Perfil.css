@@ -352,6 +352,19 @@
     color: rgba(11, 18, 22, 0.45);
 }
 
+/* Cuando está en modo edición, hacer que todos los inputs luzcan visibles (no transparentes) */
+.is-editing #contenedorInfo input,
+.is-editing #contenedorInfo select,
+.is-editing #contenedorInfo textarea {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(147, 21, 37, 0.25);
+}
+
+.is-editing #contenedorInfo input[readonly] {
+    background: rgba(255, 255, 255, 0.65);
+    color: #555;
+}
+
 /* los inputs readonly se mantienen visualmente sutiles */
 #contenedorInfo input[readonly],
 #contenedorInfo input[disabled],
@@ -425,6 +438,10 @@
 @media (max-width: 768px) {
     #cuerpo {
         flex-direction: column;
+        /* En móviles permitimos scroll vertical y evitamos recortes */
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
     }
 
     #divMenuLateral,
@@ -443,6 +460,18 @@
     #contenedorBorrarCuenta {
         width: 100%;
         margin-bottom: 20px;
+    }
+
+    /* Apilar los contenedores de cerrar/borrar cuenta sin separación horizontal */
+    #contenedorCerrarSesion,
+    #contenedorBorrarCuenta {
+        /* Evita que flex-basis 260px fuerce separación horizontal */
+        flex: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 14px; /* espacio vertical entre elementos internos */
     }
 
     /* Ajustes específicos para los botones en pantallas pequeñas */
@@ -521,4 +550,97 @@
     /* Deja que el área de info ocupe el resto, debajo del menú */
     flex: 1 1 auto;
     padding-top: 8px;
+}
+
+/* ==============================
+   PERFIL — Ajustes móviles extra
+   Mejora legibilidad y evita desbordes en ≤640px
+============================== */
+@media (max-width: 640px) {
+    /* Menú superior compacto */
+    #divMenuLateral,
+    .perfil-page #divMenuLateral {
+        order: 0;
+        width: 100%;
+        min-width: 0;
+        height: auto; /* override fixed 50px from .perfil-page rule */
+        min-height: 0;
+        padding: 10px 12px;
+        margin-top: 8px;
+        margin-bottom: 10px; /* separa del siguiente bloque */
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        /* Usar grid para que los botones se ajusten en columnas fluidas */
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+        justify-items: stretch;
+        align-items: center;
+        position: relative;
+        z-index: 2; /* asegúrate que la tarjeta no lo tape */
+    }
+
+    .botonesPerfil,
+    .botonesPerfilSelec {
+        width: 100%;
+        min-width: 0;
+        font-size: 16px;
+        padding: 10px 12px;
+        margin: 0;
+    }
+
+    /* Área de contenido con padding más estrecho */
+    #divInfoUser {
+        order: 1;
+        padding: 12px;
+        align-items: stretch;
+    }
+
+    /* Tarjeta responsiva */
+    #contenedorInfoSesion {
+        max-width: 100%;
+        padding: 16px 14px;
+        border-radius: 18px;
+        min-height: initial;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Cabecera y acciones en columna */
+    #tituloInfoRow {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    #tituloInfo { font-size: clamp(20px, 5.5vw, 26px); }
+
+    /* Campos e inputs responsivos */
+    .datoUsuarioRow { grid-template-columns: 1fr; }
+    .info { font-size: clamp(14px, 3.8vw, 18px); }
+    .spNombre,
+    .spAge,
+    .spWeight,
+    .spHeight,
+    .spEmail { max-width: 100%; font-size: clamp(13px, 3.6vw, 17px); }
+
+    /* Imagen más compacta */
+    #imagenUser {
+        width: 200px;
+        height: 180px;
+        margin: 8px auto 12px;
+    }
+
+    /* Botones ocupan ancho completo */
+    #borrarCuenta,
+    #cerrarSesion { width: 100%; max-width: 520px; }
+}
+
+/* Ajustes ultra-compactos para ≤400px */
+@media (max-width: 400px) {
+    .botonesPerfil,
+    .botonesPerfilSelec { min-width: 0; width: 100%; font-size: 15px; padding: 8px 10px; }
+    #divMenuLateral { grid-template-columns: 1fr; }
+    #imagenUser { width: 170px; height: 156px; }
+    #contenedorInfoSesion { padding: 14px 12px; border-radius: 16px; }
 }

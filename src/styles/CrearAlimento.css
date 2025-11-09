@@ -13,8 +13,11 @@
 /* Contenedor principal */
 .crear-alimento-container {
 	max-width: 1100px;
+	width: 100%;
 	margin: 18px auto 28px;
 	padding: 0 18px 24px;
+	/* Evita desbordes horizontales en layouts estrechos */
+	overflow-x: clip;
 }
 /* Título */
 .crear-alimento-container h2 {
@@ -46,31 +49,28 @@
 	padding: 18px;
 	display: grid;
 	gap: 14px;
+	grid-auto-flow: row;
+	width: 100%;
+	min-width: 0;
 }
 
 /* Campo nombre a ancho completo */
 .crear-alimento-form > input[type="text"] {
 	width: 100%;
+	min-width: 0;
 	padding: 12px 14px;
 	border-radius: 10px;
 	border: 1px solid #e6e6e6;
 	font-size: 1rem;
 }
 
-/* Grid de nutrientes */
-.nutrients-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-	gap: 10px;
-}
-
-.nutrients-grid input[type="number"] {
-	width: 100%;
-	padding: 10px 12px;
-	border-radius: 10px;
-	border: 1px solid #e6e6e6;
-	font-size: .95rem;
-}
+/* Grid de nutrientes (nueva convención usada por el componente) */
+.nutri-section { padding-top: 6px; }
+.nutri-section__title { margin: 8px 0 10px; font-size: 1.05rem; color: #18212a; }
+.nutri-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; min-width: 0; }
+.nutri-item label { display: block; font-weight: 600; color: var(--ca-muted); margin-bottom: 6px; }
+.nutri-item { min-width: 0; }
+.nutri-item input[type="number"] { width: 100%; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid #e6e6e6; font-size: .95rem; box-sizing: border-box; }
 
 .crear-alimento-form input:focus {
 	outline: none;
@@ -85,6 +85,9 @@
 	border-radius: 10px;
 	background: #fafafa;
 }
+
+.file-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; width: 100%; min-width: 0; }
+.file-row input[type="file"] { flex: 1 1 260px; max-width: 100%; min-width: 0; }
 
 .image-preview {
 	width: 160px;
@@ -122,13 +125,29 @@
 
 /* Responsivo */
 @media (max-width: 720px) {
-	.crear-alimento-form {
-		padding: 14px;
-	}
+	.crear-alimento-container { padding: 0 12px 18px; }
+	.crear-alimento-form { padding: 14px; }
 	.image-preview {
 		width: 120px;
 		height: 120px;
 	}
+	/* Botón sticky para tenerlo a mano en móviles */
+	.crear-alimento-form button[type="submit"]{
+		position: sticky;
+		bottom: 0;
+		justify-self: stretch;
+		width: 100%;
+		margin-top: 8px;
+		box-shadow: 0 -6px 22px rgba(2,6,23,0.06), 0 8px 22px rgba(2,6,23,0.08);
+	}
+	/* Hacer el grid más denso en pantallas pequeñas */
+	.nutri-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+	.file-row input[type="file"] { flex: 1 1 100%; }
+}
+
+/* Ultra-estrecho: evita overflow en teléfonos muy pequeños */
+@media (max-width: 380px){
+	.nutri-grid { grid-template-columns: 1fr; }
 }
 
 /* Ayudas de texto y estados */

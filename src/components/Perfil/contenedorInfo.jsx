@@ -150,7 +150,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
   };
 
   return (
-    <div id="contenedorInfoSesion">
+    <div id="contenedorInfoSesion" className={editMode ? 'is-editing' : ''}>
       <div id="contenedorInfo">
         <div id="tituloInfoRow">
           <div id="tituloInfo">Información de usuario:</div>
@@ -170,15 +170,16 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         {Object.keys(etiquetas).map((campo) => (
           <div className="datoUsuarioRow" key={campo}>
             <div className="info">{etiquetas[campo]}</div>
-            {editMode && campo !== "email" ? (
+            {editMode ? (
               <input
-                type={["edad", "peso", "altura"].includes(campo) ? "number" : "text"}
+                type={["edad", "peso", "altura"].includes(campo) ? "number" : (campo === 'email' ? 'email' : 'text')}
                 name={campo}
                 value={form[campo]}
                 onChange={handleChange}
                 min={campo === "edad" ? 16 : undefined}
                 max={campo === "edad" ? 99 : undefined}
                 step={["peso", "altura"].includes(campo) ? 0.1 : undefined}
+                readOnly={campo === 'email'}
               />
             ) : (
               <span>{usuario?.[campo] || "-"}</span>

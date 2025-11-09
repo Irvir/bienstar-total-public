@@ -1,29 +1,68 @@
-/* --------------- RESET Y VARIABLES --------------- */
+/* =========================================
+   BASE.CSS - Estilos base y globales
+   ========================================= */
+
+/* --------------- CSS VARIABLES --------------- */
+:root {
+    /* Colores principales */
+    --primary: #931525;
+    --primary-dark: #6F0E1A;
+    --primary-contrast: #ffffff;
+    --white: #ffffff;
+
+    /* Estados y apoyo */
+    --success: #16a34a;
+    --danger: #dc3545;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+
+    /* Neutros */
+    --text: #0f172a;
+    --muted: #6b7280;
+    --bg: #f7fff7;
+
+    /* Sombra y bordes */
+    --shadow-sm: 0 2px 6px rgba(0,0,0,.12);
+    --shadow-md: 0 8px 22px rgba(0,0,0,.18);
+    --shadow-lg: 0 18px 40px rgba(0,0,0,.22);
+    --border-subtle: 1px solid rgba(15,23,42,0.06);
+
+    /* Tamaños */
+    --max-w: 1000px;
+    --gap: 0.75rem;
+
+    /* Radios */
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+
+    /* Avatar */
+    --avatar-size: 36px;
+    --avatar-size-lg: 48px;
+    --avatar-size-sm: 32px;
+}
+
+/* --------------- RESET --------------- */
 * {
     box-sizing: border-box;
 }
 
 html,
 body {
+    background-color: var(--bg);
     background-size: 400px 200px;
     background-repeat: repeat;
-    background-position: center center;
-    background-attachment: fixed; 
-    background-color: #f7fff7
+    background-position: 0 0;
+    background-attachment: fixed;
+    animation: fondoRodillo 10s linear infinite;
 }
 
-:root {
-    --primary: #931525;
-    --primary-dark: #6F0E1A;
-    --white: #ffffff;
-    --max-w: 1000px; /* reducido para que el contenido no se estire tanto */
-    --gap: 0.75rem;
-    --avatar-size: 36px; /* ligeramente más pequeño */
-    --avatar-size-lg: 48px;
-    --avatar-size-sm: 32px;
+html {
+    font-size: 14px;
 }
 
-/* --- Clases globales de botones --- */
+/* --------------- GLOBAL BUTTONS --------------- */
 .btn {
     display: inline-block;
     padding: 12px 18px;
@@ -37,43 +76,43 @@ body {
     box-sizing: border-box;
 }
 
-.btn:active { transform: translateY(1px); }
+.btn:active {
+    transform: translateY(1px);
+}
 
 .btn-primary {
-    color: #fff;
+    color: var(--primary-contrast);
     background: linear-gradient(135deg, var(--primary), #ff416c);
-    box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-secondary {
-    color: #fff;
-    background: linear-gradient(135deg, #931525, #ff416c);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    color: var(--primary-contrast);
+    background: linear-gradient(135deg, var(--primary), #ff416c);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .btn-ghost {
     background: transparent;
     color: var(--primary);
-    border: 1px solid rgba(147,21,37,0.12);
+    border: 1px solid rgba(147, 21, 37, 0.12);
 }
 
-.btn-block { display:block; width:100%; }
+.btn-block {
+    display: block;
+    width: 100%;
+}
 
-/* Escala global: reduce tamaño base de fuente para hacer la UI más compacta */
-html { font-size: 14px; }
-
-/* Contenedor principal */
+/* --------------- MAIN CONTAINER --------------- */
 #contenedorPrincipal {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-   
     position: relative;
     z-index: 10;
 }
 
-/* Header and avatar styles were moved to Encabezado.css */
-/* Cuerpo */
+/* --------------- BODY CONTENT --------------- */
 #cuerpo {
     flex: 1;
     width: 100%;
@@ -82,20 +121,12 @@ html { font-size: 14px; }
     margin: 0;
     padding: 0;
     background-size: 800px 800px;
-    /* ajusta el tamaño del patrón */
     background-repeat: repeat;
-    /* permite que se repita */
     background-position: center center;
-    /* centra el patrón */
-    background-attachment: fixed
-}
-@media (max-width: 768px) {
-    #cuerpo {
-        padding: 0;
-    }
+    background-attachment: fixed;
 }
 
-
+/* --------------- FOOTER --------------- */
 .footer-inner {
     max-width: var(--max-w);
     margin: 0 auto;
@@ -120,15 +151,15 @@ html { font-size: 14px; }
     display: block;
 }
 
-/* Menú desplegable */
+/* --------------- DROPDOWN MENU --------------- */
 .menuDesplegable {
     display: none;
     position: absolute;
     top: calc(100% + 0.4rem);
     right: 1rem;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    background-color: var(--white);
+    border: var(--border-subtle);
+    border-radius: var(--radius-sm);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
     z-index: 1000;
     width: 180px;
@@ -149,7 +180,62 @@ html { font-size: 14px; }
     background-color: #f3f3f3;
 }
 
-/* Responsive */
+/* --------------- USER INFO --------------- */
+.user-info {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-contrast);
+    background: linear-gradient(135deg, #ff6b6b, #ffb347);
+    padding: 6px 12px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* --------------- NOTIFICATIONS --------------- */
+#btnNotification {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+.bell-hint {
+    animation: bell-wiggle 700ms ease-in-out;
+    filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
+}
+
+/* --------------- ANIMATIONS --------------- */
+@keyframes fondoRodillo {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -400px 0;
+    }
+}
+
+@keyframes bell-wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    15% {
+        transform: rotate(-16deg);
+    }
+    30% {
+        transform: rotate(12deg);
+    }
+    45% {
+        transform: rotate(-8deg);
+    }
+    60% {
+        transform: rotate(5deg);
+    }
+    75% {
+        transform: rotate(-2deg);
+    }
+}
+
+/* --------------- MEDIA QUERIES --------------- */
 @media (max-width: 768px) {
     .header-inner {
         flex-wrap: wrap;
@@ -167,7 +253,7 @@ html { font-size: 14px; }
     }
 
     #cuerpo {
-        padding: 0.8rem;
+        padding: 0;
     }
 }
 
@@ -177,72 +263,3 @@ html { font-size: 14px; }
         align-items: center;
     }
 }
-@keyframes bell-wiggle {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    15% {
-        transform: rotate(-16deg);
-    }
-
-    30% {
-        transform: rotate(12deg);
-    }
-
-    45% {
-        transform: rotate(-8deg);
-    }
-
-    60% {
-        transform: rotate(5deg);
-    }
-
-    75% {
-        transform: rotate(-2deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
-    }
-}
-
-.bell-hint {
-    animation: bell-wiggle 700ms ease-in-out;
-    filter: drop-shadow(0 0 6px rgba(255, 65, 108, 0.6));
-}
-.user-info {
-    font-size: 24px;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, #ff6b6b, #ffb347);
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
-    
-}
-#btnNotification {
-    width: 32px;
-    height: 32px;
-    transition: transform 0.3s ease;
-}
-
-@keyframes fondoRodillo {
-    0% {
-        background-position: 0 0;
-    }
-
-    100% {
-        background-position: -400px 0;
-        /* ajusta según el tamaño del patrón */
-    }
-}
-
-html,
-body {
-    background-size: 400px 200px;
-    background-repeat: repeat;
-    background-position: 0 0;
-    background-attachment: fixed;
-    animation: fondoRodillo 10s linear infinite; }
