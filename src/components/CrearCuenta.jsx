@@ -40,6 +40,8 @@ function CrearCuentaInner() {
         if (g && g.email) {
           setFormData((p) => ({ ...p, email: String(g.email) }));
           setEmailReadOnly(true);
+            // Ya usamos el valor temporal de Google: eliminar para que no persista en futuras visitas
+            try { localStorage.removeItem("google_temp_user"); } catch { /* noop */ }
         }
       }
     } catch (e) {
@@ -164,6 +166,8 @@ function CrearCuentaInner() {
           });
           const loginData = await loginRes.json();
           if (loginRes.ok && loginData.user) {
+            // Limpiar cualquier google_temp_user pendiente (si existe)
+            try { localStorage.removeItem("google_temp_user"); } catch { /* noop */ }
             localStorage.setItem("usuario", JSON.stringify(loginData.user));
             // limpiar dietTarget si no es doctor
             if (!loginData.user || loginData.user.id_perfil !== 3) {

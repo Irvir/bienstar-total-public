@@ -164,6 +164,8 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
             otrasAlergias: u.otrasAlergias || null,
           };
 
+          // Limpiar cualquier google_temp_user pendiente (si existe)
+          try { localStorage.removeItem("google_temp_user"); } catch { /* noop */ }
           localStorage.setItem("usuario", JSON.stringify(usuarioToStore));
           window.location.href = "index.html";
         } else {
