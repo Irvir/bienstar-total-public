@@ -10,51 +10,47 @@ import Admin from './components/Admin.jsx';
 import CrearAlimento from './components/CrearAlimento.jsx';
 import Cuentas from './components/Cuentas.jsx';
 import TipsParaTuDieta from './components/TipsParaTuDieta.jsx';
-
+import Calendario from './components/Calendario.jsx';
 
 export default function App() {
   const raw = window.location.pathname.split('/').pop() || '';
-  const currentPath = raw.toLowerCase();
+  const ruta = raw.toLowerCase();
 
-  // Treat root, index.html and home/home.html as the main page
-  if (!currentPath || currentPath === 'index.html' || currentPath === 'home' || currentPath === 'home.html') {
+  // Ruta default (home)
+  if (!ruta || ruta === 'index.html' || ruta === 'home' || ruta === 'home.html') {
     return <Home />;
   }
 
-  // If explicitly navigating to the static 404 html, show React 404 too
-  if (currentPath === 'error404.html' || currentPath === 'error404') {
+  // Si la ruta es error404
+  if (ruta === 'error404.html' || ruta === 'error404') {
     return <Error404 />;
   }
 
-  // Login route
-  if (currentPath === 'login' || currentPath === 'login.html') {
+  // Si la ruta es login
+  if (ruta === 'login' || ruta === 'login.html') {
     return <Login />;
   }
-  // CrearCuenta route (accept hyphenated and non-hyphenated variants)
   if (
-    currentPath === 'crearcuenta' ||
-    currentPath === 'crearcuenta.html' ||
-    currentPath === 'crear-cuenta' ||
-    currentPath === 'crear-cuenta.html'
+    ruta === 'crearcuenta' ||
+    ruta === 'crearcuenta.html' ||
+    ruta === 'crear-cuenta' ||
+    ruta === 'crear-cuenta.html'
   ) {
     return <CrearCuenta />;
   }
-  if(currentPath === 'creardieta' ||
-     currentPath === 'creardieta.html' ||
-     currentPath === 'crear-dieta' ||
-     currentPath === 'crear-dieta.html') {
+  if (ruta === 'creardieta' ||
+      ruta === 'creardieta.html' ||
+     ruta === 'crear-dieta' ||
+     ruta === 'crear-dieta.html') {
     return (
         <CrearDieta />
     );
   }
 
-  // Alimentos route
-  if (currentPath === 'alimentos' || currentPath === 'alimentos.html') {
+  if (ruta === 'alimentos' || ruta === 'alimentos.html') {
     return <Alimentos />;
   }
-  // Dietas route
-  if (currentPath === 'dietas' || currentPath === 'dietas.html') {
-    // Lazy load Dietas component
+  if (ruta === 'dietas' || ruta === 'dietas.html') {
     const Dietas = React.lazy(() => import('./components/Dietas.jsx'));
     return (
       <Suspense fallback={<div>Cargando...</div>}>
@@ -62,24 +58,27 @@ export default function App() {
       </Suspense>
     );
   }
-  if (currentPath === 'perfil' || currentPath === 'perfil.html') {
+  if (ruta === 'perfil' || ruta === 'perfil.html') {
     return <Perfil />;
   }
-  if (currentPath === 'admin' || currentPath === 'admin.html') {
+  if (ruta === 'admin' || ruta === 'admin.html') {
     return <Admin />;
   }
-  if (currentPath === 'crear-alimento' || currentPath === 'crear-alimento.html') {
+  if (ruta === 'crear-alimento' || ruta === 'crear-alimento.html') {
     return <CrearAlimento />;
   }
-  if (currentPath === 'cuentas' || currentPath === 'cuentas.html') {
+  if (ruta === 'cuentas' || ruta === 'cuentas.html') {
     return <Cuentas />;
   }
 
-  // Tips para tu dieta
-  if (currentPath === 'tipsparatudieta' || currentPath === 'tipsparatudieta.html') {
+  if (ruta === 'tipsparatudieta' || ruta === 'tipsparatudieta.html') {
     return <TipsParaTuDieta />;
   }
+  if (ruta === 'calendario' || ruta === 'calendario.html') {
+    return (
+        <Calendario />
+    );
+  }
 
-  // Default: render 404 for any unknown path
   return <Error404 />;
 }

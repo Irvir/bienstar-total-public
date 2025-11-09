@@ -51,7 +51,7 @@ export default function Encabezado({ activePage, onNavigate }) {
 
   useEffect(() => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-    if (!clientId) return; // nothing to do if no client id configured
+    if (!clientId) return; 
 
     const loadScript = () => {
       return new Promise((resolve) => {
@@ -72,7 +72,6 @@ export default function Encabezado({ activePage, onNavigate }) {
         window.google.accounts.id.initialize({
           client_id: clientId,
           callback: (response) => {
-            // response.credential is a JWT (id_token). Decode it and save basic profile
             try {
               const token = response.credential;
               const payload = JSON.parse(atob(token.split('.')[1]));
@@ -107,7 +106,7 @@ export default function Encabezado({ activePage, onNavigate }) {
     if (bell) {
       const triggerWiggle = () => {
         bell.classList.remove("bell-hint");
-        void bell.offsetWidth; // fuerza reflow
+        void bell.offsetWidth; 
         bell.classList.add("bell-hint");
   
         setTimeout(() => {
@@ -133,11 +132,9 @@ export default function Encabezado({ activePage, onNavigate }) {
   function handleSignOut(e) {
     e.stopPropagation();
     localStorage.removeItem('usuario');
-    // Limpiar también cualquier selección de paciente previa
     try { localStorage.removeItem('dietTarget'); } catch {}
     setUserName('Invitado');
     setIsLogged(false);
-    // If Google One Tap was used, revoke it client-side (best effort)
     try { if (window.google && window.google.accounts && window.google.accounts.id) window.google.accounts.id.disableAutoSelect(); } catch (err) {}
     onNavigate('/');
   }

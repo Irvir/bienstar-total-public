@@ -1,0 +1,212 @@
+.Titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: brown;
+    text-align: center;
+}
+
+.contenedor-calendario {
+    width: 90%;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f3f8ff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+}
+
+.contenedor-calendario h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* --- Cuadrícula --- */
+.dias-semana,
+.grid-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    cursor: pointer;
+}
+
+.celda {
+    aspect-ratio: 1 / 1;
+    /* Hace cada celda cuadrada */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    color: brown;
+    transition: background-color 0.3s;
+    height: 70%;
+    width: 100%;
+    
+}
+
+.encabezado {
+    font-weight: bold;
+    background-color: brown;
+    color: white;
+    border-radius: 25px;
+}
+
+.vacia {
+    background-color: transparent;
+    border: none;
+}
+
+/* Hover */
+.celda:hover:not(.vacia):not(.encabezado) {
+    background-color: #cce5ff;
+    cursor: pointer;
+
+}
+.ContenedorCalendario {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.GridDias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.EncabezadoDia {
+    font-weight: bold;
+    background-color: #dff0d8;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.Dia {
+    height: 70px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.Dia:hover {
+    background-color: #b3e5c4;
+}
+
+.Dia.vacio {
+    background: transparent;
+    cursor: default;
+}
+
+.ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Asegurar que el overlay quede por encima de headers/footers/otros elementos */
+    z-index: 100000;
+}
+
+.ModalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+    z-index: 100001; /* contenido del modal por encima del overlay y otros elementos */
+}
+
+.CerrarModal {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* ---- MODAL ---- */
+.ModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.ModalContent {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    position: relative;
+    width: 320px;
+    text-align: left;
+}
+
+.CerrarModal {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #555;
+}
+
+.CerrarModal:hover {
+    color: red;
+}
+
+.dias-semana,
+.grid-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.dia,
+.diaVacio {
+    aspect-ratio: 1 / 1;
+    /* hace que todas las celdas sean cuadradas */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dia:hover {
+    background-color: #dceeff;
+}
+
+.hoy {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #0056b3;
+}

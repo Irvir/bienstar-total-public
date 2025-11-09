@@ -438,7 +438,6 @@ app.post("/registrar", async (req, res) => {
     const errores = validarRegistro(email, password, altura, peso, edad);
     if (errores.length) return res.status(400).json({ message: "Validación fallida", errores });
 
-    // Verify recaptcha token only if secret configured (skip in local dev)
     const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET || '';
     if (RECAPTCHA_SECRET) {
       if (!recaptchaToken) return res.status(400).json({ message: 'Falta verificación de captcha' });
@@ -455,7 +454,6 @@ app.post("/registrar", async (req, res) => {
         return res.status(500).json({ message: 'Error al verificar captcha' });
       }
     } else {
-      // No secret configured -> likely dev environment. Skip recaptcha verification but log a warning.
       console.warn('RECAPTCHA_SECRET no configurado; se omite verificación de captcha (entorno local)');
     }
 
@@ -466,7 +464,6 @@ app.post("/registrar", async (req, res) => {
     const newDietId = dietInsert.insertId;
 
     const hash = await bcrypt.hash(password, 10);
-    // Si viene id_perfil desde el admin (Cuentas.jsx)(esperado 3 = Doctor). Si no, default 2 = Paciente.
     const perfil = [2,3].includes(Number(id_perfil)) ? Number(id_perfil) : 2;
     const [userInsert] = await pool.query(
       `INSERT INTO usuario 
@@ -625,7 +622,6 @@ router.post("/user/:id/activate", async (req, res) => {
 });
 
 // Desactivar usuario
-// Marcar usuario como inactivo (en vez de eliminarlo)
 app.delete("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -661,12 +657,11 @@ app.patch("/user/:id", async (req, res) => {
       id_perfil,
       id_dieta,
       estado,
-      alergias, // array de strings o IDs
+      alergias, 
     } = req.body || {};
 
     await connection.beginTransaction();
 
-    //  1. Verificar si el usuario existe
     const [rows] = await connection.query("SELECT * FROM usuario WHERE id = ?", [id]);
     if (rows.length === 0) {
       await connection.rollback();
@@ -674,7 +669,6 @@ app.patch("/user/:id", async (req, res) => {
     }
     const current = rows[0];
 
-    // 2. Preparar datos nuevos (sin modificar email ni password)
     const updated = {
       nombre: nombre ?? current.nombre,
       altura: altura ?? current.altura,
@@ -687,11 +681,9 @@ app.patch("/user/:id", async (req, res) => {
       estado: estado ?? current.estado,
     };
 
-    // Validaciones opcionales
     if (updated.edad && (updated.edad <= 10 || updated.edad > 120))
       return res.status(400).json({ message: "Edad fuera de rango válido" });
 
-    // 3. Actualizar usuario principal
     await connection.query(
       `UPDATE usuario
        SET nombre = ?, altura = ?, peso = ?, edad = ?, actividad_fisica = ?, sexo = ?,
@@ -711,12 +703,10 @@ app.patch("/user/:id", async (req, res) => {
       ]
     );
 
-    // 4. Actualizar alergias si se incluyen en el body
     if (Array.isArray(alergias)) {
       // Elimina las alergias anteriores
       await connection.query("DELETE FROM categoria_alergico WHERE id_usuario = ?", [id]);
 
-      // Inserta las nuevas alergias
       if (alergias.length > 0) {
         const values = alergias.map((nombre) => [id, nombre]);
         await connection.query("INSERT INTO categoria_alergico (id_usuario, nombre) VALUES ?", [values]);
@@ -747,7 +737,6 @@ app.patch("/user/:id", async (req, res) => {
 app.get("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    //id, nombre, email, password, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado
     const [rows] = await pool.query(
       "SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM usuario WHERE id = ?",
       [id]
@@ -781,13 +770,11 @@ app.post("/ensure-diet", async (req, res) => {
     let id_dieta = u.id_dieta;
 
     if (!id_dieta || id_dieta === 1) {
-      // Crear registro en la tabla 'dieta' (esquema español)
       const [dietInsert] = await pool.query(
         "INSERT INTO dieta (nombre) VALUES (?)",
         [`Dieta de ${u.nombre || u.email}`]
       );
       id_dieta = dietInsert.insertId;
-      // Actualizar el usuario en la tabla 'usuario'
       await pool.query("UPDATE usuario SET id_dieta = ? WHERE id = ?", [id_dieta, u.id]);
     }
 
@@ -799,7 +786,6 @@ app.post("/ensure-diet", async (req, res) => {
 });
 
 // Obtener info alimento por ID
-// Estructura id, id_alimento, image_url, nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio
 app.get("/food/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -813,16 +799,13 @@ app.get("/food/:id", async (req, res) => {
 });
 
 // Búsqueda de alimentos 
-// Estructura id, id_alimento, image_url, nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio
 
-// 🔍 Buscar alimentos por nombre o listar los primeros 50
 app.get("/food-search", async (req, res) => {
   try {
     const q = (req.query.q || "").trim();
     let rows;
 
     if (q) {
-      // Buscar alimentos cuyo nombre contenga el texto dado (sin distinción de mayúsculas)
       [rows] = await pool.query(
         `SELECT 
            id,
@@ -868,7 +851,6 @@ app.get("/food-search", async (req, res) => {
         [`%${q}%`]
       );
     } else {
-      // Si no hay búsqueda, devolver los primeros 50 alimentos
       [rows] = await pool.query(
         `SELECT 
            id,
@@ -924,7 +906,7 @@ app.get("/food-search", async (req, res) => {
 //Obtener la dieta completa con días, comidas y alimentos
 app.get("/get-diet", async (req, res) => {
   try {
-    const id_dieta = parseInt(req.query.id_dieta); // Por defecto dieta 1
+    const id_dieta = parseInt(req.query.id_dieta); 
     if (!id_dieta) return res.status(400).json({ message: "Falta id_dieta" });
 
     const [rows] = await pool.query(
@@ -1033,11 +1015,68 @@ app.post("/save-diet", async (req, res) => {
   }
 });
 
+app.get('/api/calendario/:fecha', async (req, res) => {
+  const { fecha } = req.params;
+
+  try {
+    const headerUser = req.get('x-user-id');
+    const userId = (req.user && req.user.id)
+      ? Number(req.user.id)
+      : (headerUser ? Number(headerUser) : Number(req.query.userId || req.query.id ));
+    if (!userId) return res.status(400).json({ message: 'Falta userId' });
+
+    const [usuarioRows] = await pool.query(
+      `SELECT peso, id_dieta FROM usuario WHERE id = ? LIMIT 1`,
+      [userId]
+    );
+
+    if (!usuarioRows || usuarioRows.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    const { peso, id_dieta } = usuarioRows[0];
+
+    let dietaInfo = { id: id_dieta || null, nombre: null, items: [] };
+    if (id_dieta) {
+     
+      const [dNameRows] = await pool.query(
+        `SELECT nombre FROM dieta WHERE id_dieta = ? LIMIT 1`,
+        [id_dieta]
+      );
+      dietaInfo.nombre = dNameRows && dNameRows[0] ? dNameRows[0].nombre : null;
+
+      const [dietaRows] = await pool.query(
+        `
+        SELECT 
+          d.numero_dia AS dia,
+          c.tipo AS tipo_comida,
+          a.nombre AS alimento,
+          ca.cantidad
+        FROM dia d
+        JOIN comida c ON c.id_dia = d.id
+        JOIN comida_alimento ca ON ca.id_comida = c.id
+        JOIN alimento a ON a.id = ca.id_alimento
+        WHERE d.id_dieta = ?
+        ORDER BY 
+          d.numero_dia, 
+          FIELD(c.tipo, 'Desayuno', 'Almuerzo', 'Cena', 'Snack', 'Snack2')
+        `,
+        [id_dieta]
+      );
+      dietaInfo.items = dietaRows || [];
+    }
+
+    res.json({ fecha, peso: peso ?? null, dieta: dietaInfo });
+  } catch (err) {
+    console.error(" Error en GET /api/calendario/:fecha:", err);
+    res.status(500).json({ message: "Error al obtener datos del día" });
+  }
+});
+
+
 
 // Borrar todas las comidas de un día específico de la dieta
-// Inactivar todas las comidas y alimentos de un día específico de la dieta
 app.post("/clear-day", async (req, res) => {
-  // Aceptar ambos nombres de parámetros por compatibilidad: id_dieta | id_diet
   try {
     const { id_dieta, id_diet, dia } = req.body || {};
     const idDietaNum = Number(id_dieta || id_diet);
@@ -1050,7 +1089,6 @@ app.post("/clear-day", async (req, res) => {
     try {
       await connection.beginTransaction();
 
-      // Buscar el día en esquema español
       const [diaRows] = await connection.query(
         "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
         [idDietaNum, diaNum]
@@ -1063,7 +1101,6 @@ app.post("/clear-day", async (req, res) => {
 
       const id_dia = diaRows[0].id;
 
-      // Buscar comidas del día
       const [comidaRows] = await connection.query(
         "SELECT id FROM comida WHERE id_dia = ?",
         [id_dia]
@@ -1072,13 +1109,11 @@ app.post("/clear-day", async (req, res) => {
       if (comidaRows.length > 0) {
         const comidaIds = comidaRows.map(r => r.id);
 
-        // Borrar alimentos relacionados (relación N:M)
         await connection.query(
           `DELETE FROM comida_alimento WHERE id_comida IN (${comidaIds.map(() => '?').join(',')})`,
           comidaIds
         );
 
-        // Borrar comidas del día
         await connection.query("DELETE FROM comida WHERE id_dia = ?", [id_dia]);
       }
 
@@ -1098,9 +1133,7 @@ app.post("/clear-day", async (req, res) => {
 });
 
 // Borrar un alimento específico de una comida en un día específico de la dieta
-// Inactivar un alimento específico de una comida en un día específico de la dieta
 app.post("/delete-diet-item", async (req, res) => {
-  // Acepta id_dieta|id_diet e id_alimento|id_food para compatibilidad
   try {
     const { id_dieta, id_diet, id_alimento, id_food, dia, tipoComida } = req.body || {};
 
@@ -1112,7 +1145,6 @@ app.post("/delete-diet-item", async (req, res) => {
       return res.status(400).json({ error: "Faltan parámetros" });
     }
 
-    // Buscar el día (esquema español)
     const [diaRows] = await pool.query(
       "SELECT id FROM dia WHERE id_dieta = ? AND numero_dia = ?",
       [idDietaNum, diaNum]
@@ -1159,10 +1191,8 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
-// Health check for Render and monitoring
 app.get('/health', async (req, res) => {
   try {
-    // Optionally check DB connectivity quickly
     await pool.query('SELECT 1');
     res.json({ ok: true, env: process.env.NODE_ENV || 'development' });
   } catch (err) {
@@ -1170,7 +1200,6 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// Graceful shutdown helper (Render sends SIGTERM on deploys)
 async function shutdown(signal) {
   console.log(`Received ${signal}. Closing DB pool and exiting...`);
   try {
