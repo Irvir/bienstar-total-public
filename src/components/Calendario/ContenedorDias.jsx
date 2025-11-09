@@ -47,7 +47,7 @@ const ContenedorDias = () => {
             <h2>{fechaActual.toLocaleString('es-ES', { month: 'long', year: 'numeric' })}</h2>
             <div className="dias-semana">
                 {diasSemana.map((dia) => (
-                    <div key={dia} className="celda encabezado">{dia}</div>
+                    <div key={dia} className="celdaEncabezado">{dia}</div>
                 ))}
             </div>
             <div className="grid-calendario">{dias}</div>

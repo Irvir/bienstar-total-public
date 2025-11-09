@@ -54,7 +54,7 @@ function Home() {
             <button
               className="btn1"
               onClick={() =>
-                handleClick("CrearDieta.html", "Editando tu dieta semanal")
+                handleClick("AcercaDeNosotros.html", "Informacion sobre nosotros")
               }
             ></button>
             <button

@@ -131,7 +131,8 @@
 
     el.style.position = 'fixed';
     el.style.left = '50%';
-    el.style.top = '10%';
+    // Posicion vertical de notificacion
+    el.style.top = '15%';
     el.style.transform = 'translateX(-50%)';
     el.style.zIndex = '9999';
     el.style.display = 'flex';

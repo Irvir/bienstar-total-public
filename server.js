@@ -97,44 +97,20 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Montar router de administración de alimentos desde archivos separados
 app.use('/admin/foods', createAdminFoodsRouter({ pool, upload }));
-// Montar el router de admin en /admin para exponer rutas como /admin/users
 app.use('/admin', router);
-// Montar router de diets (las rutas internas mantienen sus paths: /get-diet, /save-diet, ...)
 app.use('/', createDietsRouter({ pool }));
 
-// Auth routes (checkEmail, registrar, verify-captcha, login)
 app.use('/', createAuthRouter({ pool }));
 
-// Rutas públicas de alimentos (búsqueda y detalle) para compatibilidad con frontend
 app.use('/', createFoodsRouter({ pool }));
 
-// Update alimento is handled by the adminFoods router (src/routes/adminFoods.routes.js)
-// Users routes are handled by the users router (keeps server.js smaller)
 app.use('/admin/users', createUsersRouter({ pool }));
-// Mount the same router under /user to keep compatibility with existing frontend endpoints
-// (e.g. GET /user/:id used by client when fetching a single user)
 app.use('/user', createUsersRouter({ pool }));
-// Also mount singular path for legacy frontend: /admin/user/:id/...
 app.use('/admin/user', createUsersRouter({ pool }));
 
 
 
-
-
-// Guardar dieta (POST /save-diet)
-// Diet routes are handled by the diets router
-
-// NOTE: /api/calendario/:fecha is handled by the diets router (src/routes/diets.routes.js)
-
-
-
-// Borrar todas las comidas de un día específico de la dieta
-// Diet routes are handled by the diets router
-
-// Borrar un alimento específico de una comida en un día específico de la dieta
-// Diet routes are handled by the diets router
 
 
 // --- Servir frontend en producción ---
