@@ -1,38 +1,51 @@
-/* Styles to replace inline styles used in Home.html */
+/* =========================================
+   INDEX.CSS - Estilos de utilidad globales
+   ========================================= */
+
+/* --------------- LAYOUT UTILITIES --------------- */
 .login-left {
-	float: left;
-	height: 100%;
-	width: 75%;
+    float: left;
+    height: 100%;
+    width: 75%;
 }
 
 .login-avatar {
-	float: left;
-	width: 10%;
-	height: 100%;
+    float: left;
+    width: 10%;
+    height: 100%;
 }
 
+/* --------------- CURSOR UTILITIES --------------- */
 .cursor-pointer {
-	cursor: pointer;
+    cursor: pointer;
 }
 
-#loader {
-	display: none;
-	align-items: center;
-	justify-content: center;
-	position: fixed;
-	inset: 0;
-	background: rgba(255,255,255,0.9);
-	z-index: 9999;
-}
-
-.footer-inner button {
-	border: none;
-	background: transparent;
-}
-
+/* --------------- ACCESSIBILITY --------------- */
 .sr-only {
-	position: absolute !important;
-	width: 1px; height: 1px;
-	padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
+/* --------------- LOADER --------------- */
+#loader {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+}
+
+/* --------------- FOOTER BUTTONS --------------- */
+.footer-inner button {
+    border: none;
+    background: transparent;
+}

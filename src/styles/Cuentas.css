@@ -18,7 +18,7 @@ html,body,#contenedorPrincipal{height:100%;}
 body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial; color:var(--text);}
 
 .admin-cuentas-page{min-height:100vh;}
-.admin-cuentas-page #cuerpo{padding:2.25rem 1.25rem;max-width:1200px;margin:0 auto}
+.admin-cuentas-page #cuerpo{padding:2.25rem 1.25rem;max-width:1400px;margin:0 auto}
 
 /* Page header */
 .admin-form .page-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem}
@@ -51,14 +51,27 @@ body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -ap
 /* Layout */
 .admin-cuentas-row{display:flex;flex-direction:column;gap:1rem;flex-wrap:wrap;align-items:stretch}
 .admin-list{width:100%}
+/* Make the list area scrollable without breaking responsive layout */
+.admin-list{display:flex;flex-direction:column;min-height:0}
+.admin-list .list-header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid rgba(15,23,42,0.05)}
+.admin-list .table-wrapper{max-height:60vh;overflow:auto;flex:1 1 auto}
+@media(min-width:820px){
+    .admin-list .table-wrapper{max-height:72vh}
+}
+
+/* Subtle custom scrollbar for better UX */
+.admin-list .table-wrapper{scrollbar-width:thin;scrollbar-color:rgba(15,23,42,0.25)_transparent}
+.admin-list .table-wrapper::-webkit-scrollbar{height:10px;width:10px}
+.admin-list .table-wrapper::-webkit-scrollbar-track{background:transparent}
+.admin-list .table-wrapper::-webkit-scrollbar-thumb{background:rgba(15,23,42,0.25);border-radius:8px}
 
 @media(min-width:820px){
     .admin-cuentas-row{flex-direction:row;align-items:flex-start;gap:2rem;flex-wrap:wrap}
     /* force stable ordering and shrink behavior on desktop */
     /* admin-form wider but adaptive using clamp (min, preferred, max) */
-    .admin-form{flex:0 0 clamp(360px, 30vw, 520px);order:1;min-width:0;max-width:48%}
+    .admin-form{flex:0 0 clamp(360px, 26vw, 480px);order:1;min-width:0}
     /* admin-list occupies remaining space but not less than 40% */
-    .admin-list{flex:1 1 0;order:0;min-width:0;max-width:calc(100% - clamp(360px, 30vw, 520px))}
+    .admin-list{flex:1 1 0;order:0;min-width:0}
 }
 
 /* For larger desktops place list on the left and form on the right */
@@ -66,6 +79,15 @@ body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -ap
     /* explicit no-op: already ordered at 820px, keep same here */
     .admin-list{order:0}
     .admin-form{order:1}
+    /* Hide mobile-only toggle on larger screens */
+    .toggle-columns-btn{display:none !important}
+    /* Keep email column readable: minimum width and no wrapping */
+    .table th:nth-child(3),
+    .table td:nth-child(3){
+        min-width: 300px;
+        white-space: nowrap;
+        word-break: keep-all;
+    }
 }
 
 /* Table card */
@@ -90,6 +112,41 @@ body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -ap
     /* allow horizontal scroll on small screens for wide tables */
     .table{min-width:initial}
     .list-header{justify-content:center;padding:0.6rem}
+}
+
+/* Extra mobile refinements */
+@media(max-width:640px){
+    .admin-cuentas-page #cuerpo{padding:1.25rem .75rem;}
+    /* Limit form height on small screens and make it scroll internally */
+    .admin-form{padding:1rem .9rem;max-height:70vh;width:45vh;overflow:auto;display:flex;flex-direction:column}
+    .admin-form h2{font-size:.95rem;}
+    .admin-form input,.admin-form select{padding:.5rem .65rem;font-size:.9rem;}
+    .list-header{padding:.5rem .6rem;}
+    .list-header input{padding:.5rem .6rem;font-size:.85rem;}
+    .table-wrapper{max-height:calc(60vh - 60px);}
+    .table thead th{padding:.6rem .55rem;font-size:.72rem;}
+    .table tbody td{padding:.55rem .55rem;font-size:.7rem;}
+    /* Keep the form actions visible while scrolling */
+    .form-actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),var(--card) 45%);padding-top:.6rem;margin-top:.6rem;border-top:1px solid rgba(15,23,42,0.06);}
+    /* Optional: keep the small heading visible */
+    .admin-form h2{position:sticky;top:0;z-index:2;background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.85));padding:.4rem 0;margin-bottom:.5rem}
+    /* Hide less critical columns on very small screens */
+    .table:not(.show-extra) th:nth-child(5),
+    .table:not(.show-extra) td:nth-child(5),
+    .table:not(.show-extra) th:nth-child(6),
+    .table:not(.show-extra) td:nth-child(6),
+    .table:not(.show-extra) th:nth-child(7),
+    .table:not(.show-extra) td:nth-child(7),
+    .table:not(.show-extra) th:nth-child(8),
+    .table:not(.show-extra) td:nth-child(8){display:none;}
+    .table.show-extra th, .table.show-extra td{display:table-cell;}
+    /* Actions column remains */
+}
+
+@media(max-width:480px){
+    .admin-form .page-title h1{font-size:1.3rem;}
+    .admin-form input,.admin-form select{font-size:.85rem;}
+    .table tbody td:first-child{width:48px;}
 }
 
 @media(max-width:480px){

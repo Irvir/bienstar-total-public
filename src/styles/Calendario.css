@@ -32,12 +32,21 @@
     cursor: pointer;
 }
 
-.celdaEncabezado{
-    background-color: brown;
-    color: white;
+.celda {
+    aspect-ratio: 1 / 1;
+    /* Hace cada celda cuadrada */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    color: brown;
+    transition: background-color 0.3s;
+    height: 70%;
+    width: 100%;
+    
 }
-
-
 
 .encabezado {
     font-weight: bold;
@@ -57,7 +66,6 @@
     cursor: pointer;
 
 }
-
 .ContenedorCalendario {
     max-width: 600px;
     margin: 0 auto;
@@ -98,40 +106,7 @@
     cursor: default;
 }
 
-.ModalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Asegurar que el overlay quede por encima de headers/footers/otros elementos */
-    z-index: 100000;
-}
-
-.ModalContent {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    position: relative;
-    z-index: 100001;
-    /* contenido del modal por encima del overlay y otros elementos */
-}
-
-.CerrarModal {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
-
+/* Eliminadas definiciones duplicadas de modal para mantener un solo set coherente (ver bloque MODAL más abajo) */
 /* ---- MODAL ---- */
 .ModalOverlay {
     position: fixed;
@@ -182,6 +157,7 @@
 .dia,
 .diaVacio {
     aspect-ratio: 1 / 1;
+    /* hace que todas las celdas sean cuadradas */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -116,6 +116,13 @@ app.use('/admin/user', createUsersRouter({ pool }));
 // --- Servir frontend en producción ---
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "dist")));
+
+  // Serve SPA entry for admin UI path so it uses the same React app/layout
+  app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  });
+
+  // Serve SPA for all other non-API routes
   app.get(/^\/(?!admin).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
