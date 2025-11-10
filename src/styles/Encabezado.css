@@ -36,6 +36,21 @@
     .header-inner{padding:0 1rem;flex-direction:column;align-items:flex-start;gap:.75rem;}
 }
 
+/* Desktop: fija el login al extremo derecho */
+@media (min-width: 900px){
+    .header-inner{position:relative;}
+    .header-top-row .login{
+        position:absolute;
+        right:clamp(1rem, 2vw, 2rem);
+        top:50%;
+        transform:translateY(-50%);
+        margin-left:0; /* ignora empuje interno */
+        z-index:2;
+    }
+    /* centra el bloque de botones sin que el login afecte el flujo */
+    .menu-botones{margin:0 auto;}
+}
+
 /* Logo */
 .logo {
     flex: 0 0 auto;
@@ -205,15 +220,15 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: var(--shadow-sm), inset 0 1px 8px rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: background .25s ease, box-shadow .25s ease;
     cursor: pointer;
     color: #fff;
 }
 
 .login:hover {
     background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 1px 10px rgba(255, 255, 255, 0.3);
+    /* Quitar elevación animada */
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22), inset 0 1px 10px rgba(255,255,255,0.3);
 }
 
 /* --- Foto de usuario con borde cristal --- */

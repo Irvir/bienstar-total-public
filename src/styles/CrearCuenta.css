@@ -162,7 +162,8 @@
     background: rgba(255, 255, 255, 0.18);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    /* Slightly stronger default border for better field visibility */
+    border: 1.5px solid rgba(15, 23, 42, 0.28);
     color: #0b1216;
     transition: 0.25s;
     margin-left: 0;
@@ -190,7 +191,7 @@
     background: rgba(255, 255, 255, 0.18);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1.5px solid rgba(15, 23, 42, 0.28);
     color: #0b1216;
     transition: 0.25s;
     margin-left: 0;
@@ -216,7 +217,7 @@
     background: rgba(255, 255, 255, 0.18);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1.5px solid rgba(15, 23, 42, 0.28);
     color: #0b1216;
     transition: 0.25s;
     margin-left: 0;
@@ -242,7 +243,7 @@
     background: rgba(255, 255, 255, 0.18);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1.5px solid rgba(15, 23, 42, 0.28);
     color: #0b1216;
     transition: 0.25s;
     margin-left: 0;
@@ -269,7 +270,7 @@
     background: rgba(255, 255, 255, 0.18);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1.5px solid rgba(15, 23, 42, 0.28);
     color: #0b1216;
     transition: 0.25s;
     margin-left: 0;
@@ -363,7 +364,7 @@
     background: rgba(255, 255, 255, 0.18);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1.5px solid rgba(15, 23, 42, 0.28);
     color: #0b1216;
     transition: 0.25s;
     margin-top: 10px;

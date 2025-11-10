@@ -88,6 +88,13 @@ body{background:var(--bg);font-family: Inter, 'Segoe UI', Roboto, system-ui, -ap
         white-space: nowrap;
         word-break: keep-all;
     }
+    /* Slightly widen the "Nombre" column for better readability */
+    .table th:nth-child(2),
+    .table td:nth-child(2){
+        min-width: 220px;
+        white-space: nowrap;
+        word-break: keep-all;
+    }
 }
 
 /* Table card */
