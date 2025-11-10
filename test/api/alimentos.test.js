@@ -70,7 +70,7 @@ describe('Alimentos Endpoints', () => {
       Proteinas: 1.1,
       Carbohidratos: 23,
       Grasas: 0.3,
-      estado: 'activo'
+      estado: 'activo',
     };
 
     it('debería permitir a un admin crear un nuevo alimento', async () => {
@@ -110,7 +110,7 @@ describe('Alimentos Endpoints', () => {
       nombre: 'Alimento Actualizado',
       categoria: 'Frutas',
       Energia: 120,
-      estado: 'activo'
+      estado: 'activo',
     };
 
     it('debería permitir a un admin actualizar un alimento', async () => {
@@ -156,7 +156,7 @@ describe('Alimentos Endpoints', () => {
       // Verificar que el alimento está inactivo
       const [rows] = await testPool.execute(
         'SELECT estado FROM test_alimento WHERE id = ?',
-        [alimentoId]
+        [alimentoId],
       );
       expect(rows[0].estado).toBe('inactivo');
     });

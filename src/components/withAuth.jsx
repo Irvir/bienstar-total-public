@@ -15,7 +15,7 @@ export default function withAuth(WrappedComponent, options = undefined) {
         }
         if (redirectIfLoggedIn && usuarioGuardado) {
           window.location.href = '/perfil';
-          return;
+          
         }
       } else {
         // Modo LEGACY: segundo parámetro booleano => redirectIfLoggedIn
@@ -26,7 +26,7 @@ export default function withAuth(WrappedComponent, options = undefined) {
         }
         if (redirectIfLoggedIn && usuarioGuardado) {
           window.location.href = '/perfil';
-          return;
+          
         }
       }
     }, []);

@@ -5,7 +5,7 @@ export function generateTestToken(user) {
   return jwt.sign({
     id: user.id,
     id_perfil: user.id_perfil || 2, // 2 es perfil de usuario por defecto
-    email: user.email
+    email: user.email,
   }, process.env.JWT_SECRET, { expiresIn: '1h' });
 }
 
@@ -13,7 +13,7 @@ export function generateAdminToken() {
   return jwt.sign({
     id: 999,
     id_perfil: 1, // 1 es perfil de administrador
-    email: 'admin@test.com'
+    email: 'admin@test.com',
   }, process.env.JWT_SECRET, { expiresIn: '1h' });
 }
 
@@ -35,7 +35,7 @@ export async function createTestUser(pool, data = {}) {
     // generamos el hash en tiempo de ejecución para evitar dependencias de hashes precomputados
     password: undefined,
     id_perfil: 2,
-    estado: 'activo'
+    estado: 'activo',
   };
 
   const user = { ...defaultUser, ...data };

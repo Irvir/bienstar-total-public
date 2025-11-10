@@ -11,12 +11,12 @@ export async function searchFoods(req, res, { pool } = {}) {
     const params = [];
 
     if (q) {
-      sql += ` AND nombre LIKE ?`;
+      sql += ' AND nombre LIKE ?';
       params.push(`%${q}%`);
     }
 
     if (categoria) {
-      sql += ` AND categoria = ?`;
+      sql += ' AND categoria = ?';
       params.push(categoria);
     }
 
@@ -86,7 +86,7 @@ export async function createFood(req, res, { pool, upload } = {}) {
 
     const [result] = await pool.query(
       `INSERT INTO ${tableName} (nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas, estado) VALUES (?, ?, ?, ?, ?, ?, 'activo')`,
-      [nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas]
+      [nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas],
     );
 
     res.status(201).json({
@@ -97,7 +97,7 @@ export async function createFood(req, res, { pool, upload } = {}) {
       Proteinas,
       Carbohidratos,
       Grasas,
-      estado: 'activo'
+      estado: 'activo',
     });
   } catch (err) {
     console.error('Error creando alimento:', err);
@@ -116,7 +116,7 @@ export async function updateFood(req, res, { pool } = {}) {
     // Validar que el alimento existe
     const [exists] = await pool.query(
       `SELECT id FROM ${tableName} WHERE id = ? AND estado = 'activo' LIMIT 1`,
-      [id]
+      [id],
     );
     if (process.env.NODE_ENV === 'test') console.log('updateFood: exists rows =', exists.length, exists);
     if (!exists || exists.length === 0) {
@@ -126,7 +126,7 @@ export async function updateFood(req, res, { pool } = {}) {
     // Actualizar alimento
     await pool.query(
       `UPDATE ${tableName} SET nombre = ?, categoria = ?, Energia = ?, Proteinas = ?, Carbohidratos = ?, Grasas = ? WHERE id = ?`,
-      [nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas, id]
+      [nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas, id],
     );
 
     res.json({
@@ -136,7 +136,7 @@ export async function updateFood(req, res, { pool } = {}) {
       Energia,
       Proteinas,
       Carbohidratos,
-      Grasas
+      Grasas,
     });
   } catch (err) {
     console.error('Error actualizando alimento:', err);
@@ -154,7 +154,7 @@ export async function deleteFood(req, res, { pool } = {}) {
     // Validar que el alimento existe y está activo
     const [exists] = await pool.query(
       `SELECT id FROM ${tableName} WHERE id = ? AND estado = 'activo' LIMIT 1`,
-      [id]
+      [id],
     );
     if (!exists || exists.length === 0) {
       return res.status(404).json({ error: 'Alimento no encontrado' });
@@ -163,7 +163,7 @@ export async function deleteFood(req, res, { pool } = {}) {
     // Marcar como inactivo en lugar de eliminar
     await pool.query(
       `UPDATE ${tableName} SET estado = 'inactivo' WHERE id = ?`,
-      [id]
+      [id],
     );
 
     res.json({ message: 'Alimento marcado como inactivo exitosamente' });

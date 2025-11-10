@@ -1,0 +1,207 @@
+
+> bienstartotal@0.0.0 test
+> vitest --config vitest.config.js --watch=false
+
+
+[1m[46m RUN [49m[22m [36mv4.0.8 [39m[90mC:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public[39m
+
+[90mstdout[2m | test/api/auth.test.js
+[22m[39m[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ÔÜÖ´©Å  write to custom object with { processEnv: myObject }
+
+[90mstdout[2m | test/api/alimentos.test.js
+[22m[39m[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ­ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
+
+[90mstdout[2m | test/api/firebase.test.js
+[22m[39m[dotenv@17.2.3] injecting env (19) from .env.test -- tip: ­ƒöÉ prevent committing .env to code: https://dotenvx.com/precommit
+
+[90mstdout[2m | test/api/firebase.test.js
+[22m[39m[dotenv@17.2.3] injecting env (0) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
+Ô£à Firebase Admin inicializado para pruebas (sin override de auth)
+
+[90mstdout[2m | test/api/alimentos.test.js
+[22m[39m[dotenv@17.2.3] injecting env (0) from .env.test -- tip: ÔÜÖ´©Å  override existing env vars with { override: true }
+Ô£à Firebase Admin inicializado para pruebas (sin override de auth)
+
+[90mstdout[2m | test/api/auth.test.js
+[22m[39m[dotenv@17.2.3] injecting env (0) from .env.test -- tip: ­ƒùé´©Å backup and recover secrets: https://dotenvx.com/ops
+Ô£à Firebase Admin inicializado para pruebas (sin override de auth)
+
+[90mstdout[2m | test/api/alimentos.test.js
+[22m[39m[dotenv@17.2.3] injecting env (0) from .env -- tip: ­ƒøá´©Å  run anywhere with `dotenvx run -- yourcommand`
+
+[90mstdout[2m | test/api/firebase.test.js
+[22m[39m[dotenv@17.2.3] injecting env (0) from .env -- tip: ÔÜÖ´©Å  load multiple .env files with { path: ['.env.local', '.env'] }
+
+[90mstdout[2m | test/api/auth.test.js
+[22m[39m[dotenv@17.2.3] injecting env (0) from .env -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
+
+[90mstdout[2m | test/api/alimentos.test.js
+[22m[39mÔ£à Using testPool for tests
+
+[90mstdout[2m | test/api/auth.test.js
+[22m[39mÔ£à Using testPool for tests
+
+[90mstdout[2m | test/api/firebase.test.js
+[22m[39mÔ£à Using testPool for tests
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/login[2m > [22m[2mdeber├¡a iniciar sesi├│n exitosamente con credenciales v├ílidas
+[22m[39mÔ£à DB reachable (connection test OK)
+
+[90mstdout[2m | test/api/firebase.test.js[2m > [22m[2mFirebase Admin Tests[2m > [22m[2mdeber├¡a inicializar Firebase Admin correctamente
+[22m[39mÔ£à DB reachable (connection test OK)
+
+[90mstdout[2m | test/api/alimentos.test.js[2m > [22m[2mAlimentos Endpoints
+[22m[39mÔ£à DB reachable (connection test OK)
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/login[2m > [22m[2mdeber├¡a iniciar sesi├│n exitosamente con credenciales v├ílidas
+[22m[39mcreateTestUser: inserted id = [33m1017[39m
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/login[2m > [22m[2mdeber├¡a iniciar sesi├│n exitosamente con credenciales v├ílidas
+[22m[39mlogin: rows found = [33m0[39m
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/login[2m > [22m[2mdeber├¡a fallar con credenciales inv├ílidas
+[22m[39mcreateTestUser: inserted id = [33m1018[39m
+
+ [32mÔ£ô[39m test/api/firebase.test.js [2m([22m[2m2 tests[22m[2m)[22m[33m 4033[2mms[22m[39m
+     [33m[2mÔ£ô[22m[39m deber├¡a inicializar Firebase Admin correctamente [33m 1932[2mms[22m[39m
+     [33m[2mÔ£ô[22m[39m deber├¡a poder verificar un token mock [33m 2099[2mms[22m[39m
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/login[2m > [22m[2mdeber├¡a fallar con credenciales inv├ílidas
+[22m[39mlogin: rows found = [33m1[39m
+login: stored password hash = $2b$10$sm9m0h4OwavfFeW/ZCILAeTYCQYJTiJCwxWoQrW3NSWPxh8mOaZR.
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/login[2m > [22m[2mdeber├¡a fallar con credenciales inv├ílidas
+[22m[39mlogin: bcrypt compare result = [33mfalse[39m
+
+stderr | test/api/auth.test.js > Auth Endpoints > POST /api/auth/registrar > deber├¡a registrar un nuevo usuario exitosamente
+RECAPTCHA_SECRET no configurado; se omite verificaci├│n de captcha (entorno local)
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/registrar[2m > [22m[2mdeber├¡a registrar un nuevo usuario exitosamente
+[22m[39mregistrar: existing rows for email newuser1762808521890@example.com = [33m0[39m []
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/registrar[2m > [22m[2mdeber├¡a fallar al registrar con un correo existente
+[22m[39mcreateTestUser: inserted id = [33m1020[39m
+
+stderr | test/api/auth.test.js > Auth Endpoints > POST /api/auth/registrar > deber├¡a fallar al registrar con un correo existente
+RECAPTCHA_SECRET no configurado; se omite verificaci├│n de captcha (entorno local)
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/registrar[2m > [22m[2mdeber├¡a fallar al registrar con un correo existente
+[22m[39mregistrar: existing rows for email test.1762808533649@example.com = [33m1[39m [ { id: [33m1020[39m } ]
+
+[90mstdout[2m | test/api/alimentos.test.js[2m > [22m[2mAlimentos Endpoints[2m > [22m[2mPUT /api/alimentos/:id[2m > [22m[2mdeber├¡a permitir a un admin actualizar un alimento
+[22m[39mupdateFood: exists rows = [33m1[39m [ { id: [33m14[39m } ]
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mGET /api/auth/me[2m > [22m[2mdeber├¡a retornar datos del usuario con token v├ílido
+[22m[39mcreateTestUser: inserted id = [33m1021[39m
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mGET /api/auth/me[2m > [22m[2mdeber├¡a fallar con token inv├ílido
+[22m[39mcreateTestUser: inserted id = [33m1022[39m
+
+stderr | test/api/auth.test.js > Auth Endpoints > GET /api/auth/me > deber├¡a fallar con token inv├ílido
+Error de autenticaci├│n: JsonWebTokenError: jwt malformed
+    at Object.module.exports [as verify] (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\jsonwebtoken\verify.js:70:17)
+    at authenticate (C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/src/middleware/auth.js:14:25)
+    at Layer.handleRequest (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:295:15
+    at processParams (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:582:12)
+    at next (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:291:5)
+
+[90mstdout[2m | test/api/auth.test.js[2m > [22m[2mAuth Endpoints[2m > [22m[2mPOST /api/auth/google[2m > [22m[2mdeber├¡a autenticar usuario existente con Google
+[22m[39mcreateTestUser: inserted id = [33m1023[39m
+
+stderr | test/api/auth.test.js > Auth Endpoints > POST /api/auth/google > deber├¡a autenticar usuario existente con Google
+No se pudo registrar sesi├│n: Table 'sql10805793.sesiones' doesn't exist
+
+ [31mÔØ»[39m test/api/alimentos.test.js [2m([22m[2m8 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 22677[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a obtener la lista de alimentos (sin autenticaci├│n) [33m 2402[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a filtrar alimentos por categor├¡a (sin autenticaci├│n) [33m 1728[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a permitir a un admin crear un nuevo alimento [33m 5630[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m no deber├¡a permitir a un usuario normal crear un alimento [33m 2267[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a permitir a un admin actualizar un alimento [33m 2543[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m no deber├¡a permitir a un usuario normal actualizar un alimento [33m 1949[2mms[22m[39m
+[31m       [31m├ù[31m deber├¡a permitir a un admin marcar un alimento como inactivo[39m[33m 3555[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m no deber├¡a permitir a un usuario normal eliminar un alimento [33m 1396[2mms[22m[39m
+stderr | test/api/auth.test.js > Auth Endpoints > POST /api/auth/google > deber├¡a crear nuevo usuario al autenticar con Google por primera vez
+No se pudo registrar sesi├│n: Table 'sql10805793.sesiones' doesn't exist
+
+stderr | test/api/auth.test.js > Auth Endpoints > POST /api/auth/google > deber├¡a fallar con token inv├ílido de Google
+googleLogin error: Error: Invalid token
+    at Object.verifyIdToken (C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/test/api/auth.test.js:153:35)
+    at googleLogin (C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/src/controllers/auth.controller.js:244:45)
+    at C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/src/routes/auth.routes.js:13:51
+    at Layer.handleRequest (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:295:15
+    at processParams (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:582:12)
+
+stderr | test/api/auth.test.js > Auth Endpoints > POST /api/auth/google > deber├¡a fallar si el token est├í expirado
+googleLogin error: Error: Invalid token
+    at Object.verifyIdToken (C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/test/api/auth.test.js:153:35)
+    at googleLogin (C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/src/controllers/auth.controller.js:244:45)
+    at C:/Users/fapen/OneDrive/Documentos/GitHub/bienstar-total-public/src/routes/auth.routes.js:13:51
+    at Layer.handleRequest (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\lib\layer.js:152:17)
+    at C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:295:15
+    at processParams (C:\Users\fapen\OneDrive\Documentos\GitHub\bienstar-total-public\node_modules\router\index.js:582:12)
+
+ [31mÔØ»[39m test/api/auth.test.js [2m([22m[2m11 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 34182[2mms[22m[39m
+[31m       [31m├ù[31m deber├¡a iniciar sesi├│n exitosamente con credenciales v├ílidas[39m[33m 3086[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a fallar con credenciales inv├ílidas [33m 2300[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a registrar un nuevo usuario exitosamente [33m 5852[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a fallar al registrar con un correo existente [33m 2648[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a retornar datos del usuario con token v├ílido [33m 2882[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a fallar con token inv├ílido [33m 3277[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a autenticar usuario existente con Google [33m 2104[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a crear nuevo usuario al autenticar con Google por primera vez [33m 2558[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a fallar con token inv├ílido de Google [33m 2747[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a fallar si el token est├í expirado [33m 3349[2mms[22m[39m
+       [33m[2mÔ£ô[22m[39m deber├¡a fallar si falta el idToken [33m 3242[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 2 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  test/api/alimentos.test.js > Alimentos Endpoints > DELETE /api/alimentos/:id > deber├¡a permitir a un admin marcar un alimento como inactivo
+TypeError: Cannot read properties of undefined (reading 'estado')
+ ÔØ» test/api/alimentos.test.js:161:22
+    159|         [alimentoId],
+    160|       );
+    161|       expect(rows[0].estado).toBe('inactivo');
+       |                      ^
+    162|     });
+    163| 
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/2]ÔÄ»
+
+ FAIL  test/api/auth.test.js > Auth Endpoints > POST /api/auth/login > deber├¡a iniciar sesi├│n exitosamente con credenciales v├ílidas
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ÔØ» test/api/auth.test.js:38:31
+     36|         });
+     37| 
+     38|       expect(response.status).toBe(200);
+       |                               ^
+     39|       expect(response.body).toHaveProperty('token');
+     40|       expect(response.body.user).toHaveProperty('id');
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/2]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m19 passed[39m[22m[90m (21)[39m
+[2m   Start at [22m 18:02:00
+[2m   Duration [22m 35.24s[2m (transform 334ms, setup 779ms, collect 1.54s, tests 60.89s, environment 1ms, prepare 81ms)[22m
+

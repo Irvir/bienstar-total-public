@@ -96,7 +96,7 @@ export async function registrar(req, res, { pool } = {}) {
     }
 
     const tableName = getTableName('usuario');
-    const [rows] = await pool.query(`SELECT id FROM ${tableName} WHERE email = ?`, [email]);
+    const [rows] = await pool.query(`SELECT id FROM ${tableName} WHERE email = ? AND estado = 'activo'`, [email]);
     if (process.env.NODE_ENV === 'test') console.log('registrar: existing rows for email', email, '=', rows.length, rows);
     if (rows.length) return res.status(400).json({ message: 'El correo ya está registrado' });
 
@@ -147,16 +147,16 @@ export async function login(req, res, { pool } = {}) {
     if (!email || !password) return res.status(400).json({ message: 'Falta email o password' });
 
     const tableName = getTableName('usuario');
-  const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE email = ?`, [email]);
-  if (process.env.NODE_ENV === 'test') console.log('login: rows found =', rows.length);
-  if (rows.length === 0) return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
+    const [rows] = await pool.query(`SELECT * FROM ${tableName} WHERE email = ?`, [email]);
+    if (process.env.NODE_ENV === 'test') console.log('login: rows found =', rows.length);
+    if (rows.length === 0) return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
 
     const usuario = rows[0];
     if (usuario.estado === 'inactivo') return res.status(403).json({ message: 'Tu cuenta está inactiva. Contacta al administrador.' });
 
-  if (process.env.NODE_ENV === 'test') console.log('login: stored password hash =', usuario.password);
-  const ok = await bcrypt.compare(password, usuario.password);
-  if (process.env.NODE_ENV === 'test') console.log('login: bcrypt compare result =', ok);
+    if (process.env.NODE_ENV === 'test') console.log('login: stored password hash =', usuario.password);
+    const ok = await bcrypt.compare(password, usuario.password);
+    if (process.env.NODE_ENV === 'test') console.log('login: bcrypt compare result =', ok);
     if (!ok) return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
 
     if (!usuario.id_dieta || usuario.id_dieta === 1) {

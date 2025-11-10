@@ -70,7 +70,7 @@ describe('Auth Endpoints', () => {
         peso: 70,
         edad: 30,
         actividad_fisica: 'moderada',
-        sexo: 'M'
+        sexo: 'M',
       };
 
       const response = await request(server)
@@ -91,7 +91,7 @@ describe('Auth Endpoints', () => {
         peso: 70,
         edad: 30,
         actividad_fisica: 'moderada',
-        sexo: 'M'
+        sexo: 'M',
       };
 
       const response = await request(server)
@@ -151,8 +151,8 @@ describe('Auth Endpoints', () => {
               });
             }
             return Promise.reject(new Error('Invalid token'));
-          }
-        })
+          },
+        }),
       };
       vi.spyOn(admin, 'auth').mockImplementation(() => mockFirebaseAdmin.auth());
     });
@@ -164,7 +164,7 @@ describe('Auth Endpoints', () => {
     it('debería autenticar usuario existente con Google', async () => {
       testUser = await createTestUser(testPool, {
         email: 'test.user@gmail.com',
-        nombre: 'Existing User'
+        nombre: 'Existing User',
       });
 
       const response = await request(server)

@@ -32,8 +32,8 @@ if (!admin.apps.length) {
     // Inicializar Firebase Admin app con credencial mock mínima
     admin.initializeApp({
       credential: {
-        getAccessToken: () => Promise.resolve({ access_token: 'test-token', expires_in: 3600 })
-      }
+        getAccessToken: () => Promise.resolve({ access_token: 'test-token', expires_in: 3600 }),
+      },
     });
 
     // No override de admin.auth aquí: los tests usan vi.spyOn(admin, 'auth') para mockearla

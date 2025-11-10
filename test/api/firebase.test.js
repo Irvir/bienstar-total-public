@@ -25,7 +25,7 @@ describe('Firebase Admin Tests', () => {
     const mockToken = 'test-token';
     const mockDecodedToken = {
       uid: 'test-uid',
-      email: 'test@example.com'
+      email: 'test@example.com',
     };
 
     // Mockear la función verifyIdToken
