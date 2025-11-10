@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from "react";
-import Encabezado from "./Encabezado";
-import Pie from "./Pie";
-import Loader from "./Loader";
-import withAuth from "../components/withAuth";
-import AdminAlimentoCard from "./Admin/AdminAlimentoCard";
-import ModalEditarAlimento from "./Admin/ModalEditarAlimento";
-import "../styles/Admin.css";
-import { API_BASE } from "../components/shared/apiBase";
+import React, { useEffect, useState } from 'react';
+import Encabezado from './Encabezado';
+import Pie from './Pie';
+import Loader from './Loader';
+import withAuth from '../components/withAuth';
+import AdminAlimentoCard from './Admin/AdminAlimentoCard';
+import ModalEditarAlimento from './Admin/ModalEditarAlimento';
+import '../styles/Admin.css';
+import { API_BASE } from '../components/shared/apiBase';
 
 // Importar el sistema de notificaciones
-import "../controllers/notify.js";
+import '../controllers/notify.js';
 
 function AdminAlimentos() {
   const [alimentos, setAlimentos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [activePage, setActivePage] = useState("admin-alimentos");
+  const [activePage, setActivePage] = useState('admin-alimentos');
   const [modalAlimento, setModalAlimento] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchListado();
-    setActivePage("admin-alimentos");
+    setActivePage('admin-alimentos');
   }, []);
 
   async function fetchListado() {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/admin/foods`);
-      const contentType = res.headers.get("content-type");
-      if (!res.ok || !contentType?.includes("application/json")) {
-        throw new Error("Respuesta no válida del servidor");
+      const contentType = res.headers.get('content-type');
+      if (!res.ok || !contentType?.includes('application/json')) {
+        throw new Error('Respuesta no válida del servidor');
       }
       const data = await res.json();
       setAlimentos(data);
     } catch {
-      setError("No se pudo cargar la lista de alimentos.");
+      setError('No se pudo cargar la lista de alimentos.');
     } finally {
       setLoading(false);
     }
@@ -44,12 +44,12 @@ function AdminAlimentos() {
     if (!confirm(`¿Eliminar "${nombre}" de la base de datos?`)) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/admin/foods/${id}`, { method: "DELETE" });
+      const res = await fetch(`${API_BASE}/admin/foods/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error();
       setAlimentos(prev => prev.filter(x => x.id !== id));
-      window.notify?.(`Alimento "${nombre}" eliminado`, { type: "success" });
+      window.notify?.(`Alimento "${nombre}" eliminado`, { type: 'success' });
     } catch {
-      window.notify?.("Error al eliminar alimento", { type: "error" });
+      window.notify?.('Error al eliminar alimento', { type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -64,9 +64,9 @@ function AdminAlimentos() {
     try {
       if (formDataObj.imageFile) {
         const fd = new FormData();
-        fd.append("image", formDataObj.imageFile);
+        fd.append('image', formDataObj.imageFile);
         const uploadRes = await fetch(`${API_BASE}/admin/foods/upload-image`, {
-          method: "POST",
+          method: 'POST',
           body: fd,
         });
         if (!uploadRes.ok) throw new Error();
@@ -75,22 +75,22 @@ function AdminAlimentos() {
         formDataObj.image_url = uploadJson.image_url || uploadJson.url || uploadJson.image || null;
       }
       const putRes = await fetch(`${API_BASE}/admin/foods/${formDataObj.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formDataObj),
       });
 
       if (!putRes.ok) {
-        const txt = await putRes.text().catch(() => "");
+        const txt = await putRes.text().catch(() => '');
         throw new Error(`PUT failed: ${putRes.status} ${txt}`);
       }
 
       // El servidor retorna un mensaje simple; refrescar la lista para reflejar los cambios
       await fetchListado();
-      window.notify?.("Cambios guardados correctamente", { type: "success" });
+      window.notify?.('Cambios guardados correctamente', { type: 'success' });
       setModalAlimento(null);
     } catch {
-      window.notify?.("Error al guardar cambios", { type: "error" });
+      window.notify?.('Error al guardar cambios', { type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -104,7 +104,7 @@ function AdminAlimentos() {
           onNavigate={(dest) => {
             // permite que Encabezado solicite el destino deseado
             setLoading(true);
-            setTimeout(() => (window.location.href = dest || "/"), 300);
+            setTimeout(() => (window.location.href = dest || '/'), 300);
           }}
         />
 
@@ -126,7 +126,7 @@ function AdminAlimentos() {
                     </button>
                     <button
                       className="btn-primary"
-                      onClick={() => (window.location.href = "/admin/crear-alimento")}
+                      onClick={() => (window.location.href = '/admin/crear-alimento')}
                       style={{ marginLeft: 10 }}
                     >
                       Crear alimento

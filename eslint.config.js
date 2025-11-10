@@ -1,44 +1,119 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import globals from 'globals';
+import js from '@eslint/js';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import jestPlugin from 'eslint-plugin-jest';
 
-export default defineConfig([
-  globalIgnores(['dist', '**/*.legacy.js']),
-  // Specific config for the Node server file(s)
+export default [
   {
-    files: ['server.js'],
-    // Node runtime globals (process, __dirname, etc.)
-    env: { node: true },
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.node,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
-    },
-    rules: {},
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '**/.vscode/**',
+      'vite.config.js',
+    ],
   },
+  // Base config for all JavaScript files
   {
     files: ['**/*.{js,jsx}'],
-    extends: [
-      js.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-    ],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: 2023,
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.es2021,
+      },
       parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
     },
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+      jest: jestPlugin,
+    },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      ...js.configs.recommended.rules,
+      ...reactPlugin.configs.recommended.rules,
+      ...reactHooksPlugin.configs.recommended.rules,
+      // React específico
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      // Buenas prácticas generales
+      'no-unused-vars': ['error', {
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
+      }],
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-debugger': 'error',
+      'no-duplicate-imports': 'error',
+      'prefer-const': 'error',
+      
+      // Estilo y formateo
+      'semi': ['error', 'always'],
+      'quotes': ['error', 'single'],
+      'indent': ['error', 2],
+      'comma-dangle': ['error', 'always-multiline'],
+      
+      // Seguridad
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
+      
+      // Mejores prácticas para async/await
+      'no-return-await': 'error',
+      'require-await': 'error',
+      'no-async-promise-executor': 'error',
+      'no-await-in-loop': 'warn',
+      'no-promise-executor-return': 'error',
+      'prefer-promise-reject-errors': 'error',
+      
+      // Prevención de errores comunes
+      'no-var': 'error',
+      'eqeqeq': ['error', 'always'],
+      'no-throw-literal': 'error',
+      'no-useless-catch': 'error',
+      'no-useless-return': 'error',
+      'no-undef': 'error',
     },
   },
-])
+  // Additional config for test files
+  {
+    files: ['test/**/*.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+        ...globals.vitest,
+      },
+    },
+    plugins: {
+      jest: jestPlugin,
+    },
+    rules: {
+      'no-console': 'off',
+      // Reglas específicas para pruebas
+      'jest/valid-expect': 'error',
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-focused-tests': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/prefer-to-have-length': 'warn',
+      'jest/valid-expect-in-promise': 'error',
+    },
+  },
+  // Node.js specific config (for server files)
+  {
+    files: ['server.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+];

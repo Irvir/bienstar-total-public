@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
-import "../styles/Home.css";
-import Pie from "./Pie";
-import Encabezado from "./Encabezado";
-import Loader from "./Loader.jsx";
-import withAuth from "../components/withAuth";
-import "../styles/Pie.css";
+import React, { useEffect, useState } from 'react';
+import '../styles/Home.css';
+import Pie from './Pie';
+import Encabezado from './Encabezado';
+import Loader from './Loader.jsx';
+import withAuth from '../components/withAuth';
+import '../styles/Pie.css';
 
 function Home() {
-  const [userName, setUserName] = useState("Invitado");
-  const [activePage, setActivePage] = useState("home");
+  const [userName, setUserName] = useState('Invitado');
+  const [activePage, setActivePage] = useState('home');
   const [loading, setLoading] = useState(false);
 
   // Obtener usuario y página activa
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("usuario");
+    const usuarioGuardado = localStorage.getItem('usuario');
     if (usuarioGuardado) {
       try {
         const usuario = JSON.parse(usuarioGuardado);
         if (usuario?.name) setUserName(usuario.name);
       } catch (e) {
-        console.warn("Usuario inválido", e);
+        console.warn('Usuario inválido', e);
       }
     }
 
-    const currentPage = window.location.pathname.split("/").pop() || "home";
-    setActivePage(currentPage.replace(".html", "").toLowerCase());
+    const currentPage = window.location.pathname.split('/').pop() || 'home';
+    setActivePage(currentPage.replace('.html', '').toLowerCase());
   }, []);
 
 
@@ -38,7 +38,7 @@ function Home() {
 
   // Notificación + redirección
   const handleClick = (url, mensaje) => {
-    notifyThenRedirect(mensaje, { type: "info", duration: 3000 }, url, setLoading);
+    notifyThenRedirect(mensaje, { type: 'info', duration: 3000 }, url, setLoading);
   };
 
   return (
@@ -54,31 +54,31 @@ function Home() {
             <button
               className="btn1"
               onClick={() =>
-                handleClick("AcercaDeNosotros.html", "Informacion sobre nosotros")
+                handleClick('AcercaDeNosotros.html', 'Informacion sobre nosotros')
               }
             ></button>
             <button
               className="btn2"
               onClick={() =>
-                handleClick("dietas.html", "Revisando tus dietas")
+                handleClick('dietas.html', 'Revisando tus dietas')
               }
             ></button>
             <button
               className="btn3"
               onClick={() =>
-                handleClick("calendario.html", "Abriendo tu calendario")
+                handleClick('calendario.html', 'Abriendo tu calendario')
               }
             ></button>
             <button
               className="btn4"
               onClick={() =>
-                handleClick("alimentos.html", "Explorando alimentos")
+                handleClick('alimentos.html', 'Explorando alimentos')
               }
             ></button>
             <button
               className="btn5"
               onClick={() =>
-                handleClick("tipsParaTuDieta.html", "Consejos para tu dieta")
+                handleClick('tipsParaTuDieta.html', 'Consejos para tu dieta')
               }
             ></button>
           </div>

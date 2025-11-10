@@ -4,7 +4,7 @@
   const STYLE_ID = 'toastStyles';
   const CONTAINER_ID = 'toastContainer';
   function notifyThenRedirect(message, opts, redirectUrl, setLoading) {
-    const { duration = 3000, type = "info" } = opts || {};
+    const { duration = 3000, type = 'info' } = opts || {};
 
     if (window.notify) {
       window.notify(message, { type, duration });

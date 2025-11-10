@@ -1,10 +1,10 @@
-import path from "path";
-import { fileURLToPath } from "url";
-import express from "express";
-import mysql from "mysql2/promise";
-import cors from "cors";
-import bcrypt from "bcrypt";
-import multer from "multer";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import express from 'express';
+import mysql from 'mysql2/promise';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import multer from 'multer';
 import createAdminFoodsRouter from './src/routes/adminFoods.routes.js';
 import createUsersRouter from './src/routes/users.routes.js';
 import createDietsRouter from './src/routes/diets.routes.js';
@@ -24,7 +24,7 @@ const DEFAULT_ALLOWED = [
   'http://localhost:4000',
   'http://127.0.0.1:4000',
   'https://bienstar-total-public.onrender.com', 
-  'https://testing-8i367qyxt-irvirs-projects.vercel.app' 
+  'https://testing-8i367qyxt-irvirs-projects.vercel.app', 
 ];
 const envAllowed = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
@@ -42,7 +42,7 @@ app.use(cors({
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 }));
 
 app.use(express.json());
@@ -52,7 +52,7 @@ app.use(express.json());
 app.options(/.*/, cors({
   origin: (process.env.ALLOWED_ORIGINS || ALLOWED_ORIGINS),
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 }));
 
 app.use(express.json());
@@ -63,7 +63,7 @@ const DB_CONFIG = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: Number(process.env.DB_PORT)
+  port: Number(process.env.DB_PORT),
 };
 
 
@@ -72,7 +72,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Pool de conexiones
-const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
+// En modo test, importar testPool; en otro caso, crear uno local
+let pool;
+if (process.env.NODE_ENV === 'test') {
+  // En tests, importar testPool desde test-setup
+  const { testPool: importedTestPool } = await import('./test/test-setup.js');
+  pool = importedTestPool;
+  console.log('✅ Using testPool for tests');
+} else {
+  pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
+}
 
 // Test de conectividad inicial (no detener el servidor si falla, pero mostrar info)
 (async () => {
@@ -85,26 +94,24 @@ const pool = mysql.createPool({ ...DB_CONFIG, connectionLimit: 10 });
   }
 })();
 // --- Servir imágenes ---
-app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // --- Multer: subida de imágenes ---
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "public/uploads/"),
+  destination: (req, file, cb) => cb(null, 'public/uploads/'),
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
+  },
 });
 const upload = multer({ storage });
 
-app.use('/admin/foods', createAdminFoodsRouter({ pool, upload }));
-app.use('/admin', router);
+import authorizeAdminFactory from './src/middleware/authorizeAdmin.js';
+
+// Rutas principales
+app.use('/api/auth', createAuthRouter({ pool }));
+app.use('/api', createFoodsRouter({ pool }));
 app.use('/', createDietsRouter({ pool }));
-
-app.use('/', createAuthRouter({ pool }));
-
-app.use('/', createFoodsRouter({ pool }));
-
 app.use('/admin/users', createUsersRouter({ pool }));
 app.use('/user', createUsersRouter({ pool }));
 app.use('/admin/user', createUsersRouter({ pool }));
@@ -114,8 +121,8 @@ app.use('/admin/user', createUsersRouter({ pool }));
 
 
 // --- Servir frontend en producción ---
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "dist")));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'dist')));
 
   // Serve SPA entry for admin UI path so it uses the same React app/layout
   app.get('/admin', (req, res) => {
@@ -124,7 +131,7 @@ if (process.env.NODE_ENV === "production") {
 
   // Serve SPA for all other non-API routes
   app.get(/^\/(?!admin).*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
 }
 app.get('/health', async (req, res) => {
@@ -152,9 +159,16 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 
 // --- Iniciar servidor ---
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT} (NODE_ENV=${process.env.NODE_ENV || 'development'})`);
-  if ((process.env.ALLOWED_ORIGINS || '').length > 0) {
-    console.log('ALLOWED_ORIGINS from env:', process.env.ALLOWED_ORIGINS);
-  }
-});
+
+// Solo iniciar el servidor si no estamos en modo de prueba
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT} (NODE_ENV=${process.env.NODE_ENV || 'development'})`);
+    if ((process.env.ALLOWED_ORIGINS || '').length > 0) {
+      console.log('ALLOWED_ORIGINS from env:', process.env.ALLOWED_ORIGINS);
+    }
+  });
+}
+
+// Exportar app y pool para pruebas
+export { app, pool };

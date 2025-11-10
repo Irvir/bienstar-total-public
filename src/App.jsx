@@ -43,7 +43,7 @@ export default function App() {
      ruta === 'crear-dieta' ||
      ruta === 'crear-dieta.html') {
     return (
-        <CrearDieta />
+      <CrearDieta />
     );
   }
 
@@ -76,7 +76,7 @@ export default function App() {
   }
   if (ruta === 'calendario' || ruta === 'calendario.html') {
     return (
-        <Calendario />
+      <Calendario />
     );
   }
 

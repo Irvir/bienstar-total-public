@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import '.././styles/Calendario.css';
-import Encabezado from "./Encabezado";
-import Pie from "./Pie";
-import ContenedorDias from "./Calendario/ContenedorDias";
-import ContenedorInfo from "./Calendario/ContenedorInfoCalendario";
+import Encabezado from './Encabezado';
+import Pie from './Pie';
+import ContenedorDias from './Calendario/ContenedorDias';
+import ContenedorInfo from './Calendario/ContenedorInfoCalendario';
 
 const Calendario = function () {
   const showLoaderAndRedirect = (url) => {
@@ -14,12 +14,12 @@ const Calendario = function () {
     <div>
       <Encabezado activePage="calendario" onNavigate={showLoaderAndRedirect} />
       <div className="Titulo">
-            <h1>CALENDARIO</h1>
+        <h1>CALENDARIO</h1>
       </div>
-        <ContenedorDias />
+      <ContenedorDias />
       
       <Pie />
     </div>
   );
-}
+};
 export default Calendario;

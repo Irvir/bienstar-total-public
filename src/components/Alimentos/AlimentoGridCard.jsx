@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { API_BASE } from "../shared/apiBase";
+import React, { useState } from 'react';
+import { API_BASE } from '../shared/apiBase';
 
 export default function AlimentoGridCard({ item, onClick }) {
   // Preferencia para los distintos nombres de campo que puede tener la imagen,
@@ -10,7 +10,7 @@ export default function AlimentoGridCard({ item, onClick }) {
     const candidate = item.image_url || item.image || item.img || item.url || null;
     if (!candidate) return `${API_BASE}/uploads/placeholder.png`;
     if (/^https?:\/\//i.test(candidate)) return candidate;
-    if (candidate.startsWith("/")) return `${API_BASE}${candidate}`;
+    if (candidate.startsWith('/')) return `${API_BASE}${candidate}`;
     return `${API_BASE}/uploads/${candidate}`;
   };
 

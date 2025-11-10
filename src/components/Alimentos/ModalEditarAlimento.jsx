@@ -12,8 +12,8 @@
  * @version 1.0.0
  */
 
-import React, { useState } from "react";
-import { API_BASE } from "../../shared/apiBase";
+import React, { useState } from 'react';
+import { API_BASE } from '../../shared/apiBase';
 
 /**
  * Componente ModalEditarAlimento
@@ -42,13 +42,13 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
 
     if (file) {
       const fd = new FormData();
-      fd.append("image", file);
+      fd.append('image', file);
       const res = await fetch(`${API_BASE}/admin/foods/upload-image`, {
-        method: "POST",
+        method: 'POST',
         body: fd,
       });
       if (!res.ok) {
-        const txt = await res.text().catch(() => "");
+        const txt = await res.text().catch(() => '');
         throw new Error(`Error subiendo imagen: ${res.status} ${txt}`);
       }
       const json = await res.json();
@@ -61,30 +61,30 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={(e) => e.target.className === "modal-overlay" && onClose()}>
+    <div className="modal-overlay" onClick={(e) => e.target.className === 'modal-overlay' && onClose()}>
       <div className="modal-editar">
-        <h2>{alimento.id ? "Editar" : "Crear"} alimento</h2>
+        <h2>{alimento.id ? 'Editar' : 'Crear'} alimento</h2>
         <form onSubmit={handleSubmit}>
           <label>Nombre</label>
-          <input name="nombre" value={form.nombre ?? ""} onChange={handleChange} required />
+          <input name="nombre" value={form.nombre ?? ''} onChange={handleChange} required />
 
           <div className="grid-dos">
             <label>Proteínas (g)</label>
-            <input name="protein" value={form.protein ?? ""} onChange={handleChange} />
+            <input name="protein" value={form.protein ?? ''} onChange={handleChange} />
             <label>Grasas (g)</label>
-            <input name="total_lipid" value={form.total_lipid ?? ""} onChange={handleChange} />
+            <input name="total_lipid" value={form.total_lipid ?? ''} onChange={handleChange} />
             <label>Carbohidratos (g)</label>
-            <input name="carbohydrate" value={form.carbohydrate ?? ""} onChange={handleChange} />
+            <input name="carbohydrate" value={form.carbohydrate ?? ''} onChange={handleChange} />
             <label>Azúcares (g)</label>
-            <input name="total_sugars" value={form.total_sugars ?? ""} onChange={handleChange} />
+            <input name="total_sugars" value={form.total_sugars ?? ''} onChange={handleChange} />
             <label>Calcio (mg)</label>
-            <input name="calcium" value={form.calcium ?? ""} onChange={handleChange} />
+            <input name="calcium" value={form.calcium ?? ''} onChange={handleChange} />
             <label>Hierro (mg)</label>
-            <input name="iron" value={form.iron ?? ""} onChange={handleChange} />
+            <input name="iron" value={form.iron ?? ''} onChange={handleChange} />
             <label>Sodio (mg)</label>
-            <input name="sodium" value={form.sodium ?? ""} onChange={handleChange} />
+            <input name="sodium" value={form.sodium ?? ''} onChange={handleChange} />
             <label>Colesterol (mg)</label>
-            <input name="cholesterol" value={form.cholesterol ?? ""} onChange={handleChange} />
+            <input name="cholesterol" value={form.cholesterol ?? ''} onChange={handleChange} />
           </div>
 
           <label>Imagen</label>

@@ -10,7 +10,7 @@
  * @version 1.0.0
  */
 
-import React from "react";
+import React from 'react';
 import '../../styles/Alimentos.css';
 
 /**
@@ -20,12 +20,12 @@ import '../../styles/Alimentos.css';
  * @returns {JSX.Element} Contenedor de filtro con input de búsqueda
  */
 export default function ContenedorFiltro() {
-    return (
-        <div id="contenedorFiltro">
-            <div id="lupe"></div>
-            <div style={{ flex: 1 }}>
-                <input type="text" id="filtro" placeholder="Buscar alimento..." />
-            </div>
-        </div>
-    );
+  return (
+    <div id="contenedorFiltro">
+      <div id="lupe"></div>
+      <div style={{ flex: 1 }}>
+        <input type="text" id="filtro" placeholder="Buscar alimento..." />
+      </div>
+    </div>
+  );
 }

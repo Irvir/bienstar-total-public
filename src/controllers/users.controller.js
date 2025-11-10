@@ -3,7 +3,7 @@ function validarUsuario({ email, password, altura, peso, edad } = {}, { partial 
   const errores = [];
 
   const ageNum = edad !== undefined && edad !== null && String(edad) !== '' ? Number(edad) : undefined;
-  let weightNum = peso !== undefined && peso !== null && String(peso) !== '' ? Number(peso) : undefined;
+  const weightNum = peso !== undefined && peso !== null && String(peso) !== '' ? Number(peso) : undefined;
   let heightNum = altura !== undefined && altura !== null && String(altura) !== '' ? Number(altura) : undefined;
 
   // si altura vino en metros -> cm
@@ -91,7 +91,7 @@ export async function patchUserFields(req, res, { pool } = {}) {
 export async function deactivateUser(req, res, { pool } = {}) {
   try {
     const { id } = req.params;
-    await pool.query("UPDATE usuario SET estado = 'inactivo' WHERE id = ?", [id]);
+    await pool.query('UPDATE usuario SET estado = \'inactivo\' WHERE id = ?', [id]);
     res.json({ message: 'Usuario inactivado correctamente' });
   } catch (err) {
     console.error('Error al inactivar usuario:', err);
@@ -102,7 +102,7 @@ export async function deactivateUser(req, res, { pool } = {}) {
 export async function activateUser(req, res, { pool } = {}) {
   try {
     const { id } = req.params;
-    const [result] = await pool.query("UPDATE usuario SET estado = 'activo' WHERE id = ?", [id]);
+    const [result] = await pool.query('UPDATE usuario SET estado = \'activo\' WHERE id = ?', [id]);
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
     res.json({ message: 'Usuario activado correctamente' });
   } catch (err) {
@@ -114,7 +114,7 @@ export async function activateUser(req, res, { pool } = {}) {
 export async function deleteUser(req, res, { pool } = {}) {
   try {
     const { id } = req.params;
-    const [result] = await pool.query("UPDATE usuario SET estado = 'inactivo' WHERE id = ?", [id]);
+    const [result] = await pool.query('UPDATE usuario SET estado = \'inactivo\' WHERE id = ?', [id]);
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
     res.json({ message: 'Usuario marcado como inactivo correctamente' });
   } catch (err) {
@@ -150,9 +150,9 @@ export async function patchUserTransactional(req, res, { pool } = {}) {
       estado: estado ?? current.estado,
     };
 
-  // Validar campos proporcionados (validación parcial)
-  const errores = validarUsuario({ edad: updated.edad, peso: updated.peso, altura: updated.altura, email: updated.email, password: updated.password }, { partial: true });
-  if (errores.length > 0) return res.status(400).json({ errors: errores });
+    // Validar campos proporcionados (validación parcial)
+    const errores = validarUsuario({ edad: updated.edad, peso: updated.peso, altura: updated.altura, email: updated.email, password: updated.password }, { partial: true });
+    if (errores.length > 0) return res.status(400).json({ errors: errores });
 
     await connection.query(
       `UPDATE usuario
@@ -170,7 +170,7 @@ export async function patchUserTransactional(req, res, { pool } = {}) {
         updated.id_dieta,
         updated.estado,
         id,
-      ]
+      ],
     );
 
     if (Array.isArray(alergias)) {

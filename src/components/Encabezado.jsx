@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useRef } from "react";
-import "../styles/Encabezado.css";
+import React, { useEffect, useState, useRef } from 'react';
+import '../styles/Encabezado.css';
 
 
 export default function Encabezado({ activePage, onNavigate }) {
-  const [userName, setUserName] = useState("Invitado");
+  const [userName, setUserName] = useState('Invitado');
   const [isLogged, setIsLogged] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const googleBtnRef = useRef(null);
 
   useEffect(() => {
     const refreshUserFromStorage = () => {
-      const raw = localStorage.getItem("usuario") || localStorage.getItem("Usuario");
+      const raw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
       if (!raw) {
-        setUserName("Invitado");
+        setUserName('Invitado');
         setIsLogged(false);
         return;
       }
@@ -20,23 +20,23 @@ export default function Encabezado({ activePage, onNavigate }) {
         const usuario = JSON.parse(raw);
         // Si el usuario es doctor y hay un paciente seleccionado (dietTarget), mostrar su nombre/email
         try {
-          const targetRaw = localStorage.getItem("dietTarget");
+          const targetRaw = localStorage.getItem('dietTarget');
           const target = targetRaw ? JSON.parse(targetRaw) : null;
           if (usuario?.id_perfil === 3 && (target?.nombre || target?.email)) {
             const display = target.nombre || target.email;
             setUserName(display);
           } else {
-            const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
+            const name = usuario?.nombre || usuario?.name || usuario?.email || 'Invitado';
             setUserName(name);
           }
         } catch {
-          const name = usuario?.nombre || usuario?.name || usuario?.email || "Invitado";
+          const name = usuario?.nombre || usuario?.name || usuario?.email || 'Invitado';
           setUserName(name);
         }
         setIsLogged(true);
       } catch (e) {
-        console.warn("Usuario inválido en localStorage", e);
-        setUserName("Invitado");
+        console.warn('Usuario inválido en localStorage', e);
+        setUserName('Invitado');
         setIsLogged(false);
       }
     };
@@ -88,7 +88,7 @@ export default function Encabezado({ activePage, onNavigate }) {
             } catch (e) {
               console.error('Error parseando credential token', e);
             }
-          }
+          },
         });
 
         if (!isLogged && googleBtnRef.current) {
@@ -110,28 +110,28 @@ export default function Encabezado({ activePage, onNavigate }) {
     } catch { /* noop */ }
   }, []);
   useEffect(() => {
-    const bell = document.getElementById("btnNotification");
+    const bell = document.getElementById('btnNotification');
     if (bell) {
       const triggerWiggle = () => {
-        bell.classList.remove("bell-hint");
+        bell.classList.remove('bell-hint');
         void bell.offsetWidth; 
-        bell.classList.add("bell-hint");
+        bell.classList.add('bell-hint');
         setTimeout(() => {
-          bell.classList.remove("bell-hint");
+          bell.classList.remove('bell-hint');
         }, 800); // duración de la animación
       };
-      bell.addEventListener("click", triggerWiggle);
-      return () => bell.removeEventListener("click", triggerWiggle);
+      bell.addEventListener('click', triggerWiggle);
+      return () => bell.removeEventListener('click', triggerWiggle);
     }
   }, []);
 
 
   function handlePerfilClick() {
-    const usuarioGuardado = localStorage.getItem("usuario");
+    const usuarioGuardado = localStorage.getItem('usuario');
     if (usuarioGuardado) {
-      onNavigate("/perfil");
+      onNavigate('/perfil');
     } else {
-      onNavigate("/login");
+      onNavigate('/login');
     }
     setMenuOpen(false);
   }
@@ -139,10 +139,10 @@ export default function Encabezado({ activePage, onNavigate }) {
   function _handleSignOut(e) {
     e.stopPropagation();
     localStorage.removeItem('usuario');
-  try { localStorage.removeItem('dietTarget'); } catch { void 0; }
+    try { localStorage.removeItem('dietTarget'); } catch { void 0; }
     setUserName('Invitado');
     setIsLogged(false);
-  try { if (window.google && window.google.accounts && window.google.accounts.id) window.google.accounts.id.disableAutoSelect(); } catch { void 0; }
+    try { if (window.google && window.google.accounts && window.google.accounts.id) window.google.accounts.id.disableAutoSelect(); } catch { void 0; }
     onNavigate('/');
   }
 
@@ -157,7 +157,7 @@ export default function Encabezado({ activePage, onNavigate }) {
 
   return (
     <div id="contenedorEncabezado">
-      <div id="encabezado" data-menu-open={menuOpen ? "true" : "false"}>
+      <div id="encabezado" data-menu-open={menuOpen ? 'true' : 'false'}>
         <div className="header-inner">
           <div className="header-top-row">
             <div className="logo">
@@ -192,7 +192,7 @@ export default function Encabezado({ activePage, onNavigate }) {
           {/* Mobile menu toggle */}
           <button
             className="menu-toggle"
-            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={menuOpen}
             aria-controls="nav-menu"
             onClick={() => setMenuOpen(v => !v)}
@@ -204,20 +204,20 @@ export default function Encabezado({ activePage, onNavigate }) {
 
           <div className="menúBotones" id="nav-menu">
             <button
-              className={activePage === "home" ? "btnMenuSelec" : "btnMenu"}
-              onClick={() => { onNavigate("/home"); setMenuOpen(false); }}
+              className={activePage === 'home' ? 'btnMenuSelec' : 'btnMenu'}
+              onClick={() => { onNavigate('/home'); setMenuOpen(false); }}
             >
               INICIO
             </button>
             <button
-              className={activePage === "alimentos" ? "btnMenuSelec" : "btnMenu"}
-              onClick={() => { onNavigate("/alimentos"); setMenuOpen(false); }}
+              className={activePage === 'alimentos' ? 'btnMenuSelec' : 'btnMenu'}
+              onClick={() => { onNavigate('/alimentos'); setMenuOpen(false); }}
             >
               ALIMENTOS
             </button>
             <button
-              className={activePage === "dietas" ? "btnMenuSelec" : "btnMenu"}
-              onClick={() => { onNavigate("/dietas"); setMenuOpen(false); }}
+              className={activePage === 'dietas' ? 'btnMenuSelec' : 'btnMenu'}
+              onClick={() => { onNavigate('/dietas'); setMenuOpen(false); }}
             >
               DIETA
             </button>

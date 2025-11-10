@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import "../../styles/Perfil.css";
+import React, { useState, useEffect } from 'react';
+import '../../styles/Perfil.css';
 
 export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
-    nombre: "",
-    edad: "",
-    peso: "",
-    altura: "",
-    actividad_fisica: "",
-    sexo: "",
-    email: "",
-    alergias: "",
+    nombre: '',
+    edad: '',
+    peso: '',
+    altura: '',
+    actividad_fisica: '',
+    sexo: '',
+    email: '',
+    alergias: '',
   });
 
   // Sincroniza el formulario cuando cambia el usuario
   useEffect(() => {
     if (usuario) {
       setForm({
-        nombre: usuario.nombre || "",
-        edad: usuario.edad ?? "",
-        peso: usuario.peso ?? "",
-        altura: usuario.altura ?? "",
-        actividad_fisica: usuario.actividad_fisica || "",
-        sexo: usuario.sexo || "",
-        email: usuario.email || "",
-        alergias: usuario.alergias || "",
+        nombre: usuario.nombre || '',
+        edad: usuario.edad ?? '',
+        peso: usuario.peso ?? '',
+        altura: usuario.altura ?? '',
+        actividad_fisica: usuario.actividad_fisica || '',
+        sexo: usuario.sexo || '',
+        email: usuario.email || '',
+        alergias: usuario.alergias || '',
       });
     }
   }, [usuario]);
@@ -34,14 +34,14 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
     // Inicializar el formulario con los datos actuales del usuario
     if (usuario) {
       setForm({
-        nombre: usuario.nombre || "",
-        edad: usuario.edad ?? "",
-        peso: usuario.peso ?? "",
-        altura: usuario.altura ?? "",
-        actividad_fisica: usuario.actividad_fisica || "",
-        sexo: usuario.sexo || "",
-        email: usuario.email || "",
-        alergias: usuario.alergias || "",
+        nombre: usuario.nombre || '',
+        edad: usuario.edad ?? '',
+        peso: usuario.peso ?? '',
+        altura: usuario.altura ?? '',
+        actividad_fisica: usuario.actividad_fisica || '',
+        sexo: usuario.sexo || '',
+        email: usuario.email || '',
+        alergias: usuario.alergias || '',
       });
     }
     setEditMode(true);
@@ -51,14 +51,14 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
     // Restaurar valores del formulario desde el usuario y salir del modo edición
     if (usuario) {
       setForm({
-        nombre: usuario.nombre || "",
-        edad: usuario.edad ?? "",
-        peso: usuario.peso ?? "",
-        altura: usuario.altura ?? "",
-        actividad_fisica: usuario.actividad_fisica || "",
-        sexo: usuario.sexo || "",
-        email: usuario.email || "",
-        alergias: usuario.alergias || "",
+        nombre: usuario.nombre || '',
+        edad: usuario.edad ?? '',
+        peso: usuario.peso ?? '',
+        altura: usuario.altura ?? '',
+        actividad_fisica: usuario.actividad_fisica || '',
+        sexo: usuario.sexo || '',
+        email: usuario.email || '',
+        alergias: usuario.alergias || '',
       });
     }
     setEditMode(false);
@@ -70,18 +70,18 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
   };
 
   const validateForm = () => {
-    if (!form.nombre.trim()) return { ok: false, message: "El nombre no puede estar vacío" };
+    if (!form.nombre.trim()) return { ok: false, message: 'El nombre no puede estar vacío' };
 
-    const edad = form.edad === "" ? null : Number(form.edad);
-    if (edad !== null && (edad < 16 || edad > 99)) return { ok: false, message: "Edad entre 16 y 99" };
+    const edad = form.edad === '' ? null : Number(form.edad);
+    if (edad !== null && (edad < 16 || edad > 99)) return { ok: false, message: 'Edad entre 16 y 99' };
 
-    const peso = form.peso === "" ? null : Number(form.peso);
-    if (peso !== null && (peso < 31 || peso > 169)) return { ok: false, message: "Peso entre 31 y 169 kg" };
+    const peso = form.peso === '' ? null : Number(form.peso);
+    if (peso !== null && (peso < 31 || peso > 169)) return { ok: false, message: 'Peso entre 31 y 169 kg' };
 
-    let altura = form.altura === "" ? null : Number(form.altura);
+    let altura = form.altura === '' ? null : Number(form.altura);
     if (altura !== null) {
       if (altura < 10) altura = altura * 100; // metros a cm
-      if (altura < 81 || altura > 249) return { ok: false, message: "Altura entre 81 y 249 cm" };
+      if (altura < 81 || altura > 249) return { ok: false, message: 'Altura entre 81 y 249 cm' };
     }
 
     return { ok: true };
@@ -90,15 +90,15 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
   const saveEdit = async () => {
     const v = validateForm();
     if (!v.ok) {
-      window.notify?.(v.message, { type: "error" });
+      window.notify?.(v.message, { type: 'error' });
       return;
     }
 
     const payload = {
       nombre: form.nombre.trim(),
-      edad: form.edad === "" ? null : Number(form.edad),
-      peso: form.peso === "" ? null : Number(form.peso),
-      altura: form.altura === "" ? null : Number(form.altura < 10 ? form.altura * 100 : form.altura),
+      edad: form.edad === '' ? null : Number(form.edad),
+      peso: form.peso === '' ? null : Number(form.peso),
+      altura: form.altura === '' ? null : Number(form.altura < 10 ? form.altura * 100 : form.altura),
       actividad_fisica: form.actividad_fisica,
       sexo: form.sexo,
       alergias: form.alergias,
@@ -107,8 +107,8 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
     try {
       if (usuario?.id) {
         const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
 
@@ -118,35 +118,35 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
           onActualizarUsuario?.(updatedUser);
 
           setForm({
-            nombre: updatedUser.nombre || "",
-            edad: updatedUser.edad ?? "",
-            peso: updatedUser.peso ?? "",
-            altura: updatedUser.altura ?? "",
-            actividad_fisica: updatedUser.actividad_fisica || "",
-            sexo: updatedUser.sexo || "",
-            email: updatedUser.email || "",
-            alergias: updatedUser.alergias || "",
+            nombre: updatedUser.nombre || '',
+            edad: updatedUser.edad ?? '',
+            peso: updatedUser.peso ?? '',
+            altura: updatedUser.altura ?? '',
+            actividad_fisica: updatedUser.actividad_fisica || '',
+            sexo: updatedUser.sexo || '',
+            email: updatedUser.email || '',
+            alergias: updatedUser.alergias || '',
           });
 
-          window.notify?.("Perfil actualizado", { type: "success" });
+          window.notify?.('Perfil actualizado', { type: 'success' });
           setEditMode(false);
         } else {
           const err = await res.json().catch(() => ({}));
-          window.notify?.(err.message || "No se pudo actualizar", { type: "error" });
+          window.notify?.(err.message || 'No se pudo actualizar', { type: 'error' });
         }
       }
     } catch (err) {
       console.error(err);
-      window.notify?.("Error de conexión con el servidor", { type: "error" });
+      window.notify?.('Error de conexión con el servidor', { type: 'error' });
     }
   };
 
   const etiquetas = {
-    nombre: "Nombre:",
-    edad: "Edad:",
-    peso: "Peso:",
-    altura: "Altura:",
-    email: "Correo:"
+    nombre: 'Nombre:',
+    edad: 'Edad:',
+    peso: 'Peso:',
+    altura: 'Altura:',
+    email: 'Correo:',
   };
 
   return (
@@ -172,17 +172,17 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
             <div className="info">{etiquetas[campo]}</div>
             {editMode ? (
               <input
-                type={["edad", "peso", "altura"].includes(campo) ? "number" : (campo === 'email' ? 'email' : 'text')}
+                type={['edad', 'peso', 'altura'].includes(campo) ? 'number' : (campo === 'email' ? 'email' : 'text')}
                 name={campo}
                 value={form[campo]}
                 onChange={handleChange}
-                min={campo === "edad" ? 16 : undefined}
-                max={campo === "edad" ? 99 : undefined}
-                step={["peso", "altura"].includes(campo) ? 0.1 : undefined}
+                min={campo === 'edad' ? 16 : undefined}
+                max={campo === 'edad' ? 99 : undefined}
+                step={['peso', 'altura'].includes(campo) ? 0.1 : undefined}
                 readOnly={campo === 'email'}
               />
             ) : (
-              <span>{usuario?.[campo] || "-"}</span>
+              <span>{usuario?.[campo] || '-'}</span>
             )}
           </div>
         ))}
@@ -198,7 +198,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
               <option value="otro">Otro</option>
             </select>
           ) : (
-            <span>{usuario?.sexo || "-"}</span>
+            <span>{usuario?.sexo || '-'}</span>
           )}
         </div>
 
@@ -214,7 +214,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
               <option value="intenso">Intenso</option>
             </select>
           ) : (
-            <span>{usuario?.actividad_fisica || "-"}</span>
+            <span>{usuario?.actividad_fisica || '-'}</span>
           )}
         </div>
 
@@ -230,7 +230,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
               placeholder="Escriba sus alergias"
             />
           ) : (
-            <span>{usuario?.alergias || "-"}</span>
+            <span>{usuario?.alergias || '-'}</span>
           )}
         </div>
       </div>
@@ -253,7 +253,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
                 },
                 () => {
                   // cancelado
-                }
+                },
               );
             } else {
               // fallback: si no existe notifyConfirm, ejecutar directamente (equivalente al comportamiento previo)

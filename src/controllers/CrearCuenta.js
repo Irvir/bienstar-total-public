@@ -84,16 +84,16 @@ function validateAll() {
 }
 
 // ===== Submit handler =====
-document.getElementById("CrearCuentaForm").addEventListener("submit", async function (event) {
+document.getElementById('CrearCuentaForm').addEventListener('submit', async function (event) {
   event.preventDefault();
 
   const data = {
-    name: document.getElementById("name").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    password: document.getElementById("password").value.trim(),
-    weight: parseFloat(document.getElementById("weight").value.trim()),
-    height: parseFloat(document.getElementById("height").value.trim()),
-    age: parseInt(document.getElementById("age").value.trim())
+    name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    password: document.getElementById('password').value.trim(),
+    weight: parseFloat(document.getElementById('weight').value.trim()),
+    height: parseFloat(document.getElementById('height').value.trim()),
+    age: parseInt(document.getElementById('age').value.trim()),
   };
 
   const isValid = validateAll();
@@ -101,11 +101,11 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
 
   try {
     // Verificar si el correo ya existe
-  const API_BASE = (window.API_BASE || 'http://localhost:3001');
-  const checkEmail = await fetch(`${API_BASE}/checkEmail`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: data.email })
+    const API_BASE = (window.API_BASE || 'http://localhost:3001');
+    const checkEmail = await fetch(`${API_BASE}/checkEmail`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: data.email }),
     });
 
     const checkResult = await checkEmail.json();
@@ -116,22 +116,22 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
     }
 
     // Registrar cuenta
-  const response = await fetch(`${API_BASE}/registrar`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+    const response = await fetch(`${API_BASE}/registrar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
 
     const result = await response.json();
 
     if (response.ok) {
-      console.log("✅ Registro exitoso:", result);
+      console.log('✅ Registro exitoso:', result);
     
       if (window.notify) {
-        console.log(result.message)
+        console.log(result.message);
         window.notify('Registro exitoso', {
           type: 'success',
-          duration: 6000
+          duration: 6000,
         });
       } else {
         alert(result.message || 'Registro exitoso');
@@ -140,10 +140,10 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
       // Esperar a que el mensaje se muestre antes de continuar
       setTimeout(async () => {
         // Auto-login
-  const loginRes = await fetch(`${API_BASE}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: data.email, password: data.password })
+        const loginRes = await fetch(`${API_BASE}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: data.email, password: data.password }),
         });
     
         const loginResult = await loginRes.json();
@@ -165,43 +165,43 @@ document.getElementById("CrearCuentaForm").addEventListener("submit", async func
           };
 
           // Limpiar cualquier google_temp_user pendiente (si existe)
-          try { localStorage.removeItem("google_temp_user"); } catch { /* noop */ }
-          localStorage.setItem("usuario", JSON.stringify(usuarioToStore));
-          window.location.href = "index.html";
+          try { localStorage.removeItem('google_temp_user'); } catch { /* noop */ }
+          localStorage.setItem('usuario', JSON.stringify(usuarioToStore));
+          window.location.href = 'index.html';
         } else {
-          window.location.href = "login.html";
+          window.location.href = 'login.html';
         }
       }, 6000); // ⏳ Espera 6 segundos antes de redirigir
     }
-     else {
-      console.error("🚫 Error en registro:", result);
+    else {
+      console.error('🚫 Error en registro:', result);
 
       if (result.errores && Array.isArray(result.errores)) {
         if (window.notify) {
-          window.notify("❌ No se pudo registrar:\n- " + result.errores.join("\n- "), {
+          window.notify('❌ No se pudo registrar:\n- ' + result.errores.join('\n- '), {
             type: 'error',
-            duration: 6000
+            duration: 6000,
           });
         }
       } else {
         if (window.notify) {
-          window.notify("❌ Error: " + (result.message || "No se pudo registrar"), {
+          window.notify('❌ Error: ' + (result.message || 'No se pudo registrar'), {
             type: 'error',
-            duration: 6000
+            duration: 6000,
           });
         }
       }
     }
 
   } catch (error) {
-    console.error("💥 Error en la conexión:", error);
+    console.error('💥 Error en la conexión:', error);
     if (window.notify) {
-      window.notify("Error en la conexión con el servidor", {
+      window.notify('Error en la conexión con el servidor', {
         type: 'error',
-        duration: 6000
+        duration: 6000,
       });
     } else {
-      alert("Error en la conexión con el servidor");
+      alert('Error en la conexión con el servidor');
     }
   }
 });

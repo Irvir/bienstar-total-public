@@ -1,52 +1,52 @@
-import React, { useEffect, useState } from "react";
-import "../styles/CrearCuenta.css";
-import Encabezado from "./Encabezado";
-import { API_BASE } from "./shared/apiBase";
-import Pie from "./Pie";
-import "../styles/Base.css";
-import "../styles/Pie.css";
-import Loader from "./Loader.jsx";
-import withAuth from "../components/withAuth";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import React, { useEffect, useState } from 'react';
+import '../styles/CrearCuenta.css';
+import Encabezado from './Encabezado';
+import { API_BASE } from './shared/apiBase';
+import Pie from './Pie';
+import '../styles/Base.css';
+import '../styles/Pie.css';
+import Loader from './Loader.jsx';
+import withAuth from '../components/withAuth';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 function CrearCuentaInner() {
-  const [activePage, setActivePage] = useState("crearcuenta");
+  const [activePage, setActivePage] = useState('crearcuenta');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    password: "",
-    edad: "",
-    peso: "",
-    altura: "",
-    nivelActividad: "",
+    nombre: '',
+    email: '',
+    password: '',
+    edad: '',
+    peso: '',
+    altura: '',
+    nivelActividad: '',
     alergias: [],
-    otrasAlergias: "",
-    sexo: "",
+    otrasAlergias: '',
+    sexo: '',
   });
   const [emailReadOnly, setEmailReadOnly] = useState(false);
 
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   useEffect(() => {
-    const currentPage = window.location.pathname.split("/").pop() || "crearcuenta";
+    const currentPage = window.location.pathname.split('/').pop() || 'crearcuenta';
     setActivePage(currentPage);
     // Si venimos de un inicio con Google (Login.jsx) guardado en localStorage, prefijar el email
     try {
-      const tmp = localStorage.getItem("google_temp_user");
+      const tmp = localStorage.getItem('google_temp_user');
       if (tmp) {
         const g = JSON.parse(tmp);
         if (g && g.email) {
           setFormData((p) => ({ ...p, email: String(g.email) }));
           setEmailReadOnly(true);
-            // Ya usamos el valor temporal de Google: eliminar para que no persista en futuras visitas
-            try { localStorage.removeItem("google_temp_user"); } catch { /* noop */ }
+          // Ya usamos el valor temporal de Google: eliminar para que no persista en futuras visitas
+          try { localStorage.removeItem('google_temp_user'); } catch { /* noop */ }
         }
       }
     } catch (e) {
       // no bloquear si falla el parse
-      console.warn("No se pudo leer google_temp_user:", e);
+      console.warn('No se pudo leer google_temp_user:', e);
     }
   }, []);
 
@@ -56,47 +56,47 @@ function CrearCuentaInner() {
   };
 
   const validateField = (field, rawValue) => {
-    let value = rawValue;
+    const value = rawValue;
     const next = { ...errors };
     const setErr = (k, msg) => (msg ? (next[k] = msg) : delete next[k]);
     switch (field) {
-      case "nombre":
-        setErr("nombre", !value ? "El nombre es obligatorio" : value.length < 2 ? "Mínimo 2 caracteres" : value.length > 50 ? "Máximo 50 caracteres" : "");
-        break;
-      case "email": {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        setErr("email", !value ? "El correo es obligatorio" : !re.test(value) ? "Correo inválido" : "");
-        break;
-      }
-      case "password": {
-        const pr = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
-        setErr("password", !value ? "La contraseña es obligatoria" : !pr.test(value) ? "Mínimo 6 caracteres, con letras y números" : "");
-        break;
-      }
-      case "edad": {
-        const n = Number(value);
-        setErr("edad", !value ? "La edad es obligatoria" : n <= 15 || n >= 100 ? "Debe ser >15 y <100" : "");
-        break;
-      }
-      case "peso": {
-        const n = Number(value);
-        setErr("peso", !value ? "El peso es obligatorio" : n <= 30 || n >= 170 ? "Debe ser >30kg y <170kg" : "");
-        break;
-      }
-      case "altura": {
-        let n = Number(value);
-        if (n && n < 10) n *= 100;
-        setErr("altura", !value ? "La altura es obligatoria" : n <= 80 || n >= 250 ? "Debe ser >80cm y <250cm" : "");
-        break;
-      }
-      case "nivelActividad":
-        setErr("nivelActividad", !value ? "Seleccione su actividad" : "");
-        break;
-      case "sexo":
-        setErr("sexo", !value ? "Seleccione su sexo" : "");
-        break;
-      default:
-        break;
+    case 'nombre':
+      setErr('nombre', !value ? 'El nombre es obligatorio' : value.length < 2 ? 'Mínimo 2 caracteres' : value.length > 50 ? 'Máximo 50 caracteres' : '');
+      break;
+    case 'email': {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setErr('email', !value ? 'El correo es obligatorio' : !re.test(value) ? 'Correo inválido' : '');
+      break;
+    }
+    case 'password': {
+      const pr = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+      setErr('password', !value ? 'La contraseña es obligatoria' : !pr.test(value) ? 'Mínimo 6 caracteres, con letras y números' : '');
+      break;
+    }
+    case 'edad': {
+      const n = Number(value);
+      setErr('edad', !value ? 'La edad es obligatoria' : n <= 15 || n >= 100 ? 'Debe ser >15 y <100' : '');
+      break;
+    }
+    case 'peso': {
+      const n = Number(value);
+      setErr('peso', !value ? 'El peso es obligatorio' : n <= 30 || n >= 170 ? 'Debe ser >30kg y <170kg' : '');
+      break;
+    }
+    case 'altura': {
+      let n = Number(value);
+      if (n && n < 10) n *= 100;
+      setErr('altura', !value ? 'La altura es obligatoria' : n <= 80 || n >= 250 ? 'Debe ser >80cm y <250cm' : '');
+      break;
+    }
+    case 'nivelActividad':
+      setErr('nivelActividad', !value ? 'Seleccione su actividad' : '');
+      break;
+    case 'sexo':
+      setErr('sexo', !value ? 'Seleccione su sexo' : '');
+      break;
+    default:
+      break;
     }
     setErrors(next);
   };
@@ -110,17 +110,17 @@ function CrearCuentaInner() {
   const handleBlur = async (e) => {
     const { id, value } = e.target;
     validateField(id, value);
-    if (id === "email" && !errors.email && value) {
+    if (id === 'email' && !errors.email && value) {
       try {
         const res = await fetch(`${API_BASE}/checkEmail`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: value }),
         });
         const data = await res.json();
-        if (data.exists) setErrors((prev) => ({ ...prev, email: "Este correo ya está registrado" }));
+        if (data.exists) setErrors((prev) => ({ ...prev, email: 'Este correo ya está registrado' }));
       } catch (err) {
-        console.warn("No se pudo verificar email", err);
+        console.warn('No se pudo verificar email', err);
       }
     }
   };
@@ -130,63 +130,63 @@ function CrearCuentaInner() {
     setLoading(true);
 
     if (!executeRecaptcha) {
-      window.notify?.("reCAPTCHA no cargó correctamente", { type: "error" });
+      window.notify?.('reCAPTCHA no cargó correctamente', { type: 'error' });
       setLoading(false);
       return;
     }
 
     try {
-      const recaptchaToken = await executeRecaptcha("crear_cuenta");
+      const recaptchaToken = await executeRecaptcha('crear_cuenta');
 
       // Validación final antes de enviar
       if (Object.keys(errors).length > 0) {
-        window.notify?.("Corrija los errores del formulario", { type: "error" });
+        window.notify?.('Corrija los errores del formulario', { type: 'error' });
         setLoading(false);
         return;
       }
 
       const res = await fetch(`${API_BASE}/registrar`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, recaptchaToken }),
       });
 
       const data = await res.json();
       if (!res.ok) {
-        if (data.errores?.length) data.errores.forEach((err) => window.notify(err, { type: "error" }));
-        else window.notify(data.message || "Error al registrar", { type: "error" });
+        if (data.errores?.length) data.errores.forEach((err) => window.notify(err, { type: 'error' }));
+        else window.notify(data.message || 'Error al registrar', { type: 'error' });
       } else {
-        window.notify(data.message || "Registro exitoso", { type: "success" });
+        window.notify(data.message || 'Registro exitoso', { type: 'success' });
         // Intentar loguear automáticamente al usuario recién creado
         try {
           const loginRes = await fetch(`${API_BASE}/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: formData.email, password: formData.password }),
           });
           const loginData = await loginRes.json();
           if (loginRes.ok && loginData.user) {
             // Limpiar cualquier google_temp_user pendiente (si existe)
-            try { localStorage.removeItem("google_temp_user"); } catch { /* noop */ }
-            localStorage.setItem("usuario", JSON.stringify(loginData.user));
+            try { localStorage.removeItem('google_temp_user'); } catch { /* noop */ }
+            localStorage.setItem('usuario', JSON.stringify(loginData.user));
             // limpiar dietTarget si no es doctor
             if (!loginData.user || loginData.user.id_perfil !== 3) {
-              localStorage.removeItem("dietTarget");
+              localStorage.removeItem('dietTarget');
             }
             // Redirigir al home
-            setTimeout(() => (window.location.href = "/"), 1000);
+            setTimeout(() => (window.location.href = '/'), 1000);
           } else {
             // Si el login automático falla, redirigir a login para que el usuario inicie sesión manualmente
-            setTimeout(() => (window.location.href = "/login"), 1500);
+            setTimeout(() => (window.location.href = '/login'), 1500);
           }
         } catch (err) {
-          console.warn("Auto-login falló:", err);
-          setTimeout(() => (window.location.href = "/login"), 1500);
+          console.warn('Auto-login falló:', err);
+          setTimeout(() => (window.location.href = '/login'), 1500);
         }
       }
     } catch (err) {
       console.error(err);
-      window.notify("Error de conexión al servidor", { type: "error" });
+      window.notify('Error de conexión al servidor', { type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -200,7 +200,7 @@ function CrearCuentaInner() {
           <div id="contenedorLogin2">
             <div className="contenedorLoginDatosUser">
               <form id="CrearCuentaForm" onSubmit={handleSubmit}>
-                <h2 style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: "0 0 8px 0" }}>
+                <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', margin: '0 0 8px 0' }}>
                   Rellene los datos solicitados:
                 </h2>
 
@@ -320,9 +320,9 @@ function CrearCuentaInner() {
 
                 <div className="botonesGroup">
                   <button type="submit" className="buttonCrearIniciarSesion" disabled={loading || Object.keys(errors).length > 0}>
-                    {loading ? "Registrando..." : "Crear Cuenta"}
+                    {loading ? 'Registrando...' : 'Crear Cuenta'}
                   </button>
-                  <button type="button" className="buttonCrearIniciarSesion" onClick={() => showLoaderAndRedirect("/login")}>
+                  <button type="button" className="buttonCrearIniciarSesion" onClick={() => showLoaderAndRedirect('/login')}>
                     Iniciar Sesión
                   </button>
                 </div>
