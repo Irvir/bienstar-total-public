@@ -6,6 +6,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import createAdminFoodsRouter from './src/routes/adminFoods.routes.js';
+import { getFoodById } from './src/controllers/foods.controller.js';
 import createUsersRouter from './src/routes/users.routes.js';
 import createDietsRouter from './src/routes/diets.routes.js';
 import createFoodsRouter from './src/routes/foods.routes.js';
@@ -37,7 +38,6 @@ app.use(cors({
     
     if (!origin) return callback(null, true);
     if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-    // Allow localhost patterns as a fallback
     if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) return callback(null, true);
     return callback(new Error('Not allowed by CORS'));
   },
@@ -47,8 +47,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// --- RESPONDER preflight OPTIONS globalmente ---
-// Usar una expresión regular para cubrir todas las rutas (evita problemas con path-to-regexp)
 app.options(/.*/, cors({
   origin: (process.env.ALLOWED_ORIGINS || ALLOWED_ORIGINS),
   credentials: true,
@@ -57,7 +55,6 @@ app.options(/.*/, cors({
 
 app.use(express.json());
 
-// --- Configuración de DB (desde .env) ---
 const DB_CONFIG = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -111,7 +108,14 @@ import authorizeAdminFactory from './src/middleware/authorizeAdmin.js';
 // Rutas principales
 app.use('/api/auth', createAuthRouter({ pool }));
 app.use('/api', createFoodsRouter({ pool }));
+// Montar rutas de administración de alimentos en /admin/foods
+// Estas rutas usan el middleware `upload` (multer) y necesitan el pool
+app.use('/admin/foods', createAdminFoodsRouter({ pool, upload }));
 app.use('/', createDietsRouter({ pool }));
+
+// Compatibilidad con rutas antiguas usadas por el frontend
+// Permite peticiones como GET /food/:id (usa el controlador público de alimentos)
+app.get('/food/:id', (req, res) => getFoodById(req, res, { pool }));
 app.use('/admin/users', createUsersRouter({ pool }));
 app.use('/user', createUsersRouter({ pool }));
 app.use('/admin/user', createUsersRouter({ pool }));
@@ -120,16 +124,13 @@ app.use('/admin/user', createUsersRouter({ pool }));
 
 
 
-// --- Servir frontend en producción ---
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')));
 
-  // Serve SPA entry for admin UI path so it uses the same React app/layout
   app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
 
-  // Serve SPA for all other non-API routes
   app.get(/^\/(?!admin).*/, (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });

@@ -24,7 +24,6 @@ export async function listFoods(req, res, { pool } = {}) {
       const raw = r.image || r.imagen || r.image_url || r.path || null;
       let image = raw || null;
       if (image && typeof image === 'string' && !image.startsWith('http') && !image.startsWith('/')) {
-        // Si parece nombre de archivo con extensión -> servir desde /uploads
         if (/\.(jpg|jpeg|png|gif|avif|webp|svg)$/i.test(image)) {
           image = `/uploads/${image}`;
         } else {
@@ -46,6 +45,7 @@ export async function createFood(req, res, { pool } = {}) {
     const {
       image_url,
       nombre,
+      categoria,
       Energia,
       Humedad,
       Cenizas,
@@ -79,12 +79,13 @@ export async function createFood(req, res, { pool } = {}) {
       Zinc,
       Cobre,
       Selenio,
+      
     } = req.body;
 
     const tableName = getTableName('alimento');
     const [result] = await pool.query(
       `INSERT INTO ${tableName} (
-        image_url, nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp,
+        image_url, nombre, categoria, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp,
         Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales,
         Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C,
         Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina,
@@ -95,6 +96,7 @@ export async function createFood(req, res, { pool } = {}) {
       [
         image_url || null,
         nombre,
+        categoria || null,
         Energia,
         Humedad,
         Cenizas,
@@ -131,7 +133,6 @@ export async function createFood(req, res, { pool } = {}) {
       ],
     );
 
-    // Return id and nombre to match test expectations
     res.status(201).json({ id: result.insertId, nombre });
   } catch (err) {
     console.error('/admin/foods POST error:', err);
@@ -144,6 +145,7 @@ export async function updateFood(req, res, { pool } = {}) {
     const { id } = req.params;
     const {
       nombre,
+      categoria,
       Energia,
       Humedad,
       Cenizas,
@@ -183,10 +185,11 @@ export async function updateFood(req, res, { pool } = {}) {
     const tableName = getTableName('alimento');
     const [result] = await pool.query(
       `UPDATE ${tableName} SET 
-         nombre = ?, Energia = ?, Humedad = ?, Cenizas = ?, Proteinas = ?, H_de_C_disp = ?, Azucares_totales = ?, Fibra_dietetica_total = ?, Lipidos_totales = ?, Ac_grasos_totales = ?, Ac_grasos_poliinsat = ?, Ac_grasos_trans = ?, Colesterol = ?, Vitamina_A = ?, Vitamina_C = ?, Vitamina_D = ?, Vitamina_E = ?, Vitamina_K = ?, Vitamina_B1 = ?, Vitamina_B2 = ?, Niacina = ?, Vitamina_B6 = ?, Ac_pantotenico = ?, Vitamina_B12 = ?, Folatos = ?, Sodio = ?, Potasio = ?, Calcio = ?, Fosforo = ?, Magnesio = ?, Hierro = ?, Zinc = ?, Cobre = ?, Selenio = ?, image_url = ?
+         nombre = ?, categoria = ?, Energia = ?, Humedad = ?, Cenizas = ?, Proteinas = ?, H_de_C_disp = ?, Azucares_totales = ?, Fibra_dietetica_total = ?, Lipidos_totales = ?, Ac_grasos_totales = ?, Ac_grasos_poliinsat = ?, Ac_grasos_trans = ?, Colesterol = ?, Vitamina_A = ?, Vitamina_C = ?, Vitamina_D = ?, Vitamina_E = ?, Vitamina_K = ?, Vitamina_B1 = ?, Vitamina_B2 = ?, Niacina = ?, Vitamina_B6 = ?, Ac_pantotenico = ?, Vitamina_B12 = ?, Folatos = ?, Sodio = ?, Potasio = ?, Calcio = ?, Fosforo = ?, Magnesio = ?, Hierro = ?, Zinc = ?, Cobre = ?, Selenio = ?, image_url = ?
        WHERE id = ?`,
       [
         nombre,
+        categoria || null,
         Energia,
         Humedad,
         Cenizas,

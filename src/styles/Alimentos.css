@@ -47,13 +47,11 @@
     font-size: 16px;
 }
 
-/* ----------------- Contenedor de Alimentos ----------------- */
 .pagina-alimentos #contenedorAlimentos {
     width: 95%;
     max-width: 1400px;
     margin: 1rem auto 2rem auto;
     flex: 1;
-    /* Toma el espacio restante entre header y footer */
     display: flex;
     justify-content: center;
 }
@@ -118,7 +116,6 @@
 /* ----------------- Modal ----------------- */
 .modal {
     display: flex;
-    /* ✅ Siempre flex, pero controlado por React */
     position: fixed;
     z-index: 1000;
     inset: 0;
@@ -134,14 +131,13 @@
     opacity: 1;
     pointer-events: auto; }
 
-/* Compact lateral modal: left image/title, right scrollable details */
 .modal-content {
     position: relative;
     background-color: #fff;
     padding: 12px;
     border-radius: 10px;
-    width: min(96%, 780px);
-    max-width: 780px;
+    max-width: 100%;
+    height: 80%;
     text-align: left;
     border: 3px solid #b30000;
     box-shadow: 0 10px 30px rgba(0,0,0,0.18);
@@ -265,7 +261,6 @@
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
-/* Definiciones duplicadas de modal/close eliminadas: el comportamiento de modal se gestiona en el bloque superior */
 .nutrient-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -276,7 +271,6 @@
     color: #333;
 }
 
-/* New styles for grouped nutrient display */
 .nutrient-details {
     display: flex;
     flex-direction: column;
@@ -305,8 +299,32 @@
 
 .nutrient-grid div { padding: 4px 6px; }
 
-/* Improve modal width for nutrient-rich content */
-/* compact modal behavior defined in the rules above and media queries */
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    align-items: center;
+}
+
+.cat-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.cat-btn:hover { background: #f7f7f7; }
+.cat-btn.active { background: #b30000; color: #fff; border-color: #b30000; }
+
+/* Make category list stack on mobile */
+@media (max-width: 600px) {
+    .category-list { gap: 6px; }
+    .cat-btn { padding: 6px 8px; font-size: 12px; }
+}
 
 @media (max-width: 900px) {
     .modal-content { max-width: 560px; padding: 10px; }
