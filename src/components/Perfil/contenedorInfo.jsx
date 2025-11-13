@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/Perfil.css";
+import { API_BASE } from "../shared/apiBase";
 
 export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
   const [editMode, setEditMode] = useState(false);
@@ -106,7 +107,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
     try {
       if (usuario?.id) {
-        const res = await fetch(`http://localhost:3001/user/${usuario.id}`, {
+        const res = await fetch(`${API_BASE}/user/${usuario.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -114,22 +115,26 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
         if (res.ok) {
           const data = await res.json();
-          const updatedUser = data.usuario; // extraemos solo la propiedad usuario
-          onActualizarUsuario?.(updatedUser);
+          const updatedUser = data.usuario || data.user || null; // soportar variantes
+          if (updatedUser) {
+            onActualizarUsuario?.(updatedUser);
 
-          setForm({
-            nombre: updatedUser.nombre || "",
-            edad: updatedUser.edad ?? "",
-            peso: updatedUser.peso ?? "",
-            altura: updatedUser.altura ?? "",
-            actividad_fisica: updatedUser.actividad_fisica || "",
-            sexo: updatedUser.sexo || "",
-            email: updatedUser.email || "",
-            alergias: updatedUser.alergias || "",
-          });
+            setForm({
+              nombre: updatedUser.nombre || "",
+              edad: updatedUser.edad ?? "",
+              peso: updatedUser.peso ?? "",
+              altura: updatedUser.altura ?? "",
+              actividad_fisica: updatedUser.actividad_fisica || "",
+              sexo: updatedUser.sexo || "",
+              email: updatedUser.email || "",
+              alergias: updatedUser.alergias || "",
+            });
 
-          window.notify?.("Perfil actualizado", { type: "success" });
-          setEditMode(false);
+            window.notify?.("Perfil actualizado", { type: "success" });
+            setEditMode(false);
+          } else {
+            window.notify?.("Servidor respondió sin datos de usuario", { type: "warning" });
+          }
         } else {
           const err = await res.json().catch(() => ({}));
           window.notify?.(err.message || "No se pudo actualizar", { type: "error" });

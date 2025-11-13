@@ -78,10 +78,39 @@ export async function patchUserFields(req, res, { pool } = {}) {
   try {
     const { id } = req.params;
     const campos = req.body;
-    const setStr = Object.keys(campos).map(c => `${c} = ?`).join(', ');
-    const values = Object.values(campos);
+    // Validar campos parcialmente usando las reglas definidas
+    const allowed = ['nombre','altura','peso','edad','actividad_fisica','sexo','email','id_dieta'];
+    const toUpdate = {};
+    for (const k of Object.keys(campos)) {
+      if (allowed.includes(k)) toUpdate[k] = campos[k];
+    }
+
+    if (Object.keys(toUpdate).length === 0) {
+      return res.status(400).json({ message: 'No hay campos válidos para actualizar' });
+    }
+
+    // Ejecutar validación parcial
+    const errores = validarUsuario({
+      email: toUpdate.email,
+      password: toUpdate.password,
+      altura: toUpdate.altura,
+      peso: toUpdate.peso,
+      edad: toUpdate.edad,
+    }, { partial: true });
+    if (errores.length > 0) return res.status(400).json({ errors: errores });
+
+    const setStr = Object.keys(toUpdate).map(c => `${c} = ?`).join(', ');
+    const values = Object.values(toUpdate);
     await pool.query(`UPDATE usuario SET ${setStr} WHERE id = ?`, [...values, id]);
-    res.json({ message: 'Usuario actualizado correctamente' });
+
+    // Devolver el usuario actualizado (misma forma que getUserById)
+    const [rows] = await pool.query('SELECT id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado FROM usuario WHERE id = ?', [id]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
+    const user = rows[0];
+    const [alRows] = await pool.query('SELECT nombre FROM categoria_alergico WHERE id_usuario = ?', [id]);
+    const alergias = alRows.map(r => r.nombre);
+
+    res.json({ message: 'Usuario actualizado correctamente', usuario: { ...user, alergias } });
   } catch (err) {
     console.error('Error al actualizar usuario:', err);
     res.status(500).json({ message: 'Error al actualizar usuario' });
