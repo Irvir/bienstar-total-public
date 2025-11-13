@@ -167,8 +167,8 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         </div>
 
         {/* Datos básicos */}
-        {Object.keys(etiquetas).map((campo) => (
-          <div className="datoUsuarioRow" key={campo}>
+        {Object.keys(etiquetas).map((campo, idx) => (
+          <div className={"datoUsuarioRow" + (idx === 0 ? ' first-row' : '')} key={campo}>
             <div className="info">{etiquetas[campo]}</div>
             {editMode ? (
               <input
@@ -182,7 +182,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
                 readOnly={campo === 'email'}
               />
             ) : (
-              <span>{usuario?.[campo] || '-'}</span>
+              <span className='infoUsuario'>{usuario?.[campo] || '-'}</span>
             )}
           </div>
         ))}
@@ -198,7 +198,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
               <option value="otro">Otro</option>
             </select>
           ) : (
-            <span>{usuario?.sexo || '-'}</span>
+            <span className='infoUsuario'>{usuario?.sexo || '-'}</span>
           )}
         </div>
 
@@ -214,7 +214,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
               <option value="intenso">Intenso</option>
             </select>
           ) : (
-            <span>{usuario?.actividad_fisica || '-'}</span>
+            <span className='infoUsuario'>{usuario?.actividad_fisica || '-'}</span>
           )}
         </div>
 
@@ -230,7 +230,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
               placeholder="Escriba sus alergias"
             />
           ) : (
-            <span>{usuario?.alergias || '-'}</span>
+            <span className='infoUsuario'>{usuario?.alergias || '-'}</span>
           )}
         </div>
       </div>
@@ -248,15 +248,12 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
                 '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
                 { type: 'error', duration: 0 },
                 async () => {
-                  // reproducir sonido y ejecutar la eliminación
                   await handleBorrarCuenta();
                 },
                 () => {
-                  // cancelado
                 },
               );
             } else {
-              // fallback: si no existe notifyConfirm, ejecutar directamente (equivalente al comportamiento previo)
               handleBorrarCuenta();
             }
           }}

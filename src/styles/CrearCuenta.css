@@ -6,15 +6,18 @@
     background-repeat: no-repeat;
     width: 100%;
     margin-top: 30px;
-    min-height: 100vh; /* adapta altura a la pantalla y al contenido */
+    min-height: 100vh;
+    /* adapta altura a la pantalla y al contenido */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* alinear arriba para que el padding empuje el contenido */
+    align-items: flex-start;
+    /* alinear arriba para que el padding empuje el contenido */
     /* separación superior adaptable: evita un desplazamiento fijo demasiado grande */
     padding-top: clamp(6vh, 10vw, 28vh);
     padding-bottom: 6vh;
     box-sizing: border-box;
-    overflow: auto; /* permitir scroll si el contenido excede la pantalla */
+    overflow: auto;
+    /* permitir scroll si el contenido excede la pantalla */
     position: relative;
 }
 
@@ -340,6 +343,7 @@
     border-color: #2980b9;
     background-color: #eef7ff;
 }
+
 /* --- Two-column layout and select/chips styling --- */
 .crear-cuenta-page .formGrid {
     display: grid;
@@ -388,7 +392,7 @@
     gap: 6px;
     padding: 4px 8px;
     background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 999px;
     font-size: 13px;
 }
@@ -403,7 +407,7 @@
 .crear-cuenta-page .alergias-empty {
     margin: 6px 0 0 0;
     font-size: 13px;
-    color: rgba(15,23,32,0.7);
+    color: rgba(15, 23, 32, 0.7);
 }
 
 @media (max-width: 720px) {
@@ -411,6 +415,7 @@
         grid-template-columns: 1fr;
     }
 }
+
 .loader-overlay {
     position: fixed;
     top: 0;
@@ -422,20 +427,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .loader-container {
+}
+
+.loader-container {
     text-align: center;
     font-family: 'Montserrat', sans-serif;
-  }
-  
-  .loader-text {
+}
+
+.loader-text {
     font-size: 20px;
     color: #931525;
     margin-bottom: 12px;
-  }
-  
-  .loader-dots {
+}
+
+.loader-dots {
     width: 40px;
     height: 40px;
     border: 4px solid #931525;
@@ -443,23 +448,23 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     margin: 0 auto;
-  }
-  
-  @keyframes spin {
+}
+
+@keyframes spin {
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
+}
 
 /* --- Inline validation styles --- */
 .crear-cuenta-page .error-text {
-        color: #B20C05;
-        font-size: 12px;
-        margin-top: 4px;
+    color: #B20C05;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 .crear-cuenta-page input[aria-invalid="true"],
 .crear-cuenta-page select[aria-invalid="true"] {
-        border-color: #B20C05;
-        background-color: #ffecec;
+    border-color: #B20C05;
+    background-color: #ffecec;
 }

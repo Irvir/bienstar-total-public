@@ -16,30 +16,7 @@
     padding: 0;
 }
 
-#divMenuLateral {
-    margin-top: 50px;
-    flex: 0 0 20%;
-    border-radius: 12px;
-    min-width: 250px;
-    /* efecto glass con tinte rojizo para integrar el tema */
-    background: rgba(63, 30, 34, 0.20);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    /* empieza desde arriba */
-    align-items: center;
-    padding: 10px;
-    padding-top: 70px;
-    /* ajusta manualmente la altura de los botones */
-    box-sizing: border-box;
-    height: 79vh;
-    /* el glass llega hasta la mitad de la pantalla */
-    min-height: 320px;
-}
+
 
 /* Si la pantalla es pequeña, dejar que el menu sea auto (no ocupar 50vh) */
 @media (max-width: 768px) {
@@ -87,6 +64,7 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 20px;
+    margin: 20%;
 }
 
 /* Contenedor info usuario */
@@ -105,12 +83,10 @@
 /* Contenedor de info sesión más grande */
 /* Contenedor principal que alberga la tarjeta de perfil */
 #contenedorInfoSesion {
-    width: 100%;
+    width: 50%;
     max-width: 1000px;
-    /* aumentado para tener una tarjeta más ancha */
-    border-radius: 28px;
+    border-radius: 50px;
     padding: 36px 36px;
-    /* un poco más de espacio interno */
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -118,13 +94,12 @@
     height: auto;
     margin-top: 20px;
     min-height: 580px;
-    /* mayor altura mínima */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
-    background: rgba(255, 255, 255, 0.2);
+    background: #ffffff;
     -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-width: 4px;
 
 }
 
@@ -166,7 +141,6 @@
     align-items: center;
     gap: 8px;
     background: #22c55e;
-    /* verde */
     color: white;
     border: none;
     border-radius: 10px;
@@ -175,6 +149,7 @@
     cursor: pointer;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+    margin-bottom: 5%;
 }
 
 .btnEditarPerfil:hover {
@@ -222,14 +197,9 @@
 }
 
 .datoUsuarioRow {
-    /* Grid con columna fija para etiqueta + columna flexible para el valor
-       asegura que todas las etiquetas empiecen en el mismo X */
     display: grid;
     grid-template-columns: auto 1fr;
-    /* columna de etiqueta automática para que el valor quede justo después */
     align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
     width: 100%;
 }
 
@@ -237,7 +207,7 @@
     font-weight: 800;
     color: #0b1216;
     letter-spacing: 0.2px;
-    font-size: clamp(15px, 1.6vw, 20px);
+    font-size: 30px;
     justify-self: start;
     /* etiqueta alineada al inicio de su celda */
     text-align: left;
@@ -287,7 +257,6 @@
     }
 
     .info {
-        /* quitar ancho fijo para que la etiqueta no cree un gran espacio */
         text-align: left;
         margin-right: 8px;
         font-size: clamp(16px, 1.1vw, 20px);
@@ -325,12 +294,15 @@
 #contenedorInfo input[type="number"],
 #contenedorInfo textarea {
     width: 100%;
-    border: 1px solid rgba(255,255,255,0.06); /* subtle border by default */
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    /* subtle border by default */
     outline: none;
-    background: transparent; /* inherit the glass card behind */
+    background: transparent;
+    /* inherit the glass card behind */
     /* keep the project's chosen font-size untouched */
     color: #111;
-    padding: 10px 12px; /* comfortable typing area */
+    padding: 10px 12px;
+    /* comfortable typing area */
     border-radius: 10px;
     transition: box-shadow 180ms ease, border 180ms ease, background 180ms ease, transform 180ms ease;
 }
@@ -382,7 +354,6 @@
 #contenedorCerrarSesion,
 #contenedorBorrarCuenta {
     flex: 1 1 260px;
-    /* más ancho para mantener proporciones con la tarjeta agrandada */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -405,12 +376,13 @@
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
 #cerrarSesion,
 #borrarCuenta {
+
     width: 40%;
     padding: 12px 18px;
     font-size: 16px;
     font-weight: 800;
     color: #fff;
-    background: linear-gradient(180deg, #D33B3B, #B20C05);
+    background: #EC221F;
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -471,7 +443,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        gap: 14px; /* espacio vertical entre elementos internos */
+        gap: 14px;
+        /* espacio vertical entre elementos internos */
     }
 
     /* Ajustes específicos para los botones en pantallas pequeñas */
@@ -557,17 +530,20 @@
    Mejora legibilidad y evita desbordes en ≤640px
 ============================== */
 @media (max-width: 640px) {
+
     /* Menú superior compacto */
     #divMenuLateral,
     .perfil-page #divMenuLateral {
         order: 0;
         width: 100%;
         min-width: 0;
-        height: auto; /* override fixed 50px from .perfil-page rule */
+        height: auto;
+        /* override fixed 50px from .perfil-page rule */
         min-height: 0;
         padding: 10px 12px;
         margin-top: 8px;
-        margin-bottom: 10px; /* separa del siguiente bloque */
+        margin-bottom: 10px;
+        /* separa del siguiente bloque */
         background: transparent;
         box-shadow: none;
         border: none;
@@ -578,7 +554,8 @@
         justify-items: stretch;
         align-items: center;
         position: relative;
-        z-index: 2; /* asegúrate que la tarjeta no lo tape */
+        z-index: 2;
+        /* asegúrate que la tarjeta no lo tape */
     }
 
     .botonesPerfil,
@@ -613,16 +590,28 @@
         align-items: stretch;
         gap: 8px;
     }
-    #tituloInfo { font-size: clamp(20px, 5.5vw, 26px); }
+
+    #tituloInfo {
+        font-size: clamp(20px, 5.5vw, 26px);
+    }
 
     /* Campos e inputs responsivos */
-    .datoUsuarioRow { grid-template-columns: 1fr; }
-    .info { font-size: clamp(14px, 3.8vw, 18px); }
+    .datoUsuarioRow {
+        grid-template-columns: 1fr;
+    }
+
+    .info {
+        font-size: clamp(14px, 3.8vw, 18px);
+    }
+
     .spNombre,
     .spAge,
     .spWeight,
     .spHeight,
-    .spEmail { max-width: 100%; font-size: clamp(13px, 3.6vw, 17px); }
+    .spEmail {
+        max-width: 100%;
+        font-size: clamp(13px, 3.6vw, 17px);
+    }
 
     /* Imagen más compacta */
     #imagenUser {
@@ -633,14 +622,157 @@
 
     /* Botones ocupan ancho completo */
     #borrarCuenta,
-    #cerrarSesion { width: 100%; max-width: 520px; }
+    #cerrarSesion {
+        width: 100%;
+        max-width: 520px;
+    }
 }
 
 /* Ajustes ultra-compactos para ≤400px */
 @media (max-width: 400px) {
+
     .botonesPerfil,
-    .botonesPerfilSelec { min-width: 0; width: 100%; font-size: 15px; padding: 8px 10px; }
-    #divMenuLateral { grid-template-columns: 1fr; }
-    #imagenUser { width: 170px; height: 156px; }
-    #contenedorInfoSesion { padding: 14px 12px; border-radius: 16px; }
+    .botonesPerfilSelec {
+        min-width: 0;
+        width: 100%;
+        font-size: 15px;
+        padding: 8px 10px;
+    }
+
+    #divMenuLateral {
+        grid-template-columns: 1fr;
+    }
+
+    #imagenUser {
+        width: 170px;
+        height: 156px;
+    }
+
+    #contenedorInfoSesion {
+        padding: 14px 12px;
+        border-radius: 16px;
+    }
+}
+
+#divMenuLateral {
+    margin-top: 50px;
+    flex: 0 0 12%;
+    min-width: 120px;
+    display: flex;
+
+}
+
+#divMenuLateral {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* centra verticalmente */
+    align-items: center;
+    /* centra horizontalmente */
+    padding: 200px;
+}
+
+#divMenuLateral {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    /* 👈 alinea los botones a la izquierda */
+    padding-left: 2000px;
+    /* 👈 empuja los botones hacia la derecha */
+    background-color: black;
+}
+
+#divMenuLateral {
+    margin-top: 50px;
+    margin-left: 2.2%;
+    flex: 0 0 20%;
+    border-radius: 12px;
+    min-width: 250px;
+
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+
+    height: 79vh;
+    min-height: 320px;
+}
+
+/* ======== BOTONES DEL MENÚ ======== */
+#divMenuLateral .botonesPerfil,
+#divMenuLateral .botonesPerfilSelec {
+    align-self: flex-start;
+    margin-left: 40px;
+    width: 80%;
+}
+
+/* ======== INFO Y FILAS DE USUARIO ======== */
+.info {
+    font-size: 20px;
+}
+
+.datoUsuarioRow {
+    position: relative;
+    color: gray;
+    border-right: #0b1216 solid 1px;
+    border-left: #0b1216 solid 1px;
+    padding: 2% 5%;
+}
+
+/* Línea de borde inferior con márgenes laterales (no ocupa todo el ancho) */
+.datoUsuarioRow::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 4%;
+    right: 4%;
+    height: 1px;
+    background-color: gray;
+}
+
+/* ======== PRIMERA FILA ======== */
+#contenedorInfo .datoUsuarioRow:first-child,
+#contenedorInfo .datoUsuarioRow:first-of-type {
+    border-top: 1px solid #0b1216;
+    border-top-left-radius: 45px;
+    border-top-right-radius: 45px;
+}
+
+/* Evita línea gris debajo del primer elemento */
+#contenedorInfo .datoUsuarioRow:first-child::after {
+    background-color: transparent;
+    /* elimina el pseudo-borde gris inferior */
+}
+
+/* ======== PENÚLTIMA Y ÚLTIMA FILA ======== */
+#contenedorInfo .datoUsuarioRow:nth-last-child(2)::after,
+#contenedorInfo .datoUsuarioRow:last-child::after {
+    background-color: transparent;
+    /* sin línea gris */
+}
+
+/* Última fila: borde inferior oscuro y redondeado */
+.datoUsuarioRow:last-of-type {
+    border-bottom: 1px solid #0b1216;
+    border-bottom-left-radius: 45px;
+    border-bottom-right-radius: 45px;
+}
+
+/* Evita que los bordes se dupliquen entre filas */
+#contenedorInfo .datoUsuarioRow+.datoUsuarioRow {
+    margin-top: -1px;
+}
+
+.datoUsuarioRow.first-row {
+    border-top: 1px solid #0b1216 !important;
+    border-top-left-radius: 45px;
+    border-top-right-radius: 45px;
 }

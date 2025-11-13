@@ -6,7 +6,7 @@
 	--ca-accent-strong: var(--primary-dark, #6F0E1A);
 	--ca-card: #ffffff;
 	--ca-muted: #6b7280;
-	--ca-border: rgba(2,6,23,0.08);
+	--ca-border: rgba(2, 6, 23, 0.08);
 	--ca-radius: 14px;
 }
 
@@ -19,6 +19,7 @@
 	/* Evita desbordes horizontales en layouts estrechos */
 	overflow-x: clip;
 }
+
 /* Título */
 .crear-alimento-container h2 {
 	margin: 6px 0 14px;
@@ -44,7 +45,7 @@
 .crear-alimento-form {
 	background: var(--ca-card);
 	border-radius: var(--ca-radius);
-	box-shadow: 0 12px 36px rgba(2,6,23,0.08);
+	box-shadow: 0 12px 36px rgba(2, 6, 23, 0.08);
 	border: 1px solid var(--ca-border);
 	padding: 18px;
 	display: grid;
@@ -55,7 +56,7 @@
 }
 
 /* Campo nombre a ancho completo */
-.crear-alimento-form > input[type="text"] {
+.crear-alimento-form>input[type="text"] {
 	width: 100%;
 	min-width: 0;
 	padding: 12px 14px;
@@ -65,29 +66,72 @@
 }
 
 /* Grid de nutrientes (nueva convención usada por el componente) */
-.nutri-section { padding-top: 6px; }
-.nutri-section__title { margin: 8px 0 10px; font-size: 1.05rem; color: #18212a; }
-.nutri-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; min-width: 0; }
-.nutri-item label { display: block; font-weight: 600; color: var(--ca-muted); margin-bottom: 6px; }
-.nutri-item { min-width: 0; }
-.nutri-item input[type="number"] { width: 100%; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1px solid #e6e6e6; font-size: .95rem; box-sizing: border-box; }
+.nutri-section {
+	padding-top: 6px;
+}
+
+.nutri-section__title {
+	margin: 8px 0 10px;
+	font-size: 1.05rem;
+	color: #18212a;
+}
+
+.nutri-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 10px;
+	min-width: 0;
+}
+
+.nutri-item label {
+	display: block;
+	font-weight: 600;
+	color: var(--ca-muted);
+	margin-bottom: 6px;
+}
+
+.nutri-item {
+	min-width: 0;
+}
+
+.nutri-item input[type="number"] {
+	width: 100%;
+	min-width: 0;
+	padding: 10px 12px;
+	border-radius: 10px;
+	border: 1px solid #e6e6e6;
+	font-size: .95rem;
+	box-sizing: border-box;
+}
 
 .crear-alimento-form input:focus {
 	outline: none;
-	border-color: rgba(147,21,37,0.35);
-	box-shadow: 0 0 0 3px rgba(147,21,37,0.08);
+	border-color: rgba(147, 21, 37, 0.35);
+	box-shadow: 0 0 0 3px rgba(147, 21, 37, 0.08);
 }
 
 /* Archivo e imagen */
 .crear-alimento-form input[type="file"] {
-	border: 1px dashed rgba(2,6,23,0.18);
+	border: 1px dashed rgba(2, 6, 23, 0.18);
 	padding: 10px;
 	border-radius: 10px;
 	background: #fafafa;
 }
 
-.file-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; width: 100%; min-width: 0; }
-.file-row input[type="file"] { flex: 1 1 260px; max-width: 100%; min-width: 0; }
+.file-row {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+	min-width: 0;
+}
+
+.file-row input[type="file"] {
+	flex: 1 1 260px;
+	max-width: 100%;
+	min-width: 0;
+}
 
 .image-preview {
 	width: 160px;
@@ -95,7 +139,7 @@
 	object-fit: cover;
 	border-radius: 12px;
 	border: 1px solid var(--ca-border);
-	box-shadow: 0 8px 24px rgba(2,6,23,0.08);
+	box-shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
 }
 
 /* Botón enviar con look primario */
@@ -109,13 +153,13 @@
 	background: linear-gradient(135deg, var(--ca-accent), #ff416c);
 	font-weight: 700;
 	cursor: pointer;
-	box-shadow: 0 10px 26px rgba(2,6,23,0.10);
+	box-shadow: 0 10px 26px rgba(2, 6, 23, 0.10);
 	transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
 }
 
 .crear-alimento-form button[type="submit"]:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 16px 40px rgba(2,6,23,0.12);
+	box-shadow: 0 16px 40px rgba(2, 6, 23, 0.12);
 }
 
 .crear-alimento-form button[type="submit"][disabled] {
@@ -125,32 +169,53 @@
 
 /* Responsivo */
 @media (max-width: 720px) {
-	.crear-alimento-container { padding: 0 12px 18px; }
-	.crear-alimento-form { padding: 14px; }
+	.crear-alimento-container {
+		padding: 0 12px 18px;
+	}
+
+	.crear-alimento-form {
+		padding: 14px;
+	}
+
 	.image-preview {
 		width: 120px;
 		height: 120px;
 	}
+
 	/* Botón sticky para tenerlo a mano en móviles */
-	.crear-alimento-form button[type="submit"]{
+	.crear-alimento-form button[type="submit"] {
 		position: sticky;
 		bottom: 0;
 		justify-self: stretch;
 		width: 100%;
 		margin-top: 8px;
-		box-shadow: 0 -6px 22px rgba(2,6,23,0.06), 0 8px 22px rgba(2,6,23,0.08);
+		box-shadow: 0 -6px 22px rgba(2, 6, 23, 0.06), 0 8px 22px rgba(2, 6, 23, 0.08);
 	}
+
 	/* Hacer el grid más denso en pantallas pequeñas */
-	.nutri-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-	.file-row input[type="file"] { flex: 1 1 100%; }
+	.nutri-grid {
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	}
+
+	.file-row input[type="file"] {
+		flex: 1 1 100%;
+	}
 }
 
 /* Ultra-estrecho: evita overflow en teléfonos muy pequeños */
-@media (max-width: 380px){
-	.nutri-grid { grid-template-columns: 1fr; }
+@media (max-width: 380px) {
+	.nutri-grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* Ayudas de texto y estados */
-.input-hint { font-size: .85rem; color: var(--ca-muted); }
-.is-error { border-color: #dc3545 !important; box-shadow: 0 0 0 3px rgba(220,53,69,0.08) !important; }
+.input-hint {
+	font-size: .85rem;
+	color: var(--ca-muted);
+}
 
+.is-error {
+	border-color: #dc3545 !important;
+	box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.08) !important;
+}

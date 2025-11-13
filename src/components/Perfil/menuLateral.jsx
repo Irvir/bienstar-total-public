@@ -1,5 +1,5 @@
 import React from 'react';
-
+import '../../styles/Perfil.css';
 export default function MenuLateral({ showLoaderAndRedirect }) {
   // Leer usuario desde localStorage (soporta claves 'usuario' o 'Usuario')
   let usuario = null;
@@ -25,18 +25,17 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
   })();
 
   return (
-    <div id="divMenuLateral">
+    <div id="divMenuLateral" className="menuLateralPerfil">
       {!isAdmin && (
         <>
           <button className="botonesPerfilSelec">PERFIL</button>
           <button className="botonesPerfil" id="btnDieta" onClick={() => showLoaderAndRedirect('/dietas')}>
                         MI DIETA
           </button>
-          <button className="botonesPerfil">CALENDARIO</button>
+          <button className="botonesPerfil" onClick={() => showLoaderAndRedirect('/calendario')}>CALENDARIO</button>
         </>
       )}
 
-      {/* Opciones visibles siempre para admins (y también accesibles para otros si quieres) */}
       {isAdmin && (
         <>
           <button className="botonesPerfil" id="btnAlimentos" onClick={() => showLoaderAndRedirect('/admin')}>

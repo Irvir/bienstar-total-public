@@ -3,7 +3,6 @@ import '../../styles/Alimentos.css';
 
 
 export default function Filtro({ filter, setFilter }) {
-  // Use the CSS from Alimentos.css which defines .alimentos-page and #contenedorFiltro
   return (
     <div id="contenedorFiltro">
       <div id="lupe" />

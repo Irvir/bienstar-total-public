@@ -54,7 +54,7 @@ function Home() {
             <button
               className="btn1"
               onClick={() =>
-                handleClick('AcercaDeNosotros.html', 'Informacion sobre nosotros')
+                handleClick('Alimentos.html', 'Informacion sobre alimentos')
               }
             ></button>
             <button
@@ -72,7 +72,7 @@ function Home() {
             <button
               className="btn4"
               onClick={() =>
-                handleClick('alimentos.html', 'Explorando alimentos')
+                handleClick('AcercaDeNosotros.html', 'Información acerca de nosotros')
               }
             ></button>
             <button

@@ -37,7 +37,6 @@ export default function Filtro2({ filter, setFilter }) {
 
             <div className="filtro-input-wrap">
                 <label htmlFor="filtro" className="filtro-label">
-                    Buscar alimento:
                 </label>
                 <input
                     type="text"

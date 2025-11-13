@@ -8,9 +8,9 @@ export default function Loader({ visible }) {
 
 
   const frutas = [
-    '/Imagenes/Imagenes_de_carga/manzana1.png',
-    '/Imagenes/Imagenes_de_carga/frutilla1.png',
-    '/Imagenes/Imagenes_de_carga/naranja1.png',
+    '/Imagenes/Loader/manzana.svg',
+    '/Imagenes/Loader/file.svg',
+    '/Imagenes/Loader/cereza.svg',
   ];
 
 

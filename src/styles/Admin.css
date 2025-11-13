@@ -1,137 +1,480 @@
-:root{
+:root {
     --admin-bg: #f3f6f8;
     --card: #ffffff;
     --muted: #6b7280;
     --accent: #8b2330;
+    /* Color primario más suave */
     --accent-strong: #6f0e1a;
+    /* Color primario fuerte */
     --success: #16a34a;
     --danger: #dc3545;
+    --info: #0A74C3;
+    /* Azul para info/editar */
     --radius: 12px;
 }
 
-.admin-contenedor{
-    font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    /* Usar porcentajes para adaptarse a cualquier ancho de pantalla */
+/* --- Estilos Generales del Admin Panel --- */
+.admin-contenedor {
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     width: 96%;
     max-width: 90%;
     margin: 0 auto;
     padding: 18px;
 }
-.admin-cuerpo{background:transparent;padding:18px}
 
-.admin-header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:20px}
-.admin-header-left{display:flex;align-items:center;gap:14px}
-.admin-header .title{font-family:Montserrat, system-ui, sans-serif;font-size:1.6rem;color:var(--accent-strong);margin:0;line-height:1.05;letter-spacing:-0.2px}
-.admin-header .title:before{content:'';display:inline-block;width:10px;height:32px;background:linear-gradient(180deg,var(--accent),var(--accent-strong));border-radius:6px;margin-right:10px;vertical-align:middle}
-.admin-subtitle{color:var(--muted);font-size:0.98rem;margin-top:2px}
-
-.admin-header .title .small-icon{display:inline-block;margin-left:8px;width:22px;height:22px;vertical-align:middle;filter:grayscale(30%);opacity:0.95}
-
-.admin-controls{display:flex;gap:12px;align-items:center}
-.admin-controls .btn-primary{background:var(--accent-strong);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease}
-.admin-controls .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(15,23,42,0.08);background-color:var(--accent)}
-
-/* Generic primary button on admin page (fallback if not wrapped in .admin-controls) */
-.btn-primary{background:var(--accent-strong);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(15,23,42,0.06);transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(15,23,42,0.08);background-color:var(--accent)}
-
-/* quick filters / stats */
-.admin-stats{display:flex;gap:12px;align-items:center}
-.stat{background:var(--card);padding:10px 12px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.04);font-weight:700;color:var(--accent-strong)}
-
-/* list grid */
-.admin-lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-
-.admin-card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 8px 30px rgba(2,6,23,0.06);display:flex;flex-direction:column;gap:8px;transition:transform .14s ease,box-shadow .14s ease}
-.admin-card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.08)}
-.admin-card-header{display:flex;gap:12px;align-items:center}
-.admin-card-img{width:88px;height:88px;object-fit:cover;border-radius:10px;border:1px solid rgba(0,0,0,0.06)}
-.admin-card h3{margin:0;color:var(--accent-strong);font-size:1.05rem}
-.nutri-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:6px;color:var(--muted);font-size:13px}
-
-.admin-card-body{flex:1}
-.admin-card-footer{display:flex;gap:8px;margin-top:8px;justify-content:flex-end}
-.btn-accion{padding:8px 10px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-.btn-accion.editar{background:#0A74C3;color:#fff}
-.btn-accion.eliminar{background:#D33B3B;color:#fff}
-
-/* Admin card action buttons use shared admin-actions styles */
-.admin-card .admin-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
-.admin-card .action-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--accent-strong)}
-.admin-card .action-btn--small{padding:6px 8px;font-size:0.85rem}
-.admin-card .action-btn svg{width:18px;height:18px}
-
-/* Modificadores coherentes con otras páginas */
-.admin-card .action-btn--danger{background:var(--danger);color:#fff;border:none;box-shadow:0 6px 16px rgba(192,57,43,0.12)}
-.admin-card .action-btn--danger:hover{box-shadow:0 10px 28px rgba(192,57,43,0.16)}
-.admin-card .action-btn--outline{background:transparent;border:1px solid var(--success);color:var(--success)}
-.admin-card .action-btn--outline:hover{background:rgba(22,163,74,0.06)}
-
-/* Unscoped variants to ensure buttons elsewhere on the page match too */
-.action-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;color:var(--accent-strong)}
-.action-btn--small{padding:6px 8px;font-size:0.85rem}
-.action-btn--danger{background:var(--danger);color:#fff;border:none;box-shadow:0 6px 16px rgba(192,57,43,0.12)}
-.action-btn--danger:hover{box-shadow:0 10px 28px rgba(192,57,43,0.16)}
-.action-btn--outline{background:transparent;border:1px solid var(--success);color:var(--success)}
-.action-btn--outline:hover{background:rgba(22,163,74,0.06)}
-
-/* Compat: botones simples dentro de <div class="admin-actions"> */
-.admin-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
-.admin-actions button{
-    padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);
-    background:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
-    font-weight:600;color:var(--accent-strong);transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease,background-color .12s ease;
-}
-.admin-actions button:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(2,6,23,0.06)}
-.admin-actions button:active{transform:translateY(0)}
-
-/* variantes por posición: 1 = editar, 2 = eliminar */
-.admin-actions button:nth-child(1){background:#E6F6FF;color:#064B78;border-color:rgba(10,116,195,0.12)}
-.admin-actions button:nth-child(2){background:#FFECEC;color:#7A1C1C;border-color:rgba(192,57,43,0.10)}
-
-/* modal (keep existing behavior but modernized) */
-.modal-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.5);z-index:2000}
-.admin-modal{width:92%;max-width:880px;background:var(--card);border-radius:14px;padding:20px;box-shadow:0 18px 60px rgba(2,6,23,0.14)}
-.modal-close{position:absolute;right:18px;top:18px;background:transparent;border:none;font-size:22px;cursor:pointer}
-.modal-form label{display:block;margin-top:10px;font-weight:600;color:#333}
-.modal-form input{width:100%;padding:10px 12px;margin-top:6px;border-radius:10px;border:1px solid #e6e6e6}
-.grid-dos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
-.file-row{display:flex;gap:12px;align-items:center;margin-top:8px}
-.preview{width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
-.modal-buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
-.btn-cancel{background:#f3f4f6;color:#333;border:none;padding:8px 12px;border-radius:8px}
-.btn-save{background:#0A74C3;color:white;border:none;padding:8px 12px;border-radius:8px}
-
-/* Styles for the editar modal: group fields and responsive grids */
-.modal-editar h2{margin:0 0 12px 0;font-family:Montserrat, sans-serif;color:var(--accent-strong)}
-.nutri-section{margin-top:12px;display:block;gap:16px}
-.nutri-section__title{font-size:1rem;margin:12px 0 8px;color:var(--accent-strong);font-weight:700}
-.nutri-grid{display:grid;gap:10px;margin-bottom:8px}
-.nutri-grid--macros{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
-.nutri-grid--vitamins{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
-.nutri-grid--minerals{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
-.nutri-grid--otros{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
-.nutri-item label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:6px}
-.nutri-item input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #e6e6e6}
-
-/* Make the modal form scrollable on small screens if many fields */
-.modal-form{max-height:65vh;overflow:auto;padding-right:6px}
-
-@media(max-width:720px){
-    .nutri-grid--macros{grid-template-columns:repeat(2,1fr)}
-    .nutri-grid--vitamins{grid-template-columns:repeat(2,1fr)}
-    .nutri-grid--minerals{grid-template-columns:repeat(2,1fr)}
+.admin-cuerpo {
+    background: transparent;
+    padding: 18px
 }
 
-/* responsive tweaks */
-@media(max-width:920px){
-    .admin-header{flex-direction:column;align-items:flex-start;gap:10px}
-    .admin-controls{width:100%;justify-content:space-between}
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
 }
 
-@media(max-width:520px){
-    .admin-header{align-items:flex-start}
-    .admin-header .title{font-size:1.25rem}
-    .admin-subtitle{font-size:0.9rem}
-    .admin-lista{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px
+}
+
+.admin-header .title {
+    font-family: Montserrat, system-ui, sans-serif;
+    font-size: 1.6rem;
+    color: var(--accent-strong);
+    margin: 0;
+    line-height: 1.05;
+    letter-spacing: -0.2px
+}
+
+.admin-header .title:before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 32px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+    border-radius: 6px;
+    margin-right: 10px;
+    vertical-align: middle
+}
+
+.admin-subtitle {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin-top: 2px
+}
+
+.admin-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+/* Botones primarios */
+.admin-controls .btn-primary,
+.btn-primary {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease
+}
+
+.admin-controls .btn-primary:hover,
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+    background-color: var(--accent)
+}
+
+/* --- Listas y Tarjetas --- */
+.admin-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px
+}
+
+.admin-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform .14s ease, box-shadow .14s ease
+}
+
+.admin-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.08)
+}
+
+.admin-card-img {
+    width: 88px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.06)
+}
+
+.admin-card h3 {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 1.05rem
+}
+
+.admin-card-body {
+    flex: 1
+}
+
+.admin-card-footer {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    justify-content: flex-end
+}
+
+.admin-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 10px
+}
+
+/* --- Botones de Acción (General) --- */
+.action-btn,
+.admin-actions button {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    background: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--accent-strong);
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease, background-color .12s ease;
+}
+
+.action-btn:hover,
+.admin-actions button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.06)
+}
+
+.admin-actions button:nth-child(1) {
+    background: #E6F6FF;
+    color: #064B78;
+    border-color: rgba(10, 116, 195, 0.12)
+}
+
+.admin-actions button:nth-child(2) {
+    background: #FFECEC;
+    color: #7A1C1C;
+    border-color: rgba(192, 57, 43, 0.10)
+}
+
+
+/* ========================================= */
+/* --- ESTILOS MEJORADOS PARA EL MODAL DE EDICIÓN (ModalEditarAlimento) --- */
+/* ========================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 6, 23, 0.5);
+    z-index: 2000
+}
+
+/* MODAL: Dimensionamiento 80% ancho / max 90% alto */
+.admin-modal {
+    width: 90%;
+    max-width: 960px;
+    background: var(--card);
+    border-radius: 48px;
+    padding: 24px 30px;
+    box-shadow: 0 24px 70px rgba(2, 6, 23, 0.2);
+    position: relative;
+
+    margin: 5% auto;
+    height: auto;
+}
+
+/* SCROLLABLE FORM */
+.modal-form {
+    max-height: 90vh;
+    /* Altura máxima para permitir el scroll interno */
+    overflow-y: auto;
+    padding-right: 15px;
+    margin-top: 15px;
+}
+
+.modal-form::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-form::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+
+/* Títulos y campos generales del Form */
+.modal-close {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.modal-editar h2 {
+    margin: 0 0 10px 0;
+    font-family: Montserrat, sans-serif;
+    color: var(--accent-strong);
+    font-size: 1.8rem;
+    border-bottom: 2px solid rgba(139, 35, 48, 0.1);
+    padding-bottom: 10px;
+}
+
+.modal-form label:not(.nutri-item label) {
+    display: block;
+    margin-top: 18px;
+    font-weight: 700;
+    color: var(--accent-strong);
+    font-size: 0.95rem;
+}
+
+.modal-form input:not([type="file"], .nutri-item input) {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 8px;
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-form input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(139, 35, 48, 0.1);
+    outline: none;
+}
+
+/* Sección de Imagen */
+.file-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 10px;
+    border: 1px dashed #dcdcdc;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.06)
+}
+
+
+/* --- SECCIÓN DE NUTRIENTES AGRUPADA --- */
+
+.nutri-section {
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    background: #fdfdfd;
+}
+
+.nutri-section__title {
+    font-size: 1.15rem;
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.nutri-grid {
+    display: grid;
+    gap: 12px;
+    /* Mayor separación */
+    margin-bottom: 10px;
+}
+
+/* Definición de la cuadrícula de nutrientes */
+.nutri-grid--macros {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.nutri-grid--vitamins {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.nutri-grid--minerals {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.nutri-grid--otros {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.nutri-item label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.nutri-item input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+    margin-top: 0;
+    font-size: 0.9rem;
+}
+
+
+/* --- BOTONES DE ACCIÓN (Guardar/Cancelar) --- */
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+}
+
+.btn-cancel:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.btn-save {
+    background: var(--info);
+    /* Azul para Guardar (coherencia con el botón Editar) */
+    color: white;
+    border: none;
+    box-shadow: 0 6px 16px rgba(10, 116, 195, 0.2);
+}
+
+.btn-save:hover {
+    background: #064B78;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(10, 116, 195, 0.3);
+}
+
+
+/* ========================================= */
+/* --- MEDIA QUERIES --- */
+/* ========================================= */
+
+@media(max-width: 920px) {
+    .admin-modal {
+        width: 90%;
+        padding: 18px;
+    }
+
+    .modal-form {
+        max-height: 85vh;
+    }
+
+    /* El resto de media queries se mantienen de la consolidación anterior */
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px
+    }
+
+    .admin-controls {
+        width: 100%;
+        justify-content: space-between
+    }
+}
+
+@media(max-width: 720px) {
+
+    .nutri-grid--macros,
+    .nutri-grid--vitamins,
+    .nutri-grid--minerals {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 520px) {
+    .admin-header {
+        align-items: flex-start
+    }
+
+    .admin-header .title {
+        font-size: 1.25rem
+    }
+
+    .admin-subtitle {
+        font-size: 0.9rem
+    }
+
+    .admin-lista {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+    }
+
+    .modal-editar h2 {
+        font-size: 1.5rem;
+    }
+
+    .nutri-section__title {
+        font-size: 1rem;
+    }
+
+    .nutri-grid--macros,
+    .nutri-grid--vitamins,
+    .nutri-grid--minerals,
+    .nutri-grid--otros {
+        grid-template-columns: repeat(1, 1fr);
+        /* Una sola columna en pantallas muy pequeñas */
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-buttons button {
+        width: 100%;
+    }
 }

@@ -56,10 +56,8 @@ export default function Cuentas() {
     e?.preventDefault?.();
     setLoading(true);
     try {
-      // Create or update
       if (editing) {
         const payload = { ...form };
-        // don't send empty password
         if (!payload.password) delete payload.password;
         const res = await fetch(`${API_BASE}/admin/user/${editing.id}`, {
           method: 'PATCH',
@@ -69,7 +67,6 @@ export default function Cuentas() {
         if (!res.ok) throw new Error('No se pudo actualizar cuenta');
         window.notify?.('Cuenta actualizada', { type: 'success' });
       } else {
-        // create: force id_perfil = 3 (Doctor), and no alergias
         const payload = { ...form, id_perfil: 3, alergias: [] };
         const res = await fetch(`${API_BASE}/registrar`, {
           method: 'POST',

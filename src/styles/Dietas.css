@@ -281,3 +281,96 @@
 #BtnCrearCuenta:hover::after {
     opacity: 1;
 }
+/* ... [CSS ANTERIOR NO MODIFICADO] ... */
+
+/* Bloques de comida */
+.bloque-comida {
+    /* Mantengo el margen un poco reducido para compactar */
+    margin-bottom: 0.8rem;
+    /* Ajustado de 1rem a 0.8rem (o 0.5rem si es necesario) */
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.titulo-comida {
+    /* Ajuste el tamaño de fuente y padding aquí para reducir su altura */
+    font-size: 15px;
+    /* Reducido de 16px a 15px */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #931525;
+    background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
+    padding: 0.1rem 0.2rem;
+    border-left: 4px solid #931525;
+    border-radius: 8px;
+    margin-bottom: 0%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+@media (max-width: 640px) {
+    #BtnAsignarDieta {
+        left: 12px;
+        right: 12px;
+        bottom: 18px;
+        width: auto;
+        justify-content: center;
+        padding: 12px 16px;
+        font-size: 15px;
+    }
+
+    .tabla-dieta {
+        margin-left: 0;
+        width: 100vw;
+        padding: 0 8px;
+        scroll-snap-type: x mandatory;
+    }
+
+    /* Mostrar una sola columna casi a pantalla completa (tipo carrusel) */
+    .columna-horario {
+        display: none;
+    }
+
+    .columna {
+        width: 96vw;
+        min-width: 96vw;
+        scroll-snap-align: center;
+    }
+
+    .columna,
+    .columna-horario {
+        border-width: 2px;
+    }
+
+    .titulo {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .bloque-comida {
+        margin-bottom: 0.4rem;
+        padding: 0.35rem;
+    }
+
+    .bloque-comida .titulo-comida {
+        font-size: 13px;
+        /* Tamaño de fuente más pequeño */
+        padding: 0.2rem 0.6rem;
+        /* Padding más pequeño */
+        margin-bottom: 0.3rem;
+        /* Margen inferior reducido */
+    }
+}
+
+/* Ultra small phones: stack columns vertically for readability */
+@media (max-width: 400px) {
+
+    /* Mantener modo carrusel también en muy pequeño */
+    .columna {
+        width: 70vw;
+        min-width: 70vw;
+    }
+}

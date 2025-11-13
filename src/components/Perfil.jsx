@@ -11,7 +11,7 @@ import withAuth from '../components/withAuth';
 
 function Perfil() {
   const [usuario, setUsuario] = useState(null);
-  const [loading, setLoading] = useState(false); // ✅ loader global
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuario');
@@ -47,7 +47,7 @@ function Perfil() {
       window.notify?.('Cuenta borrada correctamente', { type: 'success' });
       
       setTimeout(() => {
-        window.location.href = '/'; // ✅ redirige a Home.jsx
+        window.location.href = '/'; 
       }, 800);
     } catch (err) {
       console.error(err);

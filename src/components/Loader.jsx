@@ -5,9 +5,9 @@ const Loader = ({ visible }) => {
   if (!visible) return null;
 
   const frutas = [
-    '/Imagenes/Imagenes_de_carga/manzana1.png',
-    '/Imagenes/Imagenes_de_carga/frutilla1.png',
-    '/Imagenes/Imagenes_de_carga/naranja1.png',
+    '/Imagenes/Loader/manzana.png',
+    '/Imagenes/Loader/tomate.png',
+    '/Imagenes/Loader/cereza.png',
   ];
 
   return (

@@ -3,7 +3,7 @@
 #pie {
   position: relative;
   width: 100%;
-  background: rgba(255, 255, 255, 0.15);
+  background: ;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -48,16 +48,37 @@
 }
 
 /* Variantes específicas */
-.footer-link.ig { margin-top: 0; }
-.footer-link.ig img { padding: 8%; }
-.footer-link.ig:hover { box-shadow: 0 0 10px rgba(193,53,132,.5), 0 0 18px rgba(225,48,108,.3); }
-.footer-link.ig:hover img { transform: scale(0.95); }
-.footer-link.yt img { padding: 4%; }
-.footer-link.yt:hover { box-shadow: 0 0 12px rgba(255,0,0,.6), 0 0 24px rgba(255,0,0,.3); }
-.footer-link.yt:hover img { transform: scale(1.08); }
+.footer-link.ig {
+  margin-top: 0;
+  height: 15% !important;
+  width: 15% !important;
+}
+
+.footer-link.ig:hover {
+  box-shadow: 0 0 10px rgba(193, 53, 132, .5), 0 0 18px rgba(225, 48, 108, .3);
+}
+
+.footer-link.ig:hover img {
+  transform: scale(1.2);
+}
+
+.footer-link.yt img {
+  padding: 4%;
+}
+
+.footer-link.yt:hover {
+  box-shadow: 0 0 12px rgba(255, 0, 0, .6), 0 0 24px rgba(255, 0, 0, .3);
+}
+
+.footer-link.yt:hover img {
+  transform: scale(1.08);
+}
 
 /* ReCAPTCHA superposición solo en crear cuenta */
 .crear-cuenta-page .recaptcha-wrapper,
 .crear-cuenta-page .g-recaptcha,
 .crear-cuenta-page .rc-anchor,
-.crear-cuenta-page .grecaptcha-badge { position: relative !important; z-index: 99999 !important; }
+.crear-cuenta-page .grecaptcha-badge {
+  position: relative !important;
+  z-index: 99999 !important;
+}
