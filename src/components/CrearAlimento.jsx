@@ -68,8 +68,10 @@ const CrearAlimento = () => {
         const formData = new FormData();
         formData.append('image', imageFile);
 
+        const token = localStorage.getItem('token');
         const uploadRes = await fetch(`${API_BASE}/admin/foods/upload-image`, {
           method: 'POST',
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
           body: formData,
         });
 
@@ -84,9 +86,13 @@ const CrearAlimento = () => {
 
       const body = { ...form, image_url };
 
+      const token = localStorage.getItem('token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers.Authorization = `Bearer ${token}`;
+
       const res = await fetch(`${API_BASE}/admin/foods`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(body),
       });
 
@@ -167,16 +173,16 @@ const CrearAlimento = () => {
             <h3 className="nutri-section__title">Macros</h3>
             <div className="nutri-grid nutri-grid--macros">
               {[
-                ['Energia','Energía (kcal)'],
-                ['Proteinas','Proteínas (g)'],
-                ['H_de_C_disp','H de C disp (g)'],
-                ['Azucares_totales','Azúcares totales (g)'],
-                ['Fibra_dietetica_total','Fibra dietética (g)'],
-                ['Lipidos_totales','Lípidos totales (g)'],
-                ['Ac_grasos_totales','Ác. grasos totales (g)'],
-                ['Ac_grasos_poliinsat','Ác. grasos poliinsat (g)'],
-                ['Ac_grasos_trans','Ác. grasos trans (g)'],
-                ['Colesterol','Colesterol (mg)'],
+                ['Energia', 'Energía (kcal)'],
+                ['Proteinas', 'Proteínas (g)'],
+                ['H_de_C_disp', 'H de C disp (g)'],
+                ['Azucares_totales', 'Azúcares totales (g)'],
+                ['Fibra_dietetica_total', 'Fibra dietética (g)'],
+                ['Lipidos_totales', 'Lípidos totales (g)'],
+                ['Ac_grasos_totales', 'Ác. grasos totales (g)'],
+                ['Ac_grasos_poliinsat', 'Ác. grasos poliinsat (g)'],
+                ['Ac_grasos_trans', 'Ác. grasos trans (g)'],
+                ['Colesterol', 'Colesterol (mg)'],
               ].map(([name, label]) => (
                 <div className="nutri-item" key={name}>
                   <label htmlFor={name}>{label}</label>
@@ -188,18 +194,18 @@ const CrearAlimento = () => {
             <h3 className="nutri-section__title">Vitaminas</h3>
             <div className="nutri-grid nutri-grid--vitamins">
               {[
-                ['Vitamina_A','Vitamina A'],
-                ['Vitamina_C','Vitamina C'],
-                ['Vitamina_D','Vitamina D'],
-                ['Vitamina_E','Vitamina E'],
-                ['Vitamina_K','Vitamina K'],
-                ['Vitamina_B1','Vitamina B1'],
-                ['Vitamina_B2','Vitamina B2'],
-                ['Niacina','Niacina'],
-                ['Vitamina_B6','Vitamina B6'],
-                ['Ac_pantotenico','Ác. pantoténico'],
-                ['Vitamina_B12','Vitamina B12'],
-                ['Folatos','Folatos'],
+                ['Vitamina_A', 'Vitamina A'],
+                ['Vitamina_C', 'Vitamina C'],
+                ['Vitamina_D', 'Vitamina D'],
+                ['Vitamina_E', 'Vitamina E'],
+                ['Vitamina_K', 'Vitamina K'],
+                ['Vitamina_B1', 'Vitamina B1'],
+                ['Vitamina_B2', 'Vitamina B2'],
+                ['Niacina', 'Niacina'],
+                ['Vitamina_B6', 'Vitamina B6'],
+                ['Ac_pantotenico', 'Ác. pantoténico'],
+                ['Vitamina_B12', 'Vitamina B12'],
+                ['Folatos', 'Folatos'],
               ].map(([name, label]) => (
                 <div className="nutri-item" key={name}>
                   <label htmlFor={name}>{label}</label>
@@ -211,15 +217,15 @@ const CrearAlimento = () => {
             <h3 className="nutri-section__title">Minerales</h3>
             <div className="nutri-grid nutri-grid--minerals">
               {[
-                ['Sodio','Sodio (mg)'],
-                ['Potasio','Potasio (mg)'],
-                ['Calcio','Calcio (mg)'],
-                ['Fosforo','Fósforo (mg)'],
-                ['Magnesio','Magnesio (mg)'],
-                ['Hierro','Hierro (mg)'],
-                ['Zinc','Zinc (mg)'],
-                ['Cobre','Cobre (mg)'],
-                ['Selenio','Selenio (µg)'],
+                ['Sodio', 'Sodio (mg)'],
+                ['Potasio', 'Potasio (mg)'],
+                ['Calcio', 'Calcio (mg)'],
+                ['Fosforo', 'Fósforo (mg)'],
+                ['Magnesio', 'Magnesio (mg)'],
+                ['Hierro', 'Hierro (mg)'],
+                ['Zinc', 'Zinc (mg)'],
+                ['Cobre', 'Cobre (mg)'],
+                ['Selenio', 'Selenio (µg)'],
               ].map(([name, label]) => (
                 <div className="nutri-item" key={name}>
                   <label htmlFor={name}>{label}</label>
@@ -231,8 +237,8 @@ const CrearAlimento = () => {
             <h3 className="nutri-section__title">Otros</h3>
             <div className="nutri-grid nutri-grid--otros">
               {[
-                ['Humedad','Humedad (%)'],
-                ['Cenizas','Cenizas (%)'],
+                ['Humedad', 'Humedad (%)'],
+                ['Cenizas', 'Cenizas (%)'],
               ].map(([name, label]) => (
                 <div className="nutri-item" key={name}>
                   <label htmlFor={name}>{label}</label>

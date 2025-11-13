@@ -42,6 +42,21 @@ export async function listFoods(req, res, { pool } = {}) {
 
 export async function createFood(req, res, { pool } = {}) {
   try {
+    // Log body for easier debugging in development
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('/admin/foods POST body:', req.body);
+    }
+
+    // Helper to normalize numeric fields: convert empty strings to null, keep numbers
+    const normalizeNumber = (v) => {
+      if (v === null || v === undefined) return null;
+      if (typeof v === 'number') return Number.isFinite(v) ? v : null;
+      const s = String(v).trim();
+      if (s === '') return null;
+      const n = Number(s);
+      return Number.isNaN(n) ? null : n;
+    };
+
     const {
       image_url,
       nombre,
@@ -79,59 +94,63 @@ export async function createFood(req, res, { pool } = {}) {
       Zinc,
       Cobre,
       Selenio,
-      
+
     } = req.body;
 
     const tableName = getTableName('alimento');
-    const [result] = await pool.query(
-      `INSERT INTO ${tableName} (
-        image_url, nombre, categoria, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp,
-        Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales,
-        Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C,
-        Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina,
-        Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio,
-        Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-      [
-        image_url || null,
-        nombre,
-        categoria || null,
-        Energia,
-        Humedad,
-        Cenizas,
-        Proteinas,
-        H_de_C_disp,
-        Azucares_totales,
-        Fibra_dietetica_total,
-        Lipidos_totales,
-        Ac_grasos_totales,
-        Ac_grasos_poliinsat,
-        Ac_grasos_trans,
-        Colesterol,
-        Vitamina_A,
-        Vitamina_C,
-        Vitamina_D,
-        Vitamina_E,
-        Vitamina_K,
-        Vitamina_B1,
-        Vitamina_B2,
-        Niacina,
-        Vitamina_B6,
-        Ac_pantotenico,
-        Vitamina_B12,
-        Folatos,
-        Sodio,
-        Potasio,
-        Calcio,
-        Fosforo,
-        Magnesio,
-        Hierro,
-        Zinc,
-        Cobre,
-        Selenio,
-      ],
-    );
+
+    // Normalize numeric fields to avoid SQL errors when empty strings are provided
+    const params = [
+      image_url || null,
+      nombre,
+      categoria || null,
+      normalizeNumber(Energia),
+      normalizeNumber(Humedad),
+      normalizeNumber(Cenizas),
+      normalizeNumber(Proteinas),
+      normalizeNumber(H_de_C_disp),
+      normalizeNumber(Azucares_totales),
+      normalizeNumber(Fibra_dietetica_total),
+      normalizeNumber(Lipidos_totales),
+      normalizeNumber(Ac_grasos_totales),
+      normalizeNumber(Ac_grasos_poliinsat),
+      normalizeNumber(Ac_grasos_trans),
+      normalizeNumber(Colesterol),
+      normalizeNumber(Vitamina_A),
+      normalizeNumber(Vitamina_C),
+      normalizeNumber(Vitamina_D),
+      normalizeNumber(Vitamina_E),
+      normalizeNumber(Vitamina_K),
+      normalizeNumber(Vitamina_B1),
+      normalizeNumber(Vitamina_B2),
+      normalizeNumber(Niacina),
+      normalizeNumber(Vitamina_B6),
+      normalizeNumber(Ac_pantotenico),
+      normalizeNumber(Vitamina_B12),
+      normalizeNumber(Folatos),
+      normalizeNumber(Sodio),
+      normalizeNumber(Potasio),
+      normalizeNumber(Calcio),
+      normalizeNumber(Fosforo),
+      normalizeNumber(Magnesio),
+      normalizeNumber(Hierro),
+      normalizeNumber(Zinc),
+      normalizeNumber(Cobre),
+      normalizeNumber(Selenio),
+    ];
+
+    const columns = [
+      'image_url', 'nombre', 'categoria', 'Energia', 'Humedad', 'Cenizas', 'Proteinas', 'H_de_C_disp',
+      'Azucares_totales', 'Fibra_dietetica_total', 'Lipidos_totales', 'Ac_grasos_totales',
+      'Ac_grasos_poliinsat', 'Ac_grasos_trans', 'Colesterol', 'Vitamina_A', 'Vitamina_C',
+      'Vitamina_D', 'Vitamina_E', 'Vitamina_K', 'Vitamina_B1', 'Vitamina_B2', 'Niacina',
+      'Vitamina_B6', 'Ac_pantotenico', 'Vitamina_B12', 'Folatos', 'Sodio', 'Potasio',
+      'Calcio', 'Fosforo', 'Magnesio', 'Hierro', 'Zinc', 'Cobre', 'Selenio',
+    ];
+
+    const placeholders = new Array(params.length).fill('?').join(', ');
+    const sql = `INSERT INTO ${tableName} (${columns.join(',')}) VALUES (${placeholders});`;
+    const [result] = await pool.query(sql, params);
 
     res.status(201).json({ id: result.insertId, nombre });
   } catch (err) {
@@ -241,10 +260,26 @@ export async function deleteFood(req, res, { pool } = {}) {
   try {
     const { id } = req.params;
     const tableName = getTableName('alimento');
-    // Mark as inactive instead of deleting to match tests
-    const [result] = await pool.query(`UPDATE ${tableName} SET estado = 'inactivo' WHERE id = ?`, [id]);
-    if (result.affectedRows === 0) return res.status(404).json({ message: 'Alimento no encontrado' });
-    res.json({ message: 'Alimento marcado como inactivo' });
+    // Intentar marcar como inactivo por compatibilidad con algunos esquemas
+    try {
+      const [result] = await pool.query(`UPDATE ${tableName} SET estado = 'inactivo' WHERE id = ?`, [id]);
+      if (result.affectedRows === 0) return res.status(404).json({ message: 'Alimento no encontrado' });
+      return res.json({ message: 'Alimento marcado como inactivo' });
+    } catch (e) {
+      // Si la columna `estado` no existe en la tabla (ER_BAD_FIELD_ERROR), hacer fallback a DELETE
+      if (e && e.code === 'ER_BAD_FIELD_ERROR' && String(e.sqlMessage || '').toLowerCase().includes('unknown column') && String(e.sql || '').toLowerCase().includes('estado')) {
+        try {
+          const [delResult] = await pool.query(`DELETE FROM ${tableName} WHERE id = ?`, [id]);
+          if (delResult.affectedRows === 0) return res.status(404).json({ message: 'Alimento no encontrado' });
+          return res.json({ message: 'Alimento eliminado' });
+        } catch (e2) {
+          console.error('/admin/foods/:id DELETE fallback error:', e2);
+          return res.status(500).json({ error: 'Error al eliminar alimento' });
+        }
+      }
+      // Otro error: re-lanzarlo para manejarlo abajo
+      throw e;
+    }
   } catch (err) {
     console.error('/admin/foods/:id DELETE error:', err);
     res.status(500).json({ error: 'Error al eliminar alimento' });

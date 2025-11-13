@@ -6,7 +6,7 @@ import withAuth from '../components/withAuth';
 import AdminAlimentoCard from './Admin/AdminAlimentoCard';
 import ModalEditarAlimento from './Admin/ModalEditarAlimento';
 import '../styles/Admin.css';
-import { API_BASE } from '../components/shared/apiBase';
+import { API_BASE } from './shared/apiBase';
 
 // Importar el sistema de notificaciones
 import '../controllers/notify.js';
@@ -26,7 +26,10 @@ function AdminAlimentos() {
   async function fetchListado() {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/admin/foods`);
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_BASE}/admin/foods`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       const contentType = res.headers.get('content-type');
       if (!res.ok || !contentType?.includes('application/json')) {
         throw new Error('Respuesta no válida del servidor');
@@ -44,7 +47,8 @@ function AdminAlimentos() {
     if (!confirm(`¿Eliminar "${nombre}" de la base de datos?`)) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/admin/foods/${id}`, { method: 'DELETE' });
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_BASE}/admin/foods/${id}`, { method: 'DELETE', headers: token ? { Authorization: `Bearer ${token}` } : {} });
       if (!res.ok) throw new Error();
       setAlimentos(prev => prev.filter(x => x.id !== id));
       window.notify?.(`Alimento "${nombre}" eliminado`, { type: 'success' });
@@ -65,8 +69,10 @@ function AdminAlimentos() {
       if (formDataObj.imageFile) {
         const fd = new FormData();
         fd.append('image', formDataObj.imageFile);
+        const token = localStorage.getItem('token');
         const uploadRes = await fetch(`${API_BASE}/admin/foods/upload-image`, {
           method: 'POST',
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
           body: fd,
         });
         if (!uploadRes.ok) throw new Error();
@@ -76,7 +82,7 @@ function AdminAlimentos() {
       }
       const putRes = await fetch(`${API_BASE}/admin/foods/${formDataObj.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}) },
         body: JSON.stringify(formDataObj),
       });
 

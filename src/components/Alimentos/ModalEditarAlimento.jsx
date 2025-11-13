@@ -43,8 +43,10 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
     if (file) {
       const fd = new FormData();
       fd.append('image', file);
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/admin/foods/upload-image`, {
         method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: fd,
       });
       if (!res.ok) {
