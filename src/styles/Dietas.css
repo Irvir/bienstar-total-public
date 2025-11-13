@@ -281,13 +281,9 @@
 #BtnCrearCuenta:hover::after {
     opacity: 1;
 }
-/* ... [CSS ANTERIOR NO MODIFICADO] ... */
 
-/* Bloques de comida */
 .bloque-comida {
-    /* Mantengo el margen un poco reducido para compactar */
     margin-bottom: 0.8rem;
-    /* Ajustado de 1rem a 0.8rem (o 0.5rem si es necesario) */
     padding: 0.5rem;
     background-color: #fff;
     border-radius: 10px;
@@ -295,9 +291,7 @@
 }
 
 .titulo-comida {
-    /* Ajuste el tamaño de fuente y padding aquí para reducir su altura */
     font-size: 15px;
-    /* Reducido de 16px a 15px */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -329,7 +323,6 @@
         scroll-snap-type: x mandatory;
     }
 
-    /* Mostrar una sola columna casi a pantalla completa (tipo carrusel) */
     .columna-horario {
         display: none;
     }
