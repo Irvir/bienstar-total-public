@@ -13,7 +13,7 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
 
   // Determinar si es admin (misma heurística que en Login.jsx)
   const isAdmin = (() => {
-    if (!usuario) return false;
+            <button className="botonesPerfilSelec" onClick={() => showLoaderAndRedirect(usuario && usuario.id ? '/perfil' : '/login')}>PERFIL</button>
     const email = (usuario.email || usuario.emailAddress || '').toString().trim().toLowerCase();
     const name = (usuario.name || usuario.nombre || '').toString().trim().toLowerCase();
     const idStr = String(usuario.id || usuario.id_usuario || '');

@@ -77,9 +77,39 @@ export async function createUser(req, res, { pool } = {}) {
 export async function patchUserFields(req, res, { pool } = {}) {
   try {
     const { id } = req.params;
-    const campos = req.body;
-    const setStr = Object.keys(campos).map(c => `${c} = ?`).join(', ');
-    const values = Object.values(campos);
+    const campos = req.body || {};
+    // Si el payload contiene 'alergias', delegamos a la versión transaccional
+    // que actualiza la tabla `categoria_alergico` correctamente.
+    if (Object.prototype.hasOwnProperty.call(campos, 'alergias')) {
+      return await patchUserTransactional(req, res, { pool });
+    }
+    // Filtrar campos undefined y normalizar valores vacíos a NULL para evitar SQL inválido
+    let entries = Object.entries(campos).filter(([, v]) => v !== undefined);
+    if (entries.length === 0) return res.status(400).json({ message: 'No hay campos para actualizar' });
+
+    // Normalizar valores: cadena vacía -> NULL; arrays -> JSON (o NULL si vacío)
+    let values = entries.map(([, v]) => {
+      if (v === '') return null;
+      if (Array.isArray(v)) return v.length === 0 ? null : JSON.stringify(v);
+      return v;
+    });
+
+    // Sanity checks: ensure no undefined slipped through and lengths match
+    const hasUndefined = values.some(v => v === undefined);
+    if (hasUndefined) {
+      // remover las entradas con undefined por seguridad
+      entries = entries.filter(([, v]) => v !== undefined);
+      values = entries.map(([, v]) => (v === '' ? null : v));
+    }
+
+    const setStr = entries.map(([c]) => `${c} = ?`).join(', ');
+
+    if (values.length !== entries.length) {
+      console.error('patchUserFields: mismatch entre columnas y valores', { entries, values });
+      return res.status(400).json({ message: 'Campos inválidos para actualizar' });
+    }
+
+    console.warn('patchUserFields: executing update', { setStr, values, id });
     await pool.query(`UPDATE usuario SET ${setStr} WHERE id = ?`, [...values, id]);
     res.json({ message: 'Usuario actualizado correctamente' });
   } catch (err) {

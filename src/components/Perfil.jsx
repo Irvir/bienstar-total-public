@@ -14,10 +14,22 @@ function Perfil() {
   const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem('usuario');
-    if (usuarioGuardado) {
-      setUsuario(JSON.parse(usuarioGuardado));
-    } else {
+    // Leer de localStorage de forma segura y redirigir al login si no hay usuario válido
+    const raw = localStorage.getItem('usuario');
+    console.warn('DEBUG localStorage.usuario raw=', raw);
+    if (!raw || raw === 'undefined') {
+      window.location.href = '/login';
+      return;
+    }
+    try {
+      const parsed = JSON.parse(raw);
+      if (!parsed) {
+        window.location.href = '/login';
+        return;
+      }
+      setUsuario(parsed);
+    } catch (e) {
+      console.warn('Perfil: localStorage.usuario inválido, redirigiendo al login', e);
       window.location.href = '/login';
     }
   }, []);

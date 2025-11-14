@@ -24,8 +24,8 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         altura: usuario.altura ?? '',
         actividad_fisica: usuario.actividad_fisica || '',
         sexo: usuario.sexo || '',
-        email: usuario.email || '',
-        alergias: usuario.alergias || '',
+        email: getUserEmail(usuario) || '',
+        alergias: Array.isArray(usuario.alergias) ? usuario.alergias.join(', ') : (usuario.alergias || ''),
       });
     }
   }, [usuario]);
@@ -40,8 +40,8 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         altura: usuario.altura ?? '',
         actividad_fisica: usuario.actividad_fisica || '',
         sexo: usuario.sexo || '',
-        email: usuario.email || '',
-        alergias: usuario.alergias || '',
+        email: getUserEmail(usuario) || '',
+        alergias: Array.isArray(usuario.alergias) ? usuario.alergias.join(', ') : (usuario.alergias || ''),
       });
     }
     setEditMode(true);
@@ -57,8 +57,8 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         altura: usuario.altura ?? '',
         actividad_fisica: usuario.actividad_fisica || '',
         sexo: usuario.sexo || '',
-        email: usuario.email || '',
-        alergias: usuario.alergias || '',
+        email: getUserEmail(usuario) || '',
+        alergias: Array.isArray(usuario.alergias) ? usuario.alergias.join(', ') : (usuario.alergias || ''),
       });
     }
     setEditMode(false);
@@ -113,8 +113,33 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         });
 
         if (res.ok) {
-          const data = await res.json();
-          const updatedUser = data.usuario; // extraemos solo la propiedad usuario
+          const data = await res.json().catch(() => ({}));
+          // Backend may return different shapes: { usuario } or { user } or no user at all.
+          // Preserve email from existing usuario or localStorage if backend omits it.
+          const serverUser = data.usuario || data.user || null;
+          let updatedUser = serverUser;
+
+          if (!updatedUser) {
+            // Merge payload into current usuario as a best-effort fallback
+            updatedUser = { ...(usuario || {}), ...payload };
+          }
+
+          // Ensure email is preserved when server didn't return it.
+          const existingEmail = getUserEmail(usuario) || (() => {
+            try {
+              const raw = localStorage.getItem('usuario');
+              if (!raw) return null;
+              const parsed = JSON.parse(raw);
+              return getUserEmail(parsed);
+            } catch {
+              return null;
+            }
+          })();
+
+          if (!updatedUser.email && existingEmail) {
+            updatedUser.email = existingEmail;
+          }
+
           onActualizarUsuario?.(updatedUser);
 
           setForm({
@@ -124,8 +149,9 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
             altura: updatedUser.altura ?? '',
             actividad_fisica: updatedUser.actividad_fisica || '',
             sexo: updatedUser.sexo || '',
-            email: updatedUser.email || '',
-            alergias: updatedUser.alergias || '',
+            email: getUserEmail(updatedUser) || '',
+
+            alergias: Array.isArray(updatedUser.alergias) ? updatedUser.alergias.join(', ') : (updatedUser.alergias || ''),
           });
 
           window.notify?.('Perfil actualizado', { type: 'success' });
@@ -148,6 +174,30 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
     altura: 'Altura:',
     email: 'Correo:',
   };
+  const getUserEmail = (u) => {
+    if (!u) return null;
+    if (u.email) return u.email;
+    if (u.emailAddress) return u.emailAddress;
+    if (u.emails && Array.isArray(u.emails) && u.emails.length > 0) {
+      // common firebase shape: emails[0].value
+      const e = u.emails[0];
+      if (e && (e.value || e.email)) return e.value || e.email;
+    }
+    if (u.user && u.user.email) return u.user.email;
+    if (u.profile && u.profile.email) return u.profile.email;
+    if (u.auth && u.auth.email) return u.auth.email;
+    return null;
+  };
+
+  const getDisplayValue = (campo) => {
+    if (!usuario) return '-';
+    if (campo === 'email') return getUserEmail(usuario) || '-';
+    if (campo === 'alergias') {
+      if (Array.isArray(usuario.alergias)) return usuario.alergias.join(', ') || '-';
+      return usuario.alergias || '-';
+    }
+    return usuario[campo] ?? '-';
+  };
 
   return (
     <div id="contenedorInfoSesion" className={editMode ? 'is-editing' : ''}>
@@ -168,7 +218,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
         {/* Datos básicos */}
         {Object.keys(etiquetas).map((campo, idx) => (
-          <div className={"datoUsuarioRow" + (idx === 0 ? ' first-row' : '')} key={campo}>
+          <div className={'datoUsuarioRow' + (idx === 0 ? ' first-row' : '')} key={campo}>
             <div className="info">{etiquetas[campo]}</div>
             {editMode ? (
               <input
@@ -182,7 +232,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
                 readOnly={campo === 'email'}
               />
             ) : (
-              <span className='infoUsuario'>{usuario?.[campo] || '-'}</span>
+              <span className='infoUsuario'>{getDisplayValue(campo)}</span>
             )}
           </div>
         ))}
