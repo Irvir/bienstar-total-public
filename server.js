@@ -11,7 +11,7 @@ import createUsersRouter from './src/routes/users.routes.js';
 import createDietsRouter from './src/routes/diets.routes.js';
 import createFoodsRouter from './src/routes/foods.routes.js';
 import createAuthRouter from './src/routes/auth.routes.js';
-import { login, registrar } from './src/controllers/auth.controller.js';
+import { login, registrar, checkEmail } from './src/controllers/auth.controller.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -122,9 +122,10 @@ app.get(['/CrearCuenta', '/CrearCuenta.html', '/crear-cuenta'], (req, res) => {
   res.sendFile(path.join(__dirname, 'src', 'pages', 'CrearCuenta.html'));
 });
 
-// Rutas POST de compatibilidad para frontend legacy que hace fetch a `${API_BASE}/login` o `/registrar`
+// Rutas POST de compatibilidad para frontend legacy que hace fetch a `${API_BASE}/login`, `/registrar` o `/checkEmail`
 app.post('/login', (req, res) => login(req, res, { pool }));
 app.post('/registrar', (req, res) => registrar(req, res, { pool }));
+app.post('/checkEmail', (req, res) => checkEmail(req, res, { pool }));
 
 // Compatibilidad con rutas antiguas usadas por el frontend
 // Permite peticiones como GET /food/:id (usa el controlador público de alimentos)
