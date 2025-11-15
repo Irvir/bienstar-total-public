@@ -150,7 +150,6 @@
 	border-radius: 10px;
 	border: none;
 	color: #fff;
-	background: linear-gradient(135deg, var(--ca-accent), #ff416c);
 	font-weight: 700;
 	cursor: pointer;
 	box-shadow: 0 10px 26px rgba(2, 6, 23, 0.10);
@@ -218,4 +217,7 @@
 .is-error {
 	border-color: #dc3545 !important;
 	box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.08) !important;
+}
+.boton {
+	background-color: #931525;
 }

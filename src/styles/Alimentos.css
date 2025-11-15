@@ -23,7 +23,6 @@
     justify-content: center;
     gap: 0.5rem;
     border-radius: 20px;
-    background-color: lightgray;
     padding: 0.5rem;
 }
 
@@ -198,9 +197,9 @@
 
 .close {
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 15px;
-    font-size: 32px;
+    font-size: 42px;
     font-weight: bold;
     color: #b30000;
     cursor: pointer;
@@ -452,6 +451,33 @@
     color: #222;
 }
 
+.filtro-input-wrap {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.lupa {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 45%;
+    width: 90%;
+    height: 90%;
+    z-index: 6;
+
+    object-fit: contain;
+}
+
+#filtro {
+    width: 100%;
+    padding-left: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 #categoriaSelect {
     appearance: none;
     -webkit-appearance: none;
@@ -558,6 +584,7 @@
     grid-column: 1 / 3;
     max-height: 70vh;
     overflow-y: auto;
+    width: 100%;
 }
 
 .modal-col-center {
@@ -626,7 +653,6 @@
     grid-template-columns: repeat(2, 1fr);
 }
 
-/* Para móviles pequeños, que el grid sea de 1 columna si hay poco espacio */
 @media (max-width: 600px) {
 
     .nutrient-grid.cols-2,
@@ -635,5 +661,33 @@
     .nutrient-grid.cols-5,
     .nutrient-grid.cols-6 {
         grid-template-columns: 1fr;
+    }
+}
+.modal-content {
+    background: #fff;
+    border-radius: 40px;
+    padding: 16px;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content.modal-narrow {
+    width: 60vw;
+    max-width: 900px;
+}
+
+.modal-content.modal-wide {
+    width: 80vw;
+    max-width: 1200px;
+}
+
+@media (max-width: 768px) {
+
+    .modal-content.modal-narrow,
+    .modal-content.modal-wide {
+        width: 95vw;
+        max-width: 95vw;
     }
 }

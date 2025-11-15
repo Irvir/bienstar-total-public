@@ -100,7 +100,6 @@
 
 /* Ultra small phones: stack columns vertically for readability */
 @media (max-width: 400px) {
-    /* Mantener modo carrusel también en muy pequeño */
     .columna { width: 70vw; min-width: 70vw; }
 }
 
@@ -147,7 +146,7 @@
     font-weight: bold;
     border-bottom: 2px solid #941424;
     background-color: #fdfdfd;
-    color: #941424;
+    color: black;
     position: sticky;
     top: 0;
     z-index: 2;

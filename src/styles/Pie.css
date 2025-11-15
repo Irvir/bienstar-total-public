@@ -3,11 +3,10 @@
 #pie {
   position: relative;
   width: 100%;
-  background: ;
+  background-color: #f5f5f7;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: var(--radius-xl);
   padding: 12px 24px;
   display: flex;
   justify-content: center;
