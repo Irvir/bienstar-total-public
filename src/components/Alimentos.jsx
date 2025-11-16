@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Alimentos.css';
-import '../styles/Base.css';
 import Encabezado from './Encabezado';
 import { API_BASE } from './shared/apiBase';
 import Pie from './Pie';
@@ -84,7 +83,6 @@ export default function Alimentos() {
               const q = filter.toString().toLowerCase().trim();
               const nombre = (a.nombre || '').toString().toLowerCase();
               const categoria = (a.categoria || '').toString().toLowerCase();
-              // match if query is contained in name or category, or equals category exactly
               return nombre.includes(q) || categoria.includes(q) || categoria === q;
             })}
             openModal={openModal}
@@ -101,7 +99,8 @@ export default function Alimentos() {
           className="modal visible"
           onClick={(e) => e.target.id === 'modalAlimento' && closeModal()}
         >
-          <div className="modal-content">
+          <div className={`modal-content ${showAllDetails ? 'modal-wide' : 'modal-narrow'}`}>
+
             <span className="close" onClick={closeModal}>
               &times;
             </span>

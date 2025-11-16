@@ -1,4 +1,3 @@
-// CrearAlimento.jsx
 import React, { useState } from 'react';
 import '../styles/CrearAlimento.css';
 import withAuth from '../components/withAuth';
@@ -248,8 +247,8 @@ const CrearAlimento = () => {
             </div>
           </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Guardando...' : 'Crear Alimento'}
+          <button type="submit" disabled={loading} className='boton'>
+            {loading ? 'Guardando...' : 'CREAR ALIMENTO'}
           </button>
         </form>
       </div>

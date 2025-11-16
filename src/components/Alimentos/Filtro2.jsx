@@ -36,8 +36,10 @@ export default function Filtro2({ filter, setFilter }) {
         <div id="contenedorFiltro" className="category-filter">
 
             <div className="filtro-input-wrap">
-                <label htmlFor="filtro" className="filtro-label">
-                </label>
+                {/* 1. Quitamos el label vacío.
+                  2. La lupa y el input son ahora hermanos directos para posicionamiento. 
+                */}
+                <img src="public\Imagenes\Alimentos\Lupe.png" alt="lupa" className='lupa' />
                 <input
                     type="text"
                     id="filtro"

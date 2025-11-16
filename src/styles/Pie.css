@@ -1,13 +1,10 @@
-/* Pie.css optimizado: se removieron bloques duplicados y se unificó el estilo del footer */
-
 #pie {
   position: relative;
   width: 100%;
-  background: ;
+  background-color: #f5f5f7;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: var(--radius-xl);
   padding: 12px 24px;
   display: flex;
   justify-content: center;
@@ -47,15 +44,12 @@
   transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Variantes específicas */
 .footer-link.ig {
-  margin-top: 0;
-  height: 15% !important;
-  width: 15% !important;
 }
 
 .footer-link.ig:hover {
-  box-shadow: 0 0 10px rgba(193, 53, 132, .5), 0 0 18px rgba(225, 48, 108, .3);
+  box-shadow: 0 0 10px rgba(193, 53, 132, .5),
+    0 0 18px rgba(225, 48, 108, .3);
 }
 
 .footer-link.ig:hover img {
@@ -67,7 +61,8 @@
 }
 
 .footer-link.yt:hover {
-  box-shadow: 0 0 12px rgba(255, 0, 0, .6), 0 0 24px rgba(255, 0, 0, .3);
+  box-shadow: 0 0 12px rgba(255, 0, 0, .6),
+    0 0 24px rgba(255, 0, 0, .3);
 }
 
 .footer-link.yt:hover img {
