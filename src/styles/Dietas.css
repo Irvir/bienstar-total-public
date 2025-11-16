@@ -44,11 +44,10 @@
     font-size: 15px;
     font-weight: 700;
     color: #fff;
-    /* Red gradient to match sitio (uso los mismos tonos que botones existentes) */
     background: linear-gradient(135deg, #A31621, #d42c3c);
     border: none;
     border-radius: 999px;
-    box-shadow: 0 10px 30px rgba(164, 22, 33, 0.22), 0 4px 10px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 30px rgba(164, 22, 33, 0.22), 0 4px 10px rgba(0, 0, 0, 0.12);
     cursor: pointer;
     transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
     z-index: 1200;
@@ -60,50 +59,27 @@
 
 #BtnAsignarDieta:hover {
     transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(164,22,33,0.28), 0 6px 18px rgba(0,0,0,0.14);
+    box-shadow: 0 18px 40px rgba(164, 22, 33, 0.28), 0 6px 18px rgba(0, 0, 0, 0.14);
 }
 
-#BtnAsignarDieta:active { transform: translateY(-1px) scale(.995); }
+#BtnAsignarDieta:active {
+    transform: translateY(-1px) scale(.995);
+}
 
 #BtnAsignarDieta:focus {
-    outline: 3px solid rgba(163,22,33,0.18);
+    outline: 3px solid rgba(163, 22, 33, 0.18);
     outline-offset: 4px;
 }
 
-/* Icon inside button via pseudo-element (small dot) */
+/* Icono en el botón */
 #BtnAsignarDieta::before {
-    content: "✏"; /* pencil */
+    content: "✏";
     display: inline-block;
     font-size: 14px;
     opacity: 0.95;
 }
 
-/* Make the button full-width and easier to tap on small screens */
-@media (max-width: 640px) {
-    #BtnAsignarDieta {
-        left: 12px;
-        right: 12px;
-        bottom: 18px;
-        width: auto;
-        justify-content: center;
-        padding: 12px 16px;
-        font-size: 15px;
-    }
-    .tabla-dieta { margin-left: 0; width: 100vw; padding: 0 8px; scroll-snap-type: x mandatory; }
-    /* Mostrar una sola columna casi a pantalla completa (tipo carrusel) */
-    .columna-horario { display: none; }
-    .columna { width: 96vw; min-width: 96vw; scroll-snap-align: center; }
-    .columna, .columna-horario { border-width: 2px; }
-    .titulo { padding: 8px; font-size: 14px; }
-    .bloque-comida { margin-bottom: .6rem; padding: .45rem; }
-}
-
-/* Ultra small phones: stack columns vertically for readability */
-@media (max-width: 400px) {
-    .columna { width: 70vw; min-width: 70vw; }
-}
-
-/* Tabla de dieta */
+/* Tabla de dieta (layout por defecto: escritorio horizontal) */
 .tabla-dieta {
     width: 99vw;
     margin: 40px auto 0 auto;
@@ -154,7 +130,6 @@
 
 /* Celdas */
 .dietas-page .celda {
-    /* Forzamos layout vertical dentro de cada día y aislamos de .celda del Calendario */
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -167,7 +142,7 @@
 
 /* Bloques de comida */
 .bloque-comida {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     padding: 0.5rem;
     background-color: #fff;
     border-radius: 10px;
@@ -175,25 +150,23 @@
 }
 
 .titulo-comida {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: #931525;
-    /* rojo principal */
     background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
-    /* fondo suave */
-    padding: 0.4rem 0.8rem;
+    padding: 0.1rem 0.2rem;
     border-left: 4px solid #931525;
     border-radius: 8px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .titulo-comida:hover {
     background: linear-gradient(135deg, #ffd6d6, #ffc2c2);
-    transform: scale(1.02); }
+    transform: scale(1.02);
+}
 
 /* Loader */
 #loader {
@@ -263,7 +236,10 @@
     40% {
         opacity: 1;
         transform: scale(1.2);
-    } }
+    }
+}
+
+/* Efecto brillo BtnCrearCuenta */
 #BtnCrearCuenta::after {
     content: "";
     position: absolute;
@@ -277,32 +253,33 @@
     transition: opacity 0.3s ease;
     z-index: -1;
 }
+
 #BtnCrearCuenta:hover::after {
     opacity: 1;
 }
 
-.bloque-comida {
-    margin-bottom: 0.8rem;
-    padding: 0.5rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
+/* ====== RESPONSIVE ====== */
 
-.titulo-comida {
-    font-size: 15px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #931525;
-    background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
-    padding: 0.1rem 0.2rem;
-    border-left: 4px solid #931525;
-    border-radius: 8px;
-    margin-bottom: 0%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
+@media (max-width: 992px) {
+    .tabla-dieta {
+        width: 100%;
+        margin: 20px auto 0 auto;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        overflow-x: hidden;
+        overflow-y: visible;
+        margin-left: 0;
+        scroll-snap-type: none;
+    }
 
+    .columna-horario,
+    .columna {
+        width: 100%;
+        min-width: 100%;
+        scroll-snap-align: none;
+        margin: 8px 0;
+    }
+}
 
 @media (max-width: 640px) {
     #BtnAsignarDieta {
@@ -313,28 +290,6 @@
         justify-content: center;
         padding: 12px 16px;
         font-size: 15px;
-    }
-
-    .tabla-dieta {
-        margin-left: 0;
-        width: 100vw;
-        padding: 0 8px;
-        scroll-snap-type: x mandatory;
-    }
-
-    .columna-horario {
-        display: none;
-    }
-
-    .columna {
-        width: 96vw;
-        min-width: 96vw;
-        scroll-snap-align: center;
-    }
-
-    .columna,
-    .columna-horario {
-        border-width: 2px;
     }
 
     .titulo {
@@ -349,20 +304,13 @@
 
     .bloque-comida .titulo-comida {
         font-size: 13px;
-        /* Tamaño de fuente más pequeño */
         padding: 0.2rem 0.6rem;
-        /* Padding más pequeño */
         margin-bottom: 0.3rem;
-        /* Margen inferior reducido */
     }
 }
 
-/* Ultra small phones: stack columns vertically for readability */
 @media (max-width: 400px) {
-
-    /* Mantener modo carrusel también en muy pequeño */
-    .columna {
-        width: 70vw;
-        min-width: 70vw;
+    .titulo {
+        font-size: 13px;
     }
 }

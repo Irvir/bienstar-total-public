@@ -37,7 +37,6 @@
 }
 
 .pagina-alimentos #filtro {
-
     flex: 1;
     width: 100%;
     height: 40px;
@@ -97,11 +96,10 @@
     transition: transform 0.2s;
 }
 
-
-
 #imgAlimento {
     width: 80%;
     max-height: 150px;
+    /* Base height */
     object-fit: cover;
     border-radius: 10px;
 }
@@ -135,51 +133,75 @@
 .modal-content {
     position: relative;
     background-color: #fff;
-    padding: 12px;
-    border-radius: 36px;
-    width: 80%;
-    height: 80%;
+    padding: 16px;
+    border-radius: 40px;
+    width: 80vw;
+    max-width: 1200px;
+    height: 80vh;
+    max-height: 90vh;
     text-align: left;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-    overflow-x: hidden;
+    overflow-y: auto;
+    /* CLAVE: Permite scroll en el contenido principal del modal */
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-body {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+    padding-top: 20px;
+    flex-grow: 1;
+    overflow: hidden;
+    display: block;
 }
 
-.modal-body>* {
-    min-width: 0;
-    box-sizing: border-box;
+.modal-grid-container {
+    display: grid;
+    /* 2 columnas para el contenido (izquierda/derecha) y 1 columna auto para la imagen central */
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 16px;
+    align-items: start;
+    height: 100%;
+    overflow-y: hidden;
 }
 
-.modal-left {
-    flex: 0 0 240px;
+.modal-col {
+    padding: 0 8px;
+}
+
+/* Columna de la izquierda (Nutrientes o Info) */
+.modal-col-left {
+    max-height: 70vh;
+    overflow-y: auto;
+    width: 100%;
+}
+
+/* Columna central (Imagen y Toggle) */
+.modal-col-center {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    margin: 0;
-    /* center column will handle positioning */
+    justify-content: flex-start;
+    padding-top: 10px;
+    position: sticky;
+    top: 0;
 }
 
-.modal-left img {
+/* Columna de la derecha (Nutrientes o Info) */
+.modal-col-right {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Ajuste de imagen: más pequeña para 1920x1080 o menos */
+.modal-col-center img {
     display: block;
     width: 100%;
-    max-width: 220px;
-    max-height: 220px;
+    max-width: 250px;
+    max-height: 250px;
     height: auto;
     object-fit: cover;
     border-radius: 6px;
-}
-
-.modal-right {
-    flex: 1 1 420px;
-    max-height: 72vh;
-    overflow: auto;
-    padding-right: 10px;
+    transition: max-width 0.3s ease;
 }
 
 #modalNombre {
@@ -211,12 +233,72 @@
 }
 
 /* ----------------- Responsive ----------------- */
-@media (max-width: 1024px) {
-    .modal-content {
-        max-width: 640px;
+
+/* Desktop (1025px y superior): Asegura el desplazamiento en las columnas y el tamaño de la imagen */
+@media (min-width: 1025px) and (max-width: 1920px) {
+
+    /* Escala la imagen ligeramente hacia abajo en monitores estándar */
+    .modal-col-center img {
+        max-width: 200px;
+        max-height: 200px;
     }
 }
 
+
+/* Tablet/Pequeño Desktop (max-width: 992px) - Stack vertical y Scroll del Modal */
+@media (max-width: 992px) {
+
+    /* Contenedor principal scrollable */
+    .modal-content {
+        height: 90vh;
+        /* Se mantiene una altura definida */
+        max-height: 90vh;
+        width: 90vw;
+        max-width: 90vw;
+        /* overflow-y: auto; ya está en la definición general, lo que permite el scroll. */
+    }
+
+    /* Grid vertical */
+    .modal-grid-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        overflow-y: visible;
+        /* El scroll lo maneja el .modal-content */
+        max-height: none;
+    }
+
+    .modal-col-left,
+    .modal-col-center,
+    .modal-col-right {
+        grid-column: 1 / -1;
+        max-height: none;
+        overflow-y: visible;
+        padding: 0;
+    }
+
+    .modal-col-center {
+        order: -1;
+        /* Escala la imagen para tablet */
+        max-width: 200px;
+        margin: 0 auto;
+    }
+
+    .modal-col-center img {
+        max-width: 180px;
+        max-height: 180px;
+    }
+
+    /* Columnas de nutrientes se adaptan */
+    .nutrient-grid.cols-3,
+    .nutrient-grid.cols-4,
+    .nutrient-grid.cols-5,
+    .nutrient-grid.cols-6 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* Móvil (max-width: 768px) */
 @media (max-width: 768px) {
     #contenedorFiltro {
         flex-direction: column;
@@ -227,6 +309,7 @@
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
 
+    /* **AJUSTE SOLICITADO:** Reduce el tamaño de la imagen de la tarjeta */
     #imgAlimento {
         max-height: 120px;
     }
@@ -235,27 +318,30 @@
         font-size: 14px;
     }
 
-    /* On smaller screens stack modal vertically */
-    .modal-body {
-        flex-direction: column;
+    /* Modal: Aún más pequeña la imagen en móvil */
+    .modal-col-center {
+        max-width: 100%;
+        margin: 0;
     }
 
-    .modal-left {
-        flex: none;
-        width: 100%;
+    .modal-col-center img {
+        max-width: 150px;
+        max-height: 150px;
     }
 
-    .modal-left img {
-        max-width: 260px;
-        margin: 0 auto;
+    .modal-content.modal-narrow,
+    .modal-content.modal-wide {
+        width: 95vw;
+        max-width: 95vw;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     .grid-container {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 
+    /* **AJUSTE SOLICITADO:** Reduce el tamaño de la imagen de la tarjeta */
     #imgAlimento {
         max-height: 100px;
     }
@@ -263,7 +349,24 @@
     #textTittleFood {
         font-size: 12px;
     }
+
+    /* Nutrientes a 1 columna en móvil muy pequeño */
+    .nutrient-grid.cols-2,
+    .nutrient-grid.cols-3,
+    .nutrient-grid.cols-4,
+    .nutrient-grid.cols-5,
+    .nutrient-grid.cols-6 {
+        grid-template-columns: 1fr;
+    }
 }
+
+/* Móvil muy pequeño (max-width: 480px) */
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+}
+
 
 /* Contenedor intermedio para apilar filtro y alimentos */
 .pagina-alimentos #cuerpo {
@@ -379,63 +482,6 @@
     }
 }
 
-@media (max-width: 900px) {
-    .modal-content {
-        max-width: 560px;
-        padding: 10px;
-    }
-}
-
-@media (max-width: 600px) {
-    .modal-content {
-        max-width: 95%;
-        padding: 8px;
-    }
-
-    .nutrient-grid.cols-4 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .nutrient-grid.cols-3 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Modal three-column layout: left grids, centered image+toggle, right grids */
-.modal-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 16px;
-    align-items: start;
-}
-
-.modal-grid .modal-col.center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.detalle-toggle {
-    margin-top: 8px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #b30000;
-    background: white;
-    color: #b30000;
-    cursor: pointer;
-}
-
-@media (max-width: 900px) {
-    .modal-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .modal-grid .modal-col.center {
-        order: 0;
-    }
-}
-
 .filtro-select-wrap {
     display: flex;
     align-items: center;
@@ -453,7 +499,6 @@
 
 .filtro-input-wrap {
     position: relative;
-
     display: flex;
     align-items: center;
     width: 100%;
@@ -468,7 +513,6 @@
     width: 90%;
     height: 90%;
     z-index: 6;
-
     object-fit: contain;
 }
 
@@ -478,6 +522,7 @@
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
 #categoriaSelect {
     appearance: none;
     -webkit-appearance: none;
@@ -544,7 +589,6 @@
     background-color: #b30000;
     padding: 6px 12px;
     margin-top: 0;
-    margin-right: 50%;
     border: none;
     cursor: pointer;
     font-weight: 600;
@@ -556,138 +600,52 @@
     transform: translateY(-1px);
 }
 
-/* ----------------- Modal ----------------- */
-.modal-content {
-    max-width: 90%;
-    width: 90%;
-    height: 80%;
-    overflow-y: auto;
-}
-
-.modal-body {
-    padding-top: 20px;
-    display: block;
-}
-
-.modal-grid-container {
-    display: grid;
-    gap: 16px;
-    align-items: start;
-    height: 100%;
-}
-
-.modal-col {
-    padding: 0 8px;
-}
-
-.modal-col-left {
-    grid-column: 1 / 3;
-    max-height: 70vh;
-    overflow-y: auto;
-    width: 100%;
-}
-
-.modal-col-center {
-    grid-column: 3 / 4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 10px;
-    position: sticky;
-    top: 0;
-}
-
-.modal-col-right {
-    grid-column: 4 / 6;
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-
-.modal-col-center img {
-    display: block;
-    width: 100%;
-    max-width: 250px;
-    max-height: 250px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 6px;
-}
-
-.detalle-toggle {
-    margin-top: 12px;
-    margin-right: 0;
-}
-
-@media (max-width: 992px) {
-    .modal-grid-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        overflow-y: visible;
-        max-height: none;
-    }
-
-    .modal-col-left,
-    .modal-col-center,
-    .modal-col-right {
-        grid-column: 1 / -1;
-        max-height: none;
-        overflow-y: visible;
-        padding: 0;
-    }
-
-    .modal-col-center {
-        order: -1;
-    }
-}
-
-.nutrient-grid.cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.nutrient-grid.cols-3,
-.nutrient-grid.cols-4,
-.nutrient-grid.cols-5,
-.nutrient-grid.cols-6 {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-@media (max-width: 600px) {
-
-    .nutrient-grid.cols-2,
-    .nutrient-grid.cols-3,
-    .nutrient-grid.cols-4,
-    .nutrient-grid.cols-5,
-    .nutrient-grid.cols-6 {
-        grid-template-columns: 1fr;
-    }
-}
-.modal-content {
-    background: #fff;
-    border-radius: 40px;
-    padding: 16px;
-    max-height: 80vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
+/* Clases de ancho de modal (Ajustadas para funcionar con la estructura) */
 .modal-content.modal-narrow {
-    width: 60vw;
     max-width: 900px;
+    width: 60vw;
 }
 
 .modal-content.modal-wide {
-    width: 80vw;
     max-width: 1200px;
+    width: 80vw;
+}
+#imgAlimento {
+    margin-top: 10%;
+    width: 80%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+@media (max-width: 992px) {
+    #imgAlimento {
+        margin-top: 10%;
+        max-height: 260px;
+        width: 75%;
+    }
 }
 
 @media (max-width: 768px) {
+    #imgAlimento {
+        margin-top: 10%;
+        max-height: 220px;
+        width: 70%;
+    }
+}
 
-    .modal-content.modal-narrow,
-    .modal-content.modal-wide {
-        width: 95vw;
-        max-width: 95vw;
+@media (max-width: 600px) {
+    #imgAlimento {
+        margin-top: 10%;
+        max-height: 180px;
+        width: 65%;
+    }
+}
+
+@media (max-width: 480px) {
+    #imgAlimento {
+        margin-top: 10%;
+        max-height: 160px;
+        width: 60%;
     }
 }
