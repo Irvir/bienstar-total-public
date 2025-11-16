@@ -59,6 +59,8 @@
 @media (min-width: 900px) {
     .header-inner {
         position: relative;
+        justify-content: flex-start; /* dejamos logo en flujo, menú se centrará absolutamente */
+        padding-right: 220px; /* reserva espacio para login absoluto (ajustar si cambia tamaño) */
     }
 
     .header-top-row .login {
@@ -72,8 +74,25 @@
     }
 
     /* centra el bloque de botones sin que el login afecte el flujo */
-    .menu-botones {
-        margin: 0 auto;
+    .menu-botones,
+    .menúBotones {
+        position: absolute;
+        top: 50%;
+        left: 52%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        width: max-content; /* ancho calculado solo con los tres botones */
+        max-width: 70%;
+        padding-right: clamp(40px, 6vw, 90px); /* espacio visual reservado para la campana fuera de flujo */
+    }
+
+    /* Campana fuera del flujo para que no afecte el centrado de los 3 botones */
+    .menúBotones .btnMenuNoti {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 100%; /* justo al final del ancho de los tres botones */
+        margin-left: clamp(12px, 2vw, 28px);
     }
 }
 

@@ -91,11 +91,48 @@ function Perfil() {
         <div id="divInfoUser">
           <ContenedorInfo
             usuario={usuario}
-            handleCerrarSesion={handleCerrarSesion}
-            handleBorrarCuenta={handleBorrarCuenta}
             onActualizarUsuario={onActualizarUsuario}
           />
-
+        </div>
+        {/* Bloque único de acciones de perfil */}
+        <div id="contenedorAccionesPerfil">
+          <button id="cerrarSesion" onClick={handleCerrarSesion}>
+            <span aria-hidden="true" style={{display:'inline-flex'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 3h7a2 2 0 0 1 2 2v3" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M19 12H9" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M15 8l4 4-4 4" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+            <span style={{marginLeft:'6px'}}>Cerrar Sesión</span>
+          </button>
+          <button
+            id="borrarCuenta"
+            onClick={() => {
+              if (typeof window.notifyConfirm === 'function') {
+                window.notifyConfirm(
+                  '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
+                  { type: 'error', duration: 0 },
+                  async () => { await handleBorrarCuenta(); },
+                  () => {},
+                );
+              } else {
+                handleBorrarCuenta();
+              }
+            }}
+          >
+            <span aria-hidden="true" style={{display:'inline-flex'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 6h18" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8 6V4h8v2" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M10 11v6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14 11v6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+            <span style={{marginLeft:'6px'}}>Borrar Cuenta</span>
+          </button>
         </div>
       </div>
 

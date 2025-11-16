@@ -1,13 +1,8 @@
-/* ==============================
-   PANTALLA DE CARGA
-============================== */
-/* Contenedor principal del loader (pantalla de carga) */
 
 /* Contenedor principal del cuerpo */
 #cuerpo {
     display: flex;
     flex-direction: row;
-    /* 👈 define orden de izquierda a derecha */
     flex-wrap: nowrap;
     width: 100%;
     height: 100vh;
@@ -71,29 +66,34 @@
 #divInfoUser {
     flex: 1;
     /* ocupa el resto del espacio */
-    padding: 20px;
+    padding: clamp(12px, 2.5vw, 32px);
     background-size: cover;
     background-position: center;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-y: auto; /* permitir scroll interno si el contenido crece en pantallas bajas */
 }
 
 /* Contenedor de info sesión más grande */
 /* Contenedor principal que alberga la tarjeta de perfil */
 #contenedorInfoSesion {
-    width: 50%;
+    /* Usar ancho fluido que se adapta entre móvil y desktop */
+    width: clamp(320px, 90%, 780px); /* Reducido de 860px */
     max-width: 1000px;
-    border-radius: 50px;
-    padding: 36px 36px;
+    border-radius: 40px; /* Reducido de 50px */
+    padding: 28px 32px; /* Reducido de 36px */
     box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     height: auto;
     margin-top: 20px;
-    min-height: 580px;
+    min-height: 520px; /* Reducido de 580px */
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
     background: #ffffff;
     -webkit-backdrop-filter: blur(15px);
@@ -114,14 +114,14 @@
     /* centrar horizontalmente todos los elementos */
     text-align: left;
     /* centrar texto dentro de los elementos */
-    font-size: 22px;
+    font-size: 20px; /* Reducido de 22px */
 
 }
 
 #tituloInfo {
-    font-size: 1.95rem;
+    font-size: 1.75rem; /* Reducido de 1.95rem */
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reducido de 20px */
     color: #0f1720;
     /* color más oscuro para mejor contraste */
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -196,18 +196,25 @@
     cursor: pointer;
 }
 
-.datoUsuarioRow {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    width: 100%;
+#contenedorAccionesPerfil {
+    width: clamp(320px, 90%, 780px); /* Reducido de 860px */
+    max-width: 1000px;
+    margin: 20px auto 0 auto; /* igual que la tarjeta principal */
+    display: flex;
+    flex-direction: row; /* lado a lado en desktop */
+    justify-content: center;
+    align-items: stretch;
+    gap: 16px; /* Reducido de 18px */
+    padding: 28px 32px; /* Reducido de 36px */
+    background: #ffffff;
+    border-radius: 40px; /* Reducido de 50px */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 10px rgba(0, 0, 0, 0.25); /* mismas sombras combinadas */
 }
-
 .info {
     font-weight: 800;
     color: #0b1216;
     letter-spacing: 0.2px;
-    font-size: 30px;
+    font-size: 24px; /* Reducido de 30px */
     justify-self: start;
     /* etiqueta alineada al inicio de su celda */
     text-align: left;
@@ -223,7 +230,7 @@
 .spEmail {
     margin: 0 auto;
     /* centrar internamente */
-    border-radius: 12px;
+    border-radius: 10px; /* Reducido de 12px */
     background: rgba(255, 255, 255, 0.2);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
@@ -233,9 +240,11 @@
     width: 100%;
     max-width: 560px;
     /* mantener consistencia entre filas */
-    padding: 12px 16px;
+    padding: 10px 14px; /* Reducido de 12px 16px */
     color: #111;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .spNombre:hover,
@@ -261,6 +270,18 @@
         margin-right: 8px;
         font-size: clamp(16px, 1.1vw, 20px);
         justify-self: start;
+    }
+
+    /* Centrar siempre el bloque de acciones */
+    #contenedorAccionesPerfil {
+        align-items: center;
+    }
+
+    #borrarCuenta,
+    #cerrarSesion {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     .spNombre,
@@ -351,20 +372,12 @@
 
 /* Contenedor cerrar sesión */
 /* Área derecha: foto de perfil y botón cerrar sesión */
-#contenedorCerrarSesion,
-#contenedorBorrarCuenta {
-    flex: 1 1 260px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 8px;
-}
+/* Eliminados contenedores separados; ahora se usa #contenedorAccionesPerfil */
 
 /* Contenedor circular para la imagen del usuario. URL vacía para que el usuario la rellene más tarde */
 #imagenUser {
-    width: 320px;
-    /* agrandada */
-    height: 300px;
+    width: 280px; /* Reducido de 320px */
+    height: 260px; /* Reducido de 300px */
     /* usar la imagen del directorio public */
     background-image: url("/Imagenes/Login_Perfil/fotoperfilusuario.png");
     background-size: cover;
@@ -376,15 +389,14 @@
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
 #cerrarSesion,
 #borrarCuenta {
-
-    width: 40%;
-    padding: 12px 18px;
-    font-size: 16px;
+    flex: 1 1 240px; /* mismo ancho relativo */
+    padding: 12px 18px; /* Reducido de 14px 20px */
+    font-size: 15px; /* Reducido de 16px */
     font-weight: 800;
     color: #fff;
     background: #EC221F;
     border: none;
-    border-radius: 12px;
+    border-radius: 12px; /* Reducido de 14px */
     cursor: pointer;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -392,12 +404,8 @@
 
 #borrarCuenta,
 #cerrarSesion {
-    /* Usar margin-top:auto para que el botón se empuje hacia el fondo del contenedor
-       y align-self para controlar la alineación horizontal */
-    margin-top: auto;
-    margin-right: 0;
+    margin-top: 0;
     align-self: center;
-    /* centrar dentro de su contenedor por defecto */
 }
 
 #cerrarSesion:hover,
@@ -423,38 +431,43 @@
     }
 
     #contenedorInfoSesion {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        width: 100%;
+        padding: clamp(18px, 4vw, 32px) clamp(14px, 3.5vw, 28px); /* Reducido */
+        gap: 20px;
     }
 
-    #contenedorInfo,
-    #contenedorCerrarSesion,
-    #contenedorBorrarCuenta {
+    #contenedorInfo {
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 8px;
     }
 
     /* Apilar los contenedores de cerrar/borrar cuenta sin separación horizontal */
-    #contenedorCerrarSesion,
-    #contenedorBorrarCuenta {
-        /* Evita que flex-basis 260px fuerce separación horizontal */
-        flex: none;
-        width: 100%;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 14px;
-        /* espacio vertical entre elementos internos */
+    /* Contenedores de acciones ya usan ancho fluido y se apilan por DOM */
+    #contenedorAccionesPerfil {
+        flex-direction: column; /* apilar en móviles */
+        gap: 16px; /* Reducido de 18px */
+        order: 2; /* asegurar que queda debajo del info */
+        padding: 20px 24px; /* Reducido */
+        margin-top: 20px;
+        border-radius: 35px; /* Reducido */
     }
 
     /* Ajustes específicos para los botones en pantallas pequeñas */
     #borrarCuenta,
     #cerrarSesion {
-        width: 90%;
-        padding: 10px 14px;
-        margin-top: 12px;
-        /* espacio entre imagen y botones en móvil */
-        align-self: center;
+        width: 100%;
+        flex: 1 1 auto;
+        margin-top: 0;
+        padding: 10px 14px; /* Reducido */
+    }
+    /* Filas usuario más compactas, sin bordes laterales que comen espacio */
+    .datoUsuarioRow {
+        border-left: none;
+        border-right: none;
+        padding: 12px 10px;
     }
 }
 
@@ -466,15 +479,13 @@
         align-items: flex-start;
     }
 
-    /* Hacer que el área de botones ocupe toda la fila y se centre */
-    #contenedorCerrarSesion,
-    #contenedorBorrarCuenta {
+    /* Bloque de acciones ocupa toda la fila y se centra */
+    #contenedorAccionesPerfil {
         flex: 0 0 100%;
         display: flex;
         justify-content: center;
-        margin-top: 18px;
+        margin-bottom: 24px;
         order: 2;
-        /* aparecer después de #contenedorInfo */
     }
 
 
@@ -491,23 +502,17 @@
 }
 
 .perfil-page #divMenuLateral {
-    /* Convertir el menú lateral en barra horizontal */
-    margin-top: 3px;
-    flex: 0 0 auto;
+    /* Barra horizontal centrada y simple */
+    margin: 16px auto 0 auto;
     width: 100%;
-    min-width: 0;
-    height: 50px;
-    min-height: 0;
+    max-width: 1100px;
     padding: 12px 16px;
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
+    gap: 16px;
     justify-content: center;
+    align-items: center;
     background: transparent;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
     border: none;
     box-shadow: none;
 }
@@ -525,10 +530,6 @@
     padding-top: 8px;
 }
 
-/* ==============================
-   PERFIL — Ajustes móviles extra
-   Mejora legibilidad y evita desbordes en ≤640px
-============================== */
 @media (max-width: 640px) {
 
     /* Menú superior compacto */
@@ -577,11 +578,11 @@
     /* Tarjeta responsiva */
     #contenedorInfoSesion {
         max-width: 100%;
-        padding: 16px 14px;
-        border-radius: 18px;
+        padding: 18px 16px;
+        border-radius: 32px;
         min-height: initial;
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
     }
 
     /* Cabecera y acciones en columna */
@@ -598,6 +599,7 @@
     /* Campos e inputs responsivos */
     .datoUsuarioRow {
         grid-template-columns: 1fr;
+        padding: 10px 8px;
     }
 
     .info {
@@ -615,16 +617,25 @@
 
     /* Imagen más compacta */
     #imagenUser {
-        width: 200px;
-        height: 180px;
+        width: 180px; /* Reducido */
+        height: 165px; /* Reducido */
         margin: 8px auto 12px;
     }
 
     /* Botones ocupan ancho completo */
+    #contenedorAccionesPerfil {
+        order: 2; /* mantener debajo */
+        flex-direction: column;
+        gap: 14px; /* Reducido */
+        padding: 18px 20px; /* Reducido */
+        margin-top: 20px;
+        margin-bottom: 24px;
+        border-radius: 32px; /* Reducido */
+    }
     #borrarCuenta,
     #cerrarSesion {
         width: 100%;
-        max-width: 520px;
+        margin-top: 0;
     }
 }
 
@@ -644,74 +655,28 @@
     }
 
     #imagenUser {
-        width: 170px;
-        height: 156px;
+        width: 150px; /* Reducido */
+        height: 136px; /* Reducido */
     }
 
     #contenedorInfoSesion {
-        padding: 14px 12px;
-        border-radius: 16px;
+        padding: 12px 10px; /* Reducido */
+        border-radius: 14px; /* Reducido */
     }
 }
 
-#divMenuLateral {
-    margin-top: 50px;
-    flex: 0 0 12%;
-    min-width: 120px;
-    display: flex;
-
-}
-
-#divMenuLateral {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* centra verticalmente */
-    align-items: center;
-    /* centra horizontalmente */
-    padding: 200px;
-}
-
-#divMenuLateral {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    /* 👈 alinea los botones a la izquierda */
-    padding-left: 2000px;
-    /* 👈 empuja los botones hacia la derecha */
-    background-color: black;
-}
-
-#divMenuLateral {
-    margin-top: 50px;
-    margin-left: 2.2%;
-    flex: 0 0 20%;
-    border-radius: 12px;
-    min-width: 250px;
-
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    box-sizing: border-box;
-
-    height: 79vh;
-    min-height: 320px;
-}
+/* Eliminados estilos viejos de #divMenuLateral para evitar conflicto.
+   Si se requiere un menú vertical en otra página, definirlo allí con un selector más específico. */
 
 /* ======== BOTONES DEL MENÚ ======== */
-#divMenuLateral .botonesPerfil,
-#divMenuLateral .botonesPerfilSelec {
-    align-self: flex-start;
-    margin-left: 40px;
-    width: 80%;
+/* Botones del menú horizontal perfil */
+.perfil-page #divMenuLateral .botonesPerfil,
+.perfil-page #divMenuLateral .botonesPerfilSelec {
+    width: auto;
+    min-width: 180px;
+    margin: 0;
+    align-self: center;
+    flex: 0 0 auto;
 }
 
 /* ======== INFO Y FILAS DE USUARIO ======== */
@@ -724,7 +689,10 @@
     color: gray;
     border-right: #0b1216 solid 1px;
     border-left: #0b1216 solid 1px;
-    padding: 2% 5%;
+    /* Padding porcentual puede comprimir demasiado; usar valores fluidos controlados */
+    padding: clamp(8px, 1.8vw, 18px) clamp(14px, 3vw, 38px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Línea de borde inferior con márgenes laterales (no ocupa todo el ancho) */
@@ -775,4 +743,9 @@
     border-top: 1px solid #0b1216 !important;
     border-top-left-radius: 45px;
     border-top-right-radius: 45px;
+}
+
+/* Ajuste responsivo: ampliar ligeramente en pantallas muy anchas */
+@media (min-width: 1400px) {
+    .perfil-page #divMenuLateral { max-width: 1280px; }
 }

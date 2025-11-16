@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/Perfil.css';
 
-export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorrarCuenta, onActualizarUsuario }) {
+// Este componente ahora sólo muestra y edita la información del usuario.
+// Los botones de cerrar sesión y borrar cuenta se movieron fuera, al nivel de Perfil.jsx
+export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
     nombre: '',
@@ -168,11 +170,11 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
   };
 
   const etiquetas = {
-    nombre: 'Nombre:',
-    edad: 'Edad:',
-    peso: 'Peso:',
-    altura: 'Altura:',
-    email: 'Correo:',
+    nombre: '👤 Nombre:',
+    edad: '🎂 Edad:',
+    peso: '⚖️ Peso:',
+    altura: '📏 Altura:',
+    email: '📧 Correo:',
   };
   const getUserEmail = (u) => {
     if (!u) return null;
@@ -210,8 +212,12 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
             </button>
           ) : (
             <div className="accionesEditarPerfil">
-              <button className="btnGuardarPerfil" onClick={saveEdit}>Guardar</button>
-              <button className="btnCancelarPerfil" onClick={cancelEdit}>Cancelar</button>
+              <button className="btnGuardarPerfil" onClick={saveEdit}>
+                💾 Guardar
+              </button>
+              <button className="btnCancelarPerfil" onClick={cancelEdit}>
+                ❌ Cancelar
+              </button>
             </div>
           )}
         </div>
@@ -239,7 +245,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
         {/* Sexo */}
         <div className="datoUsuarioRow">
-          <div className="info">Sexo:</div>
+          <div className="info">⚧ Sexo:</div>
           {editMode ? (
             <select name="sexo" value={form.sexo} onChange={handleChange}>
               <option value="">Seleccione</option>
@@ -254,7 +260,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
         {/* Actividad física */}
         <div className="datoUsuarioRow">
-          <div className="info">Actividad Física:</div>
+          <div className="info">🏃 Actividad Física:</div>
           {editMode ? (
             <select name="actividad_fisica" value={form.actividad_fisica} onChange={handleChange}>
               <option value="">Seleccione</option>
@@ -270,7 +276,7 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
 
         {/* Alergias */}
         <div className="datoUsuarioRow">
-          <div className="info">Alergias:</div>
+          <div className="info">🥜 Alergias:</div>
           {editMode ? (
             <input
               type="text"
@@ -285,30 +291,6 @@ export default function ContenedorInfo({ usuario, handleCerrarSesion, handleBorr
         </div>
       </div>
 
-      <div id="contenedorCerrarSesion">
-        <button id="cerrarSesion" onClick={handleCerrarSesion}>CERRAR SESIÓN</button>
-      </div>
-
-      <div id="contenedorBorrarCuenta">
-        <button
-          id="borrarCuenta"
-          onClick={() => {
-            if (typeof window.notifyConfirm === 'function') {
-              window.notifyConfirm(
-                '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
-                { type: 'error', duration: 0 },
-                async () => {
-                  await handleBorrarCuenta();
-                },
-                () => {
-                },
-              );
-            } else {
-              handleBorrarCuenta();
-            }
-          }}
-        >BORRAR CUENTA</button>
-      </div>
     </div>
   );
 }
