@@ -114,6 +114,24 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Params: `id`
   - Respuesta: objeto usuario o 404
 
+- GET `/user/:id/weights`
+  - Qué hace: Devuelve el historial de peso del usuario ordenado por fecha descendente.
+  - Query opcional: `limit` (máximo 180), `from`, `to` (YYYY-MM-DD)
+  - Respuesta: { items: [{ id, fecha, peso }], count }
+
+- POST `/user/:id/weights`
+  - Qué hace: Crea o actualiza el registro de peso para una fecha concreta (por defecto hoy).
+  - Body: { peso, fecha?, fuente? }
+  - Respuesta: { message, item }
+
+- PATCH `/user/:id/weights/:weightId`
+  - Qué hace: Actualiza un registro específico (peso, fecha o fuente).
+  - Params: `id`, `weightId`
+
+- DELETE `/user/:id/weights/:weightId`
+  - Qué hace: Elimina un registro puntual.
+  - Respuesta: { message }
+
 ## Endpoints relacionados con alimentos y búsqueda (públicos)
 
 - GET `/food/:id`

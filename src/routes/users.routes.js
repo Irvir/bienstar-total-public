@@ -1,5 +1,6 @@
 import express from 'express';
 import * as usersController from '../controllers/users.controller.js';
+import * as weightLogsController from '../controllers/weightLogs.controller.js';
 
 export default function createUsersRouter({ pool } = {}) {
   const router = express.Router();
@@ -15,6 +16,10 @@ export default function createUsersRouter({ pool } = {}) {
   router.post('/:id/deactivate', (req, res) => usersController.deactivateUser(req, res, { pool }));
   router.post('/:id/activate', (req, res) => usersController.activateUser(req, res, { pool }));
   router.delete('/:id', (req, res) => usersController.deleteUser(req, res, { pool }));
+  router.get('/:id/weights', (req, res) => weightLogsController.listWeightLogs(req, res, { pool }));
+  router.post('/:id/weights', (req, res) => weightLogsController.createWeightLog(req, res, { pool }));
+  router.patch('/:id/weights/:weightId', (req, res) => weightLogsController.updateWeightLog(req, res, { pool }));
+  router.delete('/:id/weights/:weightId', (req, res) => weightLogsController.deleteWeightLog(req, res, { pool }));
   router.get('/:id', (req, res) => usersController.getUserById(req, res, { pool }));
 
   return router;

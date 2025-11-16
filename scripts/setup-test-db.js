@@ -28,6 +28,7 @@ async function setupTestDatabase() {
       DROP TABLE IF EXISTS test_dia;
       DROP TABLE IF EXISTS test_categoria_alergico;
       DROP TABLE IF EXISTS test_alimento;
+      DROP TABLE IF EXISTS test_registro_peso;
       DROP TABLE IF EXISTS test_usuario;
       DROP TABLE IF EXISTS test_dieta;
       DROP TABLE IF EXISTS test_perfil;
@@ -64,6 +65,19 @@ async function setupTestDatabase() {
         estado ENUM('activo', 'inactivo') NOT NULL DEFAULT 'activo',
         FOREIGN KEY (id_perfil) REFERENCES test_perfil(id_perfil),
         FOREIGN KEY (id_dieta) REFERENCES test_dieta(id_dieta)
+      );
+
+      -- Registro de peso
+      CREATE TABLE IF NOT EXISTS test_registro_peso (
+        id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        id_usuario INT NOT NULL,
+        fecha DATE NOT NULL,
+        peso DECIMAL(5,2) NOT NULL,
+        fuente ENUM('manual', 'sync') NOT NULL DEFAULT 'manual',
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (id_usuario) REFERENCES test_usuario(id) ON DELETE CASCADE,
+        UNIQUE KEY uk_test_registro_peso_usuario_fecha (id_usuario, fecha)
       );
 
       -- Alimento

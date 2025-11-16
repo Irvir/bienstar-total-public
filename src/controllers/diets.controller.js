@@ -1,3 +1,5 @@
+import { getTableName } from '../utils/db.js';
+
 export async function getDiet(req, res, { pool } = {}) {
   try {
     const id_dieta = parseInt(req.query.id_dieta);
@@ -211,7 +213,13 @@ export async function deleteDietItem(req, res, { pool } = {}) {
 }
 
 export async function getCalendar(req, res, { pool } = {}) {
-  const { fecha } = req.params || {};
+  const rawFecha = req.params?.fecha;
+  const normalizedFecha = (() => {
+    if (!rawFecha) return new Date().toISOString().split('T')[0];
+    const parsed = new Date(rawFecha);
+    if (Number.isNaN(parsed.getTime())) return new Date().toISOString().split('T')[0];
+    return parsed.toISOString().split('T')[0];
+  })();
 
   try {
     const headerUser = req.get('x-user-id');
@@ -230,6 +238,24 @@ export async function getCalendar(req, res, { pool } = {}) {
     }
 
     const { peso, id_dieta } = usuarioRows[0];
+
+    const weightTable = getTableName('registro_peso');
+    let weightRows = [];
+    try {
+      const [rows] = await pool.query(
+        `SELECT peso, fuente
+         FROM ${weightTable}
+         WHERE id_usuario = ? AND fecha = ?
+         LIMIT 1`,
+        [userId, normalizedFecha],
+      );
+      weightRows = rows;
+    } catch (error) {
+      console.warn('registro_peso lookup failed (posiblemente tabla ausente en entorno):', error.message);
+    }
+
+    const pesoRegistrado = weightRows && weightRows[0] ? Number(weightRows[0].peso) : null;
+    const pesoDelDia = pesoRegistrado ?? (peso ?? null);
 
     const dietaInfo = { id: id_dieta || null, nombre: null, items: [] };
     if (id_dieta) {
@@ -260,7 +286,13 @@ export async function getCalendar(req, res, { pool } = {}) {
       dietaInfo.items = dietaRows || [];
     }
 
-    res.json({ fecha, peso: peso ?? null, dieta: dietaInfo });
+    res.json({
+      fecha: normalizedFecha,
+      peso: pesoDelDia,
+      dieta: dietaInfo,
+      pesoFuente: pesoRegistrado !== null ? 'registro' : 'perfil',
+      pesoPerfil: peso ?? null,
+    });
   } catch (err) {
     console.error(' Error en GET /api/calendario/:fecha:', err);
     res.status(500).json({ message: 'Error al obtener datos del día' });

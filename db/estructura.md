@@ -12,6 +12,7 @@
 	- [perfil](#perfil)
 	- [dieta](#dieta)
 	- [alimento](#alimento)
+	- [registro_peso](#registro_peso)
 - [Insertar datos de ejemplo](#-insertar-datos-de-ejemplo)
 
 ---
@@ -114,6 +115,24 @@ Tabla que almacena información nutricional detallada de cada alimento.
 | Zinc                  | FLOAT        | YES  |       | Zinc (mg)                                   |
 | Cobre                 | FLOAT        | YES  |       | Cobre (mg)                                  |
 | Selenio               | FLOAT        | YES  |       | Selenio (µg)                                |
+
+---
+
+### registro_peso
+
+Tabla histórica que almacena el peso capturado por cada usuario en fechas concretas.
+
+| Campo      | Tipo          | Null | Clave | Descripción                                  |
+| ---------- | ------------- | ---- | ----- | -------------------------------------------- |
+| id         | INT           | NO   | PK    | Identificador incremental                    |
+| id_usuario | INT           | NO   | FK    | Usuario al que pertenece el registro         |
+| fecha      | DATE          | NO   | UNI   | Día del registro (único por usuario)         |
+| peso       | DECIMAL(5,2)  | NO   |       | Peso en kilogramos (permite decimales)       |
+| fuente     | ENUM          | NO   |       | Origen del dato (`manual` o `sync`)          |
+| created_at | TIMESTAMP     | NO   |       | Fecha de creación                            |
+| updated_at | TIMESTAMP     | NO   |       | Última modificación                          |
+
+> Reglas: `FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE`, índice único `(id_usuario, fecha)` para impedir duplicados diarios y `fuente` sirve para distinguir registros manuales de eventuales sincronizaciones.
 
 ---
 
