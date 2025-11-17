@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import '../styles/CrearDieta.css';
 import withAuth from '../components/withAuth';
 import Encabezado from './Encabezado';
@@ -24,26 +24,26 @@ function CrearDieta() {
   const [loading, setLoading] = useState(false);
   const [editingDietId, setEditingDietId] = useState(null);
   const [targetName, setTargetName] = useState(null);
-  const dietTarget = useMemo(() => {
+  const [dietTarget, setDietTarget] = useState(() => {
     try {
       const raw = localStorage.getItem('dietTarget');
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
-  }, []);
+  });
 
-  // Cuando el doctor selecciona un paciente, reflejar su nombre/email en el encabezado
-  useEffect(() => {
-    if (!usuario) return;
-    const span = document.querySelector('.nameUser');
-    if (!span) return;
-    if (dietTarget?.nombre || dietTarget?.email) {
-      const display = dietTarget.nombre || dietTarget.email;
-      span.textContent = display;
-      setTargetName(display);
-    }
-  }, [usuario, dietTarget]);
+  const updateDietTarget = useCallback((nextValue) => {
+    setDietTarget(prev => {
+      const resolved = typeof nextValue === 'function' ? nextValue(prev) : nextValue;
+      if (!resolved) {
+        localStorage.removeItem('dietTarget');
+        return null;
+      }
+      localStorage.setItem('dietTarget', JSON.stringify(resolved));
+      return resolved;
+    });
+  }, []);
 
   // ================== SESIÓN ==================
   useEffect(() => {
@@ -57,12 +57,8 @@ function CrearDieta() {
 
     const nameUserSpan = document.querySelector('.nameUser');
     if (nameUserSpan) {
-      // Si es doctor y hay un target seleccionado, mostrar el nombre del paciente
-      if (user.id_perfil === 3 && (dietTarget?.email || targetName)) {
-        nameUserSpan.textContent = (dietTarget?.nombre || targetName || dietTarget?.email || user.name);
-      } else {
-        nameUserSpan.textContent = user.name;
-      }
+      const display = user.nombre || user.name || user.email || 'Usuario';
+      nameUserSpan.textContent = display;
     }
 
     const fotoUsuario = document.getElementById('fotoUsuario');
@@ -70,17 +66,6 @@ function CrearDieta() {
       fotoUsuario.addEventListener('click', () => navigateWithLoader('/perfil'));
     }
   }, []);
-
-  // Si resolvemos el nombre del paciente después, actualizamos el encabezado
-  useEffect(() => {
-    if (!usuario) return;
-    if (usuario.id_perfil !== 3) return;
-    const span = document.querySelector('.nameUser');
-    if (!span) return;
-    if (targetName || dietTarget?.email) {
-      span.textContent = targetName || dietTarget?.email;
-    }
-  }, [usuario, targetName]);
 
   // Inicializar nombre mostrado si hay dietTarget
   useEffect(() => {
@@ -139,6 +124,19 @@ function CrearDieta() {
     }
   }
 
+  const loggedUserName = useMemo(() => {
+    if (!usuario) return 'Invitado';
+    return usuario.nombre || usuario.name || usuario.email || 'Invitado';
+  }, [usuario]);
+
+  const pacienteDisplayName = useMemo(() => {
+    if (!usuario) return 'Invitado';
+    if (usuario.id_perfil === 3) {
+      return targetName || dietTarget?.nombre || dietTarget?.email || 'Paciente sin seleccionar';
+    }
+    return loggedUserName;
+  }, [usuario, targetName, dietTarget, loggedUserName]);
+
   useEffect(() => {
     (async () => {
       const iniciales = await buscarAlimentos('');
@@ -154,7 +152,7 @@ function CrearDieta() {
   }, [filtro]);
 
   // ================== DIETA DEL DÍA ==================
-  async function cargarDietaDelDia() {
+  const cargarDietaDelDia = useCallback(async () => {
     if (!usuario) return;
     setLoading(true);
     try {
@@ -178,11 +176,11 @@ function CrearDieta() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [usuario, editingDietId, dietTarget]);
 
   useEffect(() => {
     if (usuario && (editingDietId || usuario.id_dieta || usuario.id_diet)) cargarDietaDelDia();
-  }, [usuario, diaSeleccionado, editingDietId]);
+  }, [usuario, editingDietId, cargarDietaDelDia]);
 
   // Determinar id de dieta objetivo (doctor puede editar la de otro usuario)
   useEffect(() => {
@@ -404,6 +402,7 @@ function CrearDieta() {
           setDiaSeleccionado={setDiaSeleccionado}
           traducciones={traducciones}
           borrarDietaDelDia={borrarDietaDelDia}
+          displayName={pacienteDisplayName}
         />
 
         {/* DERECHA */}

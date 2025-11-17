@@ -7,10 +7,10 @@ export default function CrearDietaForm({
   setDiaSeleccionado,
   traducciones,
   borrarDietaDelDia,
-
+  displayName,
 }) {
   const comidasDelDia = dietaAgrupada[diaSeleccionado] || {};
-  const usuario = JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Invitado' };
+  const tituloUsuario = displayName || (JSON.parse(localStorage.getItem('usuario')) || { nombre: 'Invitado' }).nombre;
 
   // Emojis para cada tipo de comida
   const emojisComida = {
@@ -26,8 +26,8 @@ export default function CrearDietaForm({
       <h2 id="diaSeleccionado">
                 Dieta del Día <span id="diaSeleccionadoTexto">– {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'][diaSeleccionado - 1]}</span>
         <br />
-                de
-        <span id="nombreUsuario">{usuario.nombre}</span>
+                de:
+              <span id="nombreUsuario">{tituloUsuario}</span>
 
       </h2>
 
