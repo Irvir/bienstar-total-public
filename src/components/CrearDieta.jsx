@@ -99,12 +99,40 @@ function CrearDieta() {
   // ================== BUSCAR ALIMENTOS ==================
   async function buscarAlimentos(query = '') {
     setLoading(true);
+    const encodedQuery = encodeURIComponent(query || '');
+    const endpoints = [
+      `${API_BASE}/food-search?q=${encodedQuery}`,
+      query ? `${API_BASE}/api/alimentos?q=${encodedQuery}` : `${API_BASE}/api/alimentos`,
+    ];
+    let lastError = null;
     try {
-      const res = await fetch(`${API_BASE}/food-search?q=` + encodeURIComponent(query));
-      if (!res.ok) return [];
-      return await res.json();
-    } catch (e) {
-      console.error('Error al buscar alimentos:', e);
+      const tryEndpoint = async (url) => {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) {
+            lastError = `${url} -> ${res.status}`;
+            return null;
+          }
+          const data = await res.json();
+          if (Array.isArray(data)) return data;
+          lastError = `${url} -> respuesta no válida`;
+          return null;
+        } catch (inner) {
+          lastError = inner?.message || String(inner);
+          return null;
+        }
+      };
+
+      const firstAttempt = await tryEndpoint(endpoints[0]);
+      if (firstAttempt) return firstAttempt;
+
+      const secondAttempt = await tryEndpoint(endpoints[1]);
+      if (secondAttempt) return secondAttempt;
+
+      if (lastError) {
+        console.error('Error al buscar alimentos:', lastError);
+        window.notify?.('No se pudo cargar la lista de alimentos. Intenta nuevamente en unos segundos.', { type: 'error' });
+      }
       return [];
     } finally {
       setLoading(false);

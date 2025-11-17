@@ -6,7 +6,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import multer from 'multer';
 import createAdminFoodsRouter from './src/routes/adminFoods.routes.js';
-import { getFoodById } from './src/controllers/foods.controller.js';
+import { getFoodById, searchFoods } from './src/controllers/foods.controller.js';
 import createUsersRouter from './src/routes/users.routes.js';
 import createDietsRouter from './src/routes/diets.routes.js';
 import createFoodsRouter from './src/routes/foods.routes.js';
@@ -130,6 +130,8 @@ app.post('/checkEmail', (req, res) => checkEmail(req, res, { pool }));
 // Compatibilidad con rutas antiguas usadas por el frontend
 // Permite peticiones como GET /food/:id (usa el controlador público de alimentos)
 app.get('/food/:id', (req, res) => getFoodById(req, res, { pool }));
+// Alias legacy para la búsqueda de alimentos (React y páginas estáticas esperan /food-search)
+app.get('/food-search', (req, res) => searchFoods(req, res, { pool }));
 app.use('/admin/users', createUsersRouter({ pool }));
 app.use('/user', createUsersRouter({ pool }));
 app.use('/admin/user', createUsersRouter({ pool }));
