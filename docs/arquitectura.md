@@ -69,23 +69,3 @@ La carpeta `docs/` incluye documentos de arquitectura, endpoints, requisitos fun
 
 ---
 
-## ✅ Notas de alineación y mejoras futuras
-
-1. Unificar definitivamente la distinción entre `src/controllers` (cliente) y `server/` (backend) para evitar ambigüedad. Se sugiere renombrar `src/controllers` a `src/client` o `src/services` en una iteración futura.
-2. Documentar en `README.md` el flujo de inicialización (instalar dependencias, ejecutar migraciones, arrancar servidor + frontend).
-3. Añadir sección de "Convenciones" (naming, estructura de componentes, manejo de estado) para reforzar cohesión.
-4. Explorar mover middlewares puramente de backend fuera de `src/middleware` si actualmente hay mezcla de responsabilidades.
-
----
-
-## 🏁 Resumen
-
-La estructura actual soporta separación clara de documentación, frontend, backend, pruebas y datos. Las mejoras propuestas buscan principalmente reforzar claridad semántica y facilitar escalabilidad.
-
----
-
-Última actualización: (revisar y completar fecha al confirmar cambios)
-
----
-
-
