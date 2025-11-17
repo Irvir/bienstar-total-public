@@ -18,21 +18,8 @@
         }
         try {
           const usuario = JSON.parse(raw);
-          // Si el usuario es doctor y hay un paciente seleccionado (dietTarget), mostrar su nombre/email
-          try {
-            const targetRaw = localStorage.getItem('dietTarget');
-            const target = targetRaw ? JSON.parse(targetRaw) : null;
-            if (usuario?.id_perfil === 3 && (target?.nombre || target?.email)) {
-              const display = target.nombre || target.email;
-              setUserName(display);
-            } else {
-              const name = usuario?.nombre || usuario?.name || usuario?.email || 'Invitado';
-              setUserName(name);
-            }
-          } catch {
-            const name = usuario?.nombre || usuario?.name || usuario?.email || 'Invitado';
-            setUserName(name);
-          }
+          const name = usuario?.nombre || usuario?.name || usuario?.email || 'Invitado';
+          setUserName(name);
           setIsLogged(true);
         } catch (e) {
           console.warn('Usuario inválido en localStorage', e);

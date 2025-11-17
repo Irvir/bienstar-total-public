@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import '../styles/CrearDieta.css';
 import withAuth from '../components/withAuth';
 import Encabezado from './Encabezado';
@@ -24,26 +24,26 @@ function CrearDieta() {
   const [loading, setLoading] = useState(false);
   const [editingDietId, setEditingDietId] = useState(null);
   const [targetName, setTargetName] = useState(null);
-  const dietTarget = useMemo(() => {
+  const [dietTarget, setDietTarget] = useState(() => {
     try {
       const raw = localStorage.getItem('dietTarget');
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
-  }, []);
+  });
 
-  // Cuando el doctor selecciona un paciente, reflejar su nombre/email en el encabezado
-  useEffect(() => {
-    if (!usuario) return;
-    const span = document.querySelector('.nameUser');
-    if (!span) return;
-    if (dietTarget?.nombre || dietTarget?.email) {
-      const display = dietTarget.nombre || dietTarget.email;
-      span.textContent = display;
-      setTargetName(display);
-    }
-  }, [usuario, dietTarget]);
+  const updateDietTarget = useCallback((nextValue) => {
+    setDietTarget(prev => {
+      const resolved = typeof nextValue === 'function' ? nextValue(prev) : nextValue;
+      if (!resolved) {
+        localStorage.removeItem('dietTarget');
+        return null;
+      }
+      localStorage.setItem('dietTarget', JSON.stringify(resolved));
+      return resolved;
+    });
+  }, []);
 
   // ================== SESIÓN ==================
   useEffect(() => {
@@ -57,12 +57,8 @@ function CrearDieta() {
 
     const nameUserSpan = document.querySelector('.nameUser');
     if (nameUserSpan) {
-      // Si es doctor y hay un target seleccionado, mostrar el nombre del paciente
-      if (user.id_perfil === 3 && (dietTarget?.email || targetName)) {
-        nameUserSpan.textContent = (dietTarget?.nombre || targetName || dietTarget?.email || user.name);
-      } else {
-        nameUserSpan.textContent = user.name;
-      }
+      const display = user.nombre || user.name || user.email || 'Usuario';
+      nameUserSpan.textContent = display;
     }
 
     const fotoUsuario = document.getElementById('fotoUsuario');
@@ -70,17 +66,6 @@ function CrearDieta() {
       fotoUsuario.addEventListener('click', () => navigateWithLoader('/perfil'));
     }
   }, []);
-
-  // Si resolvemos el nombre del paciente después, actualizamos el encabezado
-  useEffect(() => {
-    if (!usuario) return;
-    if (usuario.id_perfil !== 3) return;
-    const span = document.querySelector('.nameUser');
-    if (!span) return;
-    if (targetName || dietTarget?.email) {
-      span.textContent = targetName || dietTarget?.email;
-    }
-  }, [usuario, targetName]);
 
   // Inicializar nombre mostrado si hay dietTarget
   useEffect(() => {
@@ -99,17 +84,58 @@ function CrearDieta() {
   // ================== BUSCAR ALIMENTOS ==================
   async function buscarAlimentos(query = '') {
     setLoading(true);
+    const encodedQuery = encodeURIComponent(query || '');
+    const endpoints = [
+      `${API_BASE}/food-search?q=${encodedQuery}`,
+      query ? `${API_BASE}/api/alimentos?q=${encodedQuery}` : `${API_BASE}/api/alimentos`,
+    ];
+    let lastError = null;
     try {
-      const res = await fetch(`${API_BASE}/food-search?q=` + encodeURIComponent(query));
-      if (!res.ok) return [];
-      return await res.json();
-    } catch (e) {
-      console.error('Error al buscar alimentos:', e);
+      const tryEndpoint = async (url) => {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) {
+            lastError = `${url} -> ${res.status}`;
+            return null;
+          }
+          const data = await res.json();
+          if (Array.isArray(data)) return data;
+          lastError = `${url} -> respuesta no válida`;
+          return null;
+        } catch (inner) {
+          lastError = inner?.message || String(inner);
+          return null;
+        }
+      };
+
+      const firstAttempt = await tryEndpoint(endpoints[0]);
+      if (firstAttempt) return firstAttempt;
+
+      const secondAttempt = await tryEndpoint(endpoints[1]);
+      if (secondAttempt) return secondAttempt;
+
+      if (lastError) {
+        console.error('Error al buscar alimentos:', lastError);
+        window.notify?.('No se pudo cargar la lista de alimentos. Intenta nuevamente en unos segundos.', { type: 'error' });
+      }
       return [];
     } finally {
       setLoading(false);
     }
   }
+
+  const loggedUserName = useMemo(() => {
+    if (!usuario) return 'Invitado';
+    return usuario.nombre || usuario.name || usuario.email || 'Invitado';
+  }, [usuario]);
+
+  const pacienteDisplayName = useMemo(() => {
+    if (!usuario) return 'Invitado';
+    if (usuario.id_perfil === 3) {
+      return targetName || dietTarget?.nombre || dietTarget?.email || 'Paciente sin seleccionar';
+    }
+    return loggedUserName;
+  }, [usuario, targetName, dietTarget, loggedUserName]);
 
   useEffect(() => {
     (async () => {
@@ -126,7 +152,7 @@ function CrearDieta() {
   }, [filtro]);
 
   // ================== DIETA DEL DÍA ==================
-  async function cargarDietaDelDia() {
+  const cargarDietaDelDia = useCallback(async () => {
     if (!usuario) return;
     setLoading(true);
     try {
@@ -150,11 +176,11 @@ function CrearDieta() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [usuario, editingDietId, dietTarget]);
 
   useEffect(() => {
     if (usuario && (editingDietId || usuario.id_dieta || usuario.id_diet)) cargarDietaDelDia();
-  }, [usuario, diaSeleccionado, editingDietId]);
+  }, [usuario, editingDietId, cargarDietaDelDia]);
 
   // Determinar id de dieta objetivo (doctor puede editar la de otro usuario)
   useEffect(() => {
@@ -376,6 +402,7 @@ function CrearDieta() {
           setDiaSeleccionado={setDiaSeleccionado}
           traducciones={traducciones}
           borrarDietaDelDia={borrarDietaDelDia}
+          displayName={pacienteDisplayName}
         />
 
         {/* DERECHA */}
