@@ -82,6 +82,18 @@ function Perfil() {
     }
   };
 
+  // Determinar si el usuario es administrador
+  const isAdmin = (() => {
+    if (!usuario) return false;
+    const perfil = Number(usuario.id_perfil);
+    if (perfil === 1) return true;
+    const email = (usuario.email || '').toString().trim().toLowerCase();
+    const name = (usuario.name || usuario.nombre || '').toString().trim().toLowerCase();
+    if (email === 'admin@bienstartotal.food' || email === 'admin2025@bienstartotal.food') return true;
+    if (name === 'admin' || name === 'administrador') return true;
+    return false;
+  })();
+
   return (
     <div id="contenedorPrincipal" className="perfil-page">
       <Encabezado activePage="perfil" onNavigate={showLoaderAndRedirect} />
@@ -107,32 +119,34 @@ function Perfil() {
             </span>
             <span style={{marginLeft:'6px'}}>Cerrar Sesión</span>
           </button>
-          <button
-            id="borrarCuenta"
-            onClick={() => {
-              if (typeof window.notifyConfirm === 'function') {
-                window.notifyConfirm(
-                  '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
-                  { type: 'error', duration: 0 },
-                  async () => { await handleBorrarCuenta(); },
-                  () => {},
-                );
-              } else {
-                handleBorrarCuenta();
-              }
-            }}
-          >
-            <span aria-hidden="true" style={{display:'inline-flex'}}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 6h18" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M8 6V4h8v2" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M10 11v6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M14 11v6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </span>
-            <span style={{marginLeft:'6px'}}>Borrar Cuenta</span>
-          </button>
+          {!isAdmin && (
+            <button
+              id="borrarCuenta"
+              onClick={() => {
+                if (typeof window.notifyConfirm === 'function') {
+                  window.notifyConfirm(
+                    '¿Está seguro de que desea borrar su cuenta? Esta acción no se puede deshacer.',
+                    { type: 'error', duration: 0 },
+                    async () => { await handleBorrarCuenta(); },
+                    () => {},
+                  );
+                } else {
+                  handleBorrarCuenta();
+                }
+              }}
+            >
+              <span aria-hidden="true" style={{display:'inline-flex'}}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 6h18" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8 6V4h8v2" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M10 11v6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M14 11v6" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+              <span style={{marginLeft:'6px'}}>Borrar Cuenta</span>
+            </button>
+          )}
         </div>
       </div>
 
