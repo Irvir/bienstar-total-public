@@ -28,8 +28,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(32px, 6vw, 48px);
-  height: clamp(32px, 6vw, 48px);
+  /* MISMO tamaño para todos */
   transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
   border-radius: 12px;
   line-height: 0;
@@ -37,14 +36,16 @@
 }
 
 .footer-link img {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: contain;
   display: block;
   transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-.footer-link.ig {
+.footer-link.ig  img {
+  width: 130% !important;
+  height: 130% !important;
 }
 
 .footer-link.ig:hover {
