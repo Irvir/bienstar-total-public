@@ -10,6 +10,7 @@
   - Body (JSON): { nombre, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio }
   - Respuesta: { message: "Alimento creado correctamente", id }
   - Errores: 500 en fallo de BD, 400 si faltan campos (no hay validación exhaustiva en el servidor).
+  - <img width="960" height="542" alt="img1" src="https://github.com/user-attachments/assets/df9986c4-8c68-4ec1-9adf-45c4b0693a49" />
 
 - POST `/admin/foods/upload-image`
 
@@ -24,6 +25,8 @@
   - Query: ninguno
   - Respuesta: array de alimentos (JSON)
   - Errores: 500 si falla la consulta.
+  - <img width="961" height="597" alt="Captura de pantalla 2025-11-17 213331" src="https://github.com/user-attachments/assets/3e7f63de-22c3-4991-89a4-c8ce36825fdd" />
+
 
 - PUT `/admin/foods/:id`
   - Qué hace: Actualiza el alimento con id `:id` con los campos enviados en el body (incluye `image_url`).
@@ -31,6 +34,7 @@
   - Body (JSON): mismos campos que en creación + `image_url`
   - Respuesta: { message: "Alimento actualizado correctamente" } o 404 si no existe
   - Errores: 500 en fallo de BD
+  - <img width="983" height="515" alt="Captura de pantalla 2025-11-17 213446" src="https://github.com/user-attachments/assets/08a33e93-d479-429c-8399-8bd00fcc21b5" />
 
 ## Rutas de usuario / cuentas (mezcla de `router` montado en `/admin` y rutas en `app`)
 
@@ -38,6 +42,7 @@
 
   - Qué hace: Devuelve todas las cuentas de la tabla `usuario` con campos básicos (id, nombre, email, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado).
   - Respuesta: array de usuarios
+  - <img width="981" height="619" alt="Captura de pantalla 2025-11-17 213532" src="https://github.com/user-attachments/assets/a9343734-0f12-4b70-8e54-7fb3fe5a2063" />
 
 - POST `/admin/users` (definido como `router.post('/users')`)
 
@@ -51,17 +56,23 @@
   - Params: `id`
   - Body: objeto con los campos a actualizar
   - Respuesta: { message }
+  - <img width="979" height="587" alt="Captura de pantalla 2025-11-17 213805" src="https://github.com/user-attachments/assets/a8e0611e-75d4-4ee9-99a3-b619fd64b758" />
+
 
 - POST `/admin/user/:id/deactivate` (definido como `router.post('/user/:id/deactivate')`)
 
   - Qué hace: Marca la cuenta como `inactivo` en la columna `estado`.
   - Params: `id`
   - Respuesta: { message }
+  - <img width="982" height="567" alt="image" src="https://github.com/user-attachments/assets/6c2161b3-579c-4363-bb11-46a55441fb8f" />
+
 
 - POST `/admin/user/:id/activate` (definido como `router.post('/user/:id/activate')`)
   - Qué hace: Marca la cuenta como `activo`.
   - Params: `id`
   - Respuesta: { message }
+  - <img width="977" height="517" alt="image" src="https://github.com/user-attachments/assets/015a960a-252c-4456-a984-039dd3838dae" />
+
 
 Nota: además existen otras rutas sobre usuarios definidas directamente en `app` (no en `router`). Ver sección siguiente.
 
@@ -73,6 +84,8 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Body: { email }
   - Respuesta: { exists: true|false } o error con mensaje
   - Validaciones: formato básico del email (regex) antes de consultar DB.
+  - <img width="977" height="560" alt="image" src="https://github.com/user-attachments/assets/b1c2291f-4778-4313-b454-b9735f5fa5e9" />
+
 
 - POST `/registrar`
 
@@ -81,6 +94,8 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Flujo importante: crea una dieta por defecto, hashea la contraseña (bcrypt), guarda usuario y guarda alergias en `categoria_alergico`.
   - Respuesta: { message: "Usuario registrado exitosamente" }
   - Errores: 400 si validación falla (se devuelve array `errores`), 500 en error servidor
+  - <img width="962" height="652" alt="image" src="https://github.com/user-attachments/assets/00f1fc7b-c806-4156-9571-d9a913fd469d" />
+
 
 - POST `/login`
 
@@ -88,6 +103,8 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Body: { email, password }
   - Respuesta: { message: "Login exitoso", user: { id, nombre, email, altura, peso, edad, id_dieta, actividad_fisica, sexo, alergias, otrasAlergias } }
   - Códigos: 400 si faltan credenciales, 401 si credenciales inválidas, 403 si usuario inactivo
+  - <img width="955" height="762" alt="image" src="https://github.com/user-attachments/assets/0fd35913-e3fd-4db3-95bb-3c712ebf24af" />
+
 
 - PATCH `/user/:id/activar`
 
@@ -100,6 +117,8 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Qué hace: Marca un usuario como `inactivo` (se usa `UPDATE usuario SET estado='inactivo'`).
   - Params: `id`
   - Respuesta: { message } o 404
+  - <img width="970" height="486" alt="image" src="https://github.com/user-attachments/assets/98f55599-4cb3-4ee1-b120-fab279a5adf0" />
+
 
 - PATCH `/user/:id` (otra definición en `app` con transacción)
 
@@ -108,16 +127,21 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Body: { nombre, altura, peso, edad, actividad_fisica, sexo, id_perfil, id_dieta, estado, alergias }
   - Respuesta: { message, usuario: { ... } }
   - Notas: realiza `beginTransaction` / `commit` / `rollback` y valida edad.
+  - <img width="972" height="811" alt="image" src="https://github.com/user-attachments/assets/48b086a0-1728-4b05-afb7-b5531924f87b" />
+
 
 - GET `/user/:id`
   - Qué hace: Devuelve un usuario por id con las alergias (consulta `categoria_alergico`).
   - Params: `id`
   - Respuesta: objeto usuario o 404
+  - <img width="978" height="727" alt="image" src="https://github.com/user-attachments/assets/e1a13e44-a95c-4085-bf71-69eb1ea75c0f" />
+
 
 - GET `/user/:id/weights`
   - Qué hace: Devuelve el historial de peso del usuario ordenado por fecha descendente.
   - Query opcional: `limit` (máximo 180), `from`, `to` (YYYY-MM-DD)
   - Respuesta: { items: [{ id, fecha, peso }], count }
+  - 
 
 - POST `/user/:id/weights`
   - Qué hace: Crea o actualiza el registro de peso para una fecha concreta (por defecto hoy).
@@ -139,12 +163,16 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Qué hace: Devuelve el alimento con `id` específico (todos los campos nutricionales).
   - Params: `id`
   - Respuesta: objeto alimento o 404
+  - <img width="997" height="722" alt="image" src="https://github.com/user-attachments/assets/0bd49735-4560-48ad-8b96-f1a922e20c37" />
+
 
 - GET `/food-search?q=<texto>`
 
   - Qué hace: Si `q` presente, busca por `nombre LIKE %q%` (collate utf8mb4_general_ci) y devuelve hasta 50 resultados; si `q` vacío devuelve los primeros 50 alimentos.
   - Query: `q` opcional
   - Respuesta: array de alimentos
+  - <img width="957" height="588" alt="image" src="https://github.com/user-attachments/assets/817c3d3c-68cb-4931-9691-f43ef120233b" />
+
 
 - GET `/admin/foods` (segunda definición en el archivo)
   - Nota: el fichero contiene dos definiciones de `GET /admin/foods`. Una devuelve rows y normaliza `image_url`; la otra hace un mapeo adicional para normalizar distintos campos de imagen (`image`, `imagen`, `image_url`, `path`). Revisa cuál queda activa tras ejecutar el archivo (la última definición sobrescribe la anterior).
@@ -156,6 +184,7 @@ Nota: además existen otras rutas sobre usuarios definidas directamente en `app`
   - Qué hace: Devuelve la dieta (días, comidas, alimentos y cantidad) para `id_dieta` (por defecto `1` si no se pasa).
   - Query: `id_dieta` (recomendado)
   - Respuesta: array con { dia, tipo_comida, alimento, cantidad }
+  
 
 - POST `/save-diet`
 
