@@ -9,7 +9,7 @@ export default function Cuentas() {
   const [cuentas, setCuentas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(null); // cuenta en edición
-  const [form, setForm] = useState({ nombre: '', email: '', password: '', edad: '', peso: '', altura: '', sexo: '' });
+  const [form, setForm] = useState({ nombre: '', email: '', edad: '', peso: '', altura: '', sexo: '' });
   const [filter, setFilter] = useState('');
   const [showExtraCols, setShowExtraCols] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Cuentas() {
 
   function resetForm() {
     setEditing(null);
-    setForm({ nombre: '', email: '', password: '', edad: '', peso: '', altura: '', sexo: '' });
+    setForm({ nombre: '', email: '', edad: '', peso: '', altura: '', sexo: '' });
   }
 
   function onEditClick(c) {
@@ -59,7 +59,6 @@ export default function Cuentas() {
     setForm({
       nombre: c.nombre || c.name || '',
       email: c.email || '',
-      password: '',
       edad: c.edad ?? '',
       peso: c.peso ?? '',
       altura: c.altura ?? '',
@@ -74,7 +73,6 @@ export default function Cuentas() {
     try {
       if (editing) {
         const payload = { ...form };
-        if (!payload.password) delete payload.password;
         const res = await fetch(`${API_BASE}/admin/user/${editing.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -83,7 +81,14 @@ export default function Cuentas() {
         if (!res.ok) throw new Error('No se pudo actualizar cuenta');
         window.notify?.('Cuenta actualizada', { type: 'success' });
       } else {
-        const payload = { ...form, id_perfil: 3, alergias: [] };
+        // Generar contraseña aleatoria para la nueva cuenta (no se muestra en UI)
+        const generarPassword = (len=12) => {
+          const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@$!';
+          let out = '';
+          for (let i=0;i<len;i++) out += chars[Math.floor(Math.random()*chars.length)];
+          return out;
+        };
+        const payload = { ...form, password: generarPassword(), id_perfil: 3, alergias: [] };
         const res = await fetch(`${API_BASE}/registrar`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -173,10 +178,6 @@ export default function Cuentas() {
               </div>
               <div className="grid-3">
                 <div>
-                  <label>Contraseña {editing?'(dejar vacío para no cambiar)':''}</label>
-                  <input type="password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} />
-                </div>
-                <div>
                   <label>Edad</label>
                   <input type="number" value={form.edad} onChange={e=>setForm({...form,edad:e.target.value})} />
                 </div>
@@ -184,12 +185,12 @@ export default function Cuentas() {
                   <label>Peso (kg)</label>
                   <input type="number" step="any" value={form.peso} onChange={e=>setForm({...form,peso:e.target.value})} />
                 </div>
-              </div>
-              <div className="grid-2">
                 <div>
                   <label>Altura (cm)</label>
                   <input type="number" value={form.altura} onChange={e=>setForm({...form,altura:e.target.value})} />
                 </div>
+              </div>
+              <div className="grid-2">
                 <div>
                   <label>Sexo</label>
                   <select value={form.sexo} onChange={e=>setForm({...form,sexo:e.target.value})}>

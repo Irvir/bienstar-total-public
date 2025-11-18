@@ -99,10 +99,11 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     }
   };
 
+  // Solo considerar como "peso del día" un registro explícito (pesoDelDia) o uno cuyo fuente NO sea el peso general del perfil.
   const pesoMostrado = useMemo(() => {
-    if (info?.peso) return info.peso;
-    if (pesoDelDia) return pesoDelDia;
-    return null;
+    if (pesoDelDia) return pesoDelDia; // registro guardado para ese día
+    if (info?.peso && info?.pesoFuente && info.pesoFuente !== 'perfil') return info.peso; // otras fuentes válidas
+    return null; // mostrar "Sin registro" si solo tenemos el peso general del perfil
   }, [info, pesoDelDia]);
 
   return (
@@ -120,7 +121,7 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
             <p><strong>Dieta:</strong> {info?.dieta?.nombre || 'Sin asignar'}</p>
             <p><strong>Peso:</strong> {pesoMostrado ? `${Number(pesoMostrado).toFixed(1)} kg` : 'Sin registro'}</p>
             {info?.pesoFuente === 'perfil' && !pesoDelDia && (
-              <small className="cal-info-ayuda">Mostrando el peso de tu perfil. Registra el peso del día para un seguimiento más preciso.</small>
+              <small className="cal-info-ayuda">Sin registro diario. Se muestra tu peso actual de perfil para referencia.</small>
             )}
           </div>
         )}
