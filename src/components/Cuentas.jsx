@@ -13,6 +13,18 @@ export default function Cuentas() {
   const [filter, setFilter] = useState('');
   const [showExtraCols, setShowExtraCols] = useState(false);
 
+  // Determina si una cuenta es de administrador
+  const isAdminUser = (u) => {
+    if (!u) return false;
+    const perfil = Number(u.id_perfil ?? u.perfil);
+    if (perfil === 1) return true;
+    const email = (u.email || '').toString().trim().toLowerCase();
+    const name = (u.name || u.nombre || '').toString().trim().toLowerCase();
+    if (email === 'admin@bienstartotal.food' || email === 'admin2025@bienstartotal.food') return true;
+    if (name === 'admin' || name === 'administrador') return true;
+    return false;
+  };
+
   useEffect(() => {
     loadCuentas();
   }, []);
@@ -39,6 +51,10 @@ export default function Cuentas() {
   }
 
   function onEditClick(c) {
+    if (isAdminUser(c)) {
+      window.notify?.('La cuenta de administrador no se puede editar', { type: 'info' });
+      return;
+    }
     setEditing(c);
     setForm({
       nombre: c.nombre || c.name || '',
@@ -90,6 +106,10 @@ export default function Cuentas() {
   }
 
   async function softDelete(cuenta) {
+    if (isAdminUser(cuenta)) {
+      window.notify?.('La cuenta de administrador no se puede inactivar', { type: 'warning' });
+      return;
+    }
     if (!confirm(`¿Confirmar inactivar a ${cuenta.nombre || cuenta.email}?`)) return;
     setLoading(true);
     try {
@@ -223,21 +243,34 @@ export default function Cuentas() {
                       <td>{c.peso ?? '-'}</td>
                       <td>{c.altura ?? '-'}</td>
                       <td>
-                        <div className="admin-actions">
-                          <button className="action-btn action-btn--icon" title="Editar" onClick={()=>onEditClick(c)} aria-label={`Editar ${c.nombre || c.email}`}>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="currentColor" />
-                              <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor" />
-                            </svg>
-                          </button>
-                          {c.estado === 'inactivo' ? (
-                            <button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
-													Activar
-                            </button>
-                          ) : (
-                            <button className="action-btn action-btn--danger action-btn--small" onClick={()=>softDelete(c)} aria-label={`Inactivar ${c.nombre || c.email}`}>
-													Inactivar
-                            </button>
+                        <div className={`admin-actions ${isAdminUser(c) && c.estado !== 'inactivo' ? 'admin-actions--admin' : ''}`}>
+                          {!isAdminUser(c) && (
+                            <>
+                              <button className="action-btn action-btn--icon" title="Editar" onClick={()=>onEditClick(c)} aria-label={`Editar ${c.nombre || c.email}`}>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="currentColor" />
+                                  <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor" />
+                                </svg>
+                              </button>
+                              {c.estado === 'inactivo' ? (
+                                <button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
+																  Activar
+                                </button>
+                              ) : (
+                                <button className="action-btn action-btn--danger action-btn--small" onClick={()=>softDelete(c)} aria-label={`Inactivar ${c.nombre || c.email}`}>
+																  Inactivar
+                                </button>
+                              )}
+                            </>
+                          )}
+                          {isAdminUser(c) && (
+                            c.estado === 'inactivo' ? (
+                              <button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
+                                Activar
+                              </button>
+                            ) : (
+                              <span className="admin-badge" aria-label="Cuenta administrador">Admin</span>
+                            )
                           )}
                         </div>
                       </td>

@@ -608,3 +608,21 @@ select:focus {
 .table td .admin-actions {
     justify-content: flex-end
 }
+
+/* Alinear a la izquierda cuando solo mostramos la etiqueta Admin */
+.table td .admin-actions--admin {
+    justify-content: flex-start;
+}
+
+.admin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.22rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(139, 35, 48, 0.08);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.82rem;
+    border: 1px solid rgba(139, 35, 48, 0.16);
+}
