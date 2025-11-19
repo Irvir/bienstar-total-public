@@ -19,7 +19,7 @@ const AverageProgressWidget = ({ weightStats }) => {
     averageWeight,
     startWeight,
     currentWeight,
-    weightChange,
+    // weightChange (solo para lógica interna, no se muestra directamente)
     changeType,
     motivationalMessage,
   } = weightStats;
@@ -136,11 +136,13 @@ const AverageProgressWidget = ({ weightStats }) => {
                     : 'Cambio total'}
               </span>
               <span className="weight-change-value">
-                {weightChange === 0
-                  ? '0.0 kg'
-                  : `${weightChange > 0 ? '-' : '+'} ${Math.abs(
-                    weightChange
-                  ).toFixed(1)} kg`}
+                {Number.isFinite(startWeight) && Number.isFinite(currentWeight)
+                  ? (() => {
+                    const diff = currentWeight - startWeight; // ganancia positiva, pérdida negativa
+                    const sign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+                    return `${sign}${Math.abs(diff).toFixed(1)} kg`;
+                  })()
+                  : '— kg'}
               </span>
             </div>
           </div>
@@ -156,7 +158,7 @@ const AverageProgressWidget = ({ weightStats }) => {
 // HOME
 // ==========================
 function Home() {
-  const [userName, setUserName] = useState('Invitado');
+  const [_userName, setUserName] = useState('Invitado');
   const [activePage, setActivePage] = useState('home');
   const [loading, setLoading] = useState(false);
   const [dietByDay, setDietByDay] = useState({});
@@ -274,7 +276,7 @@ function Home() {
             }
           }
           if (usuario && usuario.name) setUserName(usuario.name);
-        } catch (err) { /* ignore */ }
+        } catch { /* ignore */ }
       }
     };
     window.addEventListener('storage', storageHandler);
@@ -291,7 +293,7 @@ function Home() {
     }, 700);
   };
 
-  const handleClick = (url, mensaje) => {
+  const handleClick = (url, _mensaje) => {
     showLoaderAndRedirect(url);
   };
 
@@ -306,21 +308,35 @@ function Home() {
         if (!rawUser) return;
         const user = JSON.parse(rawUser);
 
+        const persistUsuario = (u) => {
+          try {
+            localStorage.setItem('usuario', JSON.stringify(u));
+          } catch {
+            /* ignore persist errors */
+          }
+        };
+
+        const parseNum = (v) => {
+          const n = Number(v);
+          return Number.isFinite(n) ? n : null;
+        };
+
+        let startWeightFixed = parseNum(user?.peso_inicial);
+
         // Si el perfil del usuario tiene un peso registrado, mostrarlo provisionalmente
         // Esto permite que el widget muestre algo inmediato mientras cargamos el historial
-        if (user?.peso) {
-          const pesoNum = Number(user.peso);
-          if (!Number.isNaN(pesoNum)) {
-            setWeightStats({
-              ready: true,
-              averageWeight: pesoNum,
-              startWeight: pesoNum,
-              currentWeight: pesoNum,
-              weightChange: 0,
-              changeType: 'stable',
-              motivationalMessage: 'Peso tomado del perfil de usuario.',
-            });
-          }
+        const perfilPesoNum = parseNum(user?.peso);
+        if (perfilPesoNum !== null) {
+          setWeightStats((prev) => ({
+            ...prev,
+            ready: true,
+            averageWeight: perfilPesoNum,
+            startWeight: startWeightFixed ?? perfilPesoNum,
+            currentWeight: perfilPesoNum,
+            weightChange: startWeightFixed !== null ? parseFloat(((startWeightFixed - perfilPesoNum) || 0).toFixed(1)) : 0,
+            changeType: 'stable',
+            motivationalMessage: 'Peso tomado del perfil de usuario.',
+          }));
         }
 
         // --- asegurar dieta (igual que antes) ---
@@ -348,7 +364,7 @@ function Home() {
         const idParaConsulta = user.id_dieta || user.id_diet;
         if (idParaConsulta) {
           const res = await fetch(
-            `${API_BASE}/get-diet?id_dieta=${idParaConsulta}`
+            `${API_BASE}/get-diet?id_dieta=${idParaConsulta}`,
           );
           if (res.ok) {
             const rows = await res.json();
@@ -373,7 +389,7 @@ function Home() {
 
         // 1) obtener registros del periodo (últimos 30 días)
         const periodRes = await fetch(
-          `${API_BASE}/user/${user.id}/weights?from=${fromDate}&to=${toDate}&limit=100`
+          `${API_BASE}/user/${user.id}/weights?from=${fromDate}&to=${toDate}&limit=100`,
         );
         if (!periodRes.ok) {
           setWeightStats((prev) => ({
@@ -421,15 +437,32 @@ function Home() {
         // si no hay ningún peso disponible (ni previo ni en periodo)
         const anyWeight = dayWeights.find((w) => w !== null && w !== undefined);
         if (!anyWeight) {
-          setWeightStats({
-            ready: true,
-            averageWeight: 0,
-            startWeight: null,
-            currentWeight: null,
-            weightChange: 0,
-            changeType: 'stable',
-            motivationalMessage: 'Aún no tienes registros de peso en los últimos 30 días.',
-          });
+          if (perfilPesoNum !== null) {
+            if (startWeightFixed === null) {
+              startWeightFixed = perfilPesoNum;
+              user.peso_inicial = startWeightFixed;
+              persistUsuario(user);
+            }
+            setWeightStats({
+              ready: true,
+              averageWeight: perfilPesoNum,
+              startWeight: startWeightFixed,
+              currentWeight: perfilPesoNum,
+              weightChange: parseFloat(((startWeightFixed - perfilPesoNum) || 0).toFixed(1)),
+              changeType: 'stable',
+              motivationalMessage: 'Mostrando el peso de tu perfil como referencia. Registra tu peso para ver el progreso.',
+            });
+          } else {
+            setWeightStats({
+              ready: true,
+              averageWeight: 0,
+              startWeight: null,
+              currentWeight: null,
+              weightChange: 0,
+              changeType: 'stable',
+              motivationalMessage: 'Aún no tienes registros de peso en los últimos 30 días.',
+            });
+          }
           return;
         }
 
@@ -458,7 +491,7 @@ function Home() {
               if (earliest && earliest.peso !== undefined) startWeight = Number(earliest.peso);
             }
           }
-        } catch (e) {
+        } catch {
           // ignore
         }
 
@@ -472,7 +505,32 @@ function Home() {
           }
         }
 
-        const rawChange = startWeight - currentWeight; // positivo = perdió peso
+        // Fijar peso inicial estable: prioridad a user.peso_inicial, luego earliest log, luego primer valor del periodo, y persistir si no existe
+        if (startWeightFixed === null) {
+          if (Number.isFinite(startWeight)) {
+            startWeightFixed = startWeight;
+          } else {
+            startWeightFixed = startWeight; // puede seguir siendo null si no hay nada
+          }
+          if (startWeightFixed === null) {
+            // fallback a primer no nulo en 30 días (ya calculado antes)
+            for (const w of dayWeights) {
+              if (w !== null && w !== undefined) {
+                startWeightFixed = w;
+                break;
+              }
+            }
+          }
+          if (Number.isFinite(startWeightFixed)) {
+            user.peso_inicial = startWeightFixed;
+            persistUsuario(user);
+          }
+        }
+
+        const startForWidget = Number.isFinite(startWeightFixed) ? startWeightFixed : startWeight;
+        const rawChange = (Number.isFinite(startForWidget) && Number.isFinite(currentWeight))
+          ? (startForWidget - currentWeight)
+          : 0; // positivo = perdió peso
         const weightChange = parseFloat((rawChange || 0).toFixed(1));
 
         let changeType = 'stable';
@@ -492,7 +550,7 @@ function Home() {
         setWeightStats({
           ready: true,
           averageWeight,
-          startWeight,
+          startWeight: startForWidget ?? null,
           currentWeight,
           weightChange,
           changeType,
@@ -559,7 +617,7 @@ function Home() {
               onClick={() =>
                 handleClick(
                   'AcercaDeNosotros.html',
-                  'Información acerca de nosotros'
+                  'Información acerca de nosotros',
                 )
               }
             ></button>
@@ -568,7 +626,7 @@ function Home() {
               onClick={() =>
                 handleClick(
                   'tipsParaTuDieta.html',
-                  'Consejos para tu dieta'
+                  'Consejos para tu dieta',
                 )
               }
             ></button>
