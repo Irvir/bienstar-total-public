@@ -128,11 +128,12 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     }
   };
 
-  // Solo considerar como "peso del día" un registro explícito (pesoDelDia) o uno cuyo fuente NO sea el peso general del perfil.
+  // Peso del día real (registro) y referencia del perfil para días sin registro
+  const pesoDelPerfil = info?.pesoPerfil ?? null;
   const pesoMostrado = useMemo(() => {
-    if (pesoDelDia) return pesoDelDia; // registro guardado para ese día
-    if (info?.peso && info?.pesoFuente && info.pesoFuente !== 'perfil') return info.peso; // otras fuentes válidas
-    return null; // mostrar "Sin registro" si solo tenemos el peso general del perfil
+    if (pesoDelDia) return Number(pesoDelDia);
+    if (info?.peso && info?.pesoFuente === 'registro') return Number(info.peso);
+    return null;
   }, [info, pesoDelDia]);
 
   return (
@@ -148,9 +149,15 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
         {!dayLoading && (
           <div className="cal-info-block">
             <p><strong>Dieta:</strong> {info?.dieta?.nombre || 'Sin asignar'}</p>
-            <p><strong>Peso:</strong> {pesoMostrado ? `${Number(pesoMostrado).toFixed(1)} kg` : 'Sin registro'}</p>
-            {info?.pesoFuente === 'perfil' && !pesoDelDia && (
-              <small className="cal-info-ayuda">Sin registro diario. Se muestra tu peso actual de perfil para referencia.</small>
+            <p><strong>Peso:</strong> {
+              pesoMostrado !== null
+                ? `${Number(pesoMostrado).toFixed(1)} kg`
+                : (info?.pesoFuente === 'perfil' && pesoDelPerfil != null
+                    ? `${Number(pesoDelPerfil).toFixed(1)} kg (perfil)`
+                    : 'Sin registro')
+            }</p>
+            {info?.pesoFuente === 'perfil' && pesoMostrado === null && (
+              <small className="cal-info-ayuda">Es el peso de tu perfil mostrado como referencia. Registra el peso del día para guardarlo en el calendario.</small>
             )}
           </div>
         )}
