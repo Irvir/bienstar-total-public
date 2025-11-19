@@ -34,6 +34,39 @@ function Perfil() {
     }
   }, []);
 
+  // Escuchar actualizaciones globales sobre el usuario (p. ej. nuevo peso desde Calendario)
+  useEffect(() => {
+    const handler = (ev) => {
+      try {
+        const usuario = ev?.detail?.usuario;
+        if (usuario) {
+          setUsuario(usuario);
+          try {
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+          } catch (e) {
+            // ignorar errores de localStorage
+          }
+        }
+      } catch (err) {
+        console.warn('Error manejando usuario:updated en Perfil', err);
+      }
+    };
+    window.addEventListener('usuario:updated', handler);
+    const storageHandler = (ev) => {
+      if (ev.key === 'usuario' || ev.key === 'Usuario') {
+        try {
+          const u = JSON.parse(ev.newValue);
+          if (u) setUsuario(u);
+        } catch (e) { /* ignore */ }
+      }
+    };
+    window.addEventListener('storage', storageHandler);
+    return () => {
+      window.removeEventListener('usuario:updated', handler);
+      window.removeEventListener('storage', storageHandler);
+    };
+  }, []);
+
   const showLoaderAndRedirect = (url) => {
     setLoading(true);
     setTimeout(() => {

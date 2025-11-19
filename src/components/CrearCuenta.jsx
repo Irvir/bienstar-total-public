@@ -173,6 +173,32 @@ function CrearCuentaInner() {
             if (!loginData.user || loginData.user.id_perfil !== 3) {
               localStorage.removeItem('dietTarget');
             }
+            // Crear registro de peso inicial para la fecha de creación (hoy),
+            // y emitir evento para que Home/Perfil se sincronicen inmediatamente.
+            try {
+              const pesoInicial = Number(formData.peso);
+              if (!Number.isNaN(pesoInicial)) {
+                const hoy = new Date().toISOString().split('T')[0];
+                // Intentar crear el registro de peso en el servidor
+                fetch(`${API_BASE}/user/${loginData.user.id}/weights`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ peso: pesoInicial, fecha: hoy, fuente: 'manual' }),
+                }).catch((e) => {
+                  console.warn('No se pudo crear registro de peso inicial:', e);
+                });
+                // Actualizar localStorage.usuario.peso y emitir evento local
+                try {
+                  const updatedUser = { ...loginData.user, peso: pesoInicial };
+                  localStorage.setItem('usuario', JSON.stringify(updatedUser));
+                  try { window.dispatchEvent(new CustomEvent('usuario:updated', { detail: { usuario: updatedUser } })); } catch (e) { /* noop */ }
+                } catch (e) {
+                  // ignore localStorage errors
+                }
+              }
+            } catch (err) {
+              console.warn('Error al intentar guardar peso inicial en registro:', err);
+            }
             // Redirigir al home
             setTimeout(() => (window.location.href = '/'), 1000);
           } else {

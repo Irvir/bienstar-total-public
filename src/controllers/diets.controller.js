@@ -292,7 +292,7 @@ export async function getCalendar(req, res, { pool } = {}) {
       fecha: normalizedFecha,
       peso: pesoDelDia, // null si no hay registro para esa fecha
       dieta: dietaInfo,
-      pesoFuente: pesoRegistrado !== null ? 'registro' : null,
+      pesoFuente: pesoRegistrado !== null ? 'registro' : 'perfil',
       pesoPerfil: peso ?? null, // sigue disponible por separado
     });
   } catch (err) {

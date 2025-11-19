@@ -193,7 +193,6 @@ function Dietas() {
   }
 
 
-  // ===== Render =====
   return (
     <div id="contenedorPrincipal" className="dietas-page">
       <Encabezado activePage="dietas" onNavigate={showLoaderAndRedirect} />

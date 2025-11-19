@@ -23,6 +23,11 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     return fechaStr > todayStr;
   }, [fechaStr, todayStr]);
 
+  const isPastDate = useMemo(() => {
+    if (!fechaStr || !todayStr) return false;
+    return fechaStr < todayStr;
+  }, [fechaStr, todayStr]);
+
   useEffect(() => {
     const usuarioRaw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
     if (!usuarioRaw) {
@@ -90,6 +95,30 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
       if (!res.ok) throw new Error(data?.message || 'No se pudo guardar el peso');
       window.notify?.(data?.message || 'Peso guardado', { type: 'success' });
       onWeightSaved?.(fechaStr, pesoValue);
+      // También actualizamos el peso en el perfil local (localStorage) y notificamos a la aplicación
+      try {
+        const raw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
+        if (raw) {
+          const usuario = JSON.parse(raw);
+          if (usuario) {
+            usuario.peso = pesoValue;
+            try {
+              localStorage.setItem('usuario', JSON.stringify(usuario));
+            } catch (e) {
+              // ignore localStorage set errors
+            }
+            // Emitir evento global para que otros componentes actualicen su estado
+            try {
+              window.dispatchEvent(new CustomEvent('usuario:updated', { detail: { usuario } }));
+            } catch (e) {
+              // si no se puede dispatch, ignorar
+            }
+          }
+        }
+      } catch (err) {
+        // no bloquear la UX si falla la sincronización local
+        console.warn('No se pudo actualizar localStorage con el nuevo peso', err);
+      }
       await fetchDayInfo();
     } catch (err) {
       console.error(err);
@@ -126,8 +155,8 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
           </div>
         )}
 
-        {userId && fechaStr && !isFutureDate && (
-          <form className="cal-weight-form" onSubmit={handleSubmit}>
+          {userId && fechaStr && !isFutureDate && !isPastDate && (
+            <form className="cal-weight-form" onSubmit={handleSubmit}>
             <label>
               Peso (kg)
               <input
@@ -144,6 +173,11 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
               {saving ? 'Guardando…' : 'Guardar peso del día'}
             </button>
           </form>
+        )}
+        {isPastDate && (
+          <div className="cal-info-ayuda">
+            No puedes modificar registros de días anteriores al actual.
+          </div>
         )}
         {isFutureDate && (
           <div className="cal-info-ayuda">
