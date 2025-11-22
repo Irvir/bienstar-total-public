@@ -19,12 +19,10 @@ const AverageProgressWidget = ({ weightStats }) => {
     averageWeight,
     startWeight,
     currentWeight,
-    // weightChange (solo para lógica interna, no se muestra directamente)
     changeType,
     motivationalMessage,
   } = weightStats;
 
-  // color según cambio
   let changeClass = 'weight-change-neutral';
   if (changeType === 'loss') changeClass = 'weight-change-loss';
   if (changeType === 'gain') changeClass = 'weight-change-gain';
@@ -32,7 +30,6 @@ const AverageProgressWidget = ({ weightStats }) => {
   return (
     <div className="average-progress-widget">
       <div className="widget-header">
-        {/* Icono balanza */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="widget-icon"
@@ -52,7 +49,6 @@ const AverageProgressWidget = ({ weightStats }) => {
       </div>
 
       <div className="widget-content">
-        {/* BLOQUE IZQUIERDA: números clave */}
         <div className="weight-main-stats">
           <div className="stat-row">
             <span className="stat-label">Peso inicial</span>
@@ -74,11 +70,9 @@ const AverageProgressWidget = ({ weightStats }) => {
           </div>
         </div>
 
-        {/* BLOQUE DERECHA: cambio + mensaje */}
         <div className="weight-change-block">
           <div className={`weight-change-amount ${changeClass}`}>
             <div className="weight-change-icon-wrapper">
-              {/* icono según tipo */}
               {changeType === 'loss' && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +132,7 @@ const AverageProgressWidget = ({ weightStats }) => {
               <span className="weight-change-value">
                 {Number.isFinite(startWeight) && Number.isFinite(currentWeight)
                   ? (() => {
-                    const diff = currentWeight - startWeight; // ganancia positiva, pérdida negativa
+                    const diff = currentWeight - startWeight;
                     const sign = diff > 0 ? '+' : diff < 0 ? '-' : '';
                     return `${sign}${Math.abs(diff).toFixed(1)} kg`;
                   })()
@@ -636,7 +630,7 @@ function Home() {
           </div>
 
           {/* Columna dieta hoy */}
-          <div className="botonera2 botonera2-dieta-hoy">
+          <div className="botonera2-dieta-hoy">
             <div className="columna columna-hoy">
               <div className="titulo">{todayName} - Hoy</div>
               <div className="celda">

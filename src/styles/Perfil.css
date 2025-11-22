@@ -29,17 +29,16 @@
 /* Botones menú lateral */
 .botonesPerfil {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    font-size: 18px;
+    padding: 10px;
+    margin-bottom: 6px;
+    font-size: 14px;
     text-align: center;
     background-color: #EC221F;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 20px;
 }
 
 .botonesPerfil:hover {
@@ -48,18 +47,17 @@
 
 .botonesPerfilSelec {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    font-size: 18px;
+    padding: 10px;
+    margin-bottom: 6px;
+    font-size: 14px;
     text-align: center;
     background-color: #B20C05;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 20px;
-    margin: 20%;
+    margin: 15%;
 }
 
 /* Contenedor info usuario */
@@ -82,48 +80,41 @@
 /* Contenedor de info sesión más grande */
 /* Contenedor principal que alberga la tarjeta de perfil */
 #contenedorInfoSesion {
-    /* Usar ancho fluido que se adapta entre móvil y desktop */
-    width: clamp(320px, 90%, 780px); /* Reducido de 860px */
-    max-width: 1000px;
-    border-radius: 40px; /* Reducido de 50px */
-    padding: 28px 32px; /* Reducido de 36px */
+    width: clamp(280px, 85%, 640px);
+    max-width: 800px;
+    border-radius: 26px;
+    padding: 18px 20px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     height: auto;
-    margin-top: 20px;
-    min-height: 520px; /* Reducido de 580px */
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+    margin-top: 12px;
+    min-height: 420px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14), 0 3px 8px rgba(0,0,0,.22);
     background: #ffffff;
-    -webkit-backdrop-filter: blur(15px);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    border-width: 4px;
-
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-width: 3px;
 }
 
 /* Ajuste interno de info usuario */
 /* Área que contiene los campos de información (izquierda) */
 #contenedorInfo {
-    flex: 2.6;
-    padding-bottom: 45px;
+    flex: 2.4;
+    padding-bottom: 36px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* centrar horizontalmente todos los elementos */
     text-align: left;
-    /* centrar texto dentro de los elementos */
-    font-size: 20px; /* Reducido de 22px */
-
+    font-size: 16px;
 }
 
 #tituloInfo {
-    font-size: 1.75rem; /* Reducido de 1.95rem */
+    font-size: 1.55rem;
     font-weight: 800;
-    margin-bottom: 15px; /* Reducido de 20px */
+    margin-bottom: 12px;
     color: #0f1720;
-    /* color más oscuro para mejor contraste */
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
@@ -139,17 +130,18 @@
 .btnEditarPerfil {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: #22c55e;
     color: white;
     border: none;
-    border-radius: 10px;
-    padding: 8px 14px;
-    font-weight: 800;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
     transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-    margin-bottom: 5%;
+    margin-bottom: 4%;
+    font-size: 13px;
 }
 
 .btnEditarPerfil:hover {
@@ -197,26 +189,25 @@
 }
 
 #contenedorAccionesPerfil {
-    width: clamp(320px, 90%, 780px); /* Reducido de 860px */
-    max-width: 1000px;
-    margin: 20px auto 0 auto; /* igual que la tarjeta principal */
+    width: clamp(280px, 85%, 640px);
+    max-width: 800px;
+    margin: 16px auto 0 auto;
     display: flex;
-    flex-direction: row; /* lado a lado en desktop */
+    flex-direction: row;
     justify-content: center;
     align-items: stretch;
-    gap: 16px; /* Reducido de 18px */
-    padding: 28px 32px; /* Reducido de 36px */
+    gap: 12px;
+    padding: 18px 20px;
     background: #ffffff;
-    border-radius: 40px; /* Reducido de 50px */
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 4px 10px rgba(0, 0, 0, 0.25); /* mismas sombras combinadas */
+    border-radius: 26px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14), 0 3px 8px rgba(0, 0, 0, 0.22);
 }
 .info {
-    font-weight: 800;
+    font-weight: 700;
     color: #0b1216;
     letter-spacing: 0.2px;
-    font-size: 24px; /* Reducido de 30px */
+    font-size: 14px;
     justify-self: start;
-    /* etiqueta alineada al inicio de su celda */
     text-align: left;
     padding-right: 6px;
 }
@@ -229,20 +220,17 @@
 .spHeight,
 .spEmail {
     margin: 0 auto;
-    /* centrar internamente */
-    border-radius: 10px; /* Reducido de 12px */
-    background: rgba(255, 255, 255, 0.2);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    font-size: clamp(14px, 1.1vw, 18px);
-    /* crecer con el ancho, no tanto verticalmente */
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    font-size: clamp(13px, 0.95vw, 16px);
     width: 100%;
-    max-width: 560px;
-    /* mantener consistencia entre filas */
-    padding: 10px 14px; /* Reducido de 12px 16px */
+    max-width: 520px;
+    padding: 8px 12px;
     color: #111;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -376,29 +364,28 @@
 
 /* Contenedor circular para la imagen del usuario. URL vacía para que el usuario la rellene más tarde */
 #imagenUser {
-    width: 280px; /* Reducido de 320px */
-    height: 260px; /* Reducido de 300px */
-    /* usar la imagen del directorio public */
+    width: 240px;
+    height: 220px;
     background-image: url("/Imagenes/Login_Perfil/fotoperfilusuario.png");
     background-size: cover;
     background-position: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 /* Botón cerrar sesión estilizado */
 /* Botón estilo tarjeta: coincidir con el botón rojo a la derecha de la referencia */
 #cerrarSesion,
 #borrarCuenta {
-    flex: 1 1 240px; /* mismo ancho relativo */
-    padding: 12px 18px; /* Reducido de 14px 20px */
-    font-size: 15px; /* Reducido de 16px */
-    font-weight: 800;
+    flex: 1 1 220px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
     color: #fff;
     background: #EC221F;
     border: none;
-    border-radius: 12px; /* Reducido de 14px */
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.18);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -681,7 +668,7 @@
 
 /* ======== INFO Y FILAS DE USUARIO ======== */
 .info {
-    font-size: 20px;
+    font-size: 16px; /* reducido respecto al diseño anterior */
 }
 
 .datoUsuarioRow {

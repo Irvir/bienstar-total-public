@@ -99,7 +99,7 @@ export default function Alimentos() {
           className="modal visible"
           onClick={(e) => e.target.id === 'modalAlimento' && closeModal()}
         >
-          <div className={`modal-content ${showAllDetails ? 'modal-wide' : 'modal-narrow'}`}>
+          <div className={`modal-content ${showAllDetails ? 'modal-wide details-expanded' : 'modal-narrow details-collapsed'}`}>
 
             <span className="close" onClick={closeModal}>
               &times;
@@ -107,18 +107,17 @@ export default function Alimentos() {
 
             <div className="modal-body">
 
-
               {loading ? (
                 <div style={{ textAlign: 'center', padding: '20px' }}>Cargando información...</div>
               ) : (
-                <div className="modal-grid-container"> {/* Nuevo contenedor para el grid principal */}
+                <div className="modal-grid-container">
 
-                  <div className="modal-col modal-col-left"> {/* Columna 1: Nutrientes izquierda (Esenciales/Generales) */}
+                  <div className="modal-col modal-col-left">
                     {modalData.info && modalData.info !== 'Cargando...' && typeof modalData.info === 'object' && (
                       <>
                         {!showAllDetails ? (
-                          <div className="nutrient-details">
-                            <div className="nutrient-row">
+                          <div className="nutrient-details collapsed-essentials-left" aria-label="Bloque esenciales izquierda">
+                            <div className="nutrient-row nutrient-block nutrient-block1">
                               <div className="nutrient-header">Detalles esenciales</div>
                               <div className="nutrient-grid cols-2">
                                 <div>🔎 <b>Nombre:</b> {modalData.info.nombre ?? modalData.name ?? '-'}</div>
@@ -126,20 +125,11 @@ export default function Alimentos() {
                                 <div>⚡ <b>Energía:</b> {modalData.info.Energia ?? '-'} kcal</div>
                                 <div>🍗 <b>Proteínas:</b> {modalData.info.Proteinas ?? '-'} g</div>
                                 <div>🥖 <b>Carbohidratos:</b> {modalData.info.H_de_C_disp ?? '-'} g</div>
-                                <div>🧈 <b>Lípidos:</b> {modalData.info.Lipidos_totales ?? '-'} g</div>
-                                <div>🧂 <b>Sodio:</b> {modalData.info.Sodio ?? '-'} mg</div>
-                                <div>🍌 <b>Potasio:</b> {modalData.info.Potasio ?? '-'} mg</div>
-                                <div>💪 <b>Hierro:</b> {modalData.info.Hierro ?? '-'} mg</div>
-                                <div>🦴 <b>Calcio:</b> {modalData.info.Calcio ?? '-'} mg</div>
                               </div>
                             </div>
-
-                            {/* Este div de estilo desaparece de aquí */}
                           </div>
                         ) : (
                           <div className="nutrient-details">
-
-                            {/* 🧾 Datos Generales (COLUMNA IZQUIERDA) */}
                             <div className="nutrient-row">
                               <div className="nutrient-header"> {modalData.name}</div>
                               <div className="nutrient-grid cols-2">
@@ -150,7 +140,6 @@ export default function Alimentos() {
                               </div>
                             </div>
 
-                            {/* 🍞 Macronutrientes (COLUMNA IZQUIERDA) */}
                             <div className="nutrient-row">
                               <div className="nutrient-header">🍞 Macronutrientes</div>
                               <div className="nutrient-grid cols-2">
@@ -161,7 +150,6 @@ export default function Alimentos() {
                               </div>
                             </div>
 
-                            {/* 🧈 Grasas (COLUMNA IZQUIERDA) */}
                             <div className="nutrient-row">
                               <div className="nutrient-header">🧈 Grasas</div>
                               <div className="nutrient-grid cols-2">
@@ -173,31 +161,43 @@ export default function Alimentos() {
                             </div>
                           </div>
 
-
                         )}
                       </>
                     )}
                   </div>
 
-                  <div className="modal-col modal-col-center"> {/* Columna 2: Imagen y Botón (CENTRO) */}
+                  <div className="modal-col modal-col-center">
                     {modalData.img ? (
                       <img src={`${API_BASE}${modalData.img}`} alt={modalData.name} />
                     ) : (
                       <div className="no-image">Sin imagen</div>
                     )}
                     <h2 id="modalNombre">{modalData.name}</h2>
-                    <button className="detalle-toggle" onClick={() => setShowAllDetails(s => !s)}>
+                    <button className="detalle-toggle" onClick={() => setShowAllDetails(s => !s)} aria-expanded={showAllDetails}>
                       {showAllDetails ? 'Menos detalle' : 'Mostrar más detalles'}
                     </button>
                   </div>
 
-                  <div className="modal-col modal-col-right"> {/* Columna 3: Nutrientes derecha (Vitaminas/Minerales) */}
+                  <div className="modal-col modal-col-right">
                     {modalData.info && modalData.info !== 'Cargando...' && typeof modalData.info === 'object' ? (
                       <>
+                        {!showAllDetails && (
+                          <div className="nutrient-details collapsed-essentials-right" aria-label="Bloque esenciales derecha">
+                            <div className="nutrient-row nutrient-block nutrient-block2">
+                              <div className="nutrient-header">Detalles esenciales</div>
+                              <div className="nutrient-grid cols-2">
+                                <div>🧈 <b>Lípidos:</b> {modalData.info.Lipidos_totales ?? '-'} g</div>
+                                <div>🧂 <b>Sodio:</b> {modalData.info.Sodio ?? '-'} mg</div>
+                                <div>🍌 <b>Potasio:</b> {modalData.info.Potasio ?? '-'} mg</div>
+                                <div>💪 <b>Hierro:</b> {modalData.info.Hierro ?? '-'} mg</div>
+                                <div>🦴 <b>Calcio:</b> {modalData.info.Calcio ?? '-'} mg</div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                         {showAllDetails && (
                           <div className="nutrient-details">
 
-                            {/* 💊 Vitaminas (COLUMNA DERECHA) */}
                             <div className="nutrient-row">
                               <div className="nutrient-header">💊 Vitaminas</div>
                               <div className="nutrient-grid cols-2">
@@ -215,7 +215,6 @@ export default function Alimentos() {
                               </div>
                             </div>
 
-                            {/* 🧱 Minerales (COLUMNA DERECHA) */}
                             <div className="nutrient-row">
                               <div className="nutrient-header">🧱 Minerales</div>
                               <div className="nutrient-grid cols-2">
