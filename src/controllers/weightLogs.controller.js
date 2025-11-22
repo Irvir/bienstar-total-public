@@ -112,7 +112,12 @@ export async function createWeightLog(req, res, { pool } = {}) {
       [userId, normalizedDate],
     );
 
-    const latest = await syncUserLatestWeight(pool, userId);
+    // Solo sincronizar el peso del perfil si el registro guardado corresponde al día de hoy
+    const today = new Date().toISOString().split('T')[0];
+    let latest = null;
+    if (normalizedDate === today) {
+      latest = await syncUserLatestWeight(pool, userId);
+    }
 
     res.status(insertedId ? 201 : 200).json({
       message: insertedId ? 'Registro creado' : 'Registro actualizado',
@@ -174,7 +179,13 @@ export async function updateWeightLog(req, res, { pool } = {}) {
        LIMIT 1`,
       [weightId, userId],
     );
-    const latest = await syncUserLatestWeight(pool, userId);
+    // Solo sincronizar el peso del perfil si el registro actualizado corresponde al día de hoy
+    const today = new Date().toISOString().split('T')[0];
+    let latest = null;
+    const updatedFecha = rows[0] && rows[0].fecha ? rows[0].fecha : null;
+    if (updatedFecha === today) {
+      latest = await syncUserLatestWeight(pool, userId);
+    }
 
     res.json({ message: 'Registro actualizado', item: rows[0] || null, latestPeso: latest });
   } catch (err) {
@@ -191,6 +202,13 @@ export async function deleteWeightLog(req, res, { pool } = {}) {
     if (!weightId) return res.status(400).json({ message: 'Falta el registro a eliminar' });
 
     const table = getTableName('registro_peso');
+    // obtener la fecha del registro antes de eliminar
+    const [beforeRows] = await pool.query(
+      `SELECT fecha FROM ${table} WHERE id = ? AND id_usuario = ? LIMIT 1`,
+      [weightId, userId],
+    );
+    const deletedFecha = beforeRows && beforeRows[0] ? beforeRows[0].fecha : null;
+
     const [result] = await pool.query(
       `DELETE FROM ${table}
        WHERE id = ? AND id_usuario = ?
@@ -200,7 +218,11 @@ export async function deleteWeightLog(req, res, { pool } = {}) {
 
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Registro no encontrado' });
 
-    const latest = await syncUserLatestWeight(pool, userId);
+    let latest = null;
+    const today = new Date().toISOString().split('T')[0];
+    if (deletedFecha === today) {
+      latest = await syncUserLatestWeight(pool, userId);
+    }
 
     res.json({ message: 'Registro eliminado', latestPeso: latest });
   } catch (err) {

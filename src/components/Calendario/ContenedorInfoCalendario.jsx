@@ -49,6 +49,17 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     }
   }, [pesoDelDia]);
 
+  // leer usuario local una vez para obtener `peso_inicial` si existe
+  const usuarioLocal = (() => {
+    try {
+      const raw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  })();
+  const pesoInicialLocal = usuarioLocal?.peso_inicial ?? null;
+
   const fetchDayInfo = useCallback(async () => {
     if (!fechaStr || !userId) return;
     setDayLoading(true);
@@ -95,29 +106,33 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
       if (!res.ok) throw new Error(data?.message || 'No se pudo guardar el peso');
       window.notify?.(data?.message || 'Peso guardado', { type: 'success' });
       onWeightSaved?.(fechaStr, pesoValue);
-      // También actualizamos el peso en el perfil local (localStorage) y notificamos a la aplicación
+      // Actualizamos el peso en el perfil local SOLO si la API devolvió latestPeso (sincronizó)
+      // o si la fecha guardada es hoy (por compatibilidad). Esto evita que editar días
+      // anteriores cambie el peso del perfil.
       try {
-        const raw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
-        if (raw) {
-          const usuario = JSON.parse(raw);
+        const rawLocal = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
+        if (rawLocal) {
+          const usuario = JSON.parse(rawLocal);
           if (usuario) {
-            usuario.peso = pesoValue;
-            try {
-              localStorage.setItem('usuario', JSON.stringify(usuario));
-            } catch (e) {
-              // ignore localStorage set errors
+            const apiLatest = data?.latestPeso ?? null;
+            const todayStrLocal = todayStr; // fecha de hoy en formato YYYY-MM-DD
+            if (apiLatest !== null && apiLatest !== undefined) {
+              usuario.peso = apiLatest;
+            } else if (fechaStr === todayStrLocal) {
+              // fallback: si la API no indicó latestPeso, pero el usuario guardó para hoy,
+              // actualizar el perfil local
+              usuario.peso = pesoValue;
             }
-            // Emitir evento global para que otros componentes actualicen su estado
-            try {
-              window.dispatchEvent(new CustomEvent('usuario:updated', { detail: { usuario } }));
-            } catch (e) {
-              // si no se puede dispatch, ignorar
+
+            // Persistir y notificar solo si el peso del perfil cambió
+            if (usuario.peso !== undefined && usuario.peso !== null) {
+              try { localStorage.setItem('usuario', JSON.stringify(usuario)); } catch {}
+              try { window.dispatchEvent(new CustomEvent('usuario:updated', { detail: { usuario } })); } catch {}
             }
           }
         }
       } catch (err) {
-        // no bloquear la UX si falla la sincronización local
-        console.warn('No se pudo actualizar localStorage con el nuevo peso', err);
+        console.warn('No se pudo sincronizar localStorage con el nuevo peso', err);
       }
       await fetchDayInfo();
     } catch (err) {
@@ -128,13 +143,16 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     }
   };
 
-  // Peso del día real (registro) y referencia del perfil para días sin registro
+  // Peso del día real (registro). Si no hay registro, usar `peso_inicial` del usuario
+  // como referencia; si tampoco existe, como último recurso mostrar el peso del perfil.
   const pesoDelPerfil = info?.pesoPerfil ?? null;
   const pesoMostrado = useMemo(() => {
     if (pesoDelDia) return Number(pesoDelDia);
     if (info?.peso && info?.pesoFuente === 'registro') return Number(info.peso);
+    if (pesoInicialLocal !== null && pesoInicialLocal !== undefined) return Number(pesoInicialLocal);
+    if (info?.peso && info?.pesoFuente === 'perfil') return Number(info.peso);
     return null;
-  }, [info, pesoDelDia]);
+  }, [info, pesoDelDia, pesoInicialLocal]);
 
   return (
     <div className="ModalOverlay" onClick={onClose}>
@@ -152,12 +170,13 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
             <p><strong>Peso:</strong> {
               pesoMostrado !== null
                 ? `${Number(pesoMostrado).toFixed(1)} kg`
-                : (info?.pesoFuente === 'perfil' && pesoDelPerfil != null
-                    ? `${Number(pesoDelPerfil).toFixed(1)} kg (perfil)`
-                    : 'Sin registro')
+                : 'Sin registro'
             }</p>
-            {info?.pesoFuente === 'perfil' && pesoMostrado === null && (
-              <small className="cal-info-ayuda">Es el peso de tu perfil mostrado como referencia. Registra el peso del día para guardarlo en el calendario.</small>
+            {(pesoMostrado === Number(pesoInicialLocal) && pesoInicialLocal !== null) && (
+              <small className="cal-info-ayuda">Se muestra tu peso inicial como referencia. Registra el peso del día para guardarlo en el calendario.</small>
+            )}
+            {(pesoMostrado === Number(pesoDelPerfil) && pesoDelPerfil !== null && (pesoInicialLocal === null || pesoMostrado !== Number(pesoInicialLocal))) && (
+              <small className="cal-info-ayuda">Se muestra el peso de tu perfil como referencia. Registra el peso del día para guardarlo en el calendario.</small>
             )}
           </div>
         )}
