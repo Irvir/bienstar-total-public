@@ -1,5 +1,15 @@
 
+/* ============================================================
+    Filtro.css
+    Página/segmento de listado de alimentos con filtro
+    - Contenedor principal
+    - Barra de filtro (icono lupa + input)
+    - Contenedor de alimentos
+    - Card básica (.cuadro)
+    - Media queries (1024px, 768px, 480px)
+    ============================================================ */
 
+/* =============== CONTENEDOR PRINCIPAL =============== */
 #contenedorPrincipal {
     width: 100%;
     min-height: 10vh;
@@ -11,7 +21,7 @@
     padding-bottom: 0;
 }
 
-/* ----------------- Filtro ----------------- */
+/* =============== BARRA DE FILTRO =============== */
 #contenedorFiltro {
     width: 90%;
     max-width: 1200px;
@@ -44,7 +54,7 @@
     width: 100%;
 }
 
-/* ----------------- Contenedor de Alimentos ----------------- */
+/* =============== CONTENEDOR DE ALIMENTOS =============== */
 #contenedorAlimentos {
     width: 95%;
     max-width: 1400px;
@@ -54,6 +64,7 @@
 
 
 
+/* =============== CARD ALIMENTO =============== */
 .cuadro {
     background-color: #FCF7F8;
     /* rojo oscuro */
@@ -76,7 +87,7 @@
 
 
 
-/* ----------------- Responsive ----------------- */
+/* =============== MEDIA QUERIES RESPONSIVE =============== */
 @media (max-width: 1024px) {
     #contenedorFiltro {
         width: 95%;

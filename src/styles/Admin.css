@@ -1,3 +1,18 @@
+/* ============================================================
+    ADMIN.CSS
+    Panel administrativo (alimentos / usuarios / dietas):
+    - Variables de tema
+    - Layout general
+    - Header y controles
+    - Tarjetas y listas
+    - Botones de acción
+    - Modal de edición (form + imagen + nutrientes)
+    - Botones guardar / cancelar
+    - Media queries responsive
+    (Solo comentarios añadidos; reglas visuales intactas)
+    ============================================================ */
+
+/* =============== VARIABLES =============== */
 :root {
     --admin-bg: #f3f6f8;
     --card: #ffffff;
@@ -13,7 +28,7 @@
     --radius: 12px;
 }
 
-/* --- Estilos Generales del Admin Panel --- */
+/* =============== LAYOUT GENERAL =============== */
 .admin-contenedor {
     font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     width: 96%;
@@ -27,6 +42,7 @@
     padding: 18px
 }
 
+/* =============== HEADER + TITULO =============== */
 .admin-header {
     display: flex;
     align-items: center;
@@ -67,13 +83,14 @@
     margin-top: 2px
 }
 
+/* Contenedor de controles (botones principales) */
 .admin-controls {
     display: flex;
     gap: 12px;
     align-items: center
 }
 
-/* Botones primarios */
+/* =============== BOTÓN PRIMARIO GLOBAL =============== */
 .admin-controls .btn-primary,
 .btn-primary {
     background: #dc3545;
@@ -94,7 +111,7 @@
     background-color: var(--accent)
 }
 
-/* --- Listas y Tarjetas --- */
+/* =============== LISTAS Y TARJETAS =============== */
 .admin-lista {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -142,6 +159,7 @@
     justify-content: flex-end
 }
 
+/* Acciones dentro de cada tarjeta */
 .admin-actions {
     display: flex;
     gap: 8px;
@@ -149,7 +167,7 @@
     margin-top: 10px
 }
 
-/* --- Botones de Acción (General) --- */
+/* =============== BOTONES DE ACCIÓN (GENÉRICOS) =============== */
 .action-btn,
 .admin-actions button {
     padding: 8px 10px;
@@ -184,9 +202,7 @@
 }
 
 
-/* ========================================= */
-/* --- ESTILOS MEJORADOS PARA EL MODAL DE EDICIÓN (ModalEditarAlimento) --- */
-/* ========================================= */
+/* =============== MODAL EDICIÓN ALIMENTO =============== */
 
 .modal-overlay {
     position: fixed;
@@ -198,7 +214,7 @@
     z-index: 2000
 }
 
-/* MODAL: Dimensionamiento 80% ancho / max 90% alto */
+/* Contenedor del modal principal */
 .admin-modal {
     width: 90%;
     max-width: 960px;
@@ -212,7 +228,7 @@
     height: auto;
 }
 
-/* SCROLLABLE FORM */
+/* Form con scroll interno */
 .modal-form {
     max-height: 90vh;
     /* Altura máxima para permitir el scroll interno */
@@ -231,7 +247,7 @@
 }
 
 
-/* Títulos y campos generales del Form */
+/* Títulos y campos del formulario */
 .modal-close {
     position: absolute;
     right: 18px;
@@ -275,7 +291,7 @@
     outline: none;
 }
 
-/* Sección de Imagen */
+/* Sección de imagen y archivo */
 .file-row {
     display: flex;
     gap: 12px;
@@ -295,7 +311,7 @@
 }
 
 
-/* --- SECCIÓN DE NUTRIENTES AGRUPADA --- */
+/* =============== SECCIÓN NUTRIENTES =============== */
 
 .nutri-section {
     margin-top: 25px;
@@ -319,7 +335,7 @@
     margin-bottom: 10px;
 }
 
-/* Definición de la cuadrícula de nutrientes */
+/* Grillas por categoría de nutrientes */
 .nutri-grid--macros {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
@@ -355,7 +371,7 @@
 }
 
 
-/* --- BOTONES DE ACCIÓN (Guardar/Cancelar) --- */
+/* =============== BOTONES GUARDAR / CANCELAR =============== */
 
 .modal-buttons {
     display: flex;
@@ -400,9 +416,7 @@
 }
 
 
-/* ========================================= */
-/* --- MEDIA QUERIES --- */
-/* ========================================= */
+/* =============== MEDIA QUERIES =============== */
 
 @media(max-width: 920px) {
     .admin-modal {

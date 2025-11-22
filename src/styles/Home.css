@@ -1,3 +1,10 @@
+/* ============================================================
+    HOME.CSS
+    Página principal (dashboard de acceso rápido): loader, layout
+    de secciones, botoneras (principal y secundaria), estilos de
+    botones, animaciones, dieta del día y media queries.
+    ============================================================ */
+/* =============== RESETEO BASE =============== */
 html {
     height: 100%;
 }
@@ -10,7 +17,7 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* --- LOADER STYLES (Sin cambios) --- */
+/* =============== LOADER OVERLAY =============== */
 #loader {
     display: none;
     position: fixed;
@@ -81,6 +88,7 @@ body {
 }
 
 
+/* =============== LAYOUT GENERAL CUERPO =============== */
 #cuerpo {
     display: flex;
     flex-direction: row;
@@ -90,6 +98,7 @@ body {
     padding-bottom: 0.5rem;
 }
 
+/* =============== SECCIÓN PRINCIPAL BOTONES (2 columnas) =============== */
 .section-principal-botones {
     display: flex;
     flex-direction: row;
@@ -129,6 +138,7 @@ body {
 /* -------------------------------------------------------------------------- */
 
 /* BOTONERA PRINCIPAL (IZQUIERDA) */
+/* =============== BOTONERA IZQUIERDA (GRID) =============== */
 .botonera {
     margin-top: 2%;
     display: grid;
@@ -160,6 +170,7 @@ body {
 }
 
 /* AJUSTE CLAVE PARA BOTONERA 2: POSICIÓN DERECHA Y ALTURA CONTENEDORA */
+/* =============== BOTONERA DERECHA (Columna / Widgets) =============== */
 .botonera2 {
     display: flex;
     justify-content: center;
@@ -186,6 +197,7 @@ body {
 /* ESTILOS DE BOTONES                           */
 /* -------------------------------------------------------------------------- */
 
+/* =============== BOTONES INDIVIDUALES (IMÁGENES) =============== */
 .btn1 {
     background-image: url("/public/Imagenes/Home/Alimentos.svg");
     background-size: 60% 100% !important;
@@ -289,6 +301,7 @@ body {
 /* -------------------------------------------------------------------------- */
 /* ANIMACIONES                                 */
 /* -------------------------------------------------------------------------- */
+/* =============== ANIMACIONES (fadeInUp / glowPulse) =============== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -320,6 +333,7 @@ body {
 /* MEDIA QUERIES (ADAPTADAS)                      */
 /* -------------------------------------------------------------------------- */
 
+/* =============== MEDIA QUERIES <768px =============== */
 @media (max-width: 768px) {
 
     /* En móvil, las botoneras se apilan verticalmente */
@@ -366,6 +380,7 @@ body {
 }
 
 
+/* =============== MEDIA QUERIES >=768px =============== */
 @media (min-width: 768px) {
     /* Ajustes para tablet/desktop */
 
@@ -402,6 +417,7 @@ body {
 }
 
 
+/* =============== MEDIA QUERIES >=1024px =============== */
 @media (min-width: 1024px) {
 
     .botonera button,

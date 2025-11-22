@@ -1,3 +1,15 @@
+/* ============================================================
+    Cuentas.css
+    Administración de cuentas (formulario + listado)
+    - Variables y tema
+    - Layout general y contenedor
+    - Formulario administración (panel)
+    - Grids auxiliares (2 / 3 columnas)
+    - Botones y acciones
+    - Lista y tabla con scroll
+    - Encabezados / estados de filas
+    - Media queries (>=820px, >=900px, <=700px, <=640px)
+    ============================================================ */
 :root {
     --card: #ffffff;
     --muted: #6b7280;
@@ -37,6 +49,7 @@ body {
     margin: 0 auto
 }
 
+/* Encabezado del panel de formulario */
 .admin-form .page-title {
     /* Encabezado de la página */
     display: flex;
@@ -53,6 +66,7 @@ body {
     letter-spacing: -0.2px;
 }
 
+/* Panel del formulario admin */
 .admin-form {
     background: linear-gradient(180deg, var(--card), var(--glass));
     padding: 1.25rem;
@@ -92,12 +106,14 @@ body {
     border-color: rgba(139, 35, 48, 0.25)
 }
 
+/* Grid 2 columnas */
 .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.85rem
 }
 
+/* Grid 3 columnas */
 .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -108,6 +124,7 @@ body {
     grid-column: 1 / -1
 }
 
+/* Acciones del formulario (botonera) */
 .form-actions {
     display: flex;
     gap: 0.75rem;
@@ -133,18 +150,21 @@ body {
     transform: translateY(-1px)
 }
 
+/* Botón primario (submit/guardar) */
 .btn-primary {
     background: var(--primary);
     color: #fff;
     border-color: rgba(0, 0, 0, 0.04)
 }
 
+/* Botón secundario */
 .btn-secondary {
     background: #fff;
     color: var(--primary);
     border: 1px solid rgba(139, 35, 48, 0.12)
 }
 
+/* Botón eliminar / peligro */
 .btn-danger {
     background: var(--danger);
     color: #fff;
@@ -155,6 +175,7 @@ body {
     background: #b02a37
 }
 
+/* Fila principal que agrupa panel y lista */
 .admin-cuentas-row {
     display: flex;
     flex-direction: column;
@@ -175,6 +196,7 @@ body {
     min-height: 0
 }
 
+/* Encabezado sticky de la lista */
 .admin-list .list-header {
     position: sticky;
     top: 0;
@@ -183,12 +205,14 @@ body {
     border-bottom: 1px solid rgba(15, 23, 42, 0.05)
 }
 
+/* Wrapper para scroll de la tabla */
 .admin-list .table-wrapper {
     max-height: 60vh;
     overflow: auto;
     flex: 1 1 auto
 }
 
+/* =============== MEDIA QUERY >= 820px =============== */
 @media(min-width:820px) {
     .admin-list .table-wrapper {
         max-height: 72vh
@@ -235,6 +259,7 @@ body {
     }
 }
 
+/* =============== MEDIA QUERY >= 900px =============== */
 @media(min-width:900px) {
     .admin-list {
         order: 0
@@ -290,6 +315,7 @@ body {
     min-width: 0
 }
 
+/* Encabezados de la tabla (sticky interno) */
 .table thead th {
     /* Encabezado de la tabla */
     position: sticky;
@@ -302,6 +328,7 @@ body {
     font-size: 0.85rem;
 }
 
+/* Celdas del cuerpo de la tabla */
 .table tbody td {
     padding: 0.8rem 1rem;
     border-bottom: 1px solid rgba(15, 23, 42, 0.03);
@@ -329,6 +356,7 @@ body {
     white-space: nowrap
 }
 
+/* Fila con estado inactivo */
 .row-inactivo {
     background: linear-gradient(90deg, #fff5f5, #fff);
     color: #9a9a9a
@@ -348,6 +376,7 @@ body {
     min-width: 100%
 }
 
+/* =============== MEDIA QUERY <= 700px =============== */
 @media(max-width:700px) {
 
     .grid-2,
@@ -370,6 +399,7 @@ body {
     }
 }
 
+/* =============== MEDIA QUERY <= 640px =============== */
 @media(max-width:640px) {
     .admin-cuentas-page #cuerpo {
         padding: 1.25rem .75rem;

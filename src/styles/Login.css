@@ -1,4 +1,10 @@
-/* Fondo principal ocupa toda la pantalla */
+/* ============================================================
+    LOGIN.CSS
+    Página de autenticación: fondo, contenedores, foto, inputs,
+    botones principales, botón Google, animación de carga y breakpoints.
+    (Solo documentación añadida; estilos intactos.)
+    ============================================================ */
+/* =============== FONDO PRINCIPAL =============== */
 .login-page .fondoLogin {
     background-size: cover;
     background-position: center;
@@ -12,7 +18,7 @@
     box-sizing: border-box;
 }
 
-/* Contenedor centrado */
+/* =============== CONTENEDOR EXTERNO CENTRADO =============== */
 .login-page #contenedorLoginAsist {
     width: 100%;
     max-width: 420px;
@@ -24,7 +30,7 @@
     box-sizing: border-box;
 }
 
-/* Caja del login */
+/* =============== CAJA (FORM) LOGIN =============== */
 .login-page #contenedorLogin {
     width: 100%;
     max-width: 420px;
@@ -39,7 +45,7 @@
     box-sizing: border-box;
 }
 
-/* Imagen superior (foto de perfil) */
+/* =============== IMAGEN PERFIL SUPERIOR =============== */
 .login-page #contenedorLoginFoto {
     width: 120px;
     height: 120px;
@@ -49,9 +55,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* =====================================
-   INPUTS
-===================================== */
+/* =============== INPUTS =============== */
 .login-page input[type="text"],
 .login-page input[type="password"] {
     width: calc(100% - 36px);
@@ -76,9 +80,7 @@
     border-color: rgba(147, 21, 37, 0.35);
 }
 
-/* =====================================
-   BOTONES
-===================================== */
+/* =============== BOTONES PRINCIPALES =============== */
 .login-page .login-container button,
 .login-page .login-container .btn,
 .login-page .login-container .btn-primary {
@@ -106,7 +108,7 @@
 
 
 
-/* Efecto brillo interno */
+/* Efecto brillo interno en hover */
 #botonIngresar::after,
 .btnCrearCuenta::after {
     content: "";
@@ -129,9 +131,7 @@
     opacity: 1;
 }
 
-/* =====================================
-   BOTÓN GOOGLE
-===================================== */
+/* =============== BOTÓN GOOGLE =============== */
 .btn-google,
 .login-page .login-container .btn-google {
     display: flex;
@@ -192,9 +192,7 @@
     opacity: 1;
 }
 
-/* =====================================
-   ANIMACIÓN DE CARGA
-===================================== */
+/* =============== ANIMACIÓN DE CARGA =============== */
 #loading-animation {
     display: none;
     margin-top: 10px;

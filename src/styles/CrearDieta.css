@@ -1,3 +1,16 @@
+/* ============================================================
+    CrearDieta.css
+    Creación y edición de dietas
+    - Import fuentes
+    - Barra filtro / búsqueda
+    - Panel principal #crearDieta
+    - Selección y tarjetas de alimentos
+    - Layout cuerpo (form izq / filtro der)
+    - Grupos selectores y botones acción
+    - Nutrientes y listas
+    - Loader y animación
+    - Media queries
+    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
 
 .crear-dieta-page html,
@@ -5,6 +18,7 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* =============== BARRA DE FILTRO =============== */
 .crear-dieta-page #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
@@ -46,6 +60,7 @@
     padding: 15px;
 }
 
+/* Contenedor resultados del filtro */
 .crear-dieta-page #filtroContainer {
     display: flex;
     flex-direction: column;
@@ -73,6 +88,7 @@
     padding: 12px;
 }
 
+/* =============== PANEL PRINCIPAL CREAR DIETA =============== */
 .crear-dieta-page #crearDieta {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;

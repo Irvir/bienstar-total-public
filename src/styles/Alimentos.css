@@ -1,3 +1,9 @@
+/* ============================================================
+    ALIMENTOS.CSS
+    Listado de alimentos + modal detalle.
+    Secciones: Layout, Filtro, Grid, Modal, Nutrientes, Categorías, Selectores, Responsive.
+    (Solo comentarios añadidos; estilos sin cambios.)
+    ============================================================ */
 .pagina-alimentos html,
 .pagina-alimentos body {
     height: 100%;
@@ -13,7 +19,7 @@
     align-items: center;
 }
 
-/* ----------------- Filtro ----------------- */
+/* =============== FILTRO / BÚSQUEDA =============== */
 .pagina-alimentos #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
@@ -55,7 +61,7 @@
     justify-content: center;
 }
 
-/* Grid de alimentos */
+/* =============== GRID DE TARJETAS =============== */
 .pagina-alimentos .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -110,7 +116,7 @@
     color: black;
 }
 
-/* ----------------- Modal ----------------- */
+/* =============== MODAL DETALLE =============== */
 .modal {
     display: flex;
     position: fixed;
@@ -141,7 +147,7 @@
     text-align: left;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
     overflow-y: auto;
-    /* CLAVE: Permite scroll en el contenido principal del modal */
+    /* Scroll interno del modal */
     display: flex;
     flex-direction: column;
 }
@@ -155,7 +161,7 @@
 
 .modal-grid-container {
     display: grid;
-    /* 2 columnas para el contenido (izquierda/derecha) y 1 columna auto para la imagen central */
+    /* Layout columnas: izquierda | imagen | derecha */
     grid-template-columns: 2fr 1fr 2fr;
     gap: 16px;
     align-items: start;
@@ -231,12 +237,12 @@
     color: black;
 }
 
-/* ----------------- Responsive ----------------- */
+/* =============== MEDIA QUERIES =============== */
 
 /* Desktop (1025px y superior): Asegura el desplazamiento en las columnas y el tamaño de la imagen */
 @media (min-width: 1025px) and (max-width: 1920px) {
 
-    /* Escala la imagen ligeramente hacia abajo en monitores estándar */
+    /* Imagen reducida en monitores estándar */
     .modal-col-center img {
         max-width: 200px;
         max-height: 200px;
@@ -247,7 +253,7 @@
 /* Tablet/Pequeño Desktop (max-width: 992px) - Stack vertical y Scroll del Modal */
 @media (max-width: 992px) {
 
-    /* Contenedor principal scrollable */
+    /* Modal ajusta altura y ancho en pantallas medias */
     .modal-content {
         height: 90vh;
         /* Se mantiene una altura definida */
@@ -257,12 +263,12 @@
         /* overflow-y: auto; ya está en la definición general, lo que permite el scroll. */
     }
 
-    /* Grid vertical */
+    /* Reorganiza a una sola columna */
     .modal-grid-container {
         grid-template-columns: 1fr;
         gap: 20px;
         overflow-y: visible;
-        /* El scroll lo maneja el .modal-content */
+        /* Scroll vertical recae en .modal-content */
         max-height: none;
     }
 
@@ -277,7 +283,7 @@
 
     .modal-col-center {
         order: -1;
-        /* Escala la imagen para tablet */
+        /* Imagen más pequeña en tablet */
         max-width: 200px;
         margin: 0 auto;
     }
@@ -287,7 +293,7 @@
         max-height: 180px;
     }
 
-    /* Columnas de nutrientes se adaptan */
+    /* Nutrientes a 2 columnas en tablet */
     .nutrient-grid.cols-3,
     .nutrient-grid.cols-4,
     .nutrient-grid.cols-5,
@@ -308,7 +314,7 @@
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
 
-    /* **AJUSTE SOLICITADO:** Reduce el tamaño de la imagen de la tarjeta */
+    /* Imagen tarjeta menor en <768px */
     #imgAlimento {
         max-height: 120px;
     }
@@ -317,7 +323,7 @@
         font-size: 14px;
     }
 
-    /* Modal: Aún más pequeña la imagen en móvil */
+    /* Imagen modal se ajusta a ancho completo en móvil */
     .modal-col-center {
         max-width: 100%;
         margin: 0;
@@ -340,7 +346,7 @@
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 
-    /* **AJUSTE SOLICITADO:** Reduce el tamaño de la imagen de la tarjeta */
+    /* Imagen tarjeta menor en <600px */
     #imgAlimento {
         max-height: 100px;
     }
@@ -349,7 +355,7 @@
         font-size: 12px;
     }
 
-    /* Nutrientes a 1 columna en móvil muy pequeño */
+    /* Nutrientes a 1 columna (<600px) */
     .nutrient-grid.cols-2,
     .nutrient-grid.cols-3,
     .nutrient-grid.cols-4,

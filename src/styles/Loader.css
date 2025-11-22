@@ -1,4 +1,7 @@
-/* Loader.css optimizado: se eliminaron bloques duplicados y se mantiene un solo set de reglas */
+/* ============================================================
+  LOADER.CSS
+  Overlay de carga con texto y frutas animadas (bounce + fadeIn).
+  ============================================================ */
 
 .loader-overlay {
   position: fixed;

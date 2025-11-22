@@ -1,3 +1,20 @@
+/* ============================================================
+    CrearCuenta.css
+    Página de creación de cuenta
+    - Fondo y layout principal
+    - Contenedores y título
+    - Formulario y grupos de botones
+    - Labels / grupos de inputs (edad, peso, altura)
+    - Estilos de inputs (text, number, email, password, name)
+    - Select / chips de alergias
+    - Placeholder / selección / focus
+    - Grid del formulario (doble columna)
+    - Botones secundarios y acciones
+    - Media queries (<=968px)
+    - Media queries (<= ajustes de layout)
+    ============================================================ */
+
+/* =============== FONDO Y LAYOUT PRINCIPAL =============== */
 .crear-cuenta-page .fondoLogin {
     background-size: cover;
     /* Revertido a la ruta anterior solicitada */
@@ -21,6 +38,7 @@
     position: relative;
 }
 
+/* Contenedor asistente interior */
 #crear-cuenta-page #contenedorLoginAsist3 {
     width: 100%;
     max-width: 1200px;
@@ -36,6 +54,7 @@
     /* separar el panel del header */
 }
 
+/* Panel principal (glass) */
 .crear-cuenta-page #contenedorLogin2 {
     /* Make it responsive: fill width up to a max without forcing overflow */
     width: 100%;
@@ -61,6 +80,7 @@
     box-sizing: border-box;
 }
 
+/* Título principal (foto reemplazada por texto) */
 .crear-cuenta-page .contendorLoginFotoCrearUserAsist {
     width: 100%;
     font-size: clamp(18px, 2.2vw, 24px);
@@ -71,12 +91,13 @@
     margin-bottom: 8px;
 }
 
+/* Imagen desactivada (no se muestra) */
 .crear-cuenta-page .contendorLoginFotoCrearUser {
     display: none;
     /* quitada: ya no mostramos imagen */
 }
 
-/* Contenedor de la parte derecha (formulario) */
+/* =============== CONTENEDOR FORMULARIO =============== */
 .crear-cuenta-page .contenedorLoginDatosUser {
     width: 100%;
     max-width: 980px;
@@ -92,7 +113,7 @@
     margin: 0 auto;
 }
 
-/* Grupo de botones: por defecto apilados en columnas pequeñas, fila en pantallas grandes */
+/* =============== GRUPO DE BOTONES PRINCIPALES =============== */
 .crear-cuenta-page .botonesGroup {
     width: 100%;
     max-width: 640px;
@@ -116,7 +137,7 @@
     /* ligeramente menor para botón compacto */
 }
 
-/* Labels y div de inputs */
+/* =============== LABELS Y GRUPOS DE INPUTS =============== */
 .crear-cuenta-page .divNom,
 .crear-cuenta-page .divCorreo,
 .crear-cuenta-page .divEdadPesoAlt {
@@ -127,7 +148,7 @@
     color: #0f1720;
 }
 
-/* Grouped inputs responsive layout */
+/* Layout responsive para edad/peso/altura */
 .crear-cuenta-page .divEdadPesoAlt {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -140,7 +161,7 @@
     margin-right: 8px;
 }
 
-/* Estilo para los botones */
+/* =============== BOTONES PRINCIPALES (CREAR / INICIAR SESION) =============== */
 .crear-cuenta-page .buttonCrearIniciarSesion {
     width: 46%;
     padding: 8px 12px;
@@ -154,8 +175,8 @@
     margin-left: 0;
 }
 
-/* Estilo para los cuadros de texto */
-/* Inputs: glass + legibilidad */
+/* =============== INPUTS (TEXT / NUMBER / EMAIL / PASSWORD / NAME) =============== */
+/* Estilos base con efecto glass */
 .crear-cuenta-page input[type="number"] {
     width: 100%;
     height: 36px;
@@ -177,7 +198,7 @@
     caret-color: #B20C05;
 }
 
-/* Hover: cuando el mouse pasa encima */
+/* Hover (number) */
 .crear-cuenta-page input[type="number"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
@@ -204,7 +225,7 @@
     caret-color: #B20C05;
 }
 
-/* Hover: cuando el mouse pasa encima */
+/* Hover (name) */
 .crear-cuenta-page input[type="name"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
@@ -230,7 +251,7 @@
     caret-color: #B20C05;
 }
 
-/* Hover: cuando el mouse pasa encima */
+/* Hover (text) */
 .crear-cuenta-page input[type="text"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
@@ -256,7 +277,7 @@
     caret-color: #B20C05;
 }
 
-/* Hover: cuando el mouse pasa encima */
+/* Hover (password) */
 .crear-cuenta-page input[type="password"]:hover {
     border-color: #2980b9;
     background-color: #eef7ff;
@@ -282,7 +303,7 @@
     caret-color: #B20C05;
 }
 
-/* Botones centrados */
+/* Botones centrados (ajuste responsivo) */
 .crear-cuenta-page .buttonCrearIniciarSesion {
     width: auto;
     margin: 2px auto 0 auto;
@@ -292,12 +313,13 @@
     border-radius: 8px;
 }
 
-/* boton secundario (Iniciar Sesión) más pegado */
+/* Botón secundario: iniciar sesión */
 #btnIniciarSesion {
     margin-top: 2px !important;
     margin-bottom: 2px !important;
 }
 
+/* =============== MEDIA QUERY <= 968px =============== */
 @media (max-width: 968px) {
     .crear-cuenta-page #contenedorLogin2 {
         padding: 16px;
@@ -322,7 +344,7 @@
     }
 }
 
-/* Placeholders y selección */
+/* =============== PLACEHOLDER / SELECCION / FOCUS =============== */
 .crear-cuenta-page input::placeholder {
     color: rgba(11, 18, 22, 0.45);
 }
@@ -332,7 +354,7 @@
     color: #fff;
 }
 
-/* Focus */
+/* Estado focus inputs */
 .crear-cuenta-page input:focus {
     outline: none;
     box-shadow: 0 10px 26px rgba(147, 21, 37, 0.12);
@@ -344,7 +366,7 @@
     background-color: #eef7ff;
 }
 
-/* --- Two-column layout and select/chips styling --- */
+/* =============== GRID DEL FORMULARIO (DOBLE COLUMNA) =============== */
 .crear-cuenta-page .formGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -359,6 +381,7 @@
     gap: 8px;
 }
 
+/* Select de alergias */
 .crear-cuenta-page .select-control {
     width: 100%;
     height: 36px;
@@ -379,6 +402,7 @@
     background-color: #eef7ff;
 }
 
+/* Lista de alergias (chips) */
 .crear-cuenta-page .alergias-lista {
     display: flex;
     flex-wrap: wrap;
@@ -386,6 +410,7 @@
     margin-top: 8px;
 }
 
+/* Chip individual */
 .crear-cuenta-page .chip {
     display: inline-flex;
     align-items: center;

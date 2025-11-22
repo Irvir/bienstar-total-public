@@ -1,8 +1,17 @@
+/* ============================================================
+    Error404.css
+    Página de error 404
+    - Contenedor principal
+    - Bloque interno
+    - Títulos / texto / botón
+    - Media query <=600px
+    ============================================================ */
 /* Scoped 404 styles: only apply when .error404-page is present */
 .error404-page * {
     box-sizing: border-box;
 }
 
+/* =============== CONTENEDOR PRINCIPAL 404 =============== */
 .error404-page {
     min-height: 100vh;
     display: flex;
@@ -14,26 +23,31 @@
     text-align: center;
 }
 
+/* Contenedor interno centrado */
 .error404-page .container {
     max-width: 500px;
     padding: 20px;
 }
 
+/* Título grande */
 .error404-page h1 {
     font-size: 3.5rem;
     margin-bottom: 0.5rem;
 }
 
+/* Subtítulo */
 .error404-page h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
 }
 
+/* Texto descriptivo */
 .error404-page p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
 }
 
+/* Botón volver / acción principal */
 .error404-page .btn {
     text-decoration: none;
     padding: 10px 20px;
@@ -49,7 +63,7 @@
     color: #ff4b2b;
 }
 
-/* Responsive */
+/* =============== MEDIA QUERY <= 600px =============== */
 @media (max-width: 600px) {
     .error404-page h1 {
         font-size: 2.5rem;

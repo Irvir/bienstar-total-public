@@ -1,4 +1,15 @@
+/* ============================================================
+   PERFIL.CSS
+   Página de perfil del usuario. Contiene:
+   - Layout general (#cuerpo) y adaptaciones responsive.
+   - Menú lateral / horizontal de navegación del perfil.
+   - Tarjeta principal con datos y acciones (editar, guardar, cancelar).
+   - Campos de información con estados de lectura / edición.
+   - Botones de sesión (cerrar / borrar cuenta) e imagen de usuario.
+   NOTA: Solo se añadieron comentarios y organización; estilos intactos.
+   ============================================================ */
 
+/* =============== LAYOUT GENERAL =============== */
 /* Contenedor principal del cuerpo */
 #cuerpo {
     display: flex;
@@ -13,7 +24,8 @@
 
 
 
-/* Si la pantalla es pequeña, dejar que el menu sea auto (no ocupar 50vh) */
+/* =============== RESPONSIVO: MENÚ LATERAL EN MÓVIL (<768px) =============== */
+/* Si la pantalla es pequeña, el menú se adapta en alto y pierde efectos decorativos */
 @media (max-width: 768px) {
     #divMenuLateral {
         height: auto;
@@ -26,7 +38,8 @@
     }
 }
 
-/* Botones menú lateral */
+/* =============== MENÚ LATERAL (BOTONES) =============== */
+/* Botones estándar y seleccionado del menú lateral */
 .botonesPerfil {
     width: 100%;
     padding: 10px;
@@ -60,7 +73,8 @@
     margin: 15%;
 }
 
-/* Contenedor info usuario */
+/* =============== SECCIÓN INFORMACIÓN DEL USUARIO PRINCIPAL =============== */
+/* Área que contiene la tarjeta y los detalles del usuario */
 #divInfoUser {
     flex: 1;
     /* ocupa el resto del espacio */
@@ -77,8 +91,8 @@
     overflow-y: auto; /* permitir scroll interno si el contenido crece en pantallas bajas */
 }
 
-/* Contenedor de info sesión más grande */
-/* Contenedor principal que alberga la tarjeta de perfil */
+/* =============== TARJETA PERFIL PRINCIPAL =============== */
+/* Contenedor principal que alberga la vista de datos del perfil */
 #contenedorInfoSesion {
     width: clamp(280px, 85%, 640px);
     max-width: 800px;
@@ -98,8 +112,8 @@
     border-width: 3px;
 }
 
+/* =============== BLOQUE CAMPOS PERFIL (IZQUIERDA) =============== */
 /* Ajuste interno de info usuario */
-/* Área que contiene los campos de información (izquierda) */
 #contenedorInfo {
     flex: 2.4;
     padding-bottom: 36px;
@@ -118,7 +132,7 @@
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/* Fila de título + botón editar */
+/* =============== CABECERA DE DATOS + BOTÓN EDITAR =============== */
 #tituloInfoRow {
     display: flex;
     align-items: center;
@@ -127,6 +141,7 @@
     margin-bottom: 10px;
 }
 
+/* =============== ACCIONES DE EDICIÓN (Editar / Guardar / Cancelar) =============== */
 .btnEditarPerfil {
     display: inline-flex;
     align-items: center;
@@ -188,6 +203,7 @@
     cursor: pointer;
 }
 
+/* =============== CONTENEDOR DE BOTONES (Cerrar sesión / Borrar cuenta) =============== */
 #contenedorAccionesPerfil {
     width: clamp(280px, 85%, 640px);
     max-width: 800px;
@@ -212,8 +228,8 @@
     padding-right: 6px;
 }
 
-/* Estilo de los campos que imitan inputs (parecen cuadros con borde y fondo blanco) */
-/* Campos con efecto glass (semirretransparente + blur) */
+/* =============== CAMPOS DE DATOS (ESTADO LECTURA) =============== */
+/* Campos con efecto glass (semitransparente + blur) */
 .spNombre,
 .spAge,
 .spWeight,
@@ -295,9 +311,8 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Inputs en el formulario de edición: apariencia base y resaltado al enfocar.
-    IMPORTANTE: mantenemos la fuente y el tamaño de letra tal como están para preservar el diseño.
-*/
+/* =============== CAMPOS EN MODO EDICIÓN =============== */
+/* Inputs dentro del formulario al editar (manteniendo tipografía y tamaños) */
 #contenedorInfo input[type="text"],
 #contenedorInfo input[type="email"],
 #contenedorInfo input[type="number"],
@@ -651,9 +666,6 @@
         border-radius: 14px; /* Reducido */
     }
 }
-
-/* Eliminados estilos viejos de #divMenuLateral para evitar conflicto.
-   Si se requiere un menú vertical en otra página, definirlo allí con un selector más específico. */
 
 /* ======== BOTONES DEL MENÚ ======== */
 /* Botones del menú horizontal perfil */

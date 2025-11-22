@@ -1,5 +1,18 @@
-/* CrearAlimento.css - estilos para /admin/crear-alimento
-	 Consistente con Base.css y Admin.css */
+/* ============================================================
+	CrearAlimento.css
+	Página /admin/crear-alimento
+	- Variables locales
+	- Contenedor principal
+	- Título decorado
+	- Tarjeta del formulario
+	- Grid de nutrientes
+	- Archivo e imagen (preview)
+	- Botón de envío
+	- Responsive (<=720px, <=380px)
+	- Ayudas y estados
+	============================================================ */
+
+/* =============== VARIABLES LOCALES =============== */
 
 :root {
 	--ca-accent: var(--primary, #931525);
@@ -10,7 +23,7 @@
 	--ca-radius: 14px;
 }
 
-/* Contenedor principal */
+/* =============== CONTENEDOR PRINCIPAL =============== */
 .crear-alimento-container {
 	max-width: 1100px;
 	width: 100%;
@@ -20,7 +33,7 @@
 	overflow-x: clip;
 }
 
-/* Título */
+/* =============== TITULO DECORADO =============== */
 .crear-alimento-container h2 {
 	margin: 6px 0 14px;
 	font-family: Montserrat, system-ui, sans-serif;
@@ -41,7 +54,7 @@
 	border-radius: 6px;
 }
 
-/* Tarjeta del formulario */
+/* =============== TARJETA DEL FORMULARIO =============== */
 .crear-alimento-form {
 	background: var(--ca-card);
 	border-radius: var(--ca-radius);
@@ -65,7 +78,7 @@
 	font-size: 1rem;
 }
 
-/* Grid de nutrientes (nueva convención usada por el componente) */
+/* =============== GRID DE NUTRIENTES =============== */
 .nutri-section {
 	padding-top: 6px;
 }
@@ -110,7 +123,7 @@
 	box-shadow: 0 0 0 3px rgba(147, 21, 37, 0.08);
 }
 
-/* Archivo e imagen */
+/* =============== ARCHIVO E IMAGEN =============== */
 .crear-alimento-form input[type="file"] {
 	border: 1px dashed rgba(2, 6, 23, 0.18);
 	padding: 10px;
@@ -142,7 +155,7 @@
 	box-shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
 }
 
-/* Botón enviar con look primario */
+/* =============== BOTON ENVIAR =============== */
 .crear-alimento-form button[type="submit"] {
 	align-self: end;
 	justify-self: end;
@@ -166,7 +179,7 @@
 	cursor: not-allowed;
 }
 
-/* Responsivo */
+/* =============== RESPONSIVE <= 720px =============== */
 @media (max-width: 720px) {
 	.crear-alimento-container {
 		padding: 0 12px 18px;
@@ -201,14 +214,14 @@
 	}
 }
 
-/* Ultra-estrecho: evita overflow en teléfonos muy pequeños */
+/* =============== RESPONSIVE EXTRA ESTRECHO <= 380px =============== */
 @media (max-width: 380px) {
 	.nutri-grid {
 		grid-template-columns: 1fr;
 	}
 }
 
-/* Ayudas de texto y estados */
+/* =============== AYUDAS DE TEXTO Y ESTADOS =============== */
 .input-hint {
 	font-size: .85rem;
 	color: var(--ca-muted);

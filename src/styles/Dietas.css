@@ -1,3 +1,14 @@
+/* ============================================================
+    Dietas.css
+    Visualización y asignación de dietas
+    - Layout página y contenedor principal
+    - Botones flotantes de acciones
+    - Tabla dieta (scroll horizontal)
+    - Columnas y títulos
+    - Celdas y bloques de comida
+    - Loader y animación de puntos
+    - Media queries responsive
+    ============================================================ */
 .dietas-page {
     display: flex;
     flex-direction: column;
@@ -12,7 +23,7 @@
     padding-bottom: 0.5rem;
 }
 
-/* Botón Editar Dieta */
+/* =============== BOTON EDITAR DIETA =============== */
 #BtnCrearCuenta {
     display: block;
     margin-top: 2rem;
@@ -35,7 +46,7 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Botón flotante para asignar/editar dieta (solo visible para doctores) */
+/* =============== BOTON FLOTANTE ASIGNAR/EDITAR DIETA =============== */
 #BtnAsignarDieta {
     position: fixed;
     right: 28px;
@@ -71,7 +82,7 @@
     outline-offset: 4px;
 }
 
-/* Icono en el botón */
+/* Icono estilizado dentro del botón flotante */
 #BtnAsignarDieta::before {
     content: "✏";
     display: inline-block;
@@ -79,7 +90,7 @@
     opacity: 0.95;
 }
 
-/* Tabla de dieta (layout por defecto: escritorio horizontal) */
+/* =============== TABLA DIETA (ESCRITORIO) =============== */
 .tabla-dieta {
     width: 99vw;
     margin: 40px auto 0 auto;
@@ -93,7 +104,7 @@
     scroll-snap-type: x mandatory;
 }
 
-/* Columnas */
+/* Columnas principales y columna de horario */
 .columna,
 .columna-horario {
     border: 3px solid #941424;
@@ -115,7 +126,7 @@
     width: 13vw;
 }
 
-/* Títulos */
+/* Títulos de columnas (sticky) */
 .titulo {
     padding: 10px;
     text-align: center;
@@ -128,7 +139,7 @@
     z-index: 2;
 }
 
-/* Celdas */
+/* Celdas internas de la tabla */
 .dietas-page .celda {
     display: flex;
     flex-direction: column;
@@ -140,7 +151,7 @@
     background-color: #fff;
 }
 
-/* Bloques de comida */
+/* Bloques de comida dentro de cada celda */
 .bloque-comida {
     margin-bottom: 0.8rem;
     padding: 0.5rem;
@@ -168,7 +179,7 @@
     transform: scale(1.02);
 }
 
-/* Loader */
+/* =============== LOADER GLOBAL =============== */
 #loader {
     display: none;
     position: fixed;
@@ -239,7 +250,7 @@
     }
 }
 
-/* Efecto brillo BtnCrearCuenta */
+/* Efecto brillo para BtnCrearCuenta */
 #BtnCrearCuenta::after {
     content: "";
     position: absolute;
@@ -258,7 +269,7 @@
     opacity: 1;
 }
 
-/* ====== RESPONSIVE ====== */
+/* =============== MEDIA QUERIES RESPONSIVE =============== */
 
 @media (max-width: 992px) {
     .tabla-dieta {

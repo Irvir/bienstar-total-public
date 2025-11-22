@@ -1,8 +1,10 @@
-/* =========================================
-   INDEX.CSS - Estilos de utilidad globales
-   ========================================= */
+/* ============================================================
+    INDEX.CSS
+    Utilidades globales ligeras: layout helper, cursor, accesibilidad,
+    loader genérico y botones de footer.
+    ============================================================ */
 
-/* --------------- LAYOUT UTILITIES --------------- */
+/* =============== UTILIDADES LAYOUT =============== */
 .login-left {
     float: left;
     height: 100%;
@@ -15,12 +17,12 @@
     height: 100%;
 }
 
-/* --------------- CURSOR UTILITIES --------------- */
+/* =============== UTILIDADES CURSOR =============== */
 .cursor-pointer {
     cursor: pointer;
 }
 
-/* --------------- ACCESSIBILITY --------------- */
+/* =============== ACCESIBILIDAD (SR-ONLY) =============== */
 .sr-only {
     position: absolute !important;
     width: 1px;
@@ -33,7 +35,7 @@
     border: 0;
 }
 
-/* --------------- LOADER --------------- */
+/* =============== LOADER GLOBAL =============== */
 #loader {
     display: none;
     align-items: center;
@@ -44,7 +46,7 @@
     z-index: 9999;
 }
 
-/* --------------- FOOTER BUTTONS --------------- */
+/* =============== BOTONES FOOTER =============== */
 .footer-inner button {
     border: none;
     background: transparent;

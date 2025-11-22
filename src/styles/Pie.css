@@ -1,3 +1,10 @@
+/* ============================================================
+  PIE.CSS
+  Pie de página y enlaces sociales (Instagram, YouTube) +
+  ajuste ReCAPTCHA solo en crear cuenta.
+  ============================================================ */
+
+/* =============== CONTENEDOR PIE =============== */
 #pie {
   position: relative;
   width: 100%;
@@ -14,6 +21,7 @@
   z-index: 10;
 }
 
+/* =============== CONTENEDOR INTERNO FLEX =============== */
 .footer-inner {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -24,6 +32,7 @@
   flex-wrap: wrap;
 }
 
+/* =============== ENLACES SOCIALES =============== */
 .footer-link {
   display: inline-flex;
   align-items: center;
@@ -70,7 +79,7 @@
   transform: scale(1.08);
 }
 
-/* ReCAPTCHA superposición solo en crear cuenta */
+/* =============== RECAPTCHA (Crear Cuenta) =============== */
 .crear-cuenta-page .recaptcha-wrapper,
 .crear-cuenta-page .g-recaptcha,
 .crear-cuenta-page .rc-anchor,

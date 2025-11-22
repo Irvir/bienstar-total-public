@@ -1,3 +1,12 @@
+/* ============================================================
+    contenedorAlimentos.css
+    Contenedor simple de cards de alimentos
+    - Contenedor principal
+    - Grid container (delegado)
+    - Imagen / nombre / estado vacío
+    - Media queries (768px, 480px)
+    ============================================================ */
+    
 /* ----------------- Contenedor de Alimentos ----------------- */
 
 
@@ -38,9 +47,9 @@
     font-style: italic;
 }
 
-/* Modal styles consolidated in src/styles/Alimentos.css to avoid duplication and conflicts */
+/* Modal styles consolidados en Alimentos.css para evitar duplicación */
 
-/* ----------------- Responsive ----------------- */
+/* =============== MEDIA QUERIES RESPONSIVE =============== */
 @media (max-width: 768px) {
     .cuadro {
         width: 140px;
