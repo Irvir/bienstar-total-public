@@ -11,17 +11,18 @@ export default function MenuLateral({ showLoaderAndRedirect }) {
     usuario = null;
   }
 
-  // Determinar si es admin (misma heurística que en Login.jsx)
+  // Determinar si es admin.
+  // Regla principal: usuario.id_perfil === 1 (coincide con middleware authorizeAdmin).
+  // Fallbacks: email o nombre especiales. Eliminamos heurística por id numérico ("6") para evitar falsos positivos.
   const isAdmin = (() => {
-            <button className="botonesPerfilSelec" onClick={() => showLoaderAndRedirect(usuario && usuario.id ? '/perfil' : '/login')}>PERFIL</button>
+    if (!usuario) return false;
     const email = (usuario.email || usuario.emailAddress || '').toString().trim().toLowerCase();
     const name = (usuario.name || usuario.nombre || '').toString().trim().toLowerCase();
-    const idStr = String(usuario.id || usuario.id_usuario || '');
-    return (
-      (email === 'admin@bienstartotal.food' || email === 'admin2025@bienstartotal.food') ||
-            (name === 'admin' || name === 'administrador') ||
-            idStr === '6' || idStr === 'admin2025'
-    );
+    const perfil = Number(usuario.id_perfil);
+    if (perfil === 1) return true;
+    if (email === 'admin@bienstartotal.food' || email === 'admin2025@bienstartotal.food') return true;
+    if (name === 'admin' || name === 'administrador') return true;
+    return false;
   })();
 
   return (

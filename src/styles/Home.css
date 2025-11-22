@@ -1,5 +1,4 @@
 html {
-    /* Asegura que 100% en el body se refiera a la altura total del viewport */
     height: 100%;
 }
 
@@ -81,13 +80,25 @@ body {
     }
 }
 
+
 #cuerpo {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
     width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    min-height: 100vh;
+    padding-bottom: 0.5rem;
+}
+
+.section-principal-botones {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    /* Alineación al inicio para el layout lateral */
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    gap: 20px;
 }
 
 .contenedorIzq,
@@ -113,12 +124,75 @@ body {
     margin: 0;
 }
 
+/* -------------------------------------------------------------------------- */
+/* ESTILOS DE LAS BOTONERAS                         */
+/* -------------------------------------------------------------------------- */
+
+/* BOTONERA PRINCIPAL (IZQUIERDA) */
+.botonera {
+    margin-top: 2%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 40%);
+    gap: 2%;
+    flex: 0 0 calc(60% - 10px);
+    padding: 0;
+    box-sizing: border-box;
+    align-items: stretch;
+    margin-left: 5%;
+}
+
+.botonera button {
+    width: 100%;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    font-size: 1.1vw;
+    border: 3px solid transparent;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
+    min-height: 140px;
+    animation: fadeInUp 0.6s ease forwards;
+    max-height: 80%;
+}
+
+/* AJUSTE CLAVE PARA BOTONERA 2: POSICIÓN DERECHA Y ALTURA CONTENEDORA */
+.botonera2 {
+    display: flex;
+    justify-content: center;
+    /* Centrar la columna dentro de su contenedor */
+    align-items: flex-start;
+    /* Alinear arriba */
+    padding: 0;
+    flex: 1 1 40%;
+    /* Toma el 40% del espacio restante */
+    box-sizing: border-box;
+    background-color: transparent;
+    border-radius: 24px;
+    margin-left: 2%;
+    /* Margen de separación con botonera izquierda */
+    margin-top: 2%;
+    height: 90vh;
+    /* Alto que define la referencia para los porcentajes internos */
+    width: auto;
+    margin-right: 5%;
+    /* **NUEVO**: Margen derecho para mover hacia la derecha */
+}
+
+/* -------------------------------------------------------------------------- */
+/* ESTILOS DE BOTONES                           */
+/* -------------------------------------------------------------------------- */
+
 .btn1 {
     background-image: url("/public/Imagenes/Home/Alimentos.svg");
     background-size: 60% 100% !important;
     background-repeat: no-repeat;
     background-position: center;
     background-color: #f8eedb;
+    color: #333;
 }
 
 .btn2 {
@@ -150,72 +224,71 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-color: #fff6e9;
+    color: #333;
+}
+
+.btn6 {
+    background-image: url("https://placehold.co/100x100/3c8d3e/ffffff?text=Nuevo");
+    background-size: 50% auto !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #38a169;
 }
 
 
-@media (max-width: 768px) {
-
-    .contenedorIzq,
-    .contenedorDer {
-        flex: 1 1 100%;
-        min-height: auto;
-    }
-
-    .botonera {
-        padding: 1rem;
-    }
-
-    .botonera button {
-        flex: 1 1 100%;
-        min-width: 100%;
-        font-size: 5vw;
-        min-height: 200px;
-        max-height: 350px;
-        margin-bottom: 1rem;
-    }
-
-    .contenedorIzq button,
-    .contenedorDer button {
-        min-height: 200px;
-        font-size: 5vw;
-    }
+.botonera button:hover,
+.botonera2 .btn6:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
 }
 
-
-@media (min-width: 768px) {
-    #cuerpo {
-        flex-direction: row;
-    }
-
-    .contenedorIzq button,
-    .contenedorDer button {
-        font-size: 2vw;
-        max-height: 300px;
-    }
-
-    .botonera {
-        flex: 0 0 100%;
-        padding: 2rem;
-    }
-
-    .botonera button {
-        flex: 1 1 calc(33.333% - 0.75rem);
-        min-height: 160px;
-        font-size: 1.4vw;
-        max-width: 500px;
-        max-height: 300px;
-    }
+.botonera button:active,
+.botonera2 .btn6:active {
+    transform: scale(1.02) translateY(1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-
-@media (min-width: 1024px) {
-
-    .botonera button {
-        min-height: 130px;
-    }
+.botonera button:focus,
+.botonera2 .btn6:focus {
+    transform: scale(1.05);
+    animation: glowPulse 1.5s infinite;
+    outline: none;
 }
 
+/* Efectos de brillo (manteniendo los colores originales) */
+.botonera button.btn1:hover {
+    border-color: #2a522d;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(248, 238, 219, 0.7);
+}
 
+.botonera button.btn2:hover {
+    border-color: #70c451;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(90, 219, 145, 0.7);
+}
+
+.botonera button.btn3:hover {
+    border-color: #45787b;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(105, 158, 155, 0.7);
+}
+
+.botonera button.btn4:hover {
+    border-color: #4c87ac;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(14, 75, 121, 0.7);
+}
+
+.botonera button.btn5:hover {
+    border-color: #de5f30;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 246, 233, 0.7);
+}
+
+.botonera2 button.btn6:hover {
+    border-color: #2c7744;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 161, 105, 0.7);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ANIMACIONES                                 */
+/* -------------------------------------------------------------------------- */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -226,48 +299,6 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.contenedorIzq button,
-.contenedorDer button,
-.botonera button {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-
-.botonera {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    width: 100%;
-    gap: 0.75rem;
-    padding: 2rem;
-    padding-left: 2%;
-}
-
-.botonera button {
-    min-width: 260px;
-    border-radius: 50px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    background-size: cover;
-    background-position: center;
-    font-size: 1.4vw;
-    border: 3px solid transparent;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
-}
-
-.botonera button:hover {
-    transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
-}
-
-.botonera button:active {
-    transform: scale(1.02) translateY(1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes glowPulse {
@@ -284,33 +315,621 @@ body {
     }
 }
 
-.botonera button:focus {
-    transform: scale(1.05);
-    animation: glowPulse 1.5s infinite;
-    outline: none;
+
+/* -------------------------------------------------------------------------- */
+/* MEDIA QUERIES (ADAPTADAS)                      */
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    /* En móvil, las botoneras se apilan verticalmente */
+    .section-principal-botones {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .botonera,
+    .botonera2 {
+        flex: 1 1 100%;
+        /* Ocupan todo el ancho */
+        min-height: auto;
+        padding: 0;
+        margin-left: 0;
+        /* Eliminar márgenes laterales en móvil */
+        margin-right: 0;
+        width: 100%;
+        height: auto !important;
+        /* Permitir altura automática en móvil */
+    }
+
+    .botonera {
+        /* En móvil, la botonera se convierte en 2 columnas */
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .botonera button,
+    .botonera2 .btn6,
+    /* APLICACIÓN DE ESTILOS DE BOTÓN PARA EL WIDGET EN MÓVIL */
+    .average-progress-widget {
+        min-height: 150px;
+        font-size: 5vw;
+        border-radius: 30px;
+        /* Asegurar el borde redondeado */
+        border: 3px solid transparent;
+        /* Asegurar el borde para hover */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        /* Asegurar la sombra */
+    }
 }
 
-.botonera button.btn1:hover {
-    border-color: #2a522d;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(76, 135, 172, 0.7);
+
+@media (min-width: 768px) {
+    /* Ajustes para tablet/desktop */
+
+    .contenedorIzq button,
+    .contenedorDer button {
+        font-size: 2vw;
+        max-height: 300px;
+    }
+
+    .botonera button {
+        font-size: 1.4vw;
+    }
+
+    .botonera2 .btn6 {
+        font-size: 2vw;
+    }
+
+    /* APLICACIÓN DE ESTILOS DE BOTÓN PARA EL WIDGET EN TABLET/ESCRITORIO */
+    .average-progress-widget {
+        border-radius: 30px;
+        border: 3px solid transparent;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        min-height: 140px;
+        /* Del estilo .botonera button */
+        max-height: 80%;
+        /* Del estilo .botonera button */
+    }
+
+    .average-progress-widget:hover {
+        border-color: #2c7744;
+        /* Usamos el color de hover del btn6 como referencia */
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 161, 105, 0.7);
+    }
 }
 
-.botonera button.btn2:hover {
-    border-color: #70c451;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(112, 196, 81, 0.7);
+
+@media (min-width: 1024px) {
+
+    .botonera button,
+    .botonera2 .btn6,
+    /* APLICACIÓN DE ESTILOS DE BOTÓN PARA EL WIDGET EN PANTALLAS GRANDES */
+    .average-progress-widget {
+        min-height: 260px;
+    }
 }
 
-.botonera button.btn3:hover {
-    border-color: #45787b;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(69, 120, 123, 0.7);
+/* Columna de dieta de HOY dentro de la home - AJUSTE DE ALTURA CON % */
+.botonera2-dieta-hoy {
+    /* Clase contenedora del contenido de la columna, usada para separar el día y la hora */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    /* Centrar la columna-hoy */
 }
 
-.botonera button.btn4:hover {
-    border-color: #4c87ac;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(76, 135, 172, 0.7);
+.botonera2-dieta-hoy .columna-hoy {
+    border: 3px solid #941424;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 320px;
+    background-color: #fff;
+    height: 86%;
+    margin-bottom: 20%;
 }
 
-.botonera button.btn5:hover {
-    border-color: #de5f30;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(222, 95, 48, 0.7);
+/* Estilos específicos de la columna del día */
+.columna-hoy .header-dia {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 4px solid #941424;
+    background-color: #fdfdfd;
+    color: #941424;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.columna-hoy .nombre-dia {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.columna-hoy .fecha-completa {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.columna-hoy .hora-actual {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #941424;
+    background-color: #ffeaea;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.botonera2-dieta-hoy .titulo {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid #941424;
+    background-color: #fdfdfd;
+    color: black;
+}
+
+.botonera2-dieta-hoy .celda {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.botonera2-dieta-hoy .bloque-comida {
+    margin-bottom: 0.8rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    height: 50%;
+}
+
+.botonera2-dieta-hoy .titulo-comida {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #931525;
+    background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
+    padding: 0.3rem 0.5rem;
+    border-left: 4px solid #931525;
+    border-radius: 8px;
+    margin-bottom: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.botonera2-dieta-hoy .lista-comida {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.3rem 0 0 0;
+}
+
+.botonera2-dieta-hoy .lista-comida li {
+    font-size: 14px;
+}
+
+.botonera2-dieta-hoy .lista-vacia {
+    margin: 0.3rem 0 0 0;
+    font-size: 13px;
+    color: #999;
+}
+
+/*
+ * ==========================================================
+ * ESTILOS ESPECÍFICOS PARA EL WIDGET DE PROGRESO MENSUAL
+ * (Ajustado para igualar las dimensiones y estilos de los botones)
+ * ==========================================================
+ */
+
+.average-progress-widget {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+    color: white;
+    width: 100%;
+    border-radius: 30px;
+    border: 3px solid transparent;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    min-height: 140px;
+    max-height: 98%;
+    animation: fadeInUp 0.6s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.25s ease-out;
+    cursor: default;
+
+}
+
+.average-progress-widget:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    border-color: #2c7744;
+}
+
+/* El contenido interno del widget necesita más flexibilidad y un padding que funcione */
+
+.widget-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.widget-icon {
+    width: 24px;
+    height: 24px;
+    color: #FFEB3B;
+    /* Color amarillo para el icono de éxito */
+}
+
+.widget-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.widget-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+/* Sección del Gráfico Circular */
+.progress-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 50%;
+}
+
+.month-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    opacity: 0.8;
+}
+
+.percentage-circle-container {
+    width: 80px;
+    height: 80px;
+}
+
+.circular-chart {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke: #FFEB3B;
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease-in-out;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+.percentage {
+    fill: white;
+    font-size: 0.6em;
+    /* Tamaño grande para el porcentaje */
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-weight: 900;
+}
+
+.percent-sign {
+    font-size: 0.6em;
+    /* Tamaño más pequeño para el % */
+    font-weight: normal;
+}
+
+.stats-info {
+    width: 45%;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin: 0;
+    color: #FFEB3B;
+}
+
+.widget-loading {
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .average-progress-widget {
+        padding: 0.75rem;
+    }
+
+    .percentage-circle-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .percentage {
+        font-size: 0.7em;
+    }
+}
+/* ============================================
+   WIDGET PROGRESO DEL PESO - ESTILO BOTONERA
+   ============================================ */
+
+/* El widget se comporta como un botón más de la .botonera */
+.average-progress-widget {
+    /* Se integra al grid de .botonera */
+    width: 100%;
+    border-radius: 30px;
+    border: 3px solid transparent;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    min-height: 140px;
+    max-height: 80%;
+    animation: fadeInUp 0.6s ease forwards;
+    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
+    cursor: default;
+
+    /* Estilo de tarjeta blanca tipo dashboard */
+    background: #ffffff;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-color: rgba(148, 163, 184, 0.35);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+}
+
+.average-progress-widget:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    border-color: #2c7744;
+}
+
+/* Estado de carga / error */
+.average-progress-widget.widget-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* Header del widget */
+.average-progress-widget .widget-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    padding-bottom: 6px;
+}
+
+.average-progress-widget .widget-icon {
+    width: 22px;
+    height: 22px;
+    color: #2563eb;
+}
+
+.average-progress-widget .widget-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0f172a;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Contenido principal: stats + cambio */
+.average-progress-widget .widget-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+/* IZQUIERDA: stats principales */
+.weight-main-stats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weight-main-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.weight-main-stats .stat-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.weight-main-stats .stat-value {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* DERECHA: cambio + mensaje */
+.weight-change-block {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.weight-change-amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    background: #f9fafb;
+}
+
+.weight-change-icon-wrapper {
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+}
+
+.weight-change-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Texto cambio */
+.weight-change-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.weight-change-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+}
+
+.weight-change-value {
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+/* Colores según tipo de cambio */
+.weight-change-neutral {
+    border-color: rgba(148, 163, 184, 0.55);
+    background: #f9fafb;
+}
+
+.weight-change-neutral .weight-change-value {
+    color: #4b5563;
+}
+
+.weight-change-loss {
+    border-color: rgba(34, 197, 94, 0.5);
+    background: #ecfdf5;
+}
+
+.weight-change-loss .weight-change-icon-wrapper {
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.weight-change-loss .weight-change-icon {
+    color: #16a34a;
+}
+
+.weight-change-loss .weight-change-value {
+    color: #15803d;
+}
+
+.weight-change-gain {
+    border-color: rgba(239, 68, 68, 0.5);
+    background: #fef2f2;
+}
+
+.weight-change-gain .weight-change-icon-wrapper {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.weight-change-gain .weight-change-icon {
+    color: #dc2626;
+}
+
+.weight-change-gain .weight-change-value {
+    color: #b91c1c;
+}
+
+/* Mensaje motivacional */
+.weight-message {
+    font-size: 0.78rem;
+    color: #1d4ed8;
+    font-weight: 500;
+    line-height: 1.3;
+    border-left: 3px solid #2563eb;
+    padding-left: 8px;
+    margin: 0;
+}
+
+/* Responsive: se adapta igual que los botones */
+@media (max-width: 768px) {
+    .average-progress-widget {
+        min-height: 150px;
+        font-size: 5vw;
+        border-radius: 30px;
+        border: 3px solid transparent;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        padding: 0.75rem;
+    }
+
+    .average-progress-widget .widget-content {
+        flex-direction: column;
+    }
+
+    .weight-change-block {
+        margin-top: 4px;
+    }
+
+    .weight-main-stats .stat-row {
+        font-size: 0.9rem;
+    }
+
+    .weight-message {
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .average-progress-widget {
+        min-height: 260px;
+    }
 }

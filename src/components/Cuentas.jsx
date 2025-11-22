@@ -9,9 +9,21 @@ export default function Cuentas() {
   const [cuentas, setCuentas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(null); // cuenta en edición
-  const [form, setForm] = useState({ nombre: '', email: '', password: '', edad: '', peso: '', altura: '', sexo: '' });
+  const [form, setForm] = useState({ nombre: '', email: '', edad: '', peso: '', altura: '', sexo: '' });
   const [filter, setFilter] = useState('');
   const [showExtraCols, setShowExtraCols] = useState(false);
+
+  // Determina si una cuenta es de administrador
+  const isAdminUser = (u) => {
+    if (!u) return false;
+    const perfil = Number(u.id_perfil ?? u.perfil);
+    if (perfil === 1) return true;
+    const email = (u.email || '').toString().trim().toLowerCase();
+    const name = (u.name || u.nombre || '').toString().trim().toLowerCase();
+    if (email === 'admin@bienstartotal.food' || email === 'admin2025@bienstartotal.food') return true;
+    if (name === 'admin' || name === 'administrador') return true;
+    return false;
+  };
 
   useEffect(() => {
     loadCuentas();
@@ -35,15 +47,18 @@ export default function Cuentas() {
 
   function resetForm() {
     setEditing(null);
-    setForm({ nombre: '', email: '', password: '', edad: '', peso: '', altura: '', sexo: '' });
+    setForm({ nombre: '', email: '', edad: '', peso: '', altura: '', sexo: '' });
   }
 
   function onEditClick(c) {
+    if (isAdminUser(c)) {
+      window.notify?.('La cuenta de administrador no se puede editar', { type: 'info' });
+      return;
+    }
     setEditing(c);
     setForm({
       nombre: c.nombre || c.name || '',
       email: c.email || '',
-      password: '',
       edad: c.edad ?? '',
       peso: c.peso ?? '',
       altura: c.altura ?? '',
@@ -58,7 +73,6 @@ export default function Cuentas() {
     try {
       if (editing) {
         const payload = { ...form };
-        if (!payload.password) delete payload.password;
         const res = await fetch(`${API_BASE}/admin/user/${editing.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -67,7 +81,14 @@ export default function Cuentas() {
         if (!res.ok) throw new Error('No se pudo actualizar cuenta');
         window.notify?.('Cuenta actualizada', { type: 'success' });
       } else {
-        const payload = { ...form, id_perfil: 3, alergias: [] };
+        // Generar contraseña aleatoria para la nueva cuenta (no se muestra en UI)
+        const generarPassword = (len=12) => {
+          const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@$!';
+          let out = '';
+          for (let i=0;i<len;i++) out += chars[Math.floor(Math.random()*chars.length)];
+          return out;
+        };
+        const payload = { ...form, password: generarPassword(), id_perfil: 3, alergias: [] };
         const res = await fetch(`${API_BASE}/registrar`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -90,6 +111,10 @@ export default function Cuentas() {
   }
 
   async function softDelete(cuenta) {
+    if (isAdminUser(cuenta)) {
+      window.notify?.('La cuenta de administrador no se puede inactivar', { type: 'warning' });
+      return;
+    }
     if (!confirm(`¿Confirmar inactivar a ${cuenta.nombre || cuenta.email}?`)) return;
     setLoading(true);
     try {
@@ -153,10 +178,6 @@ export default function Cuentas() {
               </div>
               <div className="grid-3">
                 <div>
-                  <label>Contraseña {editing?'(dejar vacío para no cambiar)':''}</label>
-                  <input type="password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} />
-                </div>
-                <div>
                   <label>Edad</label>
                   <input type="number" value={form.edad} onChange={e=>setForm({...form,edad:e.target.value})} />
                 </div>
@@ -164,12 +185,12 @@ export default function Cuentas() {
                   <label>Peso (kg)</label>
                   <input type="number" step="any" value={form.peso} onChange={e=>setForm({...form,peso:e.target.value})} />
                 </div>
-              </div>
-              <div className="grid-2">
                 <div>
                   <label>Altura (cm)</label>
                   <input type="number" value={form.altura} onChange={e=>setForm({...form,altura:e.target.value})} />
                 </div>
+              </div>
+              <div className="grid-2">
                 <div>
                   <label>Sexo</label>
                   <select value={form.sexo} onChange={e=>setForm({...form,sexo:e.target.value})}>
@@ -223,21 +244,34 @@ export default function Cuentas() {
                       <td>{c.peso ?? '-'}</td>
                       <td>{c.altura ?? '-'}</td>
                       <td>
-                        <div className="admin-actions">
-                          <button className="action-btn action-btn--icon" title="Editar" onClick={()=>onEditClick(c)} aria-label={`Editar ${c.nombre || c.email}`}>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="currentColor" />
-                              <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor" />
-                            </svg>
-                          </button>
-                          {c.estado === 'inactivo' ? (
-                            <button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
-													Activar
-                            </button>
-                          ) : (
-                            <button className="action-btn action-btn--danger action-btn--small" onClick={()=>softDelete(c)} aria-label={`Inactivar ${c.nombre || c.email}`}>
-													Inactivar
-                            </button>
+                        <div className={`admin-actions ${isAdminUser(c) && c.estado !== 'inactivo' ? 'admin-actions--admin' : ''}`}>
+                          {!isAdminUser(c) && (
+                            <>
+                              <button className="action-btn action-btn--icon" title="Editar" onClick={()=>onEditClick(c)} aria-label={`Editar ${c.nombre || c.email}`}>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" fill="currentColor" />
+                                  <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor" />
+                                </svg>
+                              </button>
+                              {c.estado === 'inactivo' ? (
+                                <button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
+																  Activar
+                                </button>
+                              ) : (
+                                <button className="action-btn action-btn--danger action-btn--small" onClick={()=>softDelete(c)} aria-label={`Inactivar ${c.nombre || c.email}`}>
+																  Inactivar
+                                </button>
+                              )}
+                            </>
+                          )}
+                          {isAdminUser(c) && (
+                            c.estado === 'inactivo' ? (
+                              <button className="action-btn action-btn--success action-btn--small" onClick={()=>activateCuenta(c)} aria-label={`Activar ${c.nombre || c.email}`}>
+                                Activar
+                              </button>
+                            ) : (
+                              <span className="admin-badge" aria-label="Cuenta administrador">Admin</span>
+                            )
                           )}
                         </div>
                       </td>

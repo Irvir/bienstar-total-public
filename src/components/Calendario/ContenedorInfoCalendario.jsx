@@ -23,6 +23,11 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     return fechaStr > todayStr;
   }, [fechaStr, todayStr]);
 
+  const isPastDate = useMemo(() => {
+    if (!fechaStr || !todayStr) return false;
+    return fechaStr < todayStr;
+  }, [fechaStr, todayStr]);
+
   useEffect(() => {
     const usuarioRaw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
     if (!usuarioRaw) {
@@ -90,6 +95,30 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
       if (!res.ok) throw new Error(data?.message || 'No se pudo guardar el peso');
       window.notify?.(data?.message || 'Peso guardado', { type: 'success' });
       onWeightSaved?.(fechaStr, pesoValue);
+      // También actualizamos el peso en el perfil local (localStorage) y notificamos a la aplicación
+      try {
+        const raw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
+        if (raw) {
+          const usuario = JSON.parse(raw);
+          if (usuario) {
+            usuario.peso = pesoValue;
+            try {
+              localStorage.setItem('usuario', JSON.stringify(usuario));
+            } catch (e) {
+              // ignore localStorage set errors
+            }
+            // Emitir evento global para que otros componentes actualicen su estado
+            try {
+              window.dispatchEvent(new CustomEvent('usuario:updated', { detail: { usuario } }));
+            } catch (e) {
+              // si no se puede dispatch, ignorar
+            }
+          }
+        }
+      } catch (err) {
+        // no bloquear la UX si falla la sincronización local
+        console.warn('No se pudo actualizar localStorage con el nuevo peso', err);
+      }
       await fetchDayInfo();
     } catch (err) {
       console.error(err);
@@ -99,9 +128,11 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     }
   };
 
+  // Peso del día real (registro) y referencia del perfil para días sin registro
+  const pesoDelPerfil = info?.pesoPerfil ?? null;
   const pesoMostrado = useMemo(() => {
-    if (info?.peso) return info.peso;
-    if (pesoDelDia) return pesoDelDia;
+    if (pesoDelDia) return Number(pesoDelDia);
+    if (info?.peso && info?.pesoFuente === 'registro') return Number(info.peso);
     return null;
   }, [info, pesoDelDia]);
 
@@ -118,15 +149,21 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
         {!dayLoading && (
           <div className="cal-info-block">
             <p><strong>Dieta:</strong> {info?.dieta?.nombre || 'Sin asignar'}</p>
-            <p><strong>Peso:</strong> {pesoMostrado ? `${Number(pesoMostrado).toFixed(1)} kg` : 'Sin registro'}</p>
-            {info?.pesoFuente === 'perfil' && !pesoDelDia && (
-              <small className="cal-info-ayuda">Mostrando el peso de tu perfil. Registra el peso del día para un seguimiento más preciso.</small>
+            <p><strong>Peso:</strong> {
+              pesoMostrado !== null
+                ? `${Number(pesoMostrado).toFixed(1)} kg`
+                : (info?.pesoFuente === 'perfil' && pesoDelPerfil != null
+                    ? `${Number(pesoDelPerfil).toFixed(1)} kg (perfil)`
+                    : 'Sin registro')
+            }</p>
+            {info?.pesoFuente === 'perfil' && pesoMostrado === null && (
+              <small className="cal-info-ayuda">Es el peso de tu perfil mostrado como referencia. Registra el peso del día para guardarlo en el calendario.</small>
             )}
           </div>
         )}
 
-        {userId && fechaStr && !isFutureDate && (
-          <form className="cal-weight-form" onSubmit={handleSubmit}>
+          {userId && fechaStr && !isFutureDate && !isPastDate && (
+            <form className="cal-weight-form" onSubmit={handleSubmit}>
             <label>
               Peso (kg)
               <input
@@ -143,6 +180,11 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
               {saving ? 'Guardando…' : 'Guardar peso del día'}
             </button>
           </form>
+        )}
+        {isPastDate && (
+          <div className="cal-info-ayuda">
+            No puedes modificar registros de días anteriores al actual.
+          </div>
         )}
         {isFutureDate && (
           <div className="cal-info-ayuda">

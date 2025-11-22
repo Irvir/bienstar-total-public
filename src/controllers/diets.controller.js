@@ -254,8 +254,10 @@ export async function getCalendar(req, res, { pool } = {}) {
       console.warn('registro_peso lookup failed (posiblemente tabla ausente en entorno):', error.message);
     }
 
+    // Solo considerar el peso del día si existe un registro explícito en registro_peso.
+    // No usar el peso general del perfil como sustituto para evitar confusiones en el calendario.
     const pesoRegistrado = weightRows && weightRows[0] ? Number(weightRows[0].peso) : null;
-    const pesoDelDia = pesoRegistrado ?? (peso ?? null);
+    const pesoDelDia = pesoRegistrado; // null cuando no hay registro puntual
 
     const dietaInfo = { id: id_dieta || null, nombre: null, items: [] };
     if (id_dieta) {
@@ -288,10 +290,10 @@ export async function getCalendar(req, res, { pool } = {}) {
 
     res.json({
       fecha: normalizedFecha,
-      peso: pesoDelDia,
+      peso: pesoDelDia, // null si no hay registro para esa fecha
       dieta: dietaInfo,
       pesoFuente: pesoRegistrado !== null ? 'registro' : 'perfil',
-      pesoPerfil: peso ?? null,
+      pesoPerfil: peso ?? null, // sigue disponible por separado
     });
   } catch (err) {
     console.error(' Error en GET /api/calendario/:fecha:', err);
