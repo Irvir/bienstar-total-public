@@ -13,6 +13,7 @@
  */
 
 import React, { useState } from 'react';
+import { API_BASE } from '../shared/apiBase';
 
 /**
  * Componente ModalEditarAlimento
@@ -29,7 +30,10 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
     id: alimento.id || '',
     id_alimento: alimento.id_alimento || '',
     nombre: alimento.nombre || '',
-    image_url: alimento.image_url || '',
+    // store a user-friendly image path (without uploads/ prefix) in the form input
+    image_url: (alimento.image_url || alimento.image || alimento.img || alimento.url)
+      ? String(alimento.image_url || alimento.image || alimento.img || alimento.url).replace(/^\/?uploads\//, '')
+      : '',
     categoria: alimento.categoria || '',
     Energia: alimento.Energia || '',
     Humedad: alimento.Humedad || '',
@@ -80,6 +84,14 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
       setImageFile(f);
       setForm((prev) => ({ ...prev, imagePreview: URL.createObjectURL(f) }));
     }
+  };
+
+  const resolveImageForPreview = (candidate) => {
+    if (!candidate) return null;
+    const c = String(candidate);
+    if (/^https?:\/\//i.test(c)) return c;
+    if (c.startsWith('/')) return `${API_BASE}${c}`;
+    return `${API_BASE}/uploads/${c}`;
   };
 
   const submit = (e) => {
@@ -164,7 +176,7 @@ export default function ModalEditarAlimento({ alimento, onClose, onSave }) {
             {form.imagePreview ? (
               <img src={form.imagePreview} alt="preview" className="preview" />
             ) : (
-              form.image_url && <img src={form.image_url} alt="current" className="preview" />
+              form.image_url && <img src={resolveImageForPreview(form.image_url)} alt="current" className="preview" />
             )}
           </div>
 

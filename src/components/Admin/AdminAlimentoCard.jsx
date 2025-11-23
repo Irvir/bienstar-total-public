@@ -44,6 +44,17 @@ export default function AdminAlimentoCard({ alimento, onEditar, onEliminar }) {
 
   const handleError = () => setSrc(`${API_BASE}/uploads/placeholder.png`);
 
+  // Mostrar ruta sin el prefijo /uploads para no exponer la carpeta en la UI
+  const stripUploadsPrefix = (p) => {
+    if (!p) return '-';
+    try {
+      return String(p).replace(/^\/?uploads\//, '');
+    } catch {
+      return p;
+    }
+  };
+  const displayImagePath = stripUploadsPrefix(alimento.image_url ?? alimento.image ?? alimento.img ?? alimento.url);
+
   return (
     <div className="admin-card">
       <img
@@ -56,7 +67,7 @@ export default function AdminAlimentoCard({ alimento, onEditar, onEliminar }) {
       <h3>{alimento.nombre}</h3>
       <div className="admin-nutrients">
         {/*id, id_alimento, nombre, image_url, categoria, Energia, Humedad, Cenizas, Proteinas, H_de_C_disp, Azucares_totales, Fibra_dietetica_total, Lipidos_totales, Ac_grasos_totales, Ac_grasos_poliinsat, Ac_grasos_trans, Colesterol, Vitamina_A, Vitamina_C, Vitamina_D, Vitamina_E, Vitamina_K, Vitamina_B1, Vitamina_B2, Niacina, Vitamina_B6, Ac_pantotenico, Vitamina_B12, Folatos, Sodio, Potasio, Calcio, Fosforo, Magnesio, Hierro, Zinc, Cobre, Selenio, estado */}
-        <div><b>Imagen:</b> {alimento.image_url ?? '-'}</div>
+        <div><b>Imagen:</b> {displayImagePath}</div>
         <div><b>Categoría:</b> {alimento.categoria ?? '-'}</div>
         <div><b>Energía:</b> {alimento.Energia ?? '-'} kcal</div>
         <div><b>Humedad:</b> {alimento.Humedad ?? '-'} % </div>

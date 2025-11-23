@@ -1,5 +1,5 @@
 import { getTableName } from '../utils/db.js';
-
+// Extraer y validar el ID de usuario desde parámetros o query
 function parseUserId(req) {
   const fromParams = req.params?.id ?? req.params?.userId;
   const fromQuery = req.query?.userId;
@@ -7,14 +7,14 @@ function parseUserId(req) {
   if (Number.isNaN(userId) || !userId) return null;
   return userId;
 }
-
+// Normalizar fecha a formato YYYY-MM-DD
 function normalizeDate(input) {
   if (!input) return null;
   const date = new Date(input);
   if (Number.isNaN(date.getTime())) return null;
   return date.toISOString().split('T')[0];
 }
-
+// Validar valor de peso
 function validateWeightValue(peso) {
   if (peso === undefined || peso === null || peso === '') return 'El peso es obligatorio.';
   const value = Number(peso);
@@ -22,7 +22,7 @@ function validateWeightValue(peso) {
   if (value <= 30 || value >= 170) return 'El peso debe estar entre 30 kg y 170 kg.';
   return null;
 }
-
+// Sincronizar el peso más reciente del usuario en la tabla usuario
 async function syncUserLatestWeight(pool, userId) {
   const table = getTableName('registro_peso');
   const userTable = getTableName('usuario');
@@ -43,7 +43,7 @@ async function syncUserLatestWeight(pool, userId) {
     return null;
   }
 }
-
+// Crear un nuevo registro de peso o actualizar si ya existe para la fecha dada
 export async function listWeightLogs(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -82,7 +82,7 @@ export async function listWeightLogs(req, res, { pool } = {}) {
     res.status(500).json({ message: 'Error al obtener historial de peso' });
   }
 }
-
+// Crear o actualizar registro de peso (upsert)
 export async function createWeightLog(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -129,7 +129,7 @@ export async function createWeightLog(req, res, { pool } = {}) {
     res.status(500).json({ message: 'Error al guardar el peso' });
   }
 }
-
+// Actualizar un registro de peso existente
 export async function updateWeightLog(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -193,7 +193,7 @@ export async function updateWeightLog(req, res, { pool } = {}) {
     res.status(500).json({ message: 'Error al actualizar el registro' });
   }
 }
-
+// Eliminar un registro de peso existente
 export async function deleteWeightLog(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
