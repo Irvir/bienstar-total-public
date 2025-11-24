@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/Perfil.css';
 
-// Este componente ahora sólo muestra y edita la información del usuario.
-// Los botones de cerrar sesión y borrar cuenta se movieron fuera, al nivel de Perfil.jsx
 export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
@@ -13,10 +11,24 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
     actividad_fisica: '',
     sexo: '',
     email: '',
-    alergias: '',
+    alergias: [],
+    otrasAlergias: '',
   });
 
-  // Sincroniza el formulario cuando cambia el usuario
+  const getUserEmail = (u) => {
+    if (!u) return null;
+    if (u.email) return u.email;
+    if (u.emailAddress) return u.emailAddress;
+    if (u.emails && Array.isArray(u.emails) && u.emails.length > 0) {
+      const e = u.emails[0];
+      if (e && (e.value || e.email)) return e.value || e.email;
+    }
+    if (u.user && u.user.email) return u.user.email;
+    if (u.profile && u.profile.email) return u.profile.email;
+    if (u.auth && u.auth.email) return u.auth.email;
+    return null;
+  };
+
   useEffect(() => {
     if (usuario) {
       setForm({
@@ -27,13 +39,15 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
         actividad_fisica: usuario.actividad_fisica || '',
         sexo: usuario.sexo || '',
         email: getUserEmail(usuario) || '',
-        alergias: Array.isArray(usuario.alergias) ? usuario.alergias.join(', ') : (usuario.alergias || ''),
+        alergias: Array.isArray(usuario.alergias)
+          ? usuario.alergias
+          : (usuario.alergias ? [usuario.alergias] : []),
+        otrasAlergias: '',
       });
     }
   }, [usuario]);
 
   const startEdit = () => {
-    // Inicializar el formulario con los datos actuales del usuario
     if (usuario) {
       setForm({
         nombre: usuario.nombre || '',
@@ -43,14 +57,16 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
         actividad_fisica: usuario.actividad_fisica || '',
         sexo: usuario.sexo || '',
         email: getUserEmail(usuario) || '',
-        alergias: Array.isArray(usuario.alergias) ? usuario.alergias.join(', ') : (usuario.alergias || ''),
+        alergias: Array.isArray(usuario.alergias)
+          ? usuario.alergias
+          : (usuario.alergias ? [usuario.alergias] : []),
+        otrasAlergias: '',
       });
     }
     setEditMode(true);
   };
 
   const cancelEdit = () => {
-    // Restaurar valores del formulario desde el usuario y salir del modo edición
     if (usuario) {
       setForm({
         nombre: usuario.nombre || '',
@@ -60,7 +76,10 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
         actividad_fisica: usuario.actividad_fisica || '',
         sexo: usuario.sexo || '',
         email: getUserEmail(usuario) || '',
-        alergias: Array.isArray(usuario.alergias) ? usuario.alergias.join(', ') : (usuario.alergias || ''),
+        alergias: Array.isArray(usuario.alergias)
+          ? usuario.alergias
+          : (usuario.alergias ? [usuario.alergias] : []),
+        otrasAlergias: '',
       });
     }
     setEditMode(false);
@@ -96,6 +115,11 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
       return;
     }
 
+    let finalAlergias = [...form.alergias];
+    if (form.otrasAlergias && form.otrasAlergias.trim()) {
+      finalAlergias.push(form.otrasAlergias.trim());
+    }
+
     const payload = {
       nombre: form.nombre.trim(),
       edad: form.edad === '' ? null : Number(form.edad),
@@ -103,7 +127,7 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
       altura: form.altura === '' ? null : Number(form.altura < 10 ? form.altura * 100 : form.altura),
       actividad_fisica: form.actividad_fisica,
       sexo: form.sexo,
-      alergias: form.alergias,
+      alergias: finalAlergias,
     };
 
     try {
@@ -116,17 +140,13 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
 
         if (res.ok) {
           const data = await res.json().catch(() => ({}));
-          // Backend may return different shapes: { usuario } or { user } or no user at all.
-          // Preserve email from existing usuario or localStorage if backend omits it.
           const serverUser = data.usuario || data.user || null;
           let updatedUser = serverUser;
 
           if (!updatedUser) {
-            // Merge payload into current usuario as a best-effort fallback
             updatedUser = { ...(usuario || {}), ...payload };
           }
 
-          // Ensure email is preserved when server didn't return it.
           const existingEmail = getUserEmail(usuario) || (() => {
             try {
               const raw = localStorage.getItem('usuario');
@@ -152,8 +172,10 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
             actividad_fisica: updatedUser.actividad_fisica || '',
             sexo: updatedUser.sexo || '',
             email: getUserEmail(updatedUser) || '',
-
-            alergias: Array.isArray(updatedUser.alergias) ? updatedUser.alergias.join(', ') : (updatedUser.alergias || ''),
+            alergias: Array.isArray(updatedUser.alergias)
+              ? updatedUser.alergias
+              : (updatedUser.alergias ? [updatedUser.alergias] : []),
+            otrasAlergias: '',
           });
 
           window.notify?.('Perfil actualizado', { type: 'success' });
@@ -176,29 +198,24 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
     altura: '📏 Altura:',
     email: '📧 Correo:',
   };
-  const getUserEmail = (u) => {
-    if (!u) return null;
-    if (u.email) return u.email;
-    if (u.emailAddress) return u.emailAddress;
-    if (u.emails && Array.isArray(u.emails) && u.emails.length > 0) {
-      // common firebase shape: emails[0].value
-      const e = u.emails[0];
-      if (e && (e.value || e.email)) return e.value || e.email;
-    }
-    if (u.user && u.user.email) return u.user.email;
-    if (u.profile && u.profile.email) return u.profile.email;
-    if (u.auth && u.auth.email) return u.auth.email;
-    return null;
-  };
 
   const getDisplayValue = (campo) => {
     if (!usuario) return '-';
     if (campo === 'email') return getUserEmail(usuario) || '-';
-    if (campo === 'alergias') {
-      if (Array.isArray(usuario.alergias)) return usuario.alergias.join(', ') || '-';
-      return usuario.alergias || '-';
-    }
     return usuario[campo] ?? '-';
+  };
+
+  const allergyIcons = {
+    'gluten': '🍞',
+    'lactosa': '🥛',
+    'frutos_secos': '🥜',
+    'mariscos': '🦐',
+    'ninguna': '✅',
+  };
+
+  const getAllergyIcon = (alergia) => {
+    const key = alergia.toLowerCase().replace(/ /g, '_');
+    return allergyIcons[key] || '⚠️';
   };
 
   return (
@@ -222,7 +239,6 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
           )}
         </div>
 
-        {/* Datos básicos */}
         {Object.keys(etiquetas).map((campo, idx) => (
           <div className={'datoUsuarioRow' + (idx === 0 ? ' first-row' : '')} key={campo}>
             <div className="info">{etiquetas[campo]}</div>
@@ -235,7 +251,7 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
                 min={campo === 'edad' ? 16 : undefined}
                 max={campo === 'edad' ? 99 : undefined}
                 step={['peso', 'altura'].includes(campo) ? 0.1 : undefined}
-                readOnly={campo === 'email'}
+                readOnly={campo === 'email'} // se ve en el input, pero no editable
               />
             ) : (
               <span className='infoUsuario'>{getDisplayValue(campo)}</span>
@@ -247,7 +263,7 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
         <div className="datoUsuarioRow">
           <div className="info">⚧ Sexo:</div>
           {editMode ? (
-            <select name="sexo" value={form.sexo} onChange={handleChange}>
+            <select name="sexo" value={form.sexo} onChange={handleChange} className="select-control" style={{ marginTop: 0 }}>
               <option value="">Seleccione</option>
               <option value="masculino">Masculino</option>
               <option value="femenino">Femenino</option>
@@ -262,7 +278,7 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
         <div className="datoUsuarioRow">
           <div className="info">🏃 Actividad Física:</div>
           {editMode ? (
-            <select name="actividad_fisica" value={form.actividad_fisica} onChange={handleChange}>
+            <select name="actividad_fisica" value={form.actividad_fisica} onChange={handleChange} className="select-control" style={{ marginTop: 0 }}>
               <option value="">Seleccione</option>
               <option value="sedentario">Sedentario</option>
               <option value="ligero">Ligero</option>
@@ -275,22 +291,75 @@ export default function ContenedorInfo({ usuario, onActualizarUsuario }) {
         </div>
 
         {/* Alergias */}
-        <div className="datoUsuarioRow">
-          <div className="info">🥜 Alergias:</div>
+        <div className="datoUsuarioRow" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+          <div className="info" style={{ marginBottom: '8px' }}>🥜 Alergias:</div>
           {editMode ? (
-            <input
-              type="text"
-              name="alergias"
-              value={form.alergias}
-              onChange={handleChange}
-              placeholder="Escriba sus alergias"
-            />
+            <div className="alergias-wrapper">
+              <select
+                className="select-control"
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v && !form.alergias.includes(v)) {
+                    setForm((p) => ({ ...p, alergias: [...p.alergias, v] }));
+                  }
+                  e.target.selectedIndex = 0;
+                }}
+              >
+                <option value="">Seleccione alergia...</option>
+                <option value="gluten">Gluten</option>
+                <option value="lactosa">Lactosa</option>
+                <option value="frutos_secos">Frutos secos</option>
+                <option value="mariscos">Mariscos</option>
+                <option value="ninguna">Ninguna</option>
+              </select>
+
+              <div className="alergias-lista">
+                {form.alergias.length === 0 ? (
+                  <p className="alergias-empty">No hay alergias seleccionadas.</p>
+                ) : (
+                  form.alergias.map((a, i) => (
+                    <span key={i} className="chip">
+                      {getAllergyIcon(a)} {a}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setForm((p) => ({
+                            ...p,
+                            alergias: p.alergias.filter((x) => x !== a),
+                          }))
+                        }
+                      >
+                        ❌
+                      </button>
+                    </span>
+                  ))
+                )}
+              </div>
+
+              <input
+                type="text"
+                name="otrasAlergias"
+                value={form.otrasAlergias}
+                onChange={handleChange}
+                placeholder="Otras alergias (escribir y guardar)"
+                style={{ marginTop: '10px' }}
+              />
+            </div>
           ) : (
-            <span className='infoUsuario'>{usuario?.alergias || '-'}</span>
+            <div className="alergias-lista">
+              {(!usuario?.alergias || (Array.isArray(usuario.alergias) && usuario.alergias.length === 0)) ? (
+                <span className='infoUsuario'>-</span>
+              ) : (
+                (Array.isArray(usuario.alergias) ? usuario.alergias : [usuario.alergias]).map((a, i) => (
+                  <span key={i} className="chip" style={{ paddingRight: '10px' }}>
+                    {getAllergyIcon(a)} {a}
+                  </span>
+                ))
+              )}
+            </div>
           )}
         </div>
       </div>
-
     </div>
   );
 }
