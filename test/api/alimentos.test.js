@@ -1,3 +1,19 @@
+/**
+ * Tests para los endpoints de `alimentos`.
+ *
+ * Cobertura:
+ * - GET /api/alimentos: listado y filtrado por categoría
+ * - POST /api/alimentos: creación (solo admin)
+ * - PUT /api/alimentos/:id: actualización (solo admin)
+ * - DELETE /api/alimentos/:id: marcado como inactivo (solo admin)
+ *
+ * Notas importantes:
+ * - Estas pruebas arrancan la `app` en un puerto local (3003) para la suite.
+ * - Se usan tokens generados por los helpers (`generateAdminToken`, `generateUserToken`) para simular permisos.
+ * - La base de datos de pruebas (`testPool`) se manipula directamente para insertar/limpiar datos.
+ * - Si ejecutas varias suites en paralelo, ten en cuenta posibles conflictos de puerto.
+ */
+
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import request from 'supertest';
 import { app, testPool } from '../test-setup.js';
@@ -9,12 +25,14 @@ describe('Alimentos Endpoints', () => {
   let userToken;
   
   beforeAll(async () => {
+    // Iniciar servidor en puerto fijo para la suite de alimentos
     server = app.listen(3003);
-    // Crear tokens para las pruebas usando los helpers
+
+    // Generar tokens: admin y usuario normal (helpers usan JWT_SECRET)
     adminToken = generateAdminToken();
     userToken = generateUserToken();
 
-    // Asegurar que los datos de prueba estén limpios y crear usuario admin
+    // Limpiar cualquier alimento previo y asegurar usuario admin de prueba
     await testPool.execute('UPDATE test_alimento SET estado = "inactivo" WHERE 1=1');
     await testPool.execute(`
       INSERT INTO test_usuario (id, nombre, email, password, id_perfil, estado)
@@ -24,6 +42,7 @@ describe('Alimentos Endpoints', () => {
   });
 
   afterAll(async () => {
+    // Cerrar servidor y limpiar pool de conexiones
     await server.close();
     await testPool.execute('UPDATE test_alimento SET estado = "inactivo" WHERE 1=1');
     await testPool.end();
@@ -39,7 +58,7 @@ describe('Alimentos Endpoints', () => {
           (2, 'Pollo de Test', 'Carnes', 165, 31, 0, 3.6, 'activo')
       `);
     });
-
+    // Caso: obtención de lista pública
     it('debería obtener la lista de alimentos (sin autenticación)', async () => {
       const response = await request(server)
         .get('/api/alimentos');
@@ -51,6 +70,7 @@ describe('Alimentos Endpoints', () => {
       expect(response.body[0]).toHaveProperty('categoria', 'Frutas');
     });
 
+    // Caso: filtrado por categoría via query string
     it('debería filtrar alimentos por categoría (sin autenticación)', async () => {
       const response = await request(server)
         .get('/api/alimentos?categoria=Frutas');
@@ -73,6 +93,7 @@ describe('Alimentos Endpoints', () => {
       estado: 'activo',
     };
 
+    // Solo admin puede crear un alimento
     it('debería permitir a un admin crear un nuevo alimento', async () => {
       const response = await request(server)
         .post('/api/alimentos')
@@ -84,6 +105,7 @@ describe('Alimentos Endpoints', () => {
       expect(response.body.nombre).toBe(nuevoAlimento.nombre);
     });
 
+    // Usuario normal no tiene permisos de creación
     it('no debería permitir a un usuario normal crear un alimento', async () => {
       const response = await request(server)
         .post('/api/alimentos')
@@ -98,7 +120,7 @@ describe('Alimentos Endpoints', () => {
     let alimentoId;
 
     beforeEach(async () => {
-      // Crear un alimento para actualizar
+      // Crear un alimento específico para los tests de actualización
       const [result] = await testPool.execute(`
         INSERT INTO test_alimento (nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas, estado)
         VALUES ('Alimento para actualizar', 'Varios', 100, 1, 1, 1, 'activo')
@@ -113,6 +135,7 @@ describe('Alimentos Endpoints', () => {
       estado: 'activo',
     };
 
+    // Admin puede actualizar recursos
     it('debería permitir a un admin actualizar un alimento', async () => {
       const response = await request(server)
         .put(`/api/alimentos/${alimentoId}`)
@@ -124,6 +147,7 @@ describe('Alimentos Endpoints', () => {
       expect(response.body.Energia).toBe(cambios.Energia);
     });
 
+    // Usuario normal no puede actualizar
     it('no debería permitir a un usuario normal actualizar un alimento', async () => {
       const response = await request(server)
         .put(`/api/alimentos/${alimentoId}`)
@@ -138,7 +162,7 @@ describe('Alimentos Endpoints', () => {
     let alimentoId;
 
     beforeEach(async () => {
-      // Crear un alimento para eliminar
+      // Crear un alimento que luego será marcado como inactivo (delete lógico)
       const [result] = await testPool.execute(`
         INSERT INTO test_alimento (nombre, categoria, Energia, Proteinas, Carbohidratos, Grasas, estado)
         VALUES ('Alimento para eliminar', 'Varios', 100, 1, 1, 1, 'activo')
@@ -146,6 +170,7 @@ describe('Alimentos Endpoints', () => {
       alimentoId = result.insertId;
     });
 
+    // Eliminar en la API realiza un marcado como 'inactivo'
     it('debería permitir a un admin marcar un alimento como inactivo', async () => {
       const response = await request(server)
         .delete(`/api/alimentos/${alimentoId}`)
@@ -161,6 +186,7 @@ describe('Alimentos Endpoints', () => {
       expect(rows[0].estado).toBe('inactivo');
     });
 
+    // Usuario normal no puede eliminar
     it('no debería permitir a un usuario normal eliminar un alimento', async () => {
       const response = await request(server)
         .delete(`/api/alimentos/${alimentoId}`)

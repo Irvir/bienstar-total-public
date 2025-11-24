@@ -1,3 +1,17 @@
+/**
+ * Tests para los endpoints de autenticación (`/api/auth`).
+ *
+ * Cobertura:
+ * - POST /api/auth/login
+ * - POST /api/auth/registrar
+ * - GET /api/auth/me
+ * - POST /api/auth/google (integración con Firebase Admin mockeado)
+ *
+ * Notas:
+ * - Usa `createTestUser` y `cleanupTestUser` para gestionar usuarios de prueba.
+ * - Mockea `admin.auth().verifyIdToken` con `vi.spyOn` para simular tokens de Google.
+ */
+
 import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
 import request from 'supertest';
 import { app, testPool } from '../test-setup.js';
@@ -10,6 +24,7 @@ describe('Auth Endpoints', () => {
   let testUser;
 
   beforeAll(() => {
+    // Iniciar servidor para esta suite en puerto 3004
     server = app.listen(3004);
   });
 
@@ -154,6 +169,7 @@ describe('Auth Endpoints', () => {
           },
         }),
       };
+      // Reemplazamos admin.auth() temporalmente por la implementación mock
       vi.spyOn(admin, 'auth').mockImplementation(() => mockFirebaseAdmin.auth());
     });
 

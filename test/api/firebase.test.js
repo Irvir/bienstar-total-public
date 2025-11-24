@@ -1,14 +1,21 @@
+/**
+ * Pruebas para la integración (mock) con Firebase Admin.
+ *
+ * Objetivo: asegurar que la inicialización de `admin` en `test-setup.js` funciona
+ * y que la función `verifyIdToken` puede ser mockeada para distintos escenarios.
+ */
+
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import admin from 'firebase-admin';
 import { app } from '../test-setup.js';
 
 describe('Firebase Admin Tests', () => {
   beforeAll(() => {
-    // Configuración se realiza en test-setup.js
+    // La inicialización principal se realiza en `test-setup.js`.
   });
 
   afterAll(() => {
-    // Cerrar la app de Firebase Admin
+    // Cerrar la app de Firebase Admin creada por test-setup
     admin.apps.forEach(app => {
       if (app) {
         app.delete();
@@ -28,7 +35,7 @@ describe('Firebase Admin Tests', () => {
       email: 'test@example.com',
     };
 
-    // Mockear la función verifyIdToken
+    // Mockear la función verifyIdToken para este caso
     vi.spyOn(admin.auth(), 'verifyIdToken').mockResolvedValueOnce(mockDecodedToken);
 
     const decodedToken = await admin.auth().verifyIdToken(mockToken);
