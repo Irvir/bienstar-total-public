@@ -1,5 +1,5 @@
 import { getTableName } from '../utils/db.js';
-
+// Extraer y validar el ID de usuario desde parámetros o query
 function parseUserId(req) {
   const fromParams = req.params?.id ?? req.params?.userId;
   const fromQuery = req.query?.userId;
@@ -7,14 +7,14 @@ function parseUserId(req) {
   if (Number.isNaN(userId) || !userId) return null;
   return userId;
 }
-
+// Normalizar fecha a formato YYYY-MM-DD
 function normalizeDate(input) {
   if (!input) return null;
   const date = new Date(input);
   if (Number.isNaN(date.getTime())) return null;
   return date.toISOString().split('T')[0];
 }
-
+// Validar valor de peso
 function validateWeightValue(peso) {
   if (peso === undefined || peso === null || peso === '') return 'El peso es obligatorio.';
   const value = Number(peso);
@@ -22,7 +22,7 @@ function validateWeightValue(peso) {
   if (value <= 30 || value >= 170) return 'El peso debe estar entre 30 kg y 170 kg.';
   return null;
 }
-
+// Sincronizar el peso más reciente del usuario en la tabla usuario
 async function syncUserLatestWeight(pool, userId) {
   const table = getTableName('registro_peso');
   const userTable = getTableName('usuario');
@@ -43,7 +43,7 @@ async function syncUserLatestWeight(pool, userId) {
     return null;
   }
 }
-
+// Crear un nuevo registro de peso o actualizar si ya existe para la fecha dada
 export async function listWeightLogs(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -82,7 +82,7 @@ export async function listWeightLogs(req, res, { pool } = {}) {
     res.status(500).json({ message: 'Error al obtener historial de peso' });
   }
 }
-
+// Crear o actualizar registro de peso (upsert)
 export async function createWeightLog(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -112,7 +112,12 @@ export async function createWeightLog(req, res, { pool } = {}) {
       [userId, normalizedDate],
     );
 
-    const latest = await syncUserLatestWeight(pool, userId);
+    // Solo sincronizar el peso del perfil si el registro guardado corresponde al día de hoy
+    const today = new Date().toISOString().split('T')[0];
+    let latest = null;
+    if (normalizedDate === today) {
+      latest = await syncUserLatestWeight(pool, userId);
+    }
 
     res.status(insertedId ? 201 : 200).json({
       message: insertedId ? 'Registro creado' : 'Registro actualizado',
@@ -124,7 +129,7 @@ export async function createWeightLog(req, res, { pool } = {}) {
     res.status(500).json({ message: 'Error al guardar el peso' });
   }
 }
-
+// Actualizar un registro de peso existente
 export async function updateWeightLog(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -174,7 +179,13 @@ export async function updateWeightLog(req, res, { pool } = {}) {
        LIMIT 1`,
       [weightId, userId],
     );
-    const latest = await syncUserLatestWeight(pool, userId);
+    // Solo sincronizar el peso del perfil si el registro actualizado corresponde al día de hoy
+    const today = new Date().toISOString().split('T')[0];
+    let latest = null;
+    const updatedFecha = rows[0] && rows[0].fecha ? rows[0].fecha : null;
+    if (updatedFecha === today) {
+      latest = await syncUserLatestWeight(pool, userId);
+    }
 
     res.json({ message: 'Registro actualizado', item: rows[0] || null, latestPeso: latest });
   } catch (err) {
@@ -182,7 +193,7 @@ export async function updateWeightLog(req, res, { pool } = {}) {
     res.status(500).json({ message: 'Error al actualizar el registro' });
   }
 }
-
+// Eliminar un registro de peso existente
 export async function deleteWeightLog(req, res, { pool } = {}) {
   try {
     const userId = parseUserId(req);
@@ -191,6 +202,13 @@ export async function deleteWeightLog(req, res, { pool } = {}) {
     if (!weightId) return res.status(400).json({ message: 'Falta el registro a eliminar' });
 
     const table = getTableName('registro_peso');
+    // obtener la fecha del registro antes de eliminar
+    const [beforeRows] = await pool.query(
+      `SELECT fecha FROM ${table} WHERE id = ? AND id_usuario = ? LIMIT 1`,
+      [weightId, userId],
+    );
+    const deletedFecha = beforeRows && beforeRows[0] ? beforeRows[0].fecha : null;
+
     const [result] = await pool.query(
       `DELETE FROM ${table}
        WHERE id = ? AND id_usuario = ?
@@ -200,7 +218,11 @@ export async function deleteWeightLog(req, res, { pool } = {}) {
 
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Registro no encontrado' });
 
-    const latest = await syncUserLatestWeight(pool, userId);
+    let latest = null;
+    const today = new Date().toISOString().split('T')[0];
+    if (deletedFecha === today) {
+      latest = await syncUserLatestWeight(pool, userId);
+    }
 
     res.json({ message: 'Registro eliminado', latestPeso: latest });
   } catch (err) {

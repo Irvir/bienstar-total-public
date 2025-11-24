@@ -1,13 +1,17 @@
-/* ============================================================
-    ALIMENTOS.CSS
-    Listado de alimentos + modal detalle.
-    Secciones: Layout, Filtro, Grid, Modal, Nutrientes, Categorías, Selectores, Responsive.
-    (Solo comentarios añadidos; estilos sin cambios.)
-    ============================================================ */
 .pagina-alimentos html,
 .pagina-alimentos body {
     height: 100%;
     margin: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --primary: #b30000;
+    --card-bg: linear-gradient(180deg, #ffffff, #fff7f7);
+    --card-border: rgba(179, 0, 0, 0.06);
+    --card-radius: 18px;
+    --title-font: 'Poppins', 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .pagina-alimentos #contenedorPrincipal {
@@ -19,7 +23,7 @@
     align-items: center;
 }
 
-/* =============== FILTRO / BÚSQUEDA =============== */
+/* ----------------- Filtro ----------------- */
 .pagina-alimentos #contenedorFiltro {
     width: 100%;
     max-width: 1200px;
@@ -35,7 +39,6 @@
 #lupe {
     width: 40px;
     height: 40px;
-    /* Asegurar ruta desde public */
     background-image: url("/Imagenes/Alimentos/Lupepng.png");
     background-size: contain;
     background-repeat: no-repeat;
@@ -61,10 +64,9 @@
     justify-content: center;
 }
 
-/* =============== GRID DE TARJETAS =============== */
 .pagina-alimentos .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1rem;
     width: 100%;
     padding: 1rem;
@@ -75,48 +77,96 @@
 }
 
 .cuadro {
-    background-color: #FCF7F8;
-    border-radius: 10px;
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     cursor: pointer;
-    transition: transform 0.2s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.22s cubic-bezier(.2, .9, .2, 1), box-shadow 0.22s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    border: 1px solid var(--card-border);
+    padding: 12px 14px;
+    gap: 10px;
+    overflow: hidden;
+    font-family: var(--title-font);
+    max-height: 450px;
 }
 
 .botonAlimento {
     width: 100%;
     height: 100%;
-    background-color: white;
-    border-radius: 10px;
+    background: transparent;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    padding: 8px 6px;
 }
 
 #imgAlimento {
-    width: 80%;
-    max-height: 150px;
-    /* Base height */
+    width: 100%;
+    max-width: 220px;
+    max-height: 160px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 #textTittleFood {
+    font-family: var(--title-font);
     font-size: 16px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: black;
+    font-weight: 600;
+    margin-top: 8px;
+    color: #2b2b2b;
+    letter-spacing: 0.2px;
+    text-transform: capitalize;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* =============== MODAL DETALLE =============== */
+.cuadro:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
+}
+
+.cuadro:hover #imgAlimento {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
+}
+
+.card-accent {
+    width: 44px;
+    height: 6px;
+    background: linear-gradient(90deg, var(--primary), #ff6b6b);
+    border-radius: 6px;
+    margin-top: 6px;
+}
+
+.cuadro .title-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+}
+
+.cuadro .title-wrap h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f1f1f;
+    text-align: center;
+}
+
+/* ----------------- Modal ----------------- */
 .modal {
     display: flex;
     position: fixed;
@@ -143,13 +193,125 @@
     width: 80vw;
     max-width: 1200px;
     height: 80vh;
-    max-height: 90vh;
+    max-height: 80vh;
     text-align: left;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
     overflow-y: auto;
-    /* Scroll interno del modal */
     display: flex;
     flex-direction: column;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.modal-content.details-collapsed {
+    transform: scale(0.985);
+}
+
+.modal-content.details-expanded {
+    transform: scale(1);
+}
+
+.details-collapsed .nutrient-block1,
+.details-collapsed .nutrient-block2 {
+    max-height: 70%;
+    overflow-y: auto;
+}
+
+.burst-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 5;
+}
+
+@keyframes particleExpand {
+    0% {
+        transform: scale(0.2) translateY(10px);
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1) translateY(-4px);
+    }
+
+    80% {
+        opacity: 1;
+        transform: scale(1.05) translateY(-6px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.4) translateY(-20px);
+    }
+}
+
+@keyframes particleCollapse {
+    0% {
+        transform: scale(0.2) translateY(-6px);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.05) translateY(3px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.4) translateY(12px);
+    }
+}
+
+.particle {
+    position: absolute;
+    font-size: clamp(16px, 2.2vw, 28px);
+    opacity: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    will-change: transform, opacity;
+}
+
+.particle-expand {
+    animation: particleExpand 1.4s ease forwards;
+}
+
+.particle-collapse {
+    animation: particleCollapse 1.2s ease forwards;
+}
+
+.collapsed-essentials-right .nutrient-block2 {
+    animation: fadeInRight 0.5s ease;
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.nutrient-block::-webkit-scrollbar {
+    width: 6px;
+}
+
+.nutrient-block::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.nutrient-block::-webkit-scrollbar-thumb {
+    background: #d2d2d2;
+    border-radius: 3px;
 }
 
 .modal-body {
@@ -161,12 +323,32 @@
 
 .modal-grid-container {
     display: grid;
-    /* Layout columnas: izquierda | imagen | derecha */
     grid-template-columns: 2fr 1fr 2fr;
     gap: 16px;
     align-items: start;
     height: 100%;
     overflow-y: hidden;
+}
+
+.details-collapsed .modal-grid-container {
+    grid-template-columns: 2fr 1fr 2fr;
+}
+
+.details-collapsed .collapsed-essentials-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.details-collapsed .nutrient-block2 {
+    margin-top: 0;
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .details-collapsed .modal-grid-container {
+        grid-template-columns: 1.4fr 1fr 1.4fr;
+    }
 }
 
 .modal-col {
@@ -237,12 +419,11 @@
     color: black;
 }
 
-/* =============== MEDIA QUERIES =============== */
+/* ----------------- Responsive ----------------- */
 
 /* Desktop (1025px y superior): Asegura el desplazamiento en las columnas y el tamaño de la imagen */
 @media (min-width: 1025px) and (max-width: 1920px) {
 
-    /* Imagen reducida en monitores estándar */
     .modal-col-center img {
         max-width: 200px;
         max-height: 200px;
@@ -253,22 +434,17 @@
 /* Tablet/Pequeño Desktop (max-width: 992px) - Stack vertical y Scroll del Modal */
 @media (max-width: 992px) {
 
-    /* Modal ajusta altura y ancho en pantallas medias */
     .modal-content {
         height: 90vh;
-        /* Se mantiene una altura definida */
         max-height: 90vh;
         width: 90vw;
         max-width: 90vw;
-        /* overflow-y: auto; ya está en la definición general, lo que permite el scroll. */
     }
 
-    /* Reorganiza a una sola columna */
     .modal-grid-container {
         grid-template-columns: 1fr;
         gap: 20px;
         overflow-y: visible;
-        /* Scroll vertical recae en .modal-content */
         max-height: none;
     }
 
@@ -283,7 +459,6 @@
 
     .modal-col-center {
         order: -1;
-        /* Imagen más pequeña en tablet */
         max-width: 200px;
         margin: 0 auto;
     }
@@ -293,7 +468,6 @@
         max-height: 180px;
     }
 
-    /* Nutrientes a 2 columnas en tablet */
     .nutrient-grid.cols-3,
     .nutrient-grid.cols-4,
     .nutrient-grid.cols-5,
@@ -303,7 +477,6 @@
 }
 
 
-/* Móvil (max-width: 768px) */
 @media (max-width: 768px) {
     #contenedorFiltro {
         flex-direction: column;
@@ -311,10 +484,9 @@
     }
 
     .grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
 
-    /* Imagen tarjeta menor en <768px */
     #imgAlimento {
         max-height: 120px;
     }
@@ -323,7 +495,6 @@
         font-size: 14px;
     }
 
-    /* Imagen modal se ajusta a ancho completo en móvil */
     .modal-col-center {
         max-width: 100%;
         margin: 0;
@@ -343,10 +514,9 @@
 
 @media (max-width: 600px) {
     .grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
 
-    /* Imagen tarjeta menor en <600px */
     #imgAlimento {
         max-height: 100px;
     }
@@ -355,7 +525,6 @@
         font-size: 12px;
     }
 
-    /* Nutrientes a 1 columna (<600px) */
     .nutrient-grid.cols-2,
     .nutrient-grid.cols-3,
     .nutrient-grid.cols-4,
@@ -365,15 +534,13 @@
     }
 }
 
-/* Móvil muy pequeño (max-width: 480px) */
 @media (max-width: 480px) {
     .grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
 }
 
 
-/* Contenedor intermedio para apilar filtro y alimentos */
 .pagina-alimentos #cuerpo {
     width: 100%;
     display: flex;
@@ -475,7 +642,6 @@
     border-color: #b30000;
 }
 
-/* Make category list stack on mobile */
 @media (max-width: 600px) {
     .category-list {
         gap: 6px;
@@ -529,9 +695,9 @@
 }
 
 #categoriaSelect {
-    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    appearance: none;
     background-color: #b30000;
     border: 2px solid #b30000;
     padding: 10px 40px 10px 14px;
@@ -587,52 +753,51 @@
     color: #931525;
 
 }
- @keyframes sparkle-sequential {
-     0% {
-         color: #d6162f;
-         text-shadow: none;
-     }
 
-     /* La mayor parte del tiempo está normal */
-     30% {
-         color: #d6162f;
-         text-shadow: none;
-     }
+@keyframes sparkle-sequential {
+    0% {
+        color: #d6162f;
+        text-shadow: none;
+    }
 
-     /* Momento en el que esta letra brilla */
-     50% {
-         color: #ffeb3b;
-         text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff9800;
-     }
+    30% {
+        color: #d6162f;
+        text-shadow: none;
+    }
 
-     /* Vuelve a normal */
-     70% {
-         color: #d6162f;
-         text-shadow: none;
-     }
+    50% {
+        color: #ffeb3b;
+        text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff9800;
+    }
 
-     100% {
-         color: #d6162f;
-         text-shadow: none;
-     }
- }
+    70% {
+        color: #d6162f;
+        text-shadow: none;
+    }
 
- .nombre {
-     font-size: 16px;
-     font-weight: bold;
-     margin-top: 10px;
-     color: #d6162f;
-     display: flex;
-     justify-content: center;
-     user-select: none;
- }
+    100% {
+        color: #d6162f;
+        text-shadow: none;
+    }
+}
 
- .sparkle-char {
-     animation-name: sparkle-sequential;
-     animation-duration: 2s;
-     animation-iteration-count: infinite;
-     animation-timing-function: ease-in-out;
- }
+.nombre {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #d6162f;
+    display: flex;
+    justify-content: center;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.sparkle-char {
+    animation-name: sparkle-sequential;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
 
 .detalle-toggle {
     font-size: 14px;
@@ -652,16 +817,12 @@
     transform: translateY(-1px);
 }
 
-/* Clases de ancho de modal (Ajustadas para funcionar con la estructura) */
-.modal-content.modal-narrow {
-    max-width: 900px;
-    width: 60vw;
+.modal-content.modal-narrow,
+.modal-content.modal-wide {
+    width: 80vw;
+    max-width: 1200px;
 }
 
-.modal-content.modal-wide {
-    max-width: 1200px;
-    width: 80vw;
-}
 #imgAlimento {
     margin-top: 10%;
     max-width: 80%;

@@ -19,12 +19,10 @@ const AverageProgressWidget = ({ weightStats }) => {
     averageWeight,
     startWeight,
     currentWeight,
-    // weightChange (solo para lógica interna, no se muestra directamente)
     changeType,
     motivationalMessage,
   } = weightStats;
 
-  // color según cambio
   let changeClass = 'weight-change-neutral';
   if (changeType === 'loss') changeClass = 'weight-change-loss';
   if (changeType === 'gain') changeClass = 'weight-change-gain';
@@ -32,7 +30,6 @@ const AverageProgressWidget = ({ weightStats }) => {
   return (
     <div className="average-progress-widget">
       <div className="widget-header">
-        {/* Icono balanza */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="widget-icon"
@@ -52,7 +49,6 @@ const AverageProgressWidget = ({ weightStats }) => {
       </div>
 
       <div className="widget-content">
-        {/* BLOQUE IZQUIERDA: números clave */}
         <div className="weight-main-stats">
           <div className="stat-row">
             <span className="stat-label">Peso inicial</span>
@@ -74,11 +70,9 @@ const AverageProgressWidget = ({ weightStats }) => {
           </div>
         </div>
 
-        {/* BLOQUE DERECHA: cambio + mensaje */}
         <div className="weight-change-block">
           <div className={`weight-change-amount ${changeClass}`}>
             <div className="weight-change-icon-wrapper">
-              {/* icono según tipo */}
               {changeType === 'loss' && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +132,7 @@ const AverageProgressWidget = ({ weightStats }) => {
               <span className="weight-change-value">
                 {Number.isFinite(startWeight) && Number.isFinite(currentWeight)
                   ? (() => {
-                    const diff = currentWeight - startWeight; // ganancia positiva, pérdida negativa
+                    const diff = currentWeight - startWeight;
                     const sign = diff > 0 ? '+' : diff < 0 ? '-' : '';
                     return `${sign}${Math.abs(diff).toFixed(1)} kg`;
                   })()
@@ -378,13 +372,13 @@ function Home() {
           }
         }
 
-        // ===== HISTORIAL DE PESO (últimos 30 días) =====
+        // ===== HISTORIAL DE PESO (desde el día 1 del mes actual hasta hoy) =====
         if (!user.id) return;
 
         const today = new Date();
         const toDate = today.toISOString().split('T')[0];
-        const fromDateObj = new Date(today);
-        fromDateObj.setDate(fromDateObj.getDate() - 29); // últimos 30 días incluyendo hoy
+        // Periodo: desde el día 1 del mes actual hasta hoy
+        const fromDateObj = new Date(today.getFullYear(), today.getMonth(), 1);
         const fromDate = fromDateObj.toISOString().split('T')[0];
 
         // 1) obtener registros del periodo (últimos 30 días)
@@ -418,10 +412,13 @@ function Home() {
           if (it && it.fecha) map[it.fecha] = Number(it.peso);
         });
 
-        // generar array de 30 días y rellenar por última observación conocida
+        // generar array de días desde fromDate hasta today y rellenar por última observación conocida
         const dayWeights = [];
         let carry = lastBefore; // peso conocido antes del periodo
-        for (let i = 0; i < 30; i++) {
+        // calcular número de días en el periodo (inclusive)
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const daysCount = Math.floor((new Date(toDate) - new Date(fromDate)) / msPerDay) + 1;
+        for (let i = 0; i < daysCount; i++) {
           const d = new Date(fromDateObj);
           d.setDate(fromDateObj.getDate() + i);
           const key = d.toISOString().split('T')[0];
@@ -433,6 +430,9 @@ function Home() {
             dayWeights.push(carry === null ? null : carry);
           }
         }
+
+        // peso registrado en el primer día del periodo (día 1 del mes)
+        const periodStartWeight = dayWeights.length > 0 ? dayWeights[0] : null;
 
         // si no hay ningún peso disponible (ni previo ni en periodo)
         const anyWeight = dayWeights.find((w) => w !== null && w !== undefined);
@@ -471,10 +471,14 @@ function Home() {
         const total = numeric.reduce((s, v) => s + v, 0);
         const averageWeight = total / numeric.length;
 
-        // peso actual = último día del periodo (hoy) o el último carry
-        const currentWeight = dayWeights[dayWeights.length - 1] ?? carry;
+        // peso actual: preferir el peso del perfil (`user.peso`) si está presente;
+        // si no, usar el último día del periodo o el carry anterior.
+        const currentWeight = (perfilPesoNum !== null)
+          ? perfilPesoNum
+          : (dayWeights[dayWeights.length - 1] ?? carry);
 
-        // peso inicial: intentar obtener el primer registro histórico del usuario (primer día que se creó la cuenta)
+        // peso inicial: priorizar el peso del primer día del periodo (día 1 del mes)
+        // si no existe, intentar obtener el primer registro histórico del usuario (primer día que se creó la cuenta)
         // pedimos hasta 180 registros y tomamos el de fecha mínima
         let startWeight = null;
         try {
@@ -495,15 +499,32 @@ function Home() {
           // ignore
         }
 
-        // fallback: si no encontramos startWeight, usar el primer valor no nulo del periodo (primera observación en 30 días)
-        if (startWeight === null) {
-          for (const w of dayWeights) {
-            if (w !== null && w !== undefined) {
-              startWeight = w;
-              break;
+          // Determinar peso inicial (prioridad estricta):
+          // 1) peso del día 1 del mes (periodStartWeight)
+          // 2) si ese día no tiene valor, usar el primer valor no nulo del periodo
+          // 3) si no hay ninguno, usar el earliest histórico
+          // 4) si aún no hay, usar peso de perfil (perfilPesoNum)
+          if (Number.isFinite(periodStartWeight)) {
+            startWeight = periodStartWeight;
+          } else {
+            // buscar el primer valor no nulo dentro del periodo
+            for (const w of dayWeights) {
+              if (w !== null && w !== undefined) {
+                startWeight = w;
+                break;
+              }
+            }
+
+            // si no encontramos nada en el periodo, usar earliest histórico (ya calculado arriba)
+            if (startWeight === null && typeof startWeight === 'number' === false) {
+              // startWeight may have been set from earliest earlier; keep it
+            }
+
+            // si sigue sin valor, usar peso del perfil si existe
+            if (startWeight === null && perfilPesoNum !== null) {
+              startWeight = perfilPesoNum;
             }
           }
-        }
 
         // Fijar peso inicial estable: prioridad a user.peso_inicial, luego earliest log, luego primer valor del periodo, y persistir si no existe
         if (startWeightFixed === null) {
@@ -527,7 +548,8 @@ function Home() {
           }
         }
 
-        const startForWidget = Number.isFinite(startWeightFixed) ? startWeightFixed : startWeight;
+        // Determinar valor final mostrado como "start" y "current"
+        const startForWidget = Number.isFinite(startWeight) ? startWeight : (Number.isFinite(startWeightFixed) ? startWeightFixed : null);
         const rawChange = (Number.isFinite(startForWidget) && Number.isFinite(currentWeight))
           ? (startForWidget - currentWeight)
           : 0; // positivo = perdió peso
@@ -636,7 +658,7 @@ function Home() {
           </div>
 
           {/* Columna dieta hoy */}
-          <div className="botonera2 botonera2-dieta-hoy">
+          <div className="botonera2-dieta-hoy">
             <div className="columna columna-hoy">
               <div className="titulo">{todayName} - Hoy</div>
               <div className="celda">

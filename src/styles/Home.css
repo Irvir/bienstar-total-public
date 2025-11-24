@@ -1,10 +1,3 @@
-/* ============================================================
-    HOME.CSS
-    Página principal (dashboard de acceso rápido): loader, layout
-    de secciones, botoneras (principal y secundaria), estilos de
-    botones, animaciones, dieta del día y media queries.
-    ============================================================ */
-/* =============== RESETEO BASE =============== */
 html {
     height: 100%;
 }
@@ -17,7 +10,6 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* =============== LOADER OVERLAY =============== */
 #loader {
     display: none;
     position: fixed;
@@ -88,7 +80,6 @@ body {
 }
 
 
-/* =============== LAYOUT GENERAL CUERPO =============== */
 #cuerpo {
     display: flex;
     flex-direction: row;
@@ -98,12 +89,10 @@ body {
     padding-bottom: 0.5rem;
 }
 
-/* =============== SECCIÓN PRINCIPAL BOTONES (2 columnas) =============== */
 .section-principal-botones {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    /* Alineación al inicio para el layout lateral */
     width: 100%;
     padding: 2rem;
     box-sizing: border-box;
@@ -137,14 +126,11 @@ body {
 /* ESTILOS DE LAS BOTONERAS                         */
 /* -------------------------------------------------------------------------- */
 
-/* BOTONERA PRINCIPAL (IZQUIERDA) */
-/* =============== BOTONERA IZQUIERDA (GRID) =============== */
 .botonera {
     margin-top: 2%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 40%);
-    gap: 2%;
+    grid-auto-rows: minmax(100px, 20%); 
     flex: 0 0 calc(60% - 10px);
     padding: 0;
     box-sizing: border-box;
@@ -166,38 +152,29 @@ body {
     transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
     min-height: 140px;
     animation: fadeInUp 0.6s ease forwards;
-    max-height: 80%;
+    max-height: 100%;
 }
 
-/* AJUSTE CLAVE PARA BOTONERA 2: POSICIÓN DERECHA Y ALTURA CONTENEDORA */
-/* =============== BOTONERA DERECHA (Columna / Widgets) =============== */
 .botonera2 {
     display: flex;
     justify-content: center;
-    /* Centrar la columna dentro de su contenedor */
     align-items: flex-start;
-    /* Alinear arriba */
     padding: 0;
     flex: 1 1 40%;
-    /* Toma el 40% del espacio restante */
     box-sizing: border-box;
     background-color: transparent;
     border-radius: 24px;
     margin-left: 2%;
-    /* Margen de separación con botonera izquierda */
     margin-top: 2%;
     height: 90vh;
-    /* Alto que define la referencia para los porcentajes internos */
     width: auto;
     margin-right: 5%;
-    /* **NUEVO**: Margen derecho para mover hacia la derecha */
 }
 
 /* -------------------------------------------------------------------------- */
 /* ESTILOS DE BOTONES                           */
 /* -------------------------------------------------------------------------- */
 
-/* =============== BOTONES INDIVIDUALES (IMÁGENES) =============== */
 .btn1 {
     background-image: url("/public/Imagenes/Home/Alimentos.svg");
     background-size: 60% 100% !important;
@@ -267,7 +244,6 @@ body {
     outline: none;
 }
 
-/* Efectos de brillo (manteniendo los colores originales) */
 .botonera button.btn1:hover {
     border-color: #2a522d;
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(248, 238, 219, 0.7);
@@ -301,7 +277,6 @@ body {
 /* -------------------------------------------------------------------------- */
 /* ANIMACIONES                                 */
 /* -------------------------------------------------------------------------- */
-/* =============== ANIMACIONES (fadeInUp / glowPulse) =============== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -333,10 +308,8 @@ body {
 /* MEDIA QUERIES (ADAPTADAS)                      */
 /* -------------------------------------------------------------------------- */
 
-/* =============== MEDIA QUERIES <768px =============== */
 @media (max-width: 768px) {
 
-    /* En móvil, las botoneras se apilan verticalmente */
     .section-principal-botones {
         flex-direction: column;
         padding: 1rem;
@@ -346,19 +319,14 @@ body {
     .botonera,
     .botonera2 {
         flex: 1 1 100%;
-        /* Ocupan todo el ancho */
-        min-height: auto;
         padding: 0;
         margin-left: 0;
-        /* Eliminar márgenes laterales en móvil */
         margin-right: 0;
         width: 100%;
         height: auto !important;
-        /* Permitir altura automática en móvil */
     }
 
     .botonera {
-        /* En móvil, la botonera se convierte en 2 columnas */
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(3, 1fr);
         gap: 1rem;
@@ -366,23 +334,17 @@ body {
 
     .botonera button,
     .botonera2 .btn6,
-    /* APLICACIÓN DE ESTILOS DE BOTÓN PARA EL WIDGET EN MÓVIL */
     .average-progress-widget {
         min-height: 150px;
         font-size: 5vw;
         border-radius: 30px;
-        /* Asegurar el borde redondeado */
         border: 3px solid transparent;
-        /* Asegurar el borde para hover */
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        /* Asegurar la sombra */
     }
 }
 
 
-/* =============== MEDIA QUERIES >=768px =============== */
 @media (min-width: 768px) {
-    /* Ajustes para tablet/desktop */
 
     .contenedorIzq button,
     .contenedorDer button {
@@ -398,70 +360,64 @@ body {
         font-size: 2vw;
     }
 
-    /* APLICACIÓN DE ESTILOS DE BOTÓN PARA EL WIDGET EN TABLET/ESCRITORIO */
     .average-progress-widget {
         border-radius: 30px;
         border: 3px solid transparent;
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         min-height: 140px;
-        /* Del estilo .botonera button */
         max-height: 80%;
-        /* Del estilo .botonera button */
     }
 
     .average-progress-widget:hover {
         border-color: #2c7744;
-        /* Usamos el color de hover del btn6 como referencia */
         box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 161, 105, 0.7);
     }
 }
 
 
-/* =============== MEDIA QUERIES >=1024px =============== */
 @media (min-width: 1024px) {
 
     .botonera button,
     .botonera2 .btn6,
-    /* APLICACIÓN DE ESTILOS DE BOTÓN PARA EL WIDGET EN PANTALLAS GRANDES */
     .average-progress-widget {
         min-height: 260px;
     }
+  
+    
+    
 }
 
-/* Columna de dieta de HOY dentro de la home - AJUSTE DE ALTURA CON % */
 .botonera2-dieta-hoy {
-    /* Clase contenedora del contenido de la columna, usada para separar el día y la hora */
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
-    /* Centrar la columna-hoy */
+    border-radius: 24px;
 }
 
 .botonera2-dieta-hoy .columna-hoy {
-    border: 3px solid #941424;
-    border-radius: 16px;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
     width: 100%;
-    max-width: 320px;
-    background-color: #fff;
-    height: 86%;
+    max-width: 340px;
+    background: linear-gradient(180deg, #fff9f0 0%, #fff3e0 100%);
+    border: 2px solid rgba(245, 158, 11, 0.18); 
     margin-bottom: 20%;
 }
 
-/* Estilos específicos de la columna del día */
 .columna-hoy .header-dia {
     padding: 15px;
     text-align: center;
-    border-bottom: 4px solid #941424;
-    background-color: #fdfdfd;
-    color: #941424;
+    border-bottom: 4px solid rgba(180, 83, 9, 0.9);
+    background: linear-gradient(90deg, #fff7ed, #fff3e0);
+    color: #7a2e02;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 24px;
 }
 
 .columna-hoy .nombre-dia {
@@ -482,16 +438,17 @@ body {
     color: #941424;
     background-color: #ffeaea;
     padding: 4px 8px;
-    border-radius: 8px;
+    border-radius: 24px;
 }
 
 .botonera2-dieta-hoy .titulo {
-    padding: 10px;
+    padding: 12px 10px;
     text-align: center;
-    font-weight: bold;
-    border-bottom: 2px solid #941424;
-    background-color: #fdfdfd;
-    color: black;
+    font-weight: 800;
+    border-bottom: 2px solid rgba(180, 83, 9, 0.9);
+    background: linear-gradient(90deg, #fff1e0, #ffe8d0);
+    color: #7a2e02;
+    box-shadow: inset 0 -6px 12px rgba(250, 210, 170, 0.08);
 }
 
 .botonera2-dieta-hoy .celda {
@@ -508,26 +465,27 @@ body {
 
 .botonera2-dieta-hoy .bloque-comida {
     margin-bottom: 0.8rem;
-    padding: 0.5rem;
-    background-color: #fff;
+    padding: 0.6rem;
+    background-color: #fffaf0; 
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
     width: 100%;
-    height: 50%;
+    height: auto;
+    border: 1px solid rgba(252, 211, 77, 0.22);
 }
 
 .botonera2-dieta-hoy .titulo-comida {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: #931525;
-    background: linear-gradient(135deg, #ffe5e5, #ffd6d6);
-    padding: 0.3rem 0.5rem;
-    border-left: 4px solid #931525;
+    color: #7a2e02; 
+    background: linear-gradient(135deg, #fff4e6, #ffe9d2);
+    padding: 0.35rem 0.6rem;
+    border-left: 4px solid rgba(180, 83, 9, 0.95);
     border-radius: 8px;
     margin-bottom: 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .botonera2-dieta-hoy .lista-comida {
@@ -538,6 +496,7 @@ body {
 
 .botonera2-dieta-hoy .lista-comida li {
     font-size: 14px;
+    color: #4b5563; 
 }
 
 .botonera2-dieta-hoy .lista-vacia {
@@ -577,7 +536,6 @@ body {
     border-color: #2c7744;
 }
 
-/* El contenido interno del widget necesita más flexibilidad y un padding que funcione */
 
 .widget-header {
     display: flex;
@@ -590,7 +548,6 @@ body {
     width: 24px;
     height: 24px;
     color: #FFEB3B;
-    /* Color amarillo para el icono de éxito */
 }
 
 .widget-title {
@@ -608,7 +565,6 @@ body {
     flex-grow: 1;
 }
 
-/* Sección del Gráfico Circular */
 .progress-display {
     display: flex;
     flex-direction: column;
@@ -655,7 +611,6 @@ body {
 .percentage {
     fill: white;
     font-size: 0.6em;
-    /* Tamaño grande para el porcentaje */
     text-anchor: middle;
     dominant-baseline: middle;
     font-weight: 900;
@@ -663,7 +618,6 @@ body {
 
 .percent-sign {
     font-size: 0.6em;
-    /* Tamaño más pequeño para el % */
     font-weight: normal;
 }
 
@@ -709,6 +663,9 @@ body {
     .percentage {
         font-size: 0.7em;
     }
+    .widget-header stat-value{
+        color: red;
+    }
 }
 /* ============================================
    WIDGET PROGRESO DEL PESO - ESTILO BOTONERA
@@ -716,7 +673,6 @@ body {
 
 /* El widget se comporta como un botón más de la .botonera */
 .average-progress-widget {
-    /* Se integra al grid de .botonera */
     width: 100%;
     border-radius: 30px;
     border: 3px solid transparent;
@@ -727,7 +683,6 @@ body {
     transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
     cursor: default;
 
-    /* Estilo de tarjeta blanca tipo dashboard */
     background: #ffffff;
     padding: 14px 16px;
     display: flex;
@@ -744,7 +699,6 @@ body {
     border-color: #2c7744;
 }
 
-/* Estado de carga / error */
 .average-progress-widget.widget-loading {
     display: flex;
     align-items: center;
@@ -754,7 +708,6 @@ body {
     color: #64748b;
 }
 
-/* Header del widget */
 .average-progress-widget .widget-header {
     display: flex;
     align-items: center;
@@ -843,7 +796,6 @@ body {
     height: 16px;
 }
 
-/* Texto cambio */
 .weight-change-text {
     display: flex;
     flex-direction: column;
@@ -916,8 +868,8 @@ body {
     margin: 0;
 }
 
-/* Responsive: se adapta igual que los botones */
 @media (max-width: 768px) {
+
     .average-progress-widget {
         min-height: 150px;
         font-size: 5vw;
@@ -928,11 +880,20 @@ body {
     }
 
     .average-progress-widget .widget-content {
-        flex-direction: column;
+        display: flex;
+        flex-direction: row; 
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .weight-main-stats,
+    .weight-change-block {
+        width: 50%;   
     }
 
     .weight-change-block {
-        margin-top: 4px;
+        margin-bottom: 25%; 
     }
 
     .weight-main-stats .stat-row {
@@ -942,10 +903,87 @@ body {
     .weight-message {
         font-size: 0.8rem;
     }
+
+    .widget-content .stat-value {
+        color: red;
+        font-size: 10px;
+    }
 }
 
+
+
+.botonera{
+  grid-auto-rows: minmax(100px, 25%);
+}
+.botonera button{
+    min-height: 250px;
+}
+/* ======== COLOR PERSONALIZADO PARA LA COLUMNA DERECHA ======== */
+.average-progress-widget .weight-change-block {
+    background: #f3f4f6;         
+    border-radius: 20px;         
+    padding: 10px 12px;          
+}
+/* ======== COLOR DE FONDO PARA LA COLUMNA DE LA DIETA DE HOY ======== */
+.botonera2-dieta-hoy .columna-hoy {
+    background: #f3f4f6 !important;
+    border-radius: 30px;
+    padding: 12px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1); 
+    border-radius: 24px;
+}
+.botonera2-dieta-hoy .bloque-comida {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+@media (max-width: 768px) {
+    .botonera2-dieta-hoy .columna-hoy {
+        background: #f3f4f6 !important;
+        border-radius: 20px;
+        padding: 12px;
+    }
+}
 @media (min-width: 1024px) {
     .average-progress-widget {
-        min-height: 260px;
+        min-height: 250px;
     }
+    .botonera2-dieta-hoy .columna-hoy {
+        width: 380px;
+        margin-right: 30%;
+        margin-bottom: 30%;
+        min-height: 680px;
+        max-height: 1360px;
+    }
+    .botonera{
+        gap: 30px;
+            grid-auto-rows: minmax(100px, 35%);
+            max-height: 700px;
+    }
+    .botonera2-dieta-hoy{
+        margin-top: 2%;
+        min-height: 680px;
+        max-height: 1360px;
+
+        margin-left: 10%;
+    }
+    .btn1{
+        background-size: 70% 80% !important;
+    }
+    .btn2{
+        background-size: 60% 80% !important;
+    }
+    .btn3 {
+        background-size: 90% 100% !important;
+    }
+    .btn4{
+        background-size: 100% 100% !important;
+        background-position: 50% -10px;
+    }
+    .btn5 {
+        background-size: 100% 100% !important;
+    }
+    .columna-hoy{
+        min-width: 100%;
+    }
+
 }
