@@ -279,9 +279,10 @@ export default function TipsParaTuDieta() {
         // Asegurar id_dieta si falta
         let dietId = user.id_dieta || user.id_diet;
         if (!dietId) {
+          const token = localStorage.getItem('token');
           const r = await fetch(`${API_BASE}/ensure-diet`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
             body: JSON.stringify({ email: user.email }),
           });
           const data = await r.json().catch(() => ({}));

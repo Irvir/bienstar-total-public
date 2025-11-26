@@ -100,9 +100,10 @@ function Dietas() {
         const user = JSON.parse(rawUser);
 
         if (!user.id_dieta && !user.id_diet || user.id_diet === 1 || user.id_dieta === 1) {
+          const token = localStorage.getItem('token');
           const ensure = await fetch(`${API_BASE}/ensure-diet`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
             body: JSON.stringify({ email: user.email }),
           });
           if (ensure.ok) {
@@ -143,9 +144,10 @@ function Dietas() {
     }
     setSelecting(true);
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/ensure-diet`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ email: emailSeleccion }),
       });
       const data = await res.json().catch(() => ({}));

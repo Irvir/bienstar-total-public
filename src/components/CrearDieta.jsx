@@ -193,9 +193,10 @@ function CrearDieta() {
           setEditingDietId(dietTarget.id_dieta);
         }
         try {
+          const token = localStorage.getItem('token');
           const ensured = await fetch(`${API_BASE}/ensure-diet`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
             body: JSON.stringify({ email: dietTarget.email }),
           });
           const data = await ensured.json().catch(() => ({}));
@@ -257,9 +258,10 @@ function CrearDieta() {
     // --- Guardado si no existe ---
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/save-diet`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ id_dieta, comidas: [{ id, name, dia: diaSeleccionado, tipoComida }] }),
       });
       const result = await res.json();
@@ -288,9 +290,10 @@ function CrearDieta() {
     const id_diet = editingDietId ?? (isDoctor ? dietTarget?.id_dieta : null) ?? usuario?.id_dieta ?? usuario?.id_diet ?? 1;
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/delete-diet-item`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ id_diet, id_food: id, dia: diaSeleccionado, tipoComida }),
       });
       if (res.ok) {
@@ -311,9 +314,10 @@ function CrearDieta() {
     const id_diet = editingDietId ?? (isDoctor ? dietTarget?.id_dieta : null) ?? usuario?.id_dieta ?? usuario?.id_diet ?? 1;
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/clear-day`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ id_diet, dia: diaSeleccionado }),
       });
       const result = await res.json();
