@@ -16,7 +16,6 @@ const AverageProgressWidget = ({ weightStats }) => {
   }
 
   const {
-    averageWeight,
     startWeight,
     currentWeight,
     changeType,
@@ -62,12 +61,7 @@ const AverageProgressWidget = ({ weightStats }) => {
               {currentWeight ? `${currentWeight.toFixed(1)} kg` : '—'}
             </span>
           </div>
-          <div className="stat-row">
-            <span className="stat-label">Promedio</span>
-            <span className="stat-value">
-              {averageWeight ? `${averageWeight.toFixed(1)} kg` : '—'}
-            </span>
-          </div>
+          {/* Promedio removido según solicitud */}
         </div>
 
         <div className="weight-change-block">

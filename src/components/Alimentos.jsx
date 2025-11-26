@@ -15,7 +15,7 @@ export default function Alimentos() {
   const [activePage, setActivePage] = useState('alimentos');
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const pageSize = 21;
+  const pageSize = 14;
 
   useEffect(() => {
     const currentPage = window.location.pathname.split('/').pop() || 'alimentos';
