@@ -2,12 +2,12 @@ import React from 'react';
 import '../../styles/Alimentos.css';
 import AlimentoGridCard from './AlimentoGridCard';
 
-export default function ContenedorAlimentos({ filtered, openModal }) {
+export default function ContenedorAlimentos({ items, openModal }) {
   return (
     <div id="contenedorAlimentos">
       <div className="grid-container">
-        {filtered.length > 0 ? (
-          filtered.map(item => (
+        {items && items.length > 0 ? (
+          items.map(item => (
             <AlimentoGridCard key={item.id} item={item} onClick={openModal} />
           ))
         ) : (
