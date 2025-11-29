@@ -6,9 +6,13 @@ import {
   updateFood,
   deleteFood,
 } from '../controllers/adminFoods.controller.js';
+import { authenticate } from '../middleware/auth.js';
 
 export default function createAdminFoodsRouter({ pool, upload }) {
   const router = express.Router();
+
+  // 🔒 Todas las rutas de admin de alimentos requieren autenticación
+  router.use(authenticate);
 
   // Subir imagen (usa multer upload pasado desde server.js)
   router.post('/upload-image', upload.single('image'), (req, res) => uploadImage(req, res, { pool }));

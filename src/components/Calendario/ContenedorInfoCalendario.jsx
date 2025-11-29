@@ -97,9 +97,13 @@ const ContenedorInfoCalendario = ({ fecha, onClose, pesoDelDia, onWeightSaved })
     }
     setSaving(true);
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/user/${userId}/weights`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
         body: JSON.stringify({ peso: pesoValue, fecha: fechaStr }),
       });
       const data = await res.json().catch(() => ({}));

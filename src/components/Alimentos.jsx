@@ -31,7 +31,8 @@ export default function Alimentos() {
     const fetchAlimentos = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/admin/foods`);
+        // Usar ruta pública de alimentos
+        const res = await fetch(`${API_BASE}/api/alimentos`);
         if (!res.ok) throw new Error('Error al obtener alimentos');
         const data = await res.json();
         setAlimentos(Array.isArray(data) ? data : []);

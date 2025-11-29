@@ -95,7 +95,9 @@ const ContenedorDias = ({ userId: userIdProp }) => {
           to: monthTo,
           limit: String(diasEnMes + 5),
         });
-        const res = await fetch(`${API_BASE}/user/${userId}/weights?${params.toString()}`, { signal: controller.signal });
+        const token = localStorage.getItem('token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch(`${API_BASE}/user/${userId}/weights?${params.toString()}`, { signal: controller.signal, headers });
         if (!res.ok) throw new Error('No se pudo obtener el historial del mes');
         const data = await res.json();
         const map = {};

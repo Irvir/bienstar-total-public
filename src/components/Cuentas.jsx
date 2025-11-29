@@ -5,6 +5,18 @@ import Loader from './Loader';
 import { API_BASE } from './shared/apiBase';
 import '../styles/Cuentas.css';
 
+// Helper para hacer fetch con token
+const authFetch = (url, options = {}) => {
+  const token = localStorage.getItem('token');
+  return fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      ...(token && { 'Authorization': `Bearer ${token}` }),
+    },
+  });
+};
+
 export default function Cuentas() {
   const [cuentas, setCuentas] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +44,7 @@ export default function Cuentas() {
   async function loadCuentas() {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/admin/users`);
+      const res = await authFetch(`${API_BASE}/admin/users`);
       if (!res.ok) throw new Error('Error al obtener cuentas');
       const data = await res.json();
       // data expected array
@@ -73,7 +85,7 @@ export default function Cuentas() {
     try {
       if (editing) {
         const payload = { ...form };
-        const res = await fetch(`${API_BASE}/admin/user/${editing.id}`, {
+        const res = await authFetch(`${API_BASE}/admin/user/${editing.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -118,7 +130,7 @@ export default function Cuentas() {
     if (!confirm(`¿Confirmar inactivar a ${cuenta.nombre || cuenta.email}?`)) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/admin/user/${cuenta.id}/deactivate`, { method: 'POST' });
+      const res = await authFetch(`${API_BASE}/admin/user/${cuenta.id}/deactivate`, { method: 'POST' });
       if (!res.ok) throw new Error('No se pudo inactivar');
       window.notify?.('Cuenta inactivada', { type: 'success' });
       await loadCuentas();
@@ -134,7 +146,7 @@ export default function Cuentas() {
     if (!confirm(`¿Confirmar activar a ${cuenta.nombre || cuenta.email}?`)) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/admin/user/${cuenta.id}/activate`, { method: 'POST' });
+      const res = await authFetch(`${API_BASE}/admin/user/${cuenta.id}/activate`, { method: 'POST' });
       if (!res.ok) throw new Error('No se pudo activar');
       window.notify?.('Cuenta activada', { type: 'success' });
       await loadCuentas();
