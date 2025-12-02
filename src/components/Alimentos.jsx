@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import '../styles/Alimentos.css';
 import Encabezado from './Encabezado';
 import { API_BASE } from './shared/apiBase';
@@ -14,17 +14,25 @@ export default function Alimentos() {
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [activePage, setActivePage] = useState('alimentos');
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const pageSize = 14;
 
   useEffect(() => {
     const currentPage = window.location.pathname.split('/').pop() || 'alimentos';
     setActivePage(currentPage.replace('.html', '').toLowerCase());
   }, []);
 
+  // Resetear a página 1 cuando cambia el filtro
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
+
   useEffect(() => {
     const fetchAlimentos = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/admin/foods`);
+        // Usar ruta pública de alimentos
+        const res = await fetch(`${API_BASE}/api/alimentos`);
         if (!res.ok) throw new Error('Error al obtener alimentos');
         const data = await res.json();
         setAlimentos(Array.isArray(data) ? data : []);
@@ -36,6 +44,26 @@ export default function Alimentos() {
     };
     fetchAlimentos();
   }, []);
+
+  // Calcular alimentos filtrados
+  const filteredFoods = useMemo(() => {
+    if (!filter || !filter.trim()) return alimentos;
+    const q = filter.toString().toLowerCase().trim();
+    return alimentos.filter((a) => {
+      const nombre = (a.nombre || '').toString().toLowerCase();
+      const categoria = (a.categoria || '').toString().toLowerCase();
+      return nombre.includes(q) || categoria.includes(q) || categoria === q;
+    });
+  }, [alimentos, filter]);
+
+  // Calcular cantidad de páginas
+  const pageCount = Math.max(1, Math.ceil(filteredFoods.length / pageSize));
+
+  // Calcular alimentos de la página actual
+  const pageItems = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredFoods.slice(start, start + pageSize);
+  }, [filteredFoods, page, pageSize]);
 
   const openModal = async (item) => {
     setModalOpen(true);
@@ -78,15 +106,30 @@ export default function Alimentos() {
         <div id="cuerpo" className="alimentos-page">
           <Filtro2 filter={filter} setFilter={setFilter} />
           <ContenedorAlimentos
-            filtered={alimentos.filter((a) => {
-              if (!filter || !filter.trim()) return true;
-              const q = filter.toString().toLowerCase().trim();
-              const nombre = (a.nombre || '').toString().toLowerCase();
-              const categoria = (a.categoria || '').toString().toLowerCase();
-              return nombre.includes(q) || categoria.includes(q) || categoria === q;
-            })}
+            items={pageItems}
             openModal={openModal}
           />
+          {pageCount > 1 && (
+            <div className="food-pagination">
+              <button
+                type="button"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              >
+                ← Anterior
+              </button>
+              <span className="pagination-info">
+                Página {page} de {pageCount}
+              </span>
+              <button
+                type="button"
+                disabled={page >= pageCount}
+                onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+              >
+                Siguiente →
+              </button>
+            </div>
+          )}
         </div>
         <Pie />
       </div>

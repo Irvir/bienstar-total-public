@@ -863,3 +863,40 @@
         width: 60%;
     }
 }
+
+/* Paginación */
+.food-pagination {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+    align-items: center;
+}
+
+.pagination-info {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.food-pagination button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.food-pagination button:hover:not(:disabled) {
+    background-color: #8b0000;
+    transform: scale(1.05);
+}
+
+.food-pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

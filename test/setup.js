@@ -1,3 +1,11 @@
+/**
+ * Configuración de helpers y hooks comunes para las pruebas (Vitest).
+ *
+ * - Carga `.env.test` para variables de entorno de la BD y JWT.
+ * - Abre una conexión antes de cada test y limpia tablas después.
+ * - Exporta funciones helper para crear usuarios/alimentos/dietas de prueba.
+ */
+
 import { expect, afterEach, beforeEach } from 'vitest';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -13,6 +21,10 @@ dotenv.config({ path: path.join(__dirname, '../.env.test') });
 
 let connection;
 
+/**
+ * Hook: abrir conexión antes de cada prueba.
+ * Algunos tests esperan usar esta conexión a través de los helpers exportados.
+ */
 beforeEach(async () => {
   // Conectar a la base de datos antes de cada prueba
   connection = await mysql.createConnection({
@@ -24,6 +36,10 @@ beforeEach(async () => {
   });
 });
 
+/**
+ * Hook: limpiar tablas de prueba y cerrar la conexión.
+ * - Se usa `SET FOREIGN_KEY_CHECKS = 0` para permitir borrados en tablas relacionadas.
+ */
 afterEach(async () => {
   // Limpiar datos de prueba después de cada prueba
   if (connection) {
@@ -47,7 +63,11 @@ afterEach(async () => {
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-// Helper para crear un usuario de prueba
+/**
+ * Helper para crear un usuario de prueba usando la conexión `connection`.
+ * - Genera emails únicos combinando timestamp y random.
+ * - Retorna `{ id, email }`.
+ */
 export async function createTestUser(emailSuffix = '') {
   const timestamp = Date.now();
   const random = crypto.randomBytes(4).toString('hex');
@@ -84,7 +104,9 @@ export async function createTestUser(emailSuffix = '') {
   return { id: result.insertId, email };
 }
 
-// Helper para crear un alimento de prueba
+/**
+ * Inserta un alimento de prueba y retorna su `id`.
+ */
 export async function createTestAlimento() {
   const [result] = await connection.query(
     `INSERT INTO test_alimento (
@@ -99,7 +121,9 @@ export async function createTestAlimento() {
   return result.insertId;
 }
 
-// Helper para crear una dieta de prueba
+/**
+ * Inserta una dieta de prueba y retorna su `id`.
+ */
 export async function createTestDieta() {
   const [result] = await connection.query(
     'INSERT INTO test_dieta (nombre) VALUES (?)',
@@ -108,7 +132,9 @@ export async function createTestDieta() {
   return result.insertId;
 }
 
-// Helper para generar un token JWT de prueba
+/**
+ * Genera un JWT para un `userId` dado (firma con `JWT_SECRET`).
+ */
 export function generateTestToken(userId) {
   return jwt.sign(
     { id: userId },

@@ -57,26 +57,7 @@ function LoginInner() {
 
       const emailNormalized = email.trim().toLowerCase();
 
-      // Atajo para admin2025
-      if (emailNormalized === "admin2025@bienstartotal.food") {
-        const adminUser = {
-          id: "admin2025",
-          name: "Administrador",
-          email: emailNormalized,
-          id_diet: null,
-        };
-        localStorage.setItem("usuario", JSON.stringify(adminUser));
-        notifyThenRedirect(
-          "Bienvenido Administrador",
-          { type: "success", duration: 1200 },
-          "/admin.html",
-          setLoading
-        );
-        return;
-      }
-
-
-      // Login normal con API
+      // Login normal con API (sin atajos, para obtener token JWT)
       const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,6 +69,10 @@ function LoginInner() {
       if (response.ok) {
         const usuario = result.user;
         localStorage.setItem("usuario", JSON.stringify(usuario));
+        // Guardar token JWT para rutas protegidas
+        if (result.token) {
+          localStorage.setItem("token", result.token);
+        }
 
         // Limpiar dietTarget si no es doctor
         if (!usuario || usuario.id_perfil !== 3) {

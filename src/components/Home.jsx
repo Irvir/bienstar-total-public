@@ -16,7 +16,6 @@ const AverageProgressWidget = ({ weightStats }) => {
   }
 
   const {
-    averageWeight,
     startWeight,
     currentWeight,
     changeType,
@@ -62,12 +61,7 @@ const AverageProgressWidget = ({ weightStats }) => {
               {currentWeight ? `${currentWeight.toFixed(1)} kg` : '—'}
             </span>
           </div>
-          <div className="stat-row">
-            <span className="stat-label">Promedio</span>
-            <span className="stat-value">
-              {averageWeight ? `${averageWeight.toFixed(1)} kg` : '—'}
-            </span>
-          </div>
+          {/* Promedio removido según solicitud */}
         </div>
 
         <div className="weight-change-block">
@@ -469,83 +463,47 @@ function Home() {
         // calcular promedio de los últimos 30 días (solo considerando valores numéricos)
         const numeric = dayWeights.filter((w) => w !== null && w !== undefined);
         const total = numeric.reduce((s, v) => s + v, 0);
-        const averageWeight = total / numeric.length;
+        const averageWeight = numeric.length > 0 ? total / numeric.length : 0;
 
-        // peso actual: preferir el peso del perfil (`user.peso`) si está presente;
-        // si no, usar el último día del periodo o el carry anterior.
-        const currentWeight = (perfilPesoNum !== null)
-          ? perfilPesoNum
-          : (dayWeights[dayWeights.length - 1] ?? carry);
-
-        // peso inicial: priorizar el peso del primer día del periodo (día 1 del mes)
-        // si no existe, intentar obtener el primer registro histórico del usuario (primer día que se creó la cuenta)
-        // pedimos hasta 180 registros y tomamos el de fecha mínima
+        // ===== PESO INICIAL: El peso del primer día registrado (fecha más antigua) =====
         let startWeight = null;
         try {
-          const allRes = await fetch(`${API_BASE}/user/${user.id}/weights?limit=180`);
+          const allRes = await fetch(`${API_BASE}/user/${user.id}/weights?limit=500`);
           if (allRes.ok) {
             const allData = await allRes.json().catch(() => ({}));
             const allItems = Array.isArray(allData.items) ? allData.items : [];
             if (allItems.length > 0) {
-              // encontrar el item con fecha mínima
+              // Encontrar el item con fecha más antigua
               const earliest = [...allItems].reduce((acc, it) => {
                 if (!acc) return it;
                 return new Date(it.fecha) < new Date(acc.fecha) ? it : acc;
               }, null);
-              if (earliest && earliest.peso !== undefined) startWeight = Number(earliest.peso);
+              if (earliest && earliest.peso !== undefined) {
+                startWeight = Number(earliest.peso);
+              }
             }
           }
         } catch {
           // ignore
         }
 
-          // Determinar peso inicial (prioridad estricta):
-          // 1) peso del día 1 del mes (periodStartWeight)
-          // 2) si ese día no tiene valor, usar el primer valor no nulo del periodo
-          // 3) si no hay ninguno, usar el earliest histórico
-          // 4) si aún no hay, usar peso de perfil (perfilPesoNum)
-          if (Number.isFinite(periodStartWeight)) {
-            startWeight = periodStartWeight;
-          } else {
-            // buscar el primer valor no nulo dentro del periodo
-            for (const w of dayWeights) {
-              if (w !== null && w !== undefined) {
-                startWeight = w;
-                break;
-              }
-            }
+        // ===== PESO ACTUAL: El peso del día de hoy =====
+        const todayKey = today.toISOString().split('T')[0];
+        let currentWeight = null;
+        
+        // Buscar el peso de hoy en el mapa
+        if (map[todayKey] !== undefined && !Number.isNaN(map[todayKey])) {
+          currentWeight = map[todayKey];
+        } else {
+          // Si no hay peso de hoy, usar el último registro disponible
+          currentWeight = dayWeights[dayWeights.length - 1] ?? perfilPesoNum;
+        }
 
-            // si no encontramos nada en el periodo, usar earliest histórico (ya calculado arriba)
-            if (startWeight === null && typeof startWeight === 'number' === false) {
-              // startWeight may have been set from earliest earlier; keep it
-            }
-
-            // si sigue sin valor, usar peso del perfil si existe
-            if (startWeight === null && perfilPesoNum !== null) {
-              startWeight = perfilPesoNum;
-            }
-          }
-
-        // Fijar peso inicial estable: prioridad a user.peso_inicial, luego earliest log, luego primer valor del periodo, y persistir si no existe
-        if (startWeightFixed === null) {
-          if (Number.isFinite(startWeight)) {
-            startWeightFixed = startWeight;
-          } else {
-            startWeightFixed = startWeight; // puede seguir siendo null si no hay nada
-          }
-          if (startWeightFixed === null) {
-            // fallback a primer no nulo en 30 días (ya calculado antes)
-            for (const w of dayWeights) {
-              if (w !== null && w !== undefined) {
-                startWeightFixed = w;
-                break;
-              }
-            }
-          }
-          if (Number.isFinite(startWeightFixed)) {
-            user.peso_inicial = startWeightFixed;
-            persistUsuario(user);
-          }
+        // Fijar peso inicial estable si no existe
+        if (startWeightFixed === null && Number.isFinite(startWeight)) {
+          startWeightFixed = startWeight;
+          user.peso_inicial = startWeightFixed;
+          persistUsuario(user);
         }
 
         // Determinar valor final mostrado como "start" y "current"

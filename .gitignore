@@ -26,3 +26,7 @@ dist-ssr
 .env.test
 postman/
 .node_modules/
+
+# Migración y backups
+scripts/migrate-database.js
+backups/
