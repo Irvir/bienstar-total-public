@@ -38,7 +38,9 @@ app.use(cors({
     
     if (!origin) return callback(null, true);
     if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) return callback(null, true);
+    // Allow localhost, 127.0.0.1 and common private LAN IP ranges for development
+    // This permits requests from e.g. http://192.168.3.20:5173 when developing on local network
+    if (/^https?:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/i.test(origin)) return callback(null, true);
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
@@ -104,6 +106,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 import authorizeAdminFactory from './src/middleware/authorizeAdmin.js';
+import { authenticate } from './src/middleware/auth.js';
 
 // Rutas principales
 app.use('/api/auth', createAuthRouter({ pool }));
@@ -159,6 +162,35 @@ app.get('/health', async (req, res) => {
     res.status(503).json({ ok: false, error: 'DB unreachable' });
   }
 });
+
+// Debug endpoint: listar tablas (solo fuera de producción)
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/debug/tables', async (req, res) => {
+    try {
+      const [tables] = await pool.query('SHOW TABLES');
+      res.json({ ok: true, tables });
+    } catch (err) {
+      res.status(500).json({ ok: false, error: err.message || err });
+    }
+  });
+  // Debug: whoami - devuelve req.user si el token es válido
+  app.get('/debug/whoami', authenticate, (req, res) => {
+    res.json({ ok: true, user: req.user || null });
+  });
+  // Debug: admin status - comprueba en la BD si el usuario es administrador
+  app.get('/debug/admin-status', authenticate, async (req, res) => {
+    try {
+      if (!req.user || !req.user.id) return res.status(401).json({ error: 'Token no proporcionado' });
+      const [rows] = await pool.query('SELECT id_perfil FROM usuario WHERE id = ? AND estado = "activo" LIMIT 1', [req.user.id]);
+      if (!rows || rows.length === 0) return res.json({ ok: true, isAdmin: false, perfil: null });
+      const perfil = rows[0].id_perfil;
+      return res.json({ ok: true, isAdmin: Number(perfil) === 1, perfil });
+    } catch (err) {
+      console.error('/debug/admin-status error:', err.message || err);
+      return res.status(500).json({ ok: false, error: 'Error verificando admin' });
+    }
+  });
+}
 
 async function shutdown(signal) {
   console.log(`Received ${signal}. Closing DB pool and exiting...`);
