@@ -1,7 +1,8 @@
+
 import '../../styles/Calendario.css';
 import React, { useEffect, useMemo, useState } from 'react';
 import ContenedorInfoCalendario from './ContenedorInfoCalendario.jsx';
-import WeightHistory from '../Perfil/WeightHistory';
+import WeightHistory from './WeightHistory.jsx';
 import { API_BASE } from '../shared/apiBase';
 
 const formatDate = (date) => {
@@ -17,7 +18,7 @@ const ContenedorDias = ({ userId: userIdProp }) => {
   const [weightMap, setWeightMap] = useState({});
   const [localUserId, setLocalUserId] = useState(null);
   const [weightsLoading, setWeightsLoading] = useState(false);
-  const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false); // Estado para controlar la visibilidad del modal
 
   const fechaActual = new Date();
   const dia = fechaActual.getDate();
@@ -25,21 +26,22 @@ const ContenedorDias = ({ userId: userIdProp }) => {
   const ano = fechaActual.getFullYear();
 
   const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-  const mesesAno = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  // const mesesAno = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; // No usado
 
   const primerDiaMes = new Date(ano, mes - 1, 1).getDay();
   const diasEnMes = new Date(ano, mes, 0).getDate();
 
+  // Ajuste para que 0 sea Domingo y 1 sea Lunes
   const inicioDia = primerDiaMes === 0 ? 6 : primerDiaMes - 1;
 
   const dias = [];
 
-  //Espacios en blanco antes del primer día del mes
-  for(let i = 0; i < inicioDia; i++) {
+  // Espacios en blanco antes del primer día del mes
+  for (let i = 0; i < inicioDia; i++) {
     dias.push(<div key={`vacio-${i}`} className="diaVacio"></div>);
   }
 
-  //Dias del mes
+  // Dias del mes
   for (let i = 1; i <= diasEnMes; i++) {
     const fechaDelDia = new Date(ano, mes - 1, i);
     const fechaClave = formatDate(fechaDelDia);
@@ -47,7 +49,7 @@ const ContenedorDias = ({ userId: userIdProp }) => {
     dias.push(
       <div
         key={i}
-        className={`dia ${i === dia ? 'hoy' : ''} ${pesoDia ? 'dia-con-peso' : ''}`}
+        className={`dia ${i === dia && mes === fechaActual.getMonth() + 1 && ano === fechaActual.getFullYear() ? 'hoy' : ''} ${pesoDia ? 'dia-con-peso' : ''}`}
         onClick={() => setFechaSeleccionada(fechaDelDia)}
       >
         <span className="dia-numero">{i}</span>
@@ -64,10 +66,13 @@ const ContenedorDias = ({ userId: userIdProp }) => {
   const monthTo = mesActualClave.to;
 
   useEffect(() => {
+    // Si se proporciona userIdProp (autenticación externa), ignorar localStorage
     if (userIdProp) {
-      setLocalUserId(null);
+      setLocalUserId(userIdProp);
       return;
     }
+
+    // Lógica de fallback para obtener userId desde localStorage si no está autenticado
     const raw = localStorage.getItem('usuario') || localStorage.getItem('Usuario');
     if (!raw) {
       setLocalUserId(null);
@@ -140,7 +145,7 @@ const ContenedorDias = ({ userId: userIdProp }) => {
           onClick={() => setHistoryOpen(true)}
           disabled={!userId}
         >
-          Ver historial completo
+          VER HISTORIAL
         </button>
         {!userId && <small>Inicia sesión para consultar tu historial.</small>}
       </div>
@@ -151,14 +156,21 @@ const ContenedorDias = ({ userId: userIdProp }) => {
           onClose={() => setFechaSeleccionada(null)}
           onWeightSaved={handleWeightSaved}
         />
-      )
-      }
+      )}
       {historyOpen && (
-        <div className="ModalOverlay" onClick={() => setHistoryOpen(false)}>
+        <div
+          className={`ModalOverlay ${historyOpen ? 'active' : ''}`}
+          onClick={() => setHistoryOpen(false)}
+        >
           <div className="ModalContent" onClick={event => event.stopPropagation()}>
             <button className="CerrarModal" onClick={() => setHistoryOpen(false)}>×</button>
             {userId ? (
-              <WeightHistory userId={userId} maxItems={90} />
+              <>
+                <WeightHistory userId={userId} maxItems={90} />
+                <button className="cal-modal-close-btn" onClick={() => setHistoryOpen(false)}>
+                  Cerrar
+                </button>
+              </>
             ) : (
               <p>Inicia sesión para ver tu historial de peso.</p>
             )}
@@ -166,9 +178,6 @@ const ContenedorDias = ({ userId: userIdProp }) => {
         </div>
       )}
     </div>
-
-        
-
   );
 };
 
