@@ -19,13 +19,13 @@ Esta guía resume el uso del sistema para usuarios finales y administradores.
 
 ### Usuarios normales
 - Buscar alimentos: en `Alimentos`, usa filtros y barra de búsqueda.
-- Crear dieta personal: en `CrearDieta`, selecciona alimentos y guarda.
+- Ver dieta personal.
 - Registrar peso: disponible desde `Perfil` (ver `weightLogs.controller.js`).
-- Editar perfil: nombre, correo, imagen (uploads en `public/Sonidos/uploads` y `public/assets/Imagenes` según configuración).
+- Editar perfil.
 
 ### Doctores
 - Consultar usuarios/pacientes: acceso a listados y detalle de perfiles según permisos.
-- Crear y asignar dietas a pacientes: flujo similar a `CrearDieta`, pero orientado a terceros.
+- Crear y asignar dietas a pacientes.
 - Revisar registros de peso de pacientes: visualización y seguimiento (ver `weightLogs.controller.js`).
 - Supervisar y ajustar planes: editar dietas existentes y recomendaciones.
 
@@ -42,11 +42,6 @@ Esta guía resume el uso del sistema para usuarios finales y administradores.
 ## Endpoints y API
 Consulta `docs/endpoints.md` para la lista completa de endpoints.
 Principales rutas del cliente están en `src/routes/` y controladores en `src/controllers/`.
-
-## Errores comunes
-- Credenciales inválidas: reintenta o restablece contraseña.
-- Acceso denegado: tu perfil puede no tener rol de administrador.
-- Falta de datos: verifica conexión al backend.
 
 ## Soporte
 - Revisa `docs/` para arquitectura, requisitos y cambios.
