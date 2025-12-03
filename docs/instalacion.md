@@ -1,18 +1,8 @@
 # Instalación y Puesta en Marcha
 
-Esta guía te ayuda a levantar el proyecto "bienstar-total-public" en un entorno local Linux con shell `sh`.
-
 ## Requisitos
-- Node.js 18+ y npm 9+ (recomendado)
+- Node.js 18+ y npm 9+
 - Git (opcional, para clonar)
-- Acceso a internet para instalar dependencias
-- (Opcional) Servicio de base de datos si vas a conectar a producción
-
-Verifica versiones:
-```
-node -v
-npm -v
-```
 
 ## Clonar o descargar
 - Clonar:
@@ -20,8 +10,6 @@ npm -v
 git clone https://github.com/Irvir/bienstar-total-public.git
 cd bienstar-total-public
 ```
-- O coloca el código en tu carpeta de trabajo y ubícate en la raíz del proyecto.
-
 ## Instalación de dependencias
 Desde la raíz del proyecto:
 ```
@@ -49,10 +37,9 @@ Revisa `package.json` y utiliza:
 # Levantar frontend (Vite)
 npm run dev
 
-# Ejecutar servidor backend simple (si aplica)
+# Ejecutar servidor backend 
 node server.js
 ```
-En desarrollo, usualmente el frontend corre en `http://localhost:5173`.
 
 ## Base de datos (pruebas)
 El repo incluye scripts para preparar una BD de pruebas:
@@ -79,17 +66,3 @@ npx vitest
 - `server/`: controladores/middleware/rutas del API backend.
 - `docs/`: documentación funcional y técnica.
 - `db/`: esquema y migraciones.
-
-## Solución de problemas
-- Puerto en uso: cambia `PORT` y `API_PORT`.
-- Fallo al instalar: borra `node_modules/` y `package-lock.json` y reintenta `npm install`.
-- CORS/credenciales: revisa `src/utils/authFetch.js` y `server/middleware/auth.js`.
-
-## Despliegue (resumen)
-- Construye el frontend:
-```
-npm run build
-```
-- Sirve `dist/` en tu hosting.
-- Levanta el backend (`server.js` o tu propio servidor Express) con las variables de entorno necesarias.
-- Configura HTTPS y variables secretas en el entorno de producción.
