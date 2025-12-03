@@ -35,12 +35,26 @@ const ALLOWED_ORIGINS = Array.from(new Set([...DEFAULT_ALLOWED, ...envAllowed]))
 
 app.use(cors({
   origin: (origin, callback) => {
-    
+    // Allow when no origin (server-to-server, curl, same-origin file requests)
     if (!origin) return callback(null, true);
+
+    // Allow explicit list from env or defaults
     if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-    // Allow localhost, 127.0.0.1 and common private LAN IP ranges for development
-    // This permits requests from e.g. http://192.168.3.20:5173 when developing on local network
+
+    // Allow common local development origins (localhost, 127.0.0.1 and LAN IP ranges)
     if (/^https?:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/i.test(origin)) return callback(null, true);
+
+    // Allow Visual Studio dev tunnels (domains like "*.devtunnels.ms") used by Ports/Dev Tunnels
+    try {
+      const low = origin.toLowerCase();
+      if (low.includes('.devtunnels.ms') || low.endsWith('.ngrok.io') || low.includes('.vercel.app')) return callback(null, true);
+    } catch (e) {
+      // ignore
+    }
+
+    // If explicit env variable requested to allow all origins (useful for short-lived dev tunnels)
+    if (process.env.DEV_ALLOW_ALL === 'true' && process.env.NODE_ENV !== 'production') return callback(null, true);
+
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
