@@ -168,7 +168,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
 }
-app.get('/health', async (req, res) => {
+app.get(['/health', '/api/health'], async (req, res) => {
   try {
     await pool.query('SELECT 1');
     res.json({ ok: true, env: process.env.NODE_ENV || 'development' });
